@@ -347,7 +347,7 @@ def generate_viewer_html() -> str:
     repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
     title = ", ".join(repo_list) if repo_list else "Project"
 
-    # ── Collect all .drawio diagram files ──
+    # ── Collect all .mmd diagram files ──
     diagrams_dir = os.path.join(OUT_DIR, "diagrams")
     diagram_tabs: list[dict] = []
     diagram_tab_order = [
@@ -357,22 +357,22 @@ def generate_viewer_html() -> str:
         ("nuget-groups", "NuGet Packages", "NuGet Package Groups"),
     ]
     for filename_stem, tab_label, card_title in diagram_tab_order:
-        dio_path = os.path.join(diagrams_dir, f"{filename_stem}.drawio")
-        if os.path.isfile(dio_path):
-            content = Path(dio_path).read_text(encoding="utf-8")
+        mmd_path = os.path.join(diagrams_dir, f"{filename_stem}.mmd")
+        if os.path.isfile(mmd_path):
+            content = Path(mmd_path).read_text(encoding="utf-8")
             diagram_tabs.append({
                 "id": filename_stem.replace("-", ""),
                 "label": tab_label,
                 "title": card_title,
-                "drawio_xml": content,
+                "mermaid": content,
             })
 
-    # Also pick up any extra .drawio files not in the predefined list
+    # Also pick up any extra .mmd files not in the predefined list
     known_stems = {t[0] for t in diagram_tab_order}
     if os.path.isdir(diagrams_dir):
         for fname in sorted(os.listdir(diagrams_dir)):
-            if fname.endswith(".drawio"):
-                stem = fname[:-7]
+            if fname.endswith(".mmd"):
+                stem = fname[:-4]
                 if stem not in known_stems:
                     content = Path(os.path.join(diagrams_dir, fname)).read_text(encoding="utf-8")
                     label = stem.replace("-", " ").title()
@@ -380,7 +380,7 @@ def generate_viewer_html() -> str:
                         "id": sanitize_id(stem),
                         "label": label,
                         "title": label,
-                        "drawio_xml": content,
+                        "mermaid": content,
                     })
 
     # ── Aggregate data sources by pattern ──
@@ -438,25 +438,28 @@ def generate_viewer_html() -> str:
         for i, (tid, label) in enumerate(all_tab_ids)
     )
 
-    # Diagram panels (DrawIO)
+    # Diagram panels
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
         active = " active" if i == 0 else ""
-        dio_config = json.dumps({
-            "highlight": "#0000ff", "nav": True, "resize": True,
-            "toolbar": "zoom layers lightbox", "xml": dt["drawio_xml"],
-        })
-        dio_attr = _esc_html(dio_config)
-        diagram_panels += (
-            f'\n  <section class="tab-panel{active}" id="panel-{dt["id"]}">\n'
-            f'    <div class="card">\n'
-            f'      <div class="card-title"><span class="icon">&#9670;</span> {dt["title"]}</div>\n'
-            f'      <div class="drawio-wrap">\n'
-            '        <div class="mxgraph" data-mxgraph="' + dio_attr + '"></div>\n'
-            f'      </div>\n'
-            f'    </div>\n'
-            f'  </section>\n'
-        )
+        diagram_panels += f"""
+  <section class="tab-panel{active}" id="panel-{dt['id']}">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}</div>
+      <div class="mermaid-wrap" id="mermaid-{dt['id']}">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+{_esc_html(dt['mermaid'])}
+        </pre>
+      </div>
+    </div>
+  </section>
+"""
+
+    # Mermaid container map for JS
+    mermaid_map_entries = ", ".join(
+        f"'{dt['id']}': 'mermaid-{dt['id']}'" for dt in diagram_tabs
+    )
 
     # Data sources panel
     datasources_panel = ""
@@ -525,6 +528,11 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # Category distribution panel (pie chart via Mermaid)
+    cat_chart_mermaid = "pie title Project Categories\n"
+    for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
+        cat_chart_mermaid += f'    "{cat}" : {count}\n'
+
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
@@ -557,6 +565,11 @@ def generate_viewer_html() -> str:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{_esc_html(title)} — Dependency Map</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose' }});
+  window.mermaidAPI = mermaid;
+</script>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html {{ font-size: 15px; scroll-behavior: smooth; }}
@@ -614,11 +627,12 @@ def generate_viewer_html() -> str:
     display: flex; align-items: center; gap: 0.5rem;
   }}
   .card-title .icon {{ color: #3b82f6; }}
-  .drawio-wrap {{
-    background: #f8fafc; border-radius: 8px; overflow: hidden; min-height: 500px;
+  .mermaid-wrap {{
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
+    min-height: 120px;
   }}
-  .drawio-wrap .mxgraph {{ min-height: 500px; }}
-  .drawio-wrap .geDiagramContainer {{ background: #f8fafc !important; }}
+  .mermaid-wrap .loading {{ color: #64748b; font-size: 0.9rem; text-align: center; }}
+  .mermaid-wrap svg {{ width: 100%; height: auto; }}
   .table-wrap {{ overflow-x: auto; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
   thead th {{
@@ -726,15 +740,50 @@ def generate_viewer_html() -> str:
 
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels  = document.querySelectorAll('.tab-panel');
+  var renderedTabs = {{}};
 
   function activateTab(tabId) {{
     tabButtons.forEach(function (b) {{ b.classList.toggle('active', b.dataset.tab === tabId); }});
     tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
+    lazyRenderMermaid(tabId);
   }}
 
   tabButtons.forEach(function (btn) {{
     btn.addEventListener('click', function () {{ activateTab(btn.dataset.tab); }});
   }});
+
+  var mermaidContainers = {{ {mermaid_map_entries} }};
+
+  function lazyRenderMermaid(tabId) {{
+    var containerId = mermaidContainers[tabId];
+    if (!containerId || renderedTabs[tabId]) return;
+
+    function doRender() {{
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      var pre = container.querySelector('pre.mermaid');
+      if (!pre) return;
+      renderedTabs[tabId] = true;
+      var loading = container.querySelector('.loading');
+      pre.style.display = '';
+      if (loading) loading.style.display = 'none';
+      window.mermaidAPI.run({{ nodes: [pre] }}).catch(function (err) {{
+        console.error('Mermaid render error for ' + tabId + ':', err);
+        if (loading) {{ loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }}
+      }});
+    }}
+
+    if (window.mermaidAPI) {{ doRender(); }}
+    else {{
+      var interval = setInterval(function () {{
+        if (window.mermaidAPI) {{ clearInterval(interval); doRender(); }}
+      }}, 150);
+    }}
+  }}
+
+  // Render first tab on load
+  var firstTab = document.querySelector('.tab-btn');
+  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
   // Load All Projects data
   Promise.all([
@@ -779,7 +828,6 @@ def generate_viewer_html() -> str:
   }});
 }})();
 </script>
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 </body>
 </html>"""
 
