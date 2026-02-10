@@ -347,41 +347,102 @@ def generate_viewer_html() -> str:
     repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
     title = ", ".join(repo_list) if repo_list else "Project"
 
-    # ── Collect all .mmd diagram files ──
-    diagrams_dir = os.path.join(OUT_DIR, "diagrams")
-    diagram_tabs: list[dict] = []
-    diagram_tab_order = [
-        ("landscape", "Full Landscape", "Full Solution Dependency Graph"),
-        ("core-libraries", "Core Libraries", "Core Library Dependencies"),
-        ("data-infrastructure", "Data Infrastructure", "Data Infrastructure &amp; External Sources"),
-        ("nuget-groups", "NuGet Packages", "NuGet Package Groups"),
-    ]
-    for filename_stem, tab_label, card_title in diagram_tab_order:
-        mmd_path = os.path.join(diagrams_dir, f"{filename_stem}.mmd")
-        if os.path.isfile(mmd_path):
-            content = Path(mmd_path).read_text(encoding="utf-8")
-            diagram_tabs.append({
-                "id": filename_stem.replace("-", ""),
-                "label": tab_label,
-                "title": card_title,
-                "mermaid": content,
-            })
+    # ── Build Cytoscape diagram data ──
+    skip_types = {"localization", "sample"}
+    proj_types = {"library", "connector", "application", "test", "tool",
+                  "webapp", "service", "desktopapp"}
 
-    # Also pick up any extra .mmd files not in the predefined list
-    known_stems = {t[0] for t in diagram_tab_order}
-    if os.path.isdir(diagrams_dir):
-        for fname in sorted(os.listdir(diagrams_dir)):
-            if fname.endswith(".mmd"):
-                stem = fname[:-4]
-                if stem not in known_stems:
-                    content = Path(os.path.join(diagrams_dir, fname)).read_text(encoding="utf-8")
-                    label = stem.replace("-", " ").title()
-                    diagram_tabs.append({
-                        "id": sanitize_id(stem),
-                        "label": label,
-                        "title": label,
-                        "mermaid": content,
-                    })
+    seen_edges: set[tuple[str, str]] = set()
+    unique_edges: list[dict] = []
+    for e in graph["edges"]:
+        if e["type"] in ("project-reference", "cross-repo-reference"):
+            key = (e["from"], e["to"])
+            if key not in seen_edges:
+                seen_edges.add(key)
+                unique_edges.append(e)
+
+    def _short(n: dict) -> str:
+        return n.get("project") or n["id"].split("/")[-1]
+
+    cy_diagrams: dict[str, dict] = {}
+    cy_tabs: list[dict] = []
+
+    # Per-repo landscape diagrams
+    iter_repos = repo_list if is_multi_repo else [""]
+    for repo in iter_repos:
+        if is_multi_repo:
+            rnodes = [n for n in graph["nodes"]
+                      if n.get("repo") == repo and n.get("type") in proj_types
+                      and n["type"] not in skip_types]
+        else:
+            rnodes = [n for n in graph["nodes"]
+                      if n.get("type") in proj_types and n["type"] not in skip_types]
+        if not rnodes:
+            continue
+
+        nids = {n["id"] for n in rnodes}
+        cy_n: list[dict] = []
+        for cat in sorted({n["type"] for n in rnodes}):
+            cy_n.append({"data": {"id": f"_g_{repo}_{cat}", "label": cat.title(),
+                                  "nodeType": "group"}})
+        for n in rnodes:
+            cy_n.append({"data": {"id": n["id"], "label": _short(n),
+                                  "parent": f"_g_{repo}_{n['type']}",
+                                  "nodeType": "project", "category": n["type"]}})
+        cy_e = [{"data": {"source": e["from"], "target": e["to"], "edgeType": e["type"]}}
+                for e in unique_edges if e["from"] in nids and e["to"] in nids]
+
+        tid = sanitize_id(f"repo_{repo}") if is_multi_repo else "landscape"
+        tlab = repo if is_multi_repo else "Landscape"
+        ttitle = f"{repo} — Project Dependencies" if is_multi_repo else "Full Solution Dependency Graph"
+        cy_diagrams[tid] = {"nodes": cy_n, "edges": cy_e}
+        cy_tabs.append({"id": tid, "label": tlab, "title": ttitle})
+
+    # Core Libraries diagram
+    lib_nodes = [n for n in graph["nodes"] if n.get("type") == "library"]
+    if lib_nodes:
+        lib_ids = {n["id"] for n in lib_nodes}
+        cy_n = []
+        if is_multi_repo:
+            for r in sorted({n.get("repo", "") for n in lib_nodes}):
+                cy_n.append({"data": {"id": f"_lg_{r}", "label": r, "nodeType": "group"}})
+            for n in lib_nodes:
+                cy_n.append({"data": {"id": n["id"], "label": _short(n),
+                                      "parent": f"_lg_{n.get('repo', '')}",
+                                      "nodeType": "project", "category": "library"}})
+        else:
+            for n in lib_nodes:
+                cy_n.append({"data": {"id": n["id"], "label": _short(n),
+                                      "nodeType": "project", "category": "library"}})
+        cy_e = [{"data": {"source": e["from"], "target": e["to"], "edgeType": e["type"]}}
+                for e in unique_edges if e["from"] in lib_ids and e["to"] in lib_ids]
+        cy_diagrams["corelibs"] = {"nodes": cy_n, "edges": cy_e}
+        cy_tabs.append({"id": "corelibs", "label": "Core Libraries",
+                        "title": "Core Library Dependencies"})
+
+    # Data Infrastructure diagram
+    svc_types = {"webapp", "service", "application", "desktopapp"}
+    svc_nodes = [n for n in graph["nodes"] if n.get("type") in svc_types]
+    ds_nodes = [n for n in graph["nodes"]
+                if n.get("type") == "datasource"
+                and n.get("subtype") in ("database", "messaging", "cache")]
+    if svc_nodes or ds_nodes:
+        cy_n = []
+        for cat in sorted({n["type"] for n in svc_nodes}):
+            cy_n.append({"data": {"id": f"_sc_{cat}", "label": cat.title(), "nodeType": "group"}})
+        for n in svc_nodes:
+            cy_n.append({"data": {"id": n["id"], "label": _short(n),
+                                  "parent": f"_sc_{n['type']}",
+                                  "nodeType": "project", "category": n["type"]}})
+        if ds_nodes:
+            cy_n.append({"data": {"id": "_dsg", "label": "Data Sources", "nodeType": "group"}})
+            for n in ds_nodes:
+                cy_n.append({"data": {"id": n["id"], "label": n.get("pattern", n["id"]),
+                                      "parent": "_dsg",
+                                      "nodeType": "datasource", "category": "datasource"}})
+        cy_diagrams["datainfra"] = {"nodes": cy_n, "edges": []}
+        cy_tabs.append({"id": "datainfra", "label": "Data Infrastructure",
+                        "title": "Data Infrastructure &amp; External Sources"})
 
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
@@ -425,8 +486,8 @@ def generate_viewer_html() -> str:
 
     # Tab buttons
     all_tab_ids: list[tuple[str, str]] = []
-    for dt in diagram_tabs:
-        all_tab_ids.append((dt["id"], dt["label"]))
+    for ct in cy_tabs:
+        all_tab_ids.append((ct["id"], ct["label"]))
     if pattern_summary:
         all_tab_ids.append(("datasources", "Data Sources"))
     if conn_strings:
@@ -438,28 +499,18 @@ def generate_viewer_html() -> str:
         for i, (tid, label) in enumerate(all_tab_ids)
     )
 
-    # Diagram panels
+    # Diagram panels (Cytoscape containers)
     diagram_panels = ""
-    for i, dt in enumerate(diagram_tabs):
+    for i, ct in enumerate(cy_tabs):
         active = " active" if i == 0 else ""
         diagram_panels += f"""
-  <section class="tab-panel{active}" id="panel-{dt['id']}">
+  <section class="tab-panel{active}" id="panel-{ct['id']}">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}</div>
-      <div class="mermaid-wrap" id="mermaid-{dt['id']}">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-{_esc_html(dt['mermaid'])}
-        </pre>
-      </div>
+      <div class="card-title"><span class="icon">&#9670;</span> {ct['title']}</div>
+      <div class="cy-wrap" id="cy-{ct['id']}"></div>
     </div>
   </section>
 """
-
-    # Mermaid container map for JS
-    mermaid_map_entries = ", ".join(
-        f"'{dt['id']}': 'mermaid-{dt['id']}'" for dt in diagram_tabs
-    )
 
     # Data sources panel
     datasources_panel = ""
@@ -528,11 +579,6 @@ def generate_viewer_html() -> str:
   </section>
 """
 
-    # Category distribution panel (pie chart via Mermaid)
-    cat_chart_mermaid = "pie title Project Categories\n"
-    for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
-        cat_chart_mermaid += f'    "{cat}" : {count}\n'
-
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
@@ -559,17 +605,17 @@ def generate_viewer_html() -> str:
   </section>
 """
 
-    html = f"""<!DOCTYPE html>
+    # Serialize Cytoscape diagram data
+    diagram_json = json.dumps(cy_diagrams)
+
+    # ── Assemble HTML ──
+    # Part 1: HTML head + body (f-string for dynamic content)
+    html_head = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{_esc_html(title)} — Dependency Map</title>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose' }});
-  window.mermaidAPI = mermaid;
-</script>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   html {{ font-size: 15px; scroll-behavior: smooth; }}
@@ -627,12 +673,9 @@ def generate_viewer_html() -> str:
     display: flex; align-items: center; gap: 0.5rem;
   }}
   .card-title .icon {{ color: #3b82f6; }}
-  .mermaid-wrap {{
-    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
-    min-height: 120px;
+  .cy-wrap {{
+    width: 100%; height: 600px; background: #f8fafc; border-radius: 8px;
   }}
-  .mermaid-wrap .loading {{ color: #64748b; font-size: 0.9rem; text-align: center; }}
-  .mermaid-wrap svg {{ width: 100%; height: auto; }}
   .table-wrap {{ overflow-x: auto; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
   thead th {{
@@ -701,103 +744,143 @@ def generate_viewer_html() -> str:
 <footer class="footer">
   Generated by Dependency Mapper (Python) &mdash; {date.today().isoformat()}
 </footer>
+"""
 
+    # Part 2: Diagram data as JSON (plain concatenation, no f-string)
+    html_data = '<script id="cy-data" type="application/json">\n' + diagram_json + '\n</script>\n'
+
+    # Part 3: Scripts and JS (plain string, no f-string — braces are JS)
+    html_scripts = """<script src="https://unpkg.com/cytoscape@3/dist/cytoscape.min.js"></script>
+<script src="https://unpkg.com/cytoscape-cose-bilkent@4/cytoscape-cose-bilkent.js"></script>
 <script>
-(function () {{
+(function () {
   'use strict';
+  cytoscapeCoseBilkent(cytoscape);
 
-  var categoryClass = {{
+  var diagramData = JSON.parse(document.getElementById('cy-data').textContent);
+
+  var colors = {
+    library: '#4A90D9', connector: '#E67E22', application: '#E74C3C',
+    test: '#9B59B6', tool: '#F39C12', webapp: '#1ABC9C',
+    service: '#3498DB', desktopapp: '#E91E63', datasource: '#27AE60'
+  };
+
+  var cyStyle = [
+    { selector: 'node[nodeType="project"], node[nodeType="datasource"]', style: {
+        'label': 'data(label)', 'text-valign': 'center', 'text-halign': 'center',
+        'font-size': '9px', 'background-color': function(e){ return colors[e.data('category')]||'#95A5A6'; },
+        'color': '#fff', 'text-outline-color': function(e){ return colors[e.data('category')]||'#95A5A6'; },
+        'text-outline-width': 2, 'width': 'label', 'height': 28, 'padding': '6px',
+        'shape': 'roundrectangle', 'text-wrap': 'wrap', 'text-max-width': '120px'
+    }},
+    { selector: 'node[nodeType="datasource"]', style: { 'shape': 'ellipse', 'height': 'label', 'padding': '10px' }},
+    { selector: ':parent', style: {
+        'label': 'data(label)', 'text-valign': 'top', 'text-halign': 'center',
+        'font-size': '13px', 'font-weight': 'bold', 'color': '#333',
+        'background-color': '#e8ecf1', 'background-opacity': 0.6,
+        'border-color': '#aaa', 'border-width': 1, 'shape': 'roundrectangle',
+        'padding': '18px', 'text-margin-y': '-5px'
+    }},
+    { selector: 'edge', style: {
+        'width': 1.5, 'line-color': '#aaa', 'target-arrow-color': '#aaa',
+        'target-arrow-shape': 'triangle', 'curve-style': 'bezier', 'arrow-scale': 0.7, 'opacity': 0.7
+    }},
+    { selector: 'edge[edgeType="cross-repo-reference"]', style: {
+        'line-style': 'dashed', 'line-color': '#ff4444', 'target-arrow-color': '#ff4444'
+    }}
+  ];
+
+  var layoutOpts = {
+    name: 'cose-bilkent', animate: false, nodeDimensionsIncludeLabels: true,
+    fit: true, padding: 30, idealEdgeLength: 80, edgeElasticity: 0.45,
+    nestingFactor: 0.1, gravity: 0.25, numIter: 2500, tile: true,
+    tilingPaddingVertical: 10, tilingPaddingHorizontal: 10,
+    gravityRangeCompound: 1.5, gravityRange: 3.8
+  };
+
+  var cyInstances = {};
+
+  function initCy(id) {
+    if (cyInstances[id]) { cyInstances[id].resize(); cyInstances[id].fit(undefined, 30); return; }
+    var d = diagramData[id];
+    if (!d) return;
+    var container = document.getElementById('cy-' + id);
+    if (!container || container.offsetWidth === 0) return;
+    var cy = cytoscape({
+      container: container,
+      elements: { nodes: d.nodes, edges: d.edges },
+      style: cyStyle,
+      layout: layoutOpts,
+      minZoom: 0.1, maxZoom: 3, wheelSensitivity: 0.3
+    });
+    cyInstances[id] = cy;
+  }
+
+  // Tab switching
+  var categoryClass = {
     'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
     'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
     'connector': 'tag-connector', 'desktopapp': 'tag-desktopapp'
-  }};
+  };
 
-  function tagHTML(category) {{
+  function tagHTML(category) {
     var lower = (category || '').toLowerCase();
     var cls = categoryClass[lower] || 'tag-service';
     return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
-  }}
+  }
 
-  function escHtml(s) {{
+  function escHtml(s) {
     var d = document.createElement('div');
     d.textContent = s;
     return d.innerHTML;
-  }}
+  }
 
-  function parseCSV(text) {{
+  function parseCSV(text) {
     var lines = text.trim().split('\\n');
     if (lines.length === 0) return [];
     var headers = lines[0].split(',');
     var rows = [];
-    for (var i = 1; i < lines.length; i++) {{
+    for (var i = 1; i < lines.length; i++) {
       var vals = lines[i].split(',');
-      var obj = {{}};
-      headers.forEach(function (h, idx) {{ obj[h.trim()] = (vals[idx] || '').trim(); }});
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h.trim()] = (vals[idx] || '').trim(); });
       rows.push(obj);
-    }}
+    }
     return rows;
-  }}
+  }
 
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels  = document.querySelectorAll('.tab-panel');
-  var renderedTabs = {{}};
 
-  function activateTab(tabId) {{
-    tabButtons.forEach(function (b) {{ b.classList.toggle('active', b.dataset.tab === tabId); }});
-    tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
-    lazyRenderMermaid(tabId);
-  }}
+  function activateTab(tabId) {
+    tabButtons.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === tabId); });
+    tabPanels.forEach(function (p)  { p.classList.toggle('active', p.id === 'panel-' + tabId); });
+    if (diagramData[tabId]) {
+      setTimeout(function() { initCy(tabId); }, 50);
+    }
+  }
 
-  tabButtons.forEach(function (btn) {{
-    btn.addEventListener('click', function () {{ activateTab(btn.dataset.tab); }});
-  }});
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
+  });
 
-  var mermaidContainers = {{ {mermaid_map_entries} }};
-
-  function lazyRenderMermaid(tabId) {{
-    var containerId = mermaidContainers[tabId];
-    if (!containerId || renderedTabs[tabId]) return;
-
-    function doRender() {{
-      var container = document.getElementById(containerId);
-      if (!container) return;
-      var pre = container.querySelector('pre.mermaid');
-      if (!pre) return;
-      renderedTabs[tabId] = true;
-      var loading = container.querySelector('.loading');
-      pre.style.display = '';
-      if (loading) loading.style.display = 'none';
-      window.mermaidAPI.run({{ nodes: [pre] }}).catch(function (err) {{
-        console.error('Mermaid render error for ' + tabId + ':', err);
-        if (loading) {{ loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }}
-      }});
-    }}
-
-    if (window.mermaidAPI) {{ doRender(); }}
-    else {{
-      var interval = setInterval(function () {{
-        if (window.mermaidAPI) {{ clearInterval(interval); doRender(); }}
-      }}, 150);
-    }}
-  }}
-
-  // Render first tab on load
-  var firstTab = document.querySelector('.tab-btn');
-  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+  // Init first diagram
+  var firstBtn = document.querySelector('.tab-btn');
+  if (firstBtn) setTimeout(function() { initCy(firstBtn.dataset.tab); }, 100);
 
   // Load All Projects data
   Promise.all([
-    fetch('project-meta.json').then(function (r) {{ return r.json(); }}),
-    fetch('project-refs.csv').then(function (r) {{ return r.text(); }}),
-    fetch('dependencies.csv').then(function (r) {{ return r.text(); }})
-  ]).then(function (results) {{
+    fetch('project-meta.json').then(function (r) { return r.json(); }),
+    fetch('project-refs.csv').then(function (r) { return r.text(); }),
+    fetch('dependencies.csv').then(function (r) { return r.text(); })
+  ]).then(function (results) {
     var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
-    var refCounts = {{}}, depCounts = {{}};
-    refs.forEach(function (r) {{ refCounts[r.project] = (refCounts[r.project] || 0) + 1; }});
-    deps.forEach(function (d) {{ depCounts[d.project] = (depCounts[d.project] || 0) + 1; }});
+    var refCounts = {}, depCounts = {};
+    refs.forEach(function (r) { refCounts[r.project] = (refCounts[r.project] || 0) + 1; });
+    deps.forEach(function (d) { depCounts[d.project] = (depCounts[d.project] || 0) + 1; });
     var tbody = document.getElementById('projectsBody');
     tbody.innerHTML = '';
-    meta.forEach(function (p) {{
+    meta.forEach(function (p) {
       var tr = document.createElement('tr');
       tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
       tr.innerHTML =
@@ -808,30 +891,30 @@ def generate_viewer_html() -> str:
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
         '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
       tbody.appendChild(tr);
-    }});
-  }}).catch(function (err) {{
+    });
+  }).catch(function (err) {
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
-  }});
+  });
 
   // Search
   var searchInput = document.getElementById('searchInput');
-  searchInput.addEventListener('input', function () {{
+  searchInput.addEventListener('input', function () {
     var query = searchInput.value.trim().toLowerCase();
     if (query.length > 0) activateTab('allprojects');
     var rows = document.querySelectorAll('#projectsBody tr[data-search]');
-    rows.forEach(function (row) {{
+    rows.forEach(function (row) {
       var text = row.getAttribute('data-search') || '';
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
-    }});
-  }});
-}})();
+    });
+  });
+})();
 </script>
 </body>
 </html>"""
 
-    return html
+    return html_head + html_data + html_scripts
 
 
 # ─── Main ───────────────────────────────────────────────────────────

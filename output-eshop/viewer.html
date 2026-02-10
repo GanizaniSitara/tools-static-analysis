@@ -4,11 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>src, tests — Dependency Map</title>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
-  window.mermaidAPI = mermaid;
-</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 15px; scroll-behavior: smooth; }
@@ -66,12 +61,9 @@
     display: flex; align-items: center; gap: 0.5rem;
   }
   .card-title .icon { color: #3b82f6; }
-  .mermaid-wrap {
-    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
-    min-height: 120px;
+  .cy-wrap {
+    width: 100%; height: 600px; background: #f8fafc; border-radius: 8px;
   }
-  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
-  .mermaid-wrap svg { width: 100%; height: auto; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -132,10 +124,10 @@
 </header>
 
 <nav class="tabs" id="tabNav">
-  <button class="tab-btn active" data-tab="landscape">Full Landscape</button>
-  <button class="tab-btn" data-tab="corelibraries">Core Libraries</button>
-  <button class="tab-btn" data-tab="datainfrastructure">Data Infrastructure</button>
-  <button class="tab-btn" data-tab="nugetgroups">NuGet Packages</button>
+  <button class="tab-btn active" data-tab="repo_src">src</button>
+  <button class="tab-btn" data-tab="repo_tests">tests</button>
+  <button class="tab-btn" data-tab="corelibs">Core Libraries</button>
+  <button class="tab-btn" data-tab="datainfra">Data Infrastructure</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
@@ -143,251 +135,31 @@
 
 <main class="content">
 
-  <section class="tab-panel active" id="panel-landscape">
+  <section class="tab-panel active" id="panel-repo_src">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Full Solution Dependency Graph</div>
-      <div class="mermaid-wrap" id="mermaid-landscape">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph LR
-    subgraph src[&quot;src&quot;]
-        subgraph src_webapp[&quot;webapp&quot;]
-            src_WebApp[&quot;WebApp&quot;]
-            src_Identity_API[&quot;Identity.API&quot;]
-            src_Catalog_API[&quot;Catalog.API&quot;]
-            src_WebAppComponents[&quot;WebAppComponents&quot;]
-            src_PaymentProcessor[&quot;PaymentProcessor&quot;]
-            src_Basket_API[&quot;Basket.API&quot;]
-            src_Ordering_API[&quot;Ordering.API&quot;]
-            src_Webhooks_API[&quot;Webhooks.API&quot;]
-        end
-        subgraph src_library[&quot;library&quot;]
-            src_Ordering_Domain[&quot;Ordering.Domain&quot;]
-            src_Ordering_Infrastructure[&quot;Ordering.Infrastructure&quot;]
-            src_IntegrationEventLogEF[&quot;IntegrationEventLogEF&quot;]
-            src_EventBus[&quot;EventBus&quot;]
-            src_EventBusRabbitMQ[&quot;EventBusRabbitMQ&quot;]
-        end
-        subgraph src_application[&quot;application&quot;]
-            src_eShop_AppHost[&quot;eShop.AppHost&quot;]
-            src_HybridApp[&quot;HybridApp&quot;]
-        end
-        subgraph src_service[&quot;service&quot;]
-            src_OrderProcessor[&quot;OrderProcessor&quot;]
-            src_eShop_ServiceDefaults[&quot;eShop.ServiceDefaults&quot;]
-        end
-        subgraph src_tool[&quot;tool&quot;]
-            src_ClientApp[&quot;ClientApp&quot;]
-            src_WebhookClient[&quot;WebhookClient&quot;]
-        end
-    end
-    subgraph tests[&quot;tests&quot;]
-        subgraph tests_test[&quot;test&quot;]
-            tests_Ordering_UnitTests[&quot;Ordering.UnitTests&quot;]
-            tests_Ordering_FunctionalTests[&quot;Ordering.FunctionalTests&quot;]
-            tests_Catalog_FunctionalTests[&quot;Catalog.FunctionalTests&quot;]
-            tests_Basket_UnitTests[&quot;Basket.UnitTests&quot;]
-            tests_ClientApp_UnitTests[&quot;ClientApp.UnitTests&quot;]
-        end
-    end
-    src_WebApp --&gt; src_eShop_ServiceDefaults
-    src_WebApp --&gt; src_EventBusRabbitMQ
-    src_WebApp --&gt; src_WebAppComponents
-    src_Identity_API --&gt; src_eShop_ServiceDefaults
-    src_Catalog_API --&gt; src_EventBusRabbitMQ
-    src_Catalog_API --&gt; src_IntegrationEventLogEF
-    src_Catalog_API --&gt; src_eShop_ServiceDefaults
-    src_eShop_AppHost --&gt; src_Basket_API
-    src_eShop_AppHost --&gt; src_Catalog_API
-    src_eShop_AppHost --&gt; src_Identity_API
-    src_eShop_AppHost --&gt; src_Ordering_API
-    src_eShop_AppHost --&gt; src_OrderProcessor
-    src_eShop_AppHost --&gt; src_PaymentProcessor
-    src_eShop_AppHost --&gt; src_Webhooks_API
-    src_eShop_AppHost --&gt; src_WebApp
-    src_eShop_AppHost --&gt; src_WebhookClient
-    src_Ordering_Infrastructure --&gt; src_IntegrationEventLogEF
-    src_Ordering_Infrastructure --&gt; src_Ordering_Domain
-    src_PaymentProcessor --&gt; src_eShop_ServiceDefaults
-    src_PaymentProcessor --&gt; src_EventBusRabbitMQ
-    src_OrderProcessor --&gt; src_eShop_ServiceDefaults
-    src_OrderProcessor --&gt; src_EventBusRabbitMQ
-    src_HybridApp --&gt; src_WebAppComponents
-    src_Basket_API --&gt; src_eShop_ServiceDefaults
-    src_Basket_API --&gt; src_EventBusRabbitMQ
-    src_IntegrationEventLogEF --&gt; src_EventBus
-    src_Ordering_API --&gt; src_EventBusRabbitMQ
-    src_Ordering_API --&gt; src_IntegrationEventLogEF
-    src_Ordering_API --&gt; src_eShop_ServiceDefaults
-    src_Ordering_API --&gt; src_Ordering_Domain
-    src_Ordering_API --&gt; src_Ordering_Infrastructure
-    src_EventBusRabbitMQ --&gt; src_EventBus
-    src_Webhooks_API --&gt; src_EventBusRabbitMQ
-    src_Webhooks_API --&gt; src_IntegrationEventLogEF
-    src_Webhooks_API --&gt; src_eShop_ServiceDefaults
-    src_WebhookClient --&gt; src_eShop_ServiceDefaults
-    tests_Ordering_UnitTests -.-&gt; src_Ordering_API
-    tests_Ordering_UnitTests -.-&gt; src_Ordering_Domain
-    tests_Ordering_UnitTests -.-&gt; src_Ordering_Infrastructure
-    tests_Ordering_FunctionalTests -.-&gt; src_Ordering_API
-    tests_Ordering_FunctionalTests -.-&gt; src_Identity_API
-    tests_Ordering_FunctionalTests -.-&gt; src_Ordering_Domain
-    tests_Ordering_FunctionalTests -.-&gt; src_Ordering_Infrastructure
-    tests_Catalog_FunctionalTests -.-&gt; src_Catalog_API
-    tests_Basket_UnitTests -.-&gt; src_Basket_API
-    tests_ClientApp_UnitTests -.-&gt; src_ClientApp
-        </pre>
-      </div>
+      <div class="card-title"><span class="icon">&#9670;</span> src — Project Dependencies</div>
+      <div class="cy-wrap" id="cy-repo_src"></div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-corelibraries">
+  <section class="tab-panel" id="panel-repo_tests">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> tests — Project Dependencies</div>
+      <div class="cy-wrap" id="cy-repo_tests"></div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-corelibs">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Core Library Dependencies</div>
-      <div class="mermaid-wrap" id="mermaid-corelibraries">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph TD
-    subgraph src[&quot;src&quot;]
-        src_Ordering_Domain[&quot;Ordering.Domain&quot;]
-        src_Ordering_Infrastructure[&quot;Ordering.Infrastructure&quot;]
-        src_IntegrationEventLogEF[&quot;IntegrationEventLogEF&quot;]
-        src_EventBus[&quot;EventBus&quot;]
-        src_EventBusRabbitMQ[&quot;EventBusRabbitMQ&quot;]
-    end
-    src_Ordering_Infrastructure --&gt; src_IntegrationEventLogEF
-    src_Ordering_Infrastructure --&gt; src_Ordering_Domain
-    src_IntegrationEventLogEF --&gt; src_EventBus
-    src_EventBusRabbitMQ --&gt; src_EventBus
-        </pre>
-      </div>
+      <div class="cy-wrap" id="cy-corelibs"></div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-datainfrastructure">
+  <section class="tab-panel" id="panel-datainfra">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Data Infrastructure &amp; External Sources</div>
-      <div class="mermaid-wrap" id="mermaid-datainfrastructure">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph LR
-    subgraph src[&quot;src&quot;]
-        src_WebApp[&quot;WebApp&quot;]
-        src_Identity_API[&quot;Identity.API&quot;]
-        src_Catalog_API[&quot;Catalog.API&quot;]
-        src_eShop_AppHost[&quot;eShop.AppHost&quot;]
-        src_WebAppComponents[&quot;WebAppComponents&quot;]
-        src_PaymentProcessor[&quot;PaymentProcessor&quot;]
-        src_OrderProcessor[&quot;OrderProcessor&quot;]
-        src_HybridApp[&quot;HybridApp&quot;]
-        src_Basket_API[&quot;Basket.API&quot;]
-        src_Ordering_API[&quot;Ordering.API&quot;]
-        src_eShop_ServiceDefaults[&quot;eShop.ServiceDefaults&quot;]
-        src_Webhooks_API[&quot;Webhooks.API&quot;]
-    end
-    subgraph DataSources
-        datasource_src_DbContext[(&quot;DbContext&quot;)]
-        datasource_src_EntityFramework[(&quot;EntityFramework&quot;)]
-        datasource_src_RabbitMQ[(&quot;RabbitMQ&quot;)]
-        datasource_src_Redis[(&quot;Redis&quot;)]
-        datasource_src_Dapper[(&quot;Dapper&quot;)]
-        datasource_tests_Dapper[(&quot;Dapper&quot;)]
-    end
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="tab-panel" id="panel-nugetgroups">
-    <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> NuGet Package Groups</div>
-      <div class="mermaid-wrap" id="mermaid-nugetgroups">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph LR
-    subgraph Microsoft[&quot;Microsoft&quot;]
-        nuget_Microsoft_Extensions_ServiceDiscovery_Yarp[&quot;Microsoft.Extensions.ServiceDiscovery.Yarp&lt;br/&gt;&quot;]
-        nuget_Microsoft_AspNetCore_Authentication_OpenIdConnect[&quot;Microsoft.AspNetCore.Authentication.OpenIdConnect&lt;br/&gt;&quot;]
-        nuget_Microsoft_AspNetCore_Identity_EntityFrameworkCore[&quot;Microsoft.AspNetCore.Identity.EntityFrameworkCore&lt;br/&gt;&quot;]
-        nuget_Microsoft_AspNetCore_Identity_UI[&quot;Microsoft.AspNetCore.Identity.UI&lt;br/&gt;&quot;]
-        nuget_Microsoft_EntityFrameworkCore_Tools[&quot;Microsoft.EntityFrameworkCore.Tools&lt;br/&gt;&quot;]
-        nuget_Microsoft_Web_LibraryManager_Build[&quot;Microsoft.Web.LibraryManager.Build&lt;br/&gt;&quot;]
-        nuget_Microsoft_Extensions_ApiDescription_Server[&quot;Microsoft.Extensions.ApiDescription.Server&lt;br/&gt;&quot;]
-        nuget_Microsoft_AspNetCore_Components_Web[&quot;Microsoft.AspNetCore.Components.Web&lt;br/&gt;&quot;]
-        Microsoft_more[&quot;... +16 more&quot;]
-    end
-    subgraph Aspire[&quot;Aspire&quot;]
-        nuget_Aspire_Azure_AI_OpenAI[&quot;Aspire.Azure.AI.OpenAI&lt;br/&gt;&quot;]
-        nuget_Aspire_Npgsql_EntityFrameworkCore_PostgreSQL[&quot;Aspire.Npgsql.EntityFrameworkCore.PostgreSQL&lt;br/&gt;&quot;]
-        nuget_Aspire_Hosting_RabbitMQ[&quot;Aspire.Hosting.RabbitMQ&lt;br/&gt;&quot;]
-        nuget_Aspire_Hosting_Redis[&quot;Aspire.Hosting.Redis&lt;br/&gt;&quot;]
-        nuget_Aspire_Hosting_PostgreSQL[&quot;Aspire.Hosting.PostgreSQL&lt;br/&gt;&quot;]
-        nuget_Aspire_Hosting_Azure_CognitiveServices[&quot;Aspire.Hosting.Azure.CognitiveServices&lt;br/&gt;&quot;]
-        nuget_Aspire_Hosting_Yarp[&quot;Aspire.Hosting.Yarp&lt;br/&gt;&quot;]
-        nuget_Aspire_Npgsql[&quot;Aspire.Npgsql&lt;br/&gt;&quot;]
-        Aspire_more[&quot;... +2 more&quot;]
-    end
-    subgraph OpenTelemetry[&quot;OpenTelemetry&quot;]
-        nuget_OpenTelemetry_Exporter_OpenTelemetryProtocol[&quot;OpenTelemetry.Exporter.OpenTelemetryProtocol&lt;br/&gt;&quot;]
-        nuget_OpenTelemetry_Extensions_Hosting[&quot;OpenTelemetry.Extensions.Hosting&lt;br/&gt;&quot;]
-        nuget_OpenTelemetry_Instrumentation_AspNetCore[&quot;OpenTelemetry.Instrumentation.AspNetCore&lt;br/&gt;&quot;]
-        nuget_OpenTelemetry_Instrumentation_GrpcNetClient[&quot;OpenTelemetry.Instrumentation.GrpcNetClient&lt;br/&gt;&quot;]
-        nuget_OpenTelemetry_Instrumentation_Http[&quot;OpenTelemetry.Instrumentation.Http&lt;br/&gt;&quot;]
-        nuget_OpenTelemetry_Instrumentation_Runtime[&quot;OpenTelemetry.Instrumentation.Runtime&lt;br/&gt;&quot;]
-    end
-    subgraph CommunityToolkit[&quot;CommunityToolkit&quot;]
-        nuget_CommunityToolkit_Aspire_OllamaSharp[&quot;CommunityToolkit.Aspire.OllamaSharp&lt;br/&gt;&quot;]
-        nuget_CommunityToolkit_Aspire_Hosting_Ollama[&quot;CommunityToolkit.Aspire.Hosting.Ollama&lt;br/&gt;&quot;]
-        nuget_CommunityToolkit_Maui[&quot;CommunityToolkit.Maui&lt;br/&gt;9.1.1&quot;]
-        nuget_CommunityToolkit_Mvvm[&quot;CommunityToolkit.Mvvm&lt;br/&gt;8.3.2&quot;]
-    end
-    subgraph Grpc[&quot;Grpc&quot;]
-        nuget_Grpc_Net_ClientFactory[&quot;Grpc.Net.ClientFactory&lt;br/&gt;&quot;]
-        nuget_Grpc_Tools[&quot;Grpc.Tools&lt;br/&gt;, 2.69.0&quot;]
-        nuget_Grpc_AspNetCore[&quot;Grpc.AspNetCore&lt;br/&gt;&quot;]
-        nuget_Grpc_Net_Client[&quot;Grpc.Net.Client&lt;br/&gt;2.67.0&quot;]
-    end
-    subgraph Duende[&quot;Duende&quot;]
-        nuget_Duende_IdentityServer_AspNetIdentity[&quot;Duende.IdentityServer.AspNetIdentity&lt;br/&gt;&quot;]
-        nuget_Duende_IdentityServer_EntityFramework[&quot;Duende.IdentityServer.EntityFramework&lt;br/&gt;&quot;]
-        nuget_Duende_IdentityServer_Storage[&quot;Duende.IdentityServer.Storage&lt;br/&gt;&quot;]
-        nuget_Duende_IdentityServer[&quot;Duende.IdentityServer&lt;br/&gt;&quot;]
-    end
-    subgraph Asp[&quot;Asp&quot;]
-        nuget_Asp_Versioning_Http_Client[&quot;Asp.Versioning.Http.Client&lt;br/&gt;&quot;]
-        nuget_Asp_Versioning_Http[&quot;Asp.Versioning.Http&lt;br/&gt;&quot;]
-        nuget_Asp_Versioning_Mvc_ApiExplorer[&quot;Asp.Versioning.Mvc.ApiExplorer&lt;br/&gt;&quot;]
-    end
-    subgraph Pgvector[&quot;Pgvector&quot;]
-        nuget_Pgvector[&quot;Pgvector&lt;br/&gt;&quot;]
-        nuget_Pgvector_EntityFrameworkCore[&quot;Pgvector.EntityFrameworkCore&lt;br/&gt;&quot;]
-    end
-    subgraph FluentValidation[&quot;FluentValidation&quot;]
-        nuget_FluentValidation[&quot;FluentValidation&lt;br/&gt;&quot;]
-        nuget_FluentValidation_DependencyInjectionExtensions[&quot;FluentValidation.DependencyInjectionExtensions&lt;br/&gt;&quot;]
-    end
-    subgraph IdentityModel[&quot;IdentityModel&quot;]
-        nuget_IdentityModel_OidcClient[&quot;IdentityModel.OidcClient&lt;br/&gt;6.0.0&quot;]
-        nuget_IdentityModel[&quot;IdentityModel&lt;br/&gt;7.0.0&quot;]
-    end
-    subgraph NSubstitute[&quot;NSubstitute&quot;]
-        nuget_NSubstitute[&quot;NSubstitute&lt;br/&gt;&quot;]
-        nuget_NSubstitute_Analyzers_CSharp[&quot;NSubstitute.Analyzers.CSharp&lt;br/&gt;&quot;]
-    end
-    subgraph Google[&quot;Google&quot;]
-        nuget_Google_Protobuf[&quot;Google.Protobuf&lt;br/&gt;, 3.29.3&quot;]
-    end
-    subgraph MediatR[&quot;MediatR&quot;]
-        nuget_MediatR[&quot;MediatR&lt;br/&gt;&quot;]
-    end
-    subgraph System[&quot;System&quot;]
-        nuget_System_Reflection_TypeExtensions[&quot;System.Reflection.TypeExtensions&lt;br/&gt;&quot;]
-    end
-    subgraph Npgsql[&quot;Npgsql&quot;]
-        nuget_Npgsql_EntityFrameworkCore_PostgreSQL[&quot;Npgsql.EntityFrameworkCore.PostgreSQL&lt;br/&gt;&quot;]
-    end
-        </pre>
-      </div>
+      <div class="cy-wrap" id="cy-datainfra"></div>
     </div>
   </section>
 
@@ -566,11 +338,76 @@ graph LR
 <footer class="footer">
   Generated by Dependency Mapper (Python) &mdash; 2026-02-10
 </footer>
-
+<script id="cy-data" type="application/json">
+{"repo_src": {"nodes": [{"data": {"id": "_g_src_application", "label": "Application", "nodeType": "group"}}, {"data": {"id": "_g_src_library", "label": "Library", "nodeType": "group"}}, {"data": {"id": "_g_src_service", "label": "Service", "nodeType": "group"}}, {"data": {"id": "_g_src_tool", "label": "Tool", "nodeType": "group"}}, {"data": {"id": "_g_src_webapp", "label": "Webapp", "nodeType": "group"}}, {"data": {"id": "src/WebApp", "label": "WebApp", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Identity.API", "label": "Identity.API", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Catalog.API", "label": "Catalog.API", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Ordering.Domain", "label": "Ordering.Domain", "parent": "_g_src_library", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/eShop.AppHost", "label": "eShop.AppHost", "parent": "_g_src_application", "nodeType": "project", "category": "application"}}, {"data": {"id": "src/WebAppComponents", "label": "WebAppComponents", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Ordering.Infrastructure", "label": "Ordering.Infrastructure", "parent": "_g_src_library", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/PaymentProcessor", "label": "PaymentProcessor", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/OrderProcessor", "label": "OrderProcessor", "parent": "_g_src_service", "nodeType": "project", "category": "service"}}, {"data": {"id": "src/HybridApp", "label": "HybridApp", "parent": "_g_src_application", "nodeType": "project", "category": "application"}}, {"data": {"id": "src/Basket.API", "label": "Basket.API", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/IntegrationEventLogEF", "label": "IntegrationEventLogEF", "parent": "_g_src_library", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/EventBus", "label": "EventBus", "parent": "_g_src_library", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/Ordering.API", "label": "Ordering.API", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/EventBusRabbitMQ", "label": "EventBusRabbitMQ", "parent": "_g_src_library", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/eShop.ServiceDefaults", "label": "eShop.ServiceDefaults", "parent": "_g_src_service", "nodeType": "project", "category": "service"}}, {"data": {"id": "src/ClientApp", "label": "ClientApp", "parent": "_g_src_tool", "nodeType": "project", "category": "tool"}}, {"data": {"id": "src/Webhooks.API", "label": "Webhooks.API", "parent": "_g_src_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/WebhookClient", "label": "WebhookClient", "parent": "_g_src_tool", "nodeType": "project", "category": "tool"}}], "edges": [{"data": {"source": "src/WebApp", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/WebApp", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/WebApp", "target": "src/WebAppComponents", "edgeType": "project-reference"}}, {"data": {"source": "src/Identity.API", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/Catalog.API", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/Catalog.API", "target": "src/IntegrationEventLogEF", "edgeType": "project-reference"}}, {"data": {"source": "src/Catalog.API", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/Basket.API", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/Catalog.API", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/Identity.API", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/Ordering.API", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/OrderProcessor", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/PaymentProcessor", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/Webhooks.API", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/WebApp", "edgeType": "project-reference"}}, {"data": {"source": "src/eShop.AppHost", "target": "src/WebhookClient", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.Infrastructure", "target": "src/IntegrationEventLogEF", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.Infrastructure", "target": "src/Ordering.Domain", "edgeType": "project-reference"}}, {"data": {"source": "src/PaymentProcessor", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/PaymentProcessor", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/OrderProcessor", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/OrderProcessor", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/HybridApp", "target": "src/WebAppComponents", "edgeType": "project-reference"}}, {"data": {"source": "src/Basket.API", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/Basket.API", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/IntegrationEventLogEF", "target": "src/EventBus", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.API", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.API", "target": "src/IntegrationEventLogEF", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.API", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.API", "target": "src/Ordering.Domain", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.API", "target": "src/Ordering.Infrastructure", "edgeType": "project-reference"}}, {"data": {"source": "src/EventBusRabbitMQ", "target": "src/EventBus", "edgeType": "project-reference"}}, {"data": {"source": "src/Webhooks.API", "target": "src/EventBusRabbitMQ", "edgeType": "project-reference"}}, {"data": {"source": "src/Webhooks.API", "target": "src/IntegrationEventLogEF", "edgeType": "project-reference"}}, {"data": {"source": "src/Webhooks.API", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}, {"data": {"source": "src/WebhookClient", "target": "src/eShop.ServiceDefaults", "edgeType": "project-reference"}}]}, "repo_tests": {"nodes": [{"data": {"id": "_g_tests_test", "label": "Test", "nodeType": "group"}}, {"data": {"id": "tests/Ordering.UnitTests", "label": "Ordering.UnitTests", "parent": "_g_tests_test", "nodeType": "project", "category": "test"}}, {"data": {"id": "tests/Ordering.FunctionalTests", "label": "Ordering.FunctionalTests", "parent": "_g_tests_test", "nodeType": "project", "category": "test"}}, {"data": {"id": "tests/Catalog.FunctionalTests", "label": "Catalog.FunctionalTests", "parent": "_g_tests_test", "nodeType": "project", "category": "test"}}, {"data": {"id": "tests/Basket.UnitTests", "label": "Basket.UnitTests", "parent": "_g_tests_test", "nodeType": "project", "category": "test"}}, {"data": {"id": "tests/ClientApp.UnitTests", "label": "ClientApp.UnitTests", "parent": "_g_tests_test", "nodeType": "project", "category": "test"}}], "edges": []}, "corelibs": {"nodes": [{"data": {"id": "_lg_src", "label": "src", "nodeType": "group"}}, {"data": {"id": "src/Ordering.Domain", "label": "Ordering.Domain", "parent": "_lg_src", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/Ordering.Infrastructure", "label": "Ordering.Infrastructure", "parent": "_lg_src", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/IntegrationEventLogEF", "label": "IntegrationEventLogEF", "parent": "_lg_src", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/EventBus", "label": "EventBus", "parent": "_lg_src", "nodeType": "project", "category": "library"}}, {"data": {"id": "src/EventBusRabbitMQ", "label": "EventBusRabbitMQ", "parent": "_lg_src", "nodeType": "project", "category": "library"}}], "edges": [{"data": {"source": "src/Ordering.Infrastructure", "target": "src/IntegrationEventLogEF", "edgeType": "project-reference"}}, {"data": {"source": "src/Ordering.Infrastructure", "target": "src/Ordering.Domain", "edgeType": "project-reference"}}, {"data": {"source": "src/IntegrationEventLogEF", "target": "src/EventBus", "edgeType": "project-reference"}}, {"data": {"source": "src/EventBusRabbitMQ", "target": "src/EventBus", "edgeType": "project-reference"}}]}, "datainfra": {"nodes": [{"data": {"id": "_sc_application", "label": "Application", "nodeType": "group"}}, {"data": {"id": "_sc_service", "label": "Service", "nodeType": "group"}}, {"data": {"id": "_sc_webapp", "label": "Webapp", "nodeType": "group"}}, {"data": {"id": "src/WebApp", "label": "WebApp", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Identity.API", "label": "Identity.API", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Catalog.API", "label": "Catalog.API", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/eShop.AppHost", "label": "eShop.AppHost", "parent": "_sc_application", "nodeType": "project", "category": "application"}}, {"data": {"id": "src/WebAppComponents", "label": "WebAppComponents", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/PaymentProcessor", "label": "PaymentProcessor", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/OrderProcessor", "label": "OrderProcessor", "parent": "_sc_service", "nodeType": "project", "category": "service"}}, {"data": {"id": "src/HybridApp", "label": "HybridApp", "parent": "_sc_application", "nodeType": "project", "category": "application"}}, {"data": {"id": "src/Basket.API", "label": "Basket.API", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/Ordering.API", "label": "Ordering.API", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "src/eShop.ServiceDefaults", "label": "eShop.ServiceDefaults", "parent": "_sc_service", "nodeType": "project", "category": "service"}}, {"data": {"id": "src/Webhooks.API", "label": "Webhooks.API", "parent": "_sc_webapp", "nodeType": "project", "category": "webapp"}}, {"data": {"id": "_dsg", "label": "Data Sources", "nodeType": "group"}}, {"data": {"id": "datasource:src:DbContext", "label": "DbContext", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}, {"data": {"id": "datasource:src:EntityFramework", "label": "EntityFramework", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}, {"data": {"id": "datasource:src:RabbitMQ", "label": "RabbitMQ", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}, {"data": {"id": "datasource:src:Redis", "label": "Redis", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}, {"data": {"id": "datasource:src:Dapper", "label": "Dapper", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}, {"data": {"id": "datasource:tests:Dapper", "label": "Dapper", "parent": "_dsg", "nodeType": "datasource", "category": "datasource"}}], "edges": []}}
+</script>
+<script src="https://unpkg.com/cytoscape@3/dist/cytoscape.min.js"></script>
+<script src="https://unpkg.com/cytoscape-cose-bilkent@4/cytoscape-cose-bilkent.js"></script>
 <script>
 (function () {
   'use strict';
+  cytoscapeCoseBilkent(cytoscape);
 
+  var diagramData = JSON.parse(document.getElementById('cy-data').textContent);
+
+  var colors = {
+    library: '#4A90D9', connector: '#E67E22', application: '#E74C3C',
+    test: '#9B59B6', tool: '#F39C12', webapp: '#1ABC9C',
+    service: '#3498DB', desktopapp: '#E91E63', datasource: '#27AE60'
+  };
+
+  var cyStyle = [
+    { selector: 'node[nodeType="project"], node[nodeType="datasource"]', style: {
+        'label': 'data(label)', 'text-valign': 'center', 'text-halign': 'center',
+        'font-size': '9px', 'background-color': function(e){ return colors[e.data('category')]||'#95A5A6'; },
+        'color': '#fff', 'text-outline-color': function(e){ return colors[e.data('category')]||'#95A5A6'; },
+        'text-outline-width': 2, 'width': 'label', 'height': 28, 'padding': '6px',
+        'shape': 'roundrectangle', 'text-wrap': 'wrap', 'text-max-width': '120px'
+    }},
+    { selector: 'node[nodeType="datasource"]', style: { 'shape': 'ellipse', 'height': 'label', 'padding': '10px' }},
+    { selector: ':parent', style: {
+        'label': 'data(label)', 'text-valign': 'top', 'text-halign': 'center',
+        'font-size': '13px', 'font-weight': 'bold', 'color': '#333',
+        'background-color': '#e8ecf1', 'background-opacity': 0.6,
+        'border-color': '#aaa', 'border-width': 1, 'shape': 'roundrectangle',
+        'padding': '18px', 'text-margin-y': '-5px'
+    }},
+    { selector: 'edge', style: {
+        'width': 1.5, 'line-color': '#aaa', 'target-arrow-color': '#aaa',
+        'target-arrow-shape': 'triangle', 'curve-style': 'bezier', 'arrow-scale': 0.7, 'opacity': 0.7
+    }},
+    { selector: 'edge[edgeType="cross-repo-reference"]', style: {
+        'line-style': 'dashed', 'line-color': '#ff4444', 'target-arrow-color': '#ff4444'
+    }}
+  ];
+
+  var layoutOpts = {
+    name: 'cose-bilkent', animate: false, nodeDimensionsIncludeLabels: true,
+    fit: true, padding: 30, idealEdgeLength: 80, edgeElasticity: 0.45,
+    nestingFactor: 0.1, gravity: 0.25, numIter: 2500, tile: true,
+    tilingPaddingVertical: 10, tilingPaddingHorizontal: 10,
+    gravityRangeCompound: 1.5, gravityRange: 3.8
+  };
+
+  var cyInstances = {};
+
+  function initCy(id) {
+    if (cyInstances[id]) { cyInstances[id].resize(); cyInstances[id].fit(undefined, 30); return; }
+    var d = diagramData[id];
+    if (!d) return;
+    var container = document.getElementById('cy-' + id);
+    if (!container || container.offsetWidth === 0) return;
+    var cy = cytoscape({
+      container: container,
+      elements: { nodes: d.nodes, edges: d.edges },
+      style: cyStyle,
+      layout: layoutOpts,
+      minZoom: 0.1, maxZoom: 3, wheelSensitivity: 0.3
+    });
+    cyInstances[id] = cy;
+  }
+
+  // Tab switching
   var categoryClass = {
     'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
     'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
@@ -605,50 +442,22 @@ graph LR
 
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels  = document.querySelectorAll('.tab-panel');
-  var renderedTabs = {};
 
   function activateTab(tabId) {
     tabButtons.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === tabId); });
     tabPanels.forEach(function (p)  { p.classList.toggle('active', p.id === 'panel-' + tabId); });
-    lazyRenderMermaid(tabId);
+    if (diagramData[tabId]) {
+      setTimeout(function() { initCy(tabId); }, 50);
+    }
   }
 
   tabButtons.forEach(function (btn) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'landscape': 'mermaid-landscape', 'corelibraries': 'mermaid-corelibraries', 'datainfrastructure': 'mermaid-datainfrastructure', 'nugetgroups': 'mermaid-nugetgroups' };
-
-  function lazyRenderMermaid(tabId) {
-    var containerId = mermaidContainers[tabId];
-    if (!containerId || renderedTabs[tabId]) return;
-
-    function doRender() {
-      var container = document.getElementById(containerId);
-      if (!container) return;
-      var pre = container.querySelector('pre.mermaid');
-      if (!pre) return;
-      renderedTabs[tabId] = true;
-      var loading = container.querySelector('.loading');
-      pre.style.display = '';
-      if (loading) loading.style.display = 'none';
-      window.mermaidAPI.run({ nodes: [pre] }).catch(function (err) {
-        console.error('Mermaid render error for ' + tabId + ':', err);
-        if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
-      });
-    }
-
-    if (window.mermaidAPI) { doRender(); }
-    else {
-      var interval = setInterval(function () {
-        if (window.mermaidAPI) { clearInterval(interval); doRender(); }
-      }, 150);
-    }
-  }
-
-  // Render first tab on load
-  var firstTab = document.querySelector('.tab-btn');
-  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+  // Init first diagram
+  var firstBtn = document.querySelector('.tab-btn');
+  if (firstBtn) setTimeout(function() { initCy(firstBtn.dataset.tab); }, 100);
 
   // Load All Projects data
   Promise.all([
