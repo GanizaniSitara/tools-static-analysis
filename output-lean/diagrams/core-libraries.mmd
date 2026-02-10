@@ -1,0 +1,73 @@
+graph TD
+    Lean_QuantConnect_Configuration["QuantConnect.Configuration"]
+    Lean_QuantConnect_Compression["QuantConnect.Compression"]
+    Lean_QuantConnect_Messaging["QuantConnect.Messaging"]
+    Lean_QuantConnect_Research["QuantConnect.Research"]
+    Lean_QuantConnect_Brokerages["QuantConnect.Brokerages"]
+    Lean_QuantConnect_Algorithm_CSharp["QuantConnect.Algorithm.CSharp"]
+    Lean_QuantConnect_Algorithm_Framework["QuantConnect.Algorithm.Framework"]
+    Lean_QuantConnect_Lean_Engine["QuantConnect.Lean.Engine"]
+    Lean_QuantConnect_Queues["QuantConnect.Queues"]
+    Lean_QuantConnect_AlgorithmFactory["QuantConnect.AlgorithmFactory"]
+    Lean_QuantConnect["QuantConnect"]
+    Lean_QuantConnect_Indicators["QuantConnect.Indicators"]
+    Lean_QuantConnect_Optimizer["QuantConnect.Optimizer"]
+    Lean_QuantConnect_Algorithm_Python["QuantConnect.Algorithm.Python"]
+    Lean_QuantConnect_Logging["QuantConnect.Logging"]
+    Lean_QuantConnect_Algorithm["QuantConnect.Algorithm"]
+    Lean_QuantConnect_Configuration --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Compression --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Messaging --> Lean_QuantConnect
+    Lean_QuantConnect_Messaging --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Messaging --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Research --> Lean_QuantConnect
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --> Lean_QuantConnect_Queues
+    Lean_QuantConnect_Brokerages --> Lean_QuantConnect
+    Lean_QuantConnect_Brokerages --> Lean_QuantConnect_Compression
+    Lean_QuantConnect_Brokerages --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Brokerages --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_CSharp --> Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Algorithm_CSharp --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_CSharp --> Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_CSharp --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm_Framework --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Framework --> Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Framework --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Algorithm_CSharp
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_AlgorithmFactory
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Compression
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect
+    Lean_QuantConnect_Lean_Engine --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Queues --> Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Queues --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Queues --> Lean_QuantConnect
+    Lean_QuantConnect_Queues --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_AlgorithmFactory --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_AlgorithmFactory --> Lean_QuantConnect
+    Lean_QuantConnect_AlgorithmFactory --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_AlgorithmFactory --> Lean_QuantConnect_Logging
+    Lean_QuantConnect --> Lean_QuantConnect_Compression
+    Lean_QuantConnect --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Indicators --> Lean_QuantConnect
+    Lean_QuantConnect_Indicators --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Optimizer --> Lean_QuantConnect
+    Lean_QuantConnect_Optimizer --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Optimizer --> Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_Python --> Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Python --> Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Python --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm --> Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Algorithm --> Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm --> Lean_QuantConnect
+    Lean_QuantConnect_Algorithm --> Lean_QuantConnect_Logging

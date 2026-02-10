@@ -1,0 +1,21 @@
+graph LR
+    subgraph src["src"]
+        src_OrchardCore_Cms_Web["OrchardCore.Cms.Web"]
+        src_OrchardCore_Templates_Cms_Web["OrchardCore.Templates.Cms.Web"]
+        src_OrchardCore_Templates_Mvc_Web["OrchardCore.Templates.Mvc.Web"]
+        src_OrchardCore_Apis_GraphQL["OrchardCore.Apis.GraphQL"]
+        src_OrchardCore_Apis_GraphQL_Abstractions["OrchardCore.Apis.GraphQL.Abstractions"]
+        src_OrchardCore_Mvc_Web["OrchardCore.Mvc.Web"]
+    end
+    subgraph test["test"]
+        test_OrchardCore_Benchmarks["OrchardCore.Benchmarks"]
+    end
+    subgraph DataSources
+        datasource_src_Dapper[("Dapper")]
+        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_Redis[("Redis")]
+        datasource_src_EntityFramework[("EntityFramework")]
+        datasource_src_SqlClient[("SqlClient")]
+        datasource_test_Dapper[("Dapper")]
+        datasource_test_EntityFramework[("EntityFramework")]
+    end

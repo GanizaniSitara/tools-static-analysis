@@ -1,0 +1,9 @@
+[
+  {
+    "name": "StockSharp",
+    "root": "/home/user/StockSharp",
+    "solutions": [
+      "StockSharp.sln"
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "file": "Samples/06_Strategies/09_LiveOptionsQuoting/app.config",
+    "repo": "StockSharp",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n\t<appSettings>\n\t\t<add key=\"disableUIIssue\" value=\"true\"/>\n\t</appSettings>\n</configuration>\n"
+  }
+]

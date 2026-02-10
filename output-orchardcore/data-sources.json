@@ -1,0 +1,4160 @@
+[
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment/Controllers/DeploymentPlanController.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var deploymentPlans = _session.Query<DeploymentPlan, DeploymentPlanIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment/Controllers/DeploymentPlanController.cs",
+    "repo": "src",
+    "line": 135,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedItems = await _session.Query<DeploymentPlan, DeploymentPlanIndex>().Where(x => x.DocumentId.IsIn(itemIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment/DeploymentPlanService.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var deploymentPlanQuery = _session.Query<DeploymentPlan, DeploymentPlanIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment/DeploymentPlanService.cs",
+    "repo": "src",
+    "line": 93,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var existingDeploymentPlans = (await _session.Query<DeploymentPlan, DeploymentPlanIndex>(x => x.Name.IsIn(names))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AuditTrail/Services/DefaultAuditTrailAdminListFilterProvider.cs",
+    "repo": "src",
+    "line": 146,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "return sortOption.Query(val, query, ctx);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AuditTrail/Services/DefaultAuditTrailAdminListFilterProvider.cs",
+    "repo": "src",
+    "line": 149,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "return options.DefaultSortOption.Query(val, query, ctx);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AuditTrail/Services/AuditTrailManager.cs",
+    "repo": "src",
+    "line": 109,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "_session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AuditTrail/Services/AuditTrailManager.cs",
+    "repo": "src",
+    "line": 117,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var events = await _session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AuditTrail/Services/DefaultAuditTrailAdminListQueryService.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<AuditTrailEvent>(collection: AuditTrailEvent.Collection);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Models/AzureEmailOptions.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Models/AzureEmailOptions.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "=> !string.IsNullOrWhiteSpace(DefaultSender) && !string.IsNullOrWhiteSpace(ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Models/AzureEmailSettings.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.HasConnectionString = !string.IsNullOrWhiteSpace(settings.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 107,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (string.IsNullOrWhiteSpace(model.ConnectionString)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 108,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "&& settings.ConnectionString is null)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 110,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "context.Updater.ModelState.AddModelError(Prefix, nameof(model.ConnectionString), S[\"Connection string is required.\"]);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 112,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "else if (!string.IsNullOrWhiteSpace(model.ConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 117,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var protectedConnection = protector.Protect(model.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 120,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "hasChanges |= protectedConnection != settings.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Drivers/AzureEmailSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 122,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "settings.ConnectionString = protectedConnection;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Services/AzureEmailProviderBase.cs",
+    "repo": "src",
+    "line": 138,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_emailClient ??= new EmailClient(_providerOptions.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Services/AzureEmailOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (!string.IsNullOrEmpty(settings.ConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/Services/AzureEmailOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.ConnectionString = protector.Unprotect(settings.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/ViewModels/AzureEmailSettingsViewModel.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Email.Azure/ViewModels/AzureEmailSettingsViewModel.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public bool HasConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Twitter/Startup.cs",
+    "repo": "src",
+    "line": 44,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "services.AddHttpClient<TwitterClient>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Twitter/Services/TwitterClient.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "HttpClient.BaseAddress",
+    "type": "api",
+    "match": "BaseAddress = new Uri(\"https://api.twitter.com\"",
+    "context": "_client.BaseAddress = new Uri(\"https://api.twitter.com\");"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = _options.ConnectionString,"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 48,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = section.GetValue<string>(nameof(MediaBlobStorageOptions.ConnectionString));"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (CheckOptions(connectionString, containerName, _logger))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 124,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private static bool CheckOptions(string connectionString, string containerName, ILogger logger)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 128,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (string.IsNullOrWhiteSpace(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 130,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "logger.LogError(\"Azure Media Storage is enabled but not active because the 'ConnectionString' is missing or empty in application configuration.\");"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 168,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = section.GetValue<string>(nameof(MediaBlobStorageOptions.ConnectionString));"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 171,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (!CheckOptions(connectionString, containerName))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 184,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private bool CheckOptions(string connectionString, string containerName)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 188,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (string.IsNullOrWhiteSpace(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Startup.cs",
+    "repo": "src",
+    "line": 191,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "\"Azure Media ImageSharp Image Cache is enabled but not active because the 'ConnectionString' is missing or empty in application configuration.\");"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Services/ImageSharpBlobImageCacheTenantEvents.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var blobContainer = new BlobContainerClient(_options.ConnectionString, _options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Services/ImageSharpBlobImageCacheTenantEvents.cs",
+    "repo": "src",
+    "line": 66,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var blobContainer = new BlobContainerClient(_options.ConnectionString, _options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Services/MediaBlobContainerTenantEvents.cs",
+    "repo": "src",
+    "line": 46,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var blobContainer = new BlobContainerClient(_options.ConnectionString, _options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Services/MediaBlobContainerTenantEvents.cs",
+    "repo": "src",
+    "line": 65,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var blobContainer = new BlobContainerClient(_options.ConnectionString, _options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/Services/AzureBlobStorageCacheOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.ConnectionString = _options.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media.Azure/ViewModels/OptionsViewModel.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Taxonomies/Settings/TaxonomyContentsAdminListSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var taxonomies = await _session.Query<ContentItem, ContentItemIndex>(q => q.ContentType == \"Taxonomy\" && q.Published).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Taxonomies/Helper/TaxonomyOrchardHelperExtensions.cs",
+    "repo": "src",
+    "line": 64,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await query(session.Query<ContentItem, TaxonomyIndex>()).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/Controllers/SetupController.cs",
+    "repo": "src",
+    "line": 157,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (!string.IsNullOrEmpty(_shellSettings[\"ConnectionString\"]))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/Controllers/SetupController.cs",
+    "repo": "src",
+    "line": 161,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "setupContext.Properties[SetupConstants.DatabaseConnectionString] = _shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/Controllers/SetupController.cs",
+    "repo": "src",
+    "line": 168,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "setupContext.Properties[SetupConstants.DatabaseConnectionString] = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/Controllers/SetupController.cs",
+    "repo": "src",
+    "line": 191,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (!string.IsNullOrEmpty(_shellSettings[\"ConnectionString\"]))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/Controllers/SetupController.cs",
+    "repo": "src",
+    "line": 194,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.ConnectionString = _shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Setup/ViewModels/SetupViewModel.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.XmlRpc/MethodCallModelBinder.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class MethodCallModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Controllers/WorkflowController.cs",
+    "repo": "src",
+    "line": 116,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var workflowsQuery = _session.Query<Workflow, WorkflowIndex>(item => item.WorkflowId.IsIn(workflowIds));"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Controllers/WorkflowController.cs",
+    "repo": "src",
+    "line": 310,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedEntries = await _session.Query<Workflow, WorkflowIndex>().Where(x => x.DocumentId.IsIn(itemIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Controllers/WorkflowTypeController.cs",
+    "repo": "src",
+    "line": 99,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<WorkflowType, WorkflowTypeIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Controllers/WorkflowTypeController.cs",
+    "repo": "src",
+    "line": 184,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedEntries = await _session.Query<WorkflowType, WorkflowTypeIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Trimming/Services/WorkflowTrimmingService.cs",
+    "repo": "src",
+    "line": 50,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<Workflow, WorkflowIndex>(x => x.WorkflowStatus.IsIn(settings.Statuses) && x.CreatedUtc <= dateThreshold)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Http/Startup.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": "services.AddHttpClient();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Http/Services/WorkflowInstanceRouteEntries.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var workflowTypeDictionary = (await Session.Query<WorkflowType, WorkflowTypeIndex>().ListAsync()).ToDictionary(x => x.WorkflowTypeId);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Http/Services/WorkflowInstanceRouteEntries.cs",
+    "repo": "src",
+    "line": 26,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<Workflow, WorkflowBlockingActivitiesIndex>(index =>"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Http/Services/WorkflowTypeRouteEntries.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var workflowTypeDictionary = (await Session.Query<WorkflowType, WorkflowTypeIndex>().ListAsync()).ToDictionary(x => x.WorkflowTypeId);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowTypeStore.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<WorkflowType, WorkflowTypeIndex>(x => x.WorkflowTypeId == workflowTypeId).FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowTypeStore.cs",
+    "repo": "src",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<WorkflowType, WorkflowTypeIndex>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowTypeStore.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<WorkflowType, WorkflowTypeStartActivitiesIndex>(index =>"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowTypeStore.cs",
+    "repo": "src",
+    "line": 71,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var workflows = await _session.Query<Workflow, WorkflowIndex>(x => x.WorkflowTypeId == workflowType.WorkflowTypeId).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return FilterByWorkflowTypeId(_session.Query<Workflow, WorkflowIndex>(), workflowTypeId).CountAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return (await _session.Query<Workflow, WorkflowBlockingActivitiesIndex>(x => x.WorkflowTypeId == workflowTypeId).FirstOrDefaultAsync()) != null;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = (IQuery<Workflow>)FilterByWorkflowTypeId(_session.Query<Workflow, WorkflowIndex>(), workflowTypeId)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<Workflow, WorkflowIndex>(x => x.WorkflowTypeId.IsIn(workflowTypeIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 63,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<Workflow, WorkflowBlockingActivitiesIndex>(x => x.WorkflowId == workflowId).FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 68,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<Workflow, WorkflowBlockingActivitiesIndex>(x => x.WorkflowId.IsIn(workflowIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 79,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<Workflow, WorkflowBlockingActivitiesIndex>(index =>"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 87,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<Workflow, WorkflowBlockingActivitiesIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Workflows/Services/WorkflowStore.cs",
+    "repo": "src",
+    "line": 103,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<Workflow, WorkflowBlockingActivitiesIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 232,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedUsers = await _session.Query<User, UserIndex>().Where(x => x.UserId.IsIn(itemIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Migrations.cs",
+    "repo": "src",
+    "line": 136,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await session.Query<User>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Migrations.cs",
+    "repo": "src",
+    "line": 166,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await session.Query<User, UserIndex>(u => u.NormalizedUserName.Contains('@')).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Liquid/UsersByIdFilter.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var missingUsers = await _session.Query<User, UserIndex>(x => x.UserId.IsIn(missingUserIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Liquid/UsersByIdFilter.cs",
+    "repo": "src",
+    "line": 55,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return FluidValue.Create(await _session.Query<User, UserIndex>(x => x.UserId.IsIn(userIds)).ListAsync(), ctx.Options);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Liquid/UsersByIdFilter.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return FluidValue.Create(await _session.Query<User, UserIndex>(x => x.UserId == userId).FirstOrDefaultAsync(), ctx.Options);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Liquid/UsersByNameFilter.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return FluidValue.Create(await _session.Query<User, UserIndex>(x => x.NormalizedUserName.IsIn(normalizedUserNames)).ListAsync(), ctx.Options);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Liquid/UsersByNameFilter.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return FluidValue.Create(await _session.Query<User, UserIndex>(x => x.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync(), ctx.Options);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Deployment/CustomUserSettingsDeploymentSource.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var allUsers = await _session.Query<User>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Deployment/AllUsersDeploymentSource.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var allUsers = await _session.Query<User>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Recipes/CustomUserSettingsStep.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var allUsers = await _session.Query<User>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Users/Services/DefaultUsersAdminListQueryService.cs",
+    "repo": "src",
+    "line": 62,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<User>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/Controllers/LocalizationSetContentPickerAdminController.cs",
+    "repo": "src",
+    "line": 63,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var dbQuery = _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/GraphQL/Types/UserPickerFieldQueryObjectType.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await session.Query<User, UserIndex>(user => user.UserId.IsIn(userIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/Drivers/UserPickerFieldDisplayDriver.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = (await _session.Query<User, UserIndex>().Where(x => x.UserId.IsIn(field.UserIds)).ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/Drivers/UserPickerFieldDisplayDriver.cs",
+    "repo": "src",
+    "line": 92,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await _session.Query<User, UserIndex>().Where(x => x.UserId.IsIn(field.UserIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/Services/DefaultUserPickerResultProvider.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<User>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentFields/Services/DefaultContentPickerResultProvider.cs",
+    "repo": "src",
+    "line": 44,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.OpenId/Services/OpenIdServerService.cs",
+    "repo": "src",
+    "line": 521,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 177,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notifications = await _session.Query<Notification, NotificationIndex>(x => x.UserId == CurrentUserId() && x.NotificationId.IsIn(itemIds), collection: NotificationConstants.NotificationCollection)."
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 253,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notifications = await _session.Query<Notification, NotificationIndex>(x => x.UserId == CurrentUserId() && !x.IsRead, collection: NotificationConstants.NotificationCollection).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 287,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notification = await _session.Query<Notification, NotificationIndex>(x => x.UserId == CurrentUserId() && x.NotificationId == notificationId && x.IsRead != markAsRead, collection: NotificationConst"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 323,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notification = await _session.Query<Notification, NotificationIndex>(x => x.UserId == CurrentUserId() && x.NotificationId == notificationId, collection: NotificationConstants.NotificationCollectio"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Endpoints/Management/MarkAsReadEndpoints.cs",
+    "repo": "src",
+    "line": 50,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notification = await session.Query<Notification, NotificationIndex>(x => x.NotificationId == model.MessageId && x.UserId == userId, collection: NotificationConstants.NotificationCollection).FirstO"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Activities/NotifyContentOwnerTask.cs",
+    "repo": "src",
+    "line": 47,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var owner = await _session.Query<User, UserIndex>(x => x.UserId == contentItem.Owner && x.IsEnabled).FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Activities/NotifyUserTask.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "users.AddRange(await _session.Query<User, UserIndex>(user => user.NormalizedUserName.IsIn(page)).ListAsync());"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Notifications/Drivers/NotificationNavbarDisplayDriver.cs",
+    "repo": "src",
+    "line": 46,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var notifications = (await _session.Query<Notification, NotificationIndex>(x => x.UserId == userId && !x.IsRead, collection: NotificationConstants.NotificationCollection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AdminDashboard/Services/AdminDashboardService.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, DashboardPartIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Menu/Migrations.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var menus = await _session.Query<ContentItem, ContentItemIndex>(x => x.ContentType == \"Menu\").ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Alias/Startup.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItem = await session.Query<ContentItem, AliasPartIndex>(x =>"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Alias/Services/AliasPartContentHandleProvider.cs",
+    "repo": "src",
+    "line": 36,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "session.Query<ContentItem, AliasPartIndex>(x => x.Alias == alias.ToLowerInvariant()).FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/GraphQL/ListQueryObjectType.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = await session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/RemotePublishing/MetaWeblogHandler.cs",
+    "repo": "src",
+    "line": 190,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "foreach (var list in await _session.Query<ContentItem, ContentItemIndex>(x => x.ContentType == type.Name).ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/RemotePublishing/MetaWeblogHandler.cs",
+    "repo": "src",
+    "line": 227,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Feeds/ListFeedQuery.cs",
+    "repo": "src",
+    "line": 102,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ": await _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Handlers/ListPartLocalizationHandler.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var containedList = await _session.Query<ContentItem, ContainedPartIndex>("
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/AdminNodes/ListsAdminNodeNavigationBuilder.cs",
+    "repo": "src",
+    "line": 113,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return (await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Helpers/ListQueryHelpers.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Helpers/ListQueryHelpers.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 89,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var containedItemsQuery = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 164,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 171,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 223,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 230,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 278,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Lists/Services/ContainerService.cs",
+    "repo": "src",
+    "line": 284,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 272,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedContentItems = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Sitemaps/ContentTypesSitemapSourceModifiedDateProvider.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Sitemaps/ContentTypesSitemapSourceModifiedDateProvider.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Sitemaps/ContentTypesSitemapSourceModifiedDateProvider.cs",
+    "repo": "src",
+    "line": 55,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Sitemaps/DefaultContentItemsQueryProvider.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = session.Query<ContentItem, ContentItemIndex>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Deployment/AllContentDeploymentSource.cs",
+    "repo": "src",
+    "line": 28,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "foreach (var contentItem in await _session.Query<ContentItem, ContentItemIndex>(x => x.Published).ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Deployment/ContentDeploymentSource.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "foreach (var contentItem in await _session.Query<ContentItem, ContentItemIndex>(x => x.Published && x.ContentType.IsIn(step.ContentTypes)).ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Deployment/AddToDeploymentPlan/AddToDeploymentPlanController.cs",
+    "repo": "src",
+    "line": 117,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await _session.Query<ContentItem, ContentItemIndex>().Where(x => x.DocumentId.IsIn(itemIds) && x.Published).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Deployment/ExportContentToDeploymentTarget/ExportContentToDeploymentTargetDeploymentSource.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var checkedContentItems = await _session.Query<ContentItem, ContentItemIndex>().Where(x => x.DocumentId.IsIn(model.ItemIds) && x.Published).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/AuditTrail/Controllers/AuditTrailContentController.cs",
+    "repo": "src",
+    "line": 55,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var auditTrailContentEvent = (await _session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/AuditTrail/Controllers/AuditTrailContentController.cs",
+    "repo": "src",
+    "line": 95,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItem = (await _session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/AuditTrail/Drivers/AuditTrailContentEventDisplayDriver.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var previousContentItem = (await _session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/AuditTrail/Drivers/AuditTrailContentEventDisplayDriver.cs",
+    "repo": "src",
+    "line": 83,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var previousContentItem = (await _session.Query<AuditTrailEvent, AuditTrailEventIndex>(collection: AuditTrailEvent.Collection)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Contents/Services/DefaultContentsAdminListQueryService.cs",
+    "repo": "src",
+    "line": 80,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem>();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AutoSetup/Options/TenantSetupOptions.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string DatabaseConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AutoSetup/Options/TenantSetupOptions.cs",
+    "repo": "src",
+    "line": 142,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (selectedProvider != null && selectedProvider.HasConnectionString && string.IsNullOrWhiteSpace(DatabaseConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AutoSetup/Options/TenantSetupOptions.cs",
+    "repo": "src",
+    "line": 144,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "yield return new ValidationResult(string.Format(_requiredErrorMessageFormat, nameof(DatabaseConnectionString)));"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AutoSetup/Services/AutoSetupService.cs",
+    "repo": "src",
+    "line": 66,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = setupOptions.DatabaseConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.AutoSetup/Services/AutoSetupService.cs",
+    "repo": "src",
+    "line": 102,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "setupContext.Properties[SetupConstants.DatabaseConnectionString] = options.DatabaseConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Layers/Services/LayerService.cs",
+    "repo": "src",
+    "line": 36,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, LayerMetadataIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment.Remote/Controllers/ImportRemoteInstanceController.cs",
+    "repo": "src",
+    "line": 79,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fs = System.IO.File.Create(tempArchiveName))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment.Remote/Startup.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": "services.AddHttpClient();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Deployment.Remote/Services/RemoteClientService.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "_remoteClientList = await _session.Query<RemoteClientList>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media/Startup.cs",
+    "repo": "src",
+    "line": 69,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": "services.AddHttpClient();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media/Services/ChunkFileUploadService.cs",
+    "repo": "src",
+    "line": 157,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "true => File.Open(tempFilePath, FileMode.Open, FileAccess.ReadWrite),"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Media/Services/ChunkFileUploadService.cs",
+    "repo": "src",
+    "line": 186,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var stream = File.Create(tempPath);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sitemaps/Cache/DefaultSitemapCacheProvider.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var fileStream = File.Create(cachePath);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/BlobOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var blobContainer = new BlobContainerClient(options.ConnectionString, options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/BlobOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 82,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_logger.LogCritical(e, \"Unable to connect to Azure Storage to configure data protection storage. Ensure that an application setting containing a valid Azure Storage connection string is available at `"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/BlobModularTenantEvents.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_blobOptions.ConnectionString,"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/Startup.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = _configuration.GetValue<string>(\"OrchardCore_DataProtection_Azure:ConnectionString\");"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/Startup.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (!string.IsNullOrWhiteSpace(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/Startup.cs",
+    "repo": "src",
+    "line": 36,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_logger.LogDebug(\"OrchardCore_DataProtection_Azure:ConnectionString was found. Adding 'OrchardCore.DataProtection.Azure' feature services.\");"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/Startup.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.ConnectionString,"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/Startup.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_logger.LogCritical(\"No connection string was supplied for OrchardCore.DataProtection.Azure. Ensure that an application setting containing a valid Azure Storage connection string is available at `Orch"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/BlobOptions.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Html/Migrations.cs",
+    "repo": "src",
+    "line": 75,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItemVersions = await _session.Query<ContentItem, ContentItemIndex>(x => x.DocumentId > lastDocumentId).Take(10).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Title/Migrations.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItemVersions = await _session.Query<ContentItem, ContentItemIndex>(x => x.DocumentId > lastDocumentId).Take(10).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Search/Controllers/SearchController.cs",
+    "repo": "src",
+    "line": 182,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Search/Controllers/SearchController.cs",
+    "repo": "src",
+    "line": 187,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "query = _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Demo/Controllers/TodoController.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var list = (await _session.Query<TodoModel>().ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Demo/Controllers/TodoController.cs",
+    "repo": "src",
+    "line": 47,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var model = (await _session.Query<TodoModel>().ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Demo/Controllers/TodoController.cs",
+    "repo": "src",
+    "line": 72,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var model = (await _session.Query<TodoModel>().ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Demo/Controllers/TodoController.cs",
+    "repo": "src",
+    "line": 97,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var model = (await _session.Query<TodoModel>().ListAsync())"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Demo/Pages/Foo/List.cshtml.cs",
+    "repo": "src",
+    "line": 40,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Models/AzureSmsOptions.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Models/AzureSmsOptions.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "!string.IsNullOrWhiteSpace(ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Models/AzureSmsSettings.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 62,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.HasConnectionString = !string.IsNullOrEmpty(settings.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 112,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (string.IsNullOrWhiteSpace(model.ConnectionString) && settings.ConnectionString is null)"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 114,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "context.Updater.ModelState.AddModelError(Prefix, nameof(model.ConnectionString), S[\"Connection string is required.\"]);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 116,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "else if (!string.IsNullOrWhiteSpace(model.ConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 120,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var protectedConnection = protector.Protect(model.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 123,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "hasChanges |= protectedConnection != settings.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Drivers/AzureSettingsDisplayDriver.cs",
+    "repo": "src",
+    "line": 125,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "settings.ConnectionString = protectedConnection;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Services/AzureSmsOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (!string.IsNullOrEmpty(settings.ConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Services/AzureSmsOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.ConnectionString = protector.Unprotect(settings.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/Services/AzureSmsProviderBase.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_smsClient ??= new SmsClient(_providerOptions.ConnectionString);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/ViewModels/AzureSettingsViewModel.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/ViewModels/AzureSettingsViewModel.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public bool HasConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Startup.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisDatabaseFactory.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisLock.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisCacheWrapper.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisCacheWrapper.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "IConnectionMultiplexer",
+    "context": "/// Wrapper preventing the <see cref=\"RedisCache\"/> to dispose a shared <see cref=\"IConnectionMultiplexer\"/>."
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisBus.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisService.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Redis/Services/RedisService.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "IConnectionMultiplexer",
+    "context": "public IConnectionMultiplexer Connection => Database?.Multiplexer;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/Migrations.cs",
+    "repo": "src",
+    "line": 88,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var localizedContentItems = await session.Query<ContentItem, LocalizedContentItemIndex>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/DefaultContentLocalizationManager.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<ContentItem, LocalizedContentItemIndex>(i =>"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/DefaultContentLocalizationManager.cs",
+    "repo": "src",
+    "line": 58,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<ContentItem, LocalizedContentItemIndex>(i => (i.Published || i.Latest) && i.LocalizationSet == localizationSet).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/DefaultContentLocalizationManager.cs",
+    "repo": "src",
+    "line": 64,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<ContentItem, LocalizedContentItemIndex>(i => (i.Published || i.Latest) && i.LocalizationSet.IsIn(localizationSets) && i.Culture == invariantCulture).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/Sitemaps/LocalizedContentItemsQueryProvider.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "contentItems = await session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/Sitemaps/LocalizedContentItemsQueryProvider.cs",
+    "repo": "src",
+    "line": 71,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "contentItems = await session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/Sitemaps/LocalizedContentItemsQueryProvider.cs",
+    "repo": "src",
+    "line": 83,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "contentItems = await session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/Sitemaps/LocalizedContentItemsQueryProvider.cs",
+    "repo": "src",
+    "line": 101,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "contentItems = await session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 325,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = shellSettings[\"ConnectionString\"],"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 331,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "!string.IsNullOrEmpty(model.ConnectionString) ||"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 371,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 450,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.ConnectionString = shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 496,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/AdminController.cs",
+    "repo": "src",
+    "line": 515,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.ConnectionString = shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 115,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 180,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 369,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = shellSettings[\"connectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 371,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (string.IsNullOrEmpty(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 373,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connectionString = model.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 376,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (selectedProvider.HasConnectionString && string.IsNullOrEmpty(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Controllers/TenantApiController.cs",
+    "repo": "src",
+    "line": 435,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "{ SetupConstants.DatabaseConnectionString, connectionString },"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Models/TenantModelBase.cs",
+    "repo": "src",
+    "line": 22,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/CreateTenantTask.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public WorkflowExpression<string> ConnectionString"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/CreateTenantTask.cs",
+    "repo": "src",
+    "line": 111,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = (await ExpressionEvaluator.EvaluateAsync(ConnectionString, workflowContext, null))?.Trim();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/CreateTenantTask.cs",
+    "repo": "src",
+    "line": 142,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (!string.IsNullOrEmpty(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/CreateTenantTask.cs",
+    "repo": "src",
+    "line": 144,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = connectionString;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/SetupTenantTask.cs",
+    "repo": "src",
+    "line": 83,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public WorkflowExpression<string> DatabaseConnectionString"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/SetupTenantTask.cs",
+    "repo": "src",
+    "line": 158,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var databaseConnectionString = (await ExpressionEvaluator.EvaluateAsync(DatabaseConnectionString, workflowContext, null))?.Trim();"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/SetupTenantTask.cs",
+    "repo": "src",
+    "line": 168,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (string.IsNullOrEmpty(databaseConnectionString))"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/SetupTenantTask.cs",
+    "repo": "src",
+    "line": 170,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "databaseConnectionString = shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Activities/SetupTenantTask.cs",
+    "repo": "src",
+    "line": 205,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "{ SetupConstants.DatabaseConnectionString, databaseConnectionString },"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Drivers/SetupTenantTaskDisplayDriver.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.DatabaseConnectionStringExpression = activity.DatabaseConnectionString.Expression;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Drivers/SetupTenantTaskDisplayDriver.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "activity.DatabaseConnectionString = new WorkflowExpression<string>(model.DatabaseConnectionStringExpression);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Drivers/CreateTenantTaskDisplayDriver.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "model.ConnectionStringExpression = activity.ConnectionString.Expression;"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/Drivers/CreateTenantTaskDisplayDriver.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "activity.ConnectionString = new WorkflowExpression<string>(model.ConnectionStringExpression);"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/ViewModels/CreateTenantTaskViewModel.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionStringExpression { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Workflows/ViewModels/SetupTenantTaskViewModel.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string DatabaseConnectionStringExpression { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Services/TenantValidator.cs",
+    "repo": "src",
+    "line": 132,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "nameof(TenantViewModel.ConnectionString),"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/Services/TenantValidator.cs",
+    "repo": "src",
+    "line": 138,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "nameof(TenantViewModel.ConnectionString),"
+  },
+  {
+    "file": "src/OrchardCore.Modules/OrchardCore.Tenants/ViewModels/SetupApiViewModel.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Setup.Core/Services/SetupService.cs",
+    "repo": "src",
+    "line": 158,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "shellSettings[\"ConnectionString\"] = context.Properties.TryGetValue(SetupConstants.DatabaseConnectionString, out var databaseConnectionString) ? databaseConnectionString?.ToString() : string.Empty;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/ContentIndexingService.cs",
+    "repo": "src",
+    "line": 88,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await _readonlySession.Query<ContentItem, ContentItemIndex>(index => index.Published && index.ContentType.IsIn(_publishedContentTypes) && index.ContentItemId.IsIn(updatedContentItem"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/ContentIndexingService.cs",
+    "repo": "src",
+    "line": 96,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await _readonlySession.Query<ContentItem, ContentItemIndex>(index => index.Latest && index.ContentType.IsIn(_latestContentTypes) && index.ContentItemId.IsIn(updatedContentItemIds))"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 58,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 98,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<IndexProfile, IndexProfileIndex>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs",
+    "repo": "src",
+    "line": 139,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<IndexProfile, IndexProfileIndex>();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.FileStorage.AzureBlob/BlobFileStore.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_blobContainer = new BlobContainerClient(_options.ConnectionString, _options.ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.FileStorage.AzureBlob/BlobStorageOptionsConfiguration.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.ConnectionString = rawOptions.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.FileStorage.AzureBlob/BlobStorageOptions.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.FileStorage.AzureBlob/BlobStorageOptions.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return !string.IsNullOrEmpty(ConnectionString) && !string.IsNullOrEmpty(ContainerName);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Notifications.Core/DefaultNotificationsAdminListQueryService.cs",
+    "repo": "src",
+    "line": 23,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<Notification>(collection: NotificationConstants.NotificationCollection);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Notifications.Core/Services/NotificationFilterEngineModelBinder.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class NotificationFilterEngineModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data/Documents/FileDocumentStore.cs",
+    "repo": "src",
+    "line": 122,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var stream = File.Create(filename);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Providers/ElasticsearchContentPickerResultProvider.cs",
+    "repo": "src",
+    "line": 65,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(q => q"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Providers/ElasticsearchContentPickerResultProvider.cs",
+    "repo": "src",
+    "line": 81,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(q => q"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchDocumentIndexManager.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(q => q"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchDocumentIndexManager.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(q => q"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchQuerySource.cs",
+    "repo": "src",
+    "line": 98,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var dbContentItems = await _session.Query<ContentItem, ContentItemIndex>(x => x.ContentItemVersionId.IsIn(indexedContentItemVersionIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinder.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class CheckMarkModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinderProvider.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "internal sealed class SafeBoolModelBinderProvider : IModelBinderProvider"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinderProvider.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public IModelBinder GetBinder(ModelBinderProviderContext context)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "/// An <see cref=\"IModelBinderProvider\"/> for <see cref=\"CheckMarkModelBinder\"/>."
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class CheckMarkModelBinderProvider : IModelBinderProvider"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public IModelBinder GetBinder(ModelBinderProviderContext context)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinder.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "internal sealed class SafeBoolModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure.Abstractions/Entities/ModelHandlerBase.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public abstract class ModelHandlerBase<T> : IModelHandler<T>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure.Abstractions/Entities/IModelHandler.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public interface IModelHandler<T>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Redis.Abstractions/IRedisDatabaseFactory.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Redis.Abstractions/RedisOptions.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Redis.Abstractions/IRedisService.cs",
+    "repo": "src",
+    "line": 2,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "using StackExchange.Redis;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Redis.Abstractions/IRedisService.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "IConnectionMultiplexer",
+    "context": "IConnectionMultiplexer Connection { get; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Search.Lucene.Core/Services/LuceneQuerySource.cs",
+    "repo": "src",
+    "line": 94,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var dbContentItems = await _session.Query<ContentItem, ContentItemIndex>(x => x.ContentItemVersionId.IsIn(indexedContentItemVersionIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Indexing.Abstractions/IIndexProfileHandler.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public interface IIndexProfileHandler : IModelHandler<IndexProfile>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Queries/ContentItemsFieldType.cs",
+    "repo": "src",
+    "line": 98,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var preQuery = session.Query<ContentItem>();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Extensions/DataLoaderExtensions.cs",
+    "repo": "src",
+    "line": 29,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = session.Query<ContentItem, ContentItemIndex>(y => y.ContentItemId.IsIn(contentItemIds));"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellsSettingsSources.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await session.Query<DatabaseShellsSettings>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellsSettingsSources.cs",
+    "repo": "src",
+    "line": 108,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await session.Query<DatabaseShellsSettings>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellsSettingsSources.cs",
+    "repo": "src",
+    "line": 126,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "document = await session.Query<DatabaseShellsSettings>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellsStorageOptions.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellConfigurationSources.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await session.Query<DatabaseShellConfigurations>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellConfigurationSources.cs",
+    "repo": "src",
+    "line": 88,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await session.Query<DatabaseShellConfigurations>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellConfigurationSources.cs",
+    "repo": "src",
+    "line": 128,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await session.Query<DatabaseShellConfigurations>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Extensions/DatabaseShellContextFactoryExtensions.cs",
+    "repo": "src",
+    "line": 24,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "settings[\"ConnectionString\"] = options.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/Migration/DataMigrationManager.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "_dataMigrationRecord = await _session.Query<DataMigrationRecord>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public static string GetConnectionString(SqliteOptions sqliteOptions, ShellOptions shellOptions, ShellSettings shellSettings)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "=> GetConnectionString(sqliteOptions, GetDatabaseFolder(shellOptions, shellSettings.Name), shellSettings);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public static string GetConnectionString(SqliteOptions sqliteOptions, string databaseFolder, ShellSettings shellSettings)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return GetSqliteConnectionStringBuilder(sqliteOptions, databaseFolder, databaseName, sqliteOpenMode).ToString();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public static string GetConnectionString(SqliteOptions sqliteOptions, string databaseFolder, string databaseName, SqliteOpenMode sqliteOpenMode)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 48,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return GetSqliteConnectionStringBuilder(sqliteOptions, databaseFolder, databaseName, sqliteOpenMode).ToString();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 54,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private static SqliteConnectionStringBuilder GetSqliteConnectionStringBuilder(SqliteOptions sqliteOptions, string databaseFolder, string databaseName, SqliteOpenMode sqliteOpenMode)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/SqliteHelper.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return new SqliteConnectionStringBuilder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/Documents/DocumentStore.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await _session.Query<T>().FirstOrDefaultAsync()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/Documents/DocumentStore.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var document = await _session.Query<T>().FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "services.TryAddDataProvider(name: \"Sql Server\", value: DatabaseProviderValue.SqlConnection, hasConnectionString: true, sampleConnectionString: \"Server=localhost;Database=Orchard;User Id=username;Passw"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "services.TryAddDataProvider(name: \"Sqlite\", value: DatabaseProviderValue.Sqlite, hasConnectionString: false, hasTablePrefix: false, isDefault: true);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "services.TryAddDataProvider(name: \"MySql\", value: DatabaseProviderValue.MySql, hasConnectionString: true, sampleConnectionString: \"Server=localhost;Database=Orchard;Uid=username;Pwd=password\", hasTabl"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 54,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "services.TryAddDataProvider(name: \"Postgres\", value: DatabaseProviderValue.Postgres, hasConnectionString: true, sampleConnectionString: \"Server=localhost;Port=5432;Database=Orchard;User Id=username;Pa"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "// Before the setup, a 'DatabaseProvider' may be configured without a required 'ConnectionString'."
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": ".UseSqlServer(shellSettings[\"ConnectionString\"], yesSqlOptions.IsolationLevel, shellSettings[\"Schema\"])"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 86,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = SqliteHelper.GetConnectionString(sqliteOptions, databaseFolder, shellSettings);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 89,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": ".UseSqLite(connectionString, yesSqlOptions.IsolationLevel)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 94,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": ".UseMySql(shellSettings[\"ConnectionString\"], yesSqlOptions.IsolationLevel, shellSettings[\"Schema\"])"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 99,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": ".UsePostgreSql(shellSettings[\"ConnectionString\"], yesSqlOptions.IsolationLevel, shellSettings[\"Schema\"])"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseSqlServer(",
+    "context": ".UseSqlServer(shellSettings[\"ConnectionString\"], yesSqlOptions.IsolationLevel, shellSettings[\"Schema\"])"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCoreBuilderExtensions.cs",
+    "repo": "src",
+    "line": 94,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseMySql(",
+    "context": ".UseMySql(shellSettings[\"ConnectionString\"], yesSqlOptions.IsolationLevel, shellSettings[\"Schema\"])"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/Removing/ShellDbTablesInfo.cs",
+    "repo": "src",
+    "line": 302,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Connection.Execute(statement, null, Transaction);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "Microsoft.Data.SqlClient",
+    "context": "using Microsoft.Data.SqlClient;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = context.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (!provider.HasConnectionString)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 68,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connectionString = SqliteHelper.GetConnectionString(_sqliteOptions, _shellOptions, context.ShellSettings);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 71,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "if (string.IsNullOrWhiteSpace(connectionString))"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var (factory, sqlDialect) = GetFactoryAndSqlDialect(context.DatabaseProvider, connectionString);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 182,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "string connectionString) => databaseProvider switch"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 184,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "DatabaseProviderValue.SqlConnection => (new DbConnectionFactory<SqlConnection>(connectionString), new SqlServerDialect()),"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 185,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "DatabaseProviderValue.MySql => (new DbConnectionFactory<MySqlConnection>(connectionString), new MySqlDialect()),"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 186,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "DatabaseProviderValue.Sqlite => (new DbConnectionFactory<SqliteConnection>(connectionString), new SqliteDialect()),"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.YesSql/DbConnectionValidator.cs",
+    "repo": "src",
+    "line": 187,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "DatabaseProviderValue.Postgres => (new DbConnectionFactory<NpgsqlConnection>(connectionString), new PostgreSqlDialect()),"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Media.Core/DefaultMediaFileStoreCacheFileProvider.cs",
+    "repo": "src",
+    "line": 64,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var fileStream = File.Create(cachePath);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Contents.Core/Extensions/ContentOrchardHelperExtensions.cs",
+    "repo": "src",
+    "line": 91,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var contentItems = await query(session.Query<ContentItem, ContentItemIndex>()).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Contents.Core/Services/ContentItemFilterEngineModelBinder.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class ContentItemFilterEngineModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/DbConnectionValidatorContext.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = shellSettings[\"ConnectionString\"];"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/DbConnectionValidatorContext.cs",
+    "repo": "src",
+    "line": 23,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = dbConnectionInfo.ConnectionString;"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/DbConnectionValidatorContext.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/DatabaseProvider.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public bool HasConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/DatabaseProvider.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string SampleConnectionString { get; set; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "/// <param name=\"hasConnectionString\">Whether the database contains a connection string.</param>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "/// <param name=\"sampleConnectionString\">A sample connection string, e.g. Server={Server Name};Database={Database Name};IntegratedSecurity=true.</param>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 22,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public static IServiceCollection TryAddDataProvider(this IServiceCollection services, string name, string value, bool hasConnectionString, bool hasTablePrefix, bool isDefault, string sampleConnectionS"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "services.AddSingleton(new DatabaseProvider { Name = name, Value = value, HasConnectionString = hasConnectionString, HasTablePrefix = hasTablePrefix, IsDefault = isDefault, SampleConnectionString = sam"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Data.Abstractions/IDbConnectionInfo.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "string ConnectionString { get; }"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Razor/UserRazorHelperExtensions.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return session.Query<User, UserIndex>(x => x.UserId == userId).FirstOrDefaultAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Razor/UserRazorHelperExtensions.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return session.Query<User, UserIndex>(x => x.UserId.IsIn(userIds)).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 156,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<User, UserIndex>(u => u.UserId == userId).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 161,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<User, UserIndex>(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 369,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<User, UserIndex>(u => u.NormalizedEmail == normalizedEmail).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 469,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await _session.Query<User, UserByRoleNameIndex>(u => u.RoleName == normalizedRoleName).ListAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 498,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<User, UserByLoginInfoIndex>(u => u.LoginProvider == loginProvider && u.ProviderKey == providerKey).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs",
+    "repo": "src",
+    "line": 606,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await _session.Query<User, UserByClaimIndex>(uc => uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value).ListAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/CustomUserSettingsService.cs",
+    "repo": "src",
+    "line": 71,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var users = await _session.Query<User>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Users.Core/Services/UserFilterEngineModelBinder.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class UserFilterEngineModelBinder : IModelBinder"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Taxonomies.Core/DefaultContentsTaxonomyListQueryService.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "IQuery<ContentItem> query = _session.Query<ContentItem>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore/Modules/Overrides/HttpClient/TenantHttpClientFactory.cs",
+    "repo": "src",
+    "line": 119,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(handler, disposeHandler: false);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore/Modules/Extensions/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 57,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": ".AddHttpClient()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs",
+    "repo": "src",
+    "line": 53,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var streamWriter = File.Create(_tenants);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs",
+    "repo": "src",
+    "line": 69,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var streamWriter = File.Create(_tenants);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore/Shell/Configuration/ShellConfigurationSources.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var streamWriter = File.Create(appsettings);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Abstractions/Setup/SetupConstants.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public const string DatabaseConnectionString = \"DatabaseConnectionString\";"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ReCaptcha.Core/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": ".AddHttpClient(nameof(ReCaptchaService))"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Deployment.Core/Services/TemporaryFileBuilder.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var fs = File.Create(fullname, 4 * 1024, FileOptions.None);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 116,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 123,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 134,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 193,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 224,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 232,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 240,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 262,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var missingItems = await _session.Query<ContentItem, ContentItemIndex>(x => x.ContentItemId.IsIn(missingIds) && x.Published).ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 347,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>(x => x.ContentItemVersionId == contentItemVersionId)"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 389,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 508,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 564,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 697,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": ".Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 869,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var latestVersion = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 906,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var activeVersions = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 1180,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "latestVersion = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 1209,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "publishedVersion = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.ContentManagement/DefaultContentManager.cs",
+    "repo": "src",
+    "line": 1236,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "activeVersions = await _session.Query<ContentItem, ContentItemIndex>()"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Sms.Core/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 46,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient(",
+    "context": "services.AddHttpClient(TwilioSmsProvider.TechnicalName, client =>"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.Sms.Core/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 48,
+    "pattern": "HttpClient.BaseAddress",
+    "type": "api",
+    "match": "BaseAddress = new Uri(\"https://api.twilio.com/2010-04-01/Accounts/\"",
+    "context": "client.BaseAddress = new Uri(\"https://api.twilio.com/2010-04-01/Accounts/\");"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TApplication>(collection: OpenIdCollection).CountAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 74,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TApplication, OpenIdApplicationIndex>(index => index.ApplicationId == identifier, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 84,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TApplication, OpenIdApplicationIndex>(index => index.ClientId == identifier, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TApplication, OpenIdAppByLogoutUriIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 116,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TApplication, OpenIdAppByRedirectUriIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 276,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<TApplication>(collection: OpenIdCollection);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs",
+    "repo": "src",
+    "line": 491,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TApplication, OpenIdAppByRoleNameIndex>(index => index.RoleName == role, collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TAuthorization>(collection: OpenIdCollection).CountAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 125,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 137,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 160,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 260,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<TAuthorization>(collection: OpenIdCollection);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 296,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = (await _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 381,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = (await _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 414,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = (await _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdAuthorizationStore.cs",
+    "repo": "src",
+    "line": 447,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = (await _session.Query<TAuthorization, OpenIdAuthorizationIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TToken>(collection: OpenIdCollection).CountAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 102,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TToken, OpenIdTokenIndex>(query, collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 112,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TToken, OpenIdTokenIndex>(index => index.ApplicationId == identifier, collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 122,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TToken, OpenIdTokenIndex>(index => index.AuthorizationId == identifier, collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 132,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TToken, OpenIdTokenIndex>(index => index.ReferenceId == identifier, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 142,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TToken, OpenIdTokenIndex>(index => index.TokenId == identifier, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 162,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TToken, OpenIdTokenIndex>(index => index.Subject == subject, collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 302,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<TToken>(collection: OpenIdCollection);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 338,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = (await _session.Query<TToken, OpenIdTokenIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 423,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = (await _session.Query<TToken, OpenIdTokenIndex>(query, collection: OpenIdCollection).ListAsync(cancellationToken)).ToList();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 454,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = (await _session.Query<TToken, OpenIdTokenIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 487,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = (await _session.Query<TToken, OpenIdTokenIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs",
+    "repo": "src",
+    "line": 519,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = (await _session.Query<TToken, OpenIdTokenIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TScope>(collection: OpenIdCollection).CountAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TScope, OpenIdScopeIndex>(index => index.ScopeId == identifier, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return await _session.Query<TScope, OpenIdScopeIndex>(index => index.Name == name, collection: OpenIdCollection).FirstOrDefaultAsync(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 91,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TScope, OpenIdScopeIndex>(index => index.Name.IsIn(names), collection: OpenIdCollection).ToAsyncEnumerable(cancellationToken);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 111,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "return _session.Query<TScope, OpenIdScopeByResourceIndex>("
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdScopeStore.cs",
+    "repo": "src",
+    "line": 218,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var query = _session.Query<TScope>(collection: OpenIdCollection);"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
+    "repo": "src",
+    "line": 368,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var tokens = await _session.Query<OpenIdToken>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
+    "repo": "src",
+    "line": 369,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var authorizations = await _session.Query<OpenIdAuthorization>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
+    "repo": "src",
+    "line": 471,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var applications = await _session.Query<OpenIdApplication>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
+    "repo": "src",
+    "line": 472,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var scopes = await _session.Query<OpenIdScope>().ListAsync();"
+  },
+  {
+    "file": "src/OrchardCore/OrchardCore.AuditTrail.Abstractions/Services/AuditTrailFilterEngineModelBinder.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class AuditTrailFilterEngineModelBinder : IModelBinder"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.Resources/SubResourceIntegrityTests.cs",
+    "repo": "test",
+    "line": 30,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var httpClient = new HttpClient();"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.Twitter/TwitterClientTests.cs",
+    "repo": "test",
+    "line": 69,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "new HttpClient(_mockFakeHttpMessageHandler.Object), Mock.Of<ILogger<TwitterClient>>())"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.Users/AccountControllerTests.cs",
+    "repo": "test",
+    "line": 96,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var sam = await session.Query<User, UserByClaimIndex>()"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.Users/AccountControllerTests.cs",
+    "repo": "test",
+    "line": 154,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var userFromDb = await session.Query<User, UserByClaimIndex>()"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.OpenId/OpenIdAuthenticationTests.cs",
+    "repo": "test",
+    "line": 75,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var applications = await session.Query<OpenIdApplication, OpenIdApplicationIndex>(OpenIdApplication.OpenIdCollection).ListAsync();"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Modules/OrchardCore.OpenId/OpenIdAuthenticationTests.cs",
+    "repo": "test",
+    "line": 233,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var applications = await session.Query<OpenIdApplication, OpenIdApplicationIndex>(OpenIdApplication.OpenIdCollection).ListAsync();"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Data/Migration/DataMigrationManagerTests.cs",
+    "repo": "test",
+    "line": 75,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "sessionMock.Setup(s => s.Query())"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/ContentStepLuceneQueryTests.cs",
+    "repo": "test",
+    "line": 42,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"RecentBlogPosts\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostUpdateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 30,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostUpdateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 62,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostUpdateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 102,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostCreateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostCreateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 73,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostCreateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 117,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostCreateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 160,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPostsCount = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostCreateDeploymentPlanTests.cs",
+    "repo": "test",
+    "line": 204,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPostsCount = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostContentStepIdempotentTests.cs",
+    "repo": "test",
+    "line": 33,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/DeploymentPlans/BlogPostContentStepIdempotentTests.cs",
+    "repo": "test",
+    "line": 72,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/ContentApiController/BlogPostApiControllerTests.cs",
+    "repo": "test",
+    "line": 71,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/ContentManagement/ContentApiController/BlogPostApiControllerTests.cs",
+    "repo": "test",
+    "line": 246,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var blogPosts = await session.Query<ContentItem, ContentItemIndex>(x =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeContext.cs",
+    "repo": "test",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"product\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 14,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product(where: {price: {amount_gt: 10}}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product(where: {sku_starts_with: \"\"4000\"\"}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 64,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product(where: {metadataCode: \"\"100000987\"\"}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 89,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product("
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 122,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product(orderBy: {createdUtc: ASC}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 131,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"product(orderBy: {createdUtc: DESC}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 150,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"numberType(where: {value: 123}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 159,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"stringType(where: {value: \"\"Text123\"\"}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentManagement/DynamicContentTypeQueryTests.cs",
+    "repo": "test",
+    "line": 182,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(@\"twoNumbersType(where: {field1: 200}) {"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentItemsFieldTypeTests.cs",
+    "repo": "test",
+    "line": 34,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionStringTemplate = @\"Data Source={0};Cache=Shared\";"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentItemsFieldTypeTests.cs",
+    "repo": "test",
+    "line": 37,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_store = await StoreFactory.CreateAndInitializeAsync(new Configuration().UseSqLite(string.Format(connectionStringTemplate, _tempFilename)));"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/ContentItemsFieldTypeTests.cs",
+    "repo": "test",
+    "line": 40,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_prefixedStore = await StoreFactory.CreateAndInitializeAsync(new Configuration().UseSqLite(string.Format(connectionStringTemplate, _tempFilename + _prefix)).SetTablePrefix(_prefix + \"_\"));"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Queries/PredicateQueryTests.cs",
+    "repo": "test",
+    "line": 17,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseSqlServer(",
+    "context": ".UseSqlServer(\"Fake database connection string for testing;\", \"TenantSchema\")"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Queries/PredicateQueryTests.cs",
+    "repo": "test",
+    "line": 86,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseMySql(",
+    "context": ".UseMySql(\"Fake database connection string for testing;\", \"TenantSchema\")"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Queries/PredicateQueryTests.cs",
+    "repo": "test",
+    "line": 98,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseSqlServer(",
+    "context": ".UseSqlServer(\"Fake database connection string for testing;\", \"TenantSchema\")"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Queries/RecentBlogPostsQueryTests.cs",
+    "repo": "test",
+    "line": 41,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"RecentBlogPosts\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 24,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"Blog\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 81,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"BlogPost\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 104,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"BlogPost\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 150,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"BlogPost\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 185,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blogPost(status: PUBLISHED) { displayText, published }\");"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 191,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blogPost(status: DRAFT) { displayText, published }\");"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 197,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blogPost(status: LATEST) { displayText, published }\");"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 231,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blog\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 256,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blog\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 280,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blog\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/GraphQL/Blog/BlogPostTests.cs",
+    "repo": "test",
+    "line": 297,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blogPost { blog { listContentItem { ... on Blog { displayText } } } }\");"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/BlogPostDeploymentContext.cs",
+    "repo": "test",
+    "line": 28,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blogPost\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/BlogPostApiControllerContext.cs",
+    "repo": "test",
+    "line": 28,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "var result = await GraphQLClient.Content.Query(body);"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/SiteContext.cs",
+    "repo": "test",
+    "line": 26,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/SiteContext.cs",
+    "repo": "test",
+    "line": 51,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = ConnectionString,"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/SiteContext.cs",
+    "repo": "test",
+    "line": 71,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = ConnectionString,"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/SiteContext.cs",
+    "repo": "test",
+    "line": 215,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public static T WithConnectionString<T>(this T siteContext, string connectionString) where T : SiteContext"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/SiteContext.cs",
+    "repo": "test",
+    "line": 217,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "siteContext.ConnectionString = connectionString;"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Apis/Context/BlogContext.cs",
+    "repo": "test",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": ".Query(\"blog\", builder =>"
+  },
+  {
+    "file": "test/OrchardCore.Tests/Serializers/JsonSerializerTests.cs",
+    "repo": "test",
+    "line": 78,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var dbUser = await session.Query<User, UserIndex>(x => x.UserId == \"abc\").FirstOrDefaultAsync();"
+  }
+]

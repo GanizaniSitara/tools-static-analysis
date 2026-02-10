@@ -1,0 +1,225 @@
+<mxfile host="dependency-mapper" type="device">
+  <diagram id="nuget-groups" name="nuget-groups">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="8000" pageHeight="8000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="3" value="Microsoft" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#3498DB33;strokeColor=#2980B9;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="0" width="700" height="168" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="Microsoft.AspNetCore.Authentication.Twitter" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="Microsoft.Extensions.Http.Resilience" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="Microsoft.AspNetCore.Authentication.MicrosoftAccount" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" value="Microsoft.Identity.Web" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="12" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" value="Microsoft.AspNetCore.Authentication.Google" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="184" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" value="Microsoft.AspNetCore.Authentication.OpenIdConnect" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="356" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="Microsoft.IdentityModel.Protocols.OpenIdConnect" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="528" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="12" value="... +7 more" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#3498DB;fontColor=#ffffff;strokeColor=#2980B9;shadow=1;" vertex="1" parent="3">
+          <mxGeometry x="12" y="120" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" value="OrchardCore" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#E74C3C33;strokeColor=#C0392B;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="183" width="700" height="168" as="geometry"/>
+        </mxCell>
+        <mxCell id="14" value="OrchardCore.Logging.NLog
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="15" value="OrchardCore.Logging.Serilog
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="16" value="OrchardCore.Application.Cms.Targets
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" value="OrchardCore.Theme.Targets
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="18" value="OrchardCore.ContentManagement
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="12" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="19" value="OrchardCore.DisplayManagement
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="184" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="20" value="OrchardCore.ResourceManagement
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="356" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="21" value="OrchardCore.Module.Targets
+$(TemplateOrchardPackageVersion)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="528" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="22" value="... +3 more" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E74C3C;fontColor=#ffffff;strokeColor=#C0392B;shadow=1;" vertex="1" parent="13">
+          <mxGeometry x="12" y="120" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="23" value="Azure" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#2ECC7133;strokeColor=#27AE60;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="366" width="700" height="124" as="geometry"/>
+        </mxCell>
+        <mxCell id="24" value="Azure.Communication.Email" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="25" value="Azure.Extensions.AspNetCore.DataProtection.Blobs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="26" value="Azure.Communication.Sms" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="27" value="Azure.Search.Documents" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="28" value="Azure.Storage.Blobs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="12" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="29" value="Azure.Extensions.AspNetCore.Configuration.Secrets" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="184" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="30" value="Azure.Identity" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#2ECC71;fontColor=#ffffff;strokeColor=#27AE60;shadow=1;" vertex="1" parent="23">
+          <mxGeometry x="356" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="31" value="OpenIddict" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#9B59B633;strokeColor=#7D3C98;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="505" width="700" height="124" as="geometry"/>
+        </mxCell>
+        <mxCell id="32" value="OpenIddict.Server.AspNetCore" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="33" value="OpenIddict.Server.DataProtection" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="34" value="OpenIddict.Validation.AspNetCore" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="35" value="OpenIddict.Validation.DataProtection" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="36" value="OpenIddict.Validation.SystemNetHttp" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="12" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="37" value="OpenIddict.Core" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#9B59B6;fontColor=#ffffff;strokeColor=#7D3C98;shadow=1;" vertex="1" parent="31">
+          <mxGeometry x="184" y="76" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="38" value="YesSql" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#F39C1233;strokeColor=#D4860B;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="644" width="700" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="39" value="YesSql.Core" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#F39C12;fontColor=#ffffff;strokeColor=#D4860B;shadow=1;" vertex="1" parent="38">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="40" value="YesSql.Filters.Query" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#F39C12;fontColor=#ffffff;strokeColor=#D4860B;shadow=1;" vertex="1" parent="38">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="41" value="YesSql.Abstractions" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#F39C12;fontColor=#ffffff;strokeColor=#D4860B;shadow=1;" vertex="1" parent="38">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="42" value="YesSql" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#F39C12;fontColor=#ffffff;strokeColor=#D4860B;shadow=1;" vertex="1" parent="38">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="43" value="Lucene" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#1ABC9C33;strokeColor=#16A085;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="739" width="700" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="44" value="Lucene.Net.Analysis.Common" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#1ABC9C;fontColor=#ffffff;strokeColor=#16A085;shadow=1;" vertex="1" parent="43">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="45" value="Lucene.Net.QueryParser" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#1ABC9C;fontColor=#ffffff;strokeColor=#16A085;shadow=1;" vertex="1" parent="43">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="46" value="Lucene.Net.Spatial" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#1ABC9C;fontColor=#ffffff;strokeColor=#16A085;shadow=1;" vertex="1" parent="43">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="47" value="Lucene.Net" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#1ABC9C;fontColor=#ffffff;strokeColor=#16A085;shadow=1;" vertex="1" parent="43">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="48" value="GraphQL" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#E67E2233;strokeColor=#C56A1B;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="834" width="700" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="49" value="GraphQL" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#C56A1B;shadow=1;" vertex="1" parent="48">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="50" value="GraphQL.DataLoader" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#C56A1B;shadow=1;" vertex="1" parent="48">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="51" value="GraphQL.MicrosoftDI" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#C56A1B;shadow=1;" vertex="1" parent="48">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="52" value="GraphQL.SystemTextJson" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E67E22;fontColor=#ffffff;strokeColor=#C56A1B;shadow=1;" vertex="1" parent="48">
+          <mxGeometry x="528" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="53" value="SixLabors" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#E91E6333;strokeColor=#C2185B;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="929" width="528" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="54" value="SixLabors.ImageSharp.Web.Providers.Azure" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E91E63;fontColor=#ffffff;strokeColor=#C2185B;shadow=1;" vertex="1" parent="53">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="55" value="SixLabors.ImageSharp.Web.Providers.AWS" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E91E63;fontColor=#ffffff;strokeColor=#C2185B;shadow=1;" vertex="1" parent="53">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="56" value="SixLabors.ImageSharp.Web" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#E91E63;fontColor=#ffffff;strokeColor=#C2185B;shadow=1;" vertex="1" parent="53">
+          <mxGeometry x="356" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="57" value="AWSSDK" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#00BCD433;strokeColor=#0097A7;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1024" width="356" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="58" value="AWSSDK.S3" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#00BCD4;fontColor=#ffffff;strokeColor=#0097A7;shadow=1;" vertex="1" parent="57">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="59" value="AWSSDK.Extensions.NETCore.Setup" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#00BCD4;fontColor=#ffffff;strokeColor=#0097A7;shadow=1;" vertex="1" parent="57">
+          <mxGeometry x="184" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="60" value="Parlot" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#79554833;strokeColor=#5D4037;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1119" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="61" value="Parlot" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#795548;fontColor=#ffffff;strokeColor=#5D4037;shadow=1;" vertex="1" parent="60">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="62" value="ncrontab" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#607D8B33;strokeColor=#455A64;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1214" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="63" value="ncrontab" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#607D8B;fontColor=#ffffff;strokeColor=#455A64;shadow=1;" vertex="1" parent="62">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="64" value="MiniProfiler" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#FF572233;strokeColor=#E64A19;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1309" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="65" value="MiniProfiler.AspNetCore.Mvc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#FF5722;fontColor=#ffffff;strokeColor=#E64A19;shadow=1;" vertex="1" parent="64">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="66" value="Elastic" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#4A90D933;strokeColor=#3570A8;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1404" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="67" value="Elastic.Clients.Elasticsearch" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#4A90D9;fontColor=#ffffff;strokeColor=#3570A8;shadow=1;" vertex="1" parent="66">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="68" value="PdfPig" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#CDDC3933;strokeColor=#AFB42B;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1499" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="69" value="PdfPig" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#CDDC39;fontColor=#ffffff;strokeColor=#AFB42B;shadow=1;" vertex="1" parent="68">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="70" value="Jint" style="swimlane;startSize=26;fontSize=12;fontStyle=1;fillColor=#FF980033;strokeColor=#F57C00;rounded=1;swimlaneLine=1;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="0" y="1594" width="184" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="71" value="Jint" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#FF9800;fontColor=#ffffff;strokeColor=#F57C00;shadow=1;" vertex="1" parent="70">
+          <mxGeometry x="12" y="32" width="160" height="36" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

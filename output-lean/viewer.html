@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lean — Dependency Map</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+  window.mermaidAPI = mermaid;
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh;
+  }
+  a { color: #3b82f6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    border-bottom: 1px solid #334155; padding: 1.5rem 2rem 1rem;
+  }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }
+  .header h1 span { color: #3b82f6; }
+  .search-box { position: relative; width: 280px; }
+  .search-box input {
+    width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.2rem; border-radius: 6px;
+    border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    font-size: 0.875rem; outline: none; transition: border-color .2s;
+  }
+  .search-box input::placeholder { color: #64748b; }
+  .search-box input:focus { border-color: #3b82f6; }
+  .search-box .search-icon {
+    position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+    color: #64748b; font-size: 0.85rem; pointer-events: none;
+  }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }
+  .stat { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8; }
+  .stat-value { font-weight: 700; font-size: 1rem; color: #3b82f6; }
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
+    background: #0f172a; border-bottom: 1px solid #334155;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem; background: transparent; border: none; color: #94a3b8;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: #e2e8f0; }
+  .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+  .content { padding: 1.5rem 2rem 3rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+  }
+  .card-title {
+    font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card-title .icon { color: #3b82f6; }
+  .mermaid-wrap {
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
+    min-height: 120px; display: flex; align-items: center; justify-content: center;
+  }
+  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; }
+  .mermaid-wrap svg { max-width: 100%; height: auto; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead th {
+    background: #1a2438; color: #94a3b8; font-weight: 600; text-transform: uppercase;
+    font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.6rem 0.75rem; text-align: left;
+    border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 1;
+  }
+  tbody td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+  tbody tr:hover { background: rgba(59,130,246,0.06); }
+  .tag {
+    display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .tag-webapp      { background: rgba(26,188,156,.15); color: #1ABC9C; }
+  .tag-library     { background: rgba(74,144,217,.15); color: #4A90D9; }
+  .tag-application { background: rgba(231,76,60,.15);  color: #E74C3C; }
+  .tag-service     { background: rgba(52,152,219,.15); color: #3498DB; }
+  .tag-tool        { background: rgba(243,156,18,.15); color: #F39C12; }
+  .tag-test        { background: rgba(155,89,182,.15); color: #9B59B6; }
+  .tag-connector   { background: rgba(230,126,34,.15); color: #E67E22; }
+  .tag-desktopapp  { background: rgba(233,30,99,.15);  color: #E91E63; }
+  .tag-db       { background: rgba(74,144,217,.15);  color: #4A90D9; }
+  .tag-messaging{ background: rgba(231,76,60,.15);   color: #E74C3C; }
+  .tag-api      { background: rgba(52,152,219,.15);  color: #3498DB; }
+  .tag-cache    { background: rgba(243,156,18,.15);  color: #F39C12; }
+  .tag-config   { background: rgba(155,89,182,.15);  color: #9B59B6; }
+  .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
+  .footer {
+    text-align: center; padding: 1.5rem 2rem; color: #475569;
+    font-size: 0.78rem; font-style: italic; border-top: 1px solid #334155;
+  }
+  @media (max-width: 768px) {
+    .header { padding: 1rem; }
+    .content { padding: 1rem; }
+    .tabs { padding: 0 1rem; }
+    .search-box { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <h1><span>Lean</span> Dependency Map</h1>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-value">23</span> Projects</div>
+    <div class="stat"><span class="stat-value">33</span> NuGet Packages</div>
+    <div class="stat"><span class="stat-value">117</span> Project References</div>
+    <div class="stat"><span class="stat-value">195</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">0</span> Config Files</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav">
+  <button class="tab-btn active" data-tab="landscape">Full Landscape</button>
+  <button class="tab-btn" data-tab="corelibraries">Core Libraries</button>
+  <button class="tab-btn" data-tab="datainfrastructure">Data Infrastructure</button>
+  <button class="tab-btn" data-tab="nugetgroups">NuGet Packages</button>
+  <button class="tab-btn" data-tab="datasources">Data Sources</button>
+  <button class="tab-btn" data-tab="allprojects">All Projects</button>
+</nav>
+
+<main class="content">
+
+  <section class="tab-panel active" id="panel-landscape">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Full Solution Dependency Graph</div>
+      <div class="mermaid-wrap" id="mermaid-landscape">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Webapps
+        Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
+    end
+    subgraph Librarys
+        Lean_QuantConnect_Configuration[&quot;QuantConnect.Configuration&quot;]
+        Lean_QuantConnect_Compression[&quot;QuantConnect.Compression&quot;]
+        Lean_QuantConnect_Messaging[&quot;QuantConnect.Messaging&quot;]
+        Lean_QuantConnect_Research[&quot;QuantConnect.Research&quot;]
+        Lean_QuantConnect_Brokerages[&quot;QuantConnect.Brokerages&quot;]
+        Lean_QuantConnect_Algorithm_CSharp[&quot;QuantConnect.Algorithm.CSharp&quot;]
+        Lean_QuantConnect_Algorithm_Framework[&quot;QuantConnect.Algorithm.Framework&quot;]
+        Lean_QuantConnect_Lean_Engine[&quot;QuantConnect.Lean.Engine&quot;]
+        Lean_QuantConnect_Queues[&quot;QuantConnect.Queues&quot;]
+        Lean_QuantConnect_AlgorithmFactory[&quot;QuantConnect.AlgorithmFactory&quot;]
+        Lean_QuantConnect[&quot;QuantConnect&quot;]
+        Lean_QuantConnect_Indicators[&quot;QuantConnect.Indicators&quot;]
+        Lean_QuantConnect_Optimizer[&quot;QuantConnect.Optimizer&quot;]
+        Lean_QuantConnect_Algorithm_Python[&quot;QuantConnect.Algorithm.Python&quot;]
+        Lean_QuantConnect_Logging[&quot;QuantConnect.Logging&quot;]
+        Lean_QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
+    end
+    subgraph Applications
+        Lean_QuantConnect_Optimizer_Launcher[&quot;QuantConnect.Optimizer.Launcher&quot;]
+        Lean_QuantConnect_DownloaderDataProvider_Launcher[&quot;QuantConnect.DownloaderDataProvider.Launcher&quot;]
+        Lean_QuantConnect_Lean_Launcher[&quot;QuantConnect.Lean.Launcher&quot;]
+        Lean_QuantConnect_Report[&quot;QuantConnect.Report&quot;]
+    end
+    subgraph Tools
+        Lean_QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
+    end
+    subgraph Tests
+        Lean_QuantConnect_Tests[&quot;QuantConnect.Tests&quot;]
+    end
+    Lean_QuantConnect_Api --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Api --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Api --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Configuration --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Compression --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Optimizer
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Queues
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect
+    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm_CSharp
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_AlgorithmFactory
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_ToolBox --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm_CSharp
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_AlgorithmFactory
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Optimizer
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Research
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Lean_Launcher
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Messaging
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Queues
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Report
+    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_ToolBox
+    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Algorithm_CSharp
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_AlgorithmFactory
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Optimizer_Launcher
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Research
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Messaging
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Queues
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_ToolBox
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Api
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Messaging
+    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_ToolBox
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Logging
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-corelibraries">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Core Library Dependencies</div>
+      <div class="mermaid-wrap" id="mermaid-corelibraries">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    Lean_QuantConnect_Configuration[&quot;QuantConnect.Configuration&quot;]
+    Lean_QuantConnect_Compression[&quot;QuantConnect.Compression&quot;]
+    Lean_QuantConnect_Messaging[&quot;QuantConnect.Messaging&quot;]
+    Lean_QuantConnect_Research[&quot;QuantConnect.Research&quot;]
+    Lean_QuantConnect_Brokerages[&quot;QuantConnect.Brokerages&quot;]
+    Lean_QuantConnect_Algorithm_CSharp[&quot;QuantConnect.Algorithm.CSharp&quot;]
+    Lean_QuantConnect_Algorithm_Framework[&quot;QuantConnect.Algorithm.Framework&quot;]
+    Lean_QuantConnect_Lean_Engine[&quot;QuantConnect.Lean.Engine&quot;]
+    Lean_QuantConnect_Queues[&quot;QuantConnect.Queues&quot;]
+    Lean_QuantConnect_AlgorithmFactory[&quot;QuantConnect.AlgorithmFactory&quot;]
+    Lean_QuantConnect[&quot;QuantConnect&quot;]
+    Lean_QuantConnect_Indicators[&quot;QuantConnect.Indicators&quot;]
+    Lean_QuantConnect_Optimizer[&quot;QuantConnect.Optimizer&quot;]
+    Lean_QuantConnect_Algorithm_Python[&quot;QuantConnect.Algorithm.Python&quot;]
+    Lean_QuantConnect_Logging[&quot;QuantConnect.Logging&quot;]
+    Lean_QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
+    Lean_QuantConnect_Configuration --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Compression --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Queues
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm_Framework
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm_CSharp
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_AlgorithmFactory
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Brokerages
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Compression
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Logging
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Algorithm
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Configuration
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Indicators
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect
+    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Logging
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-datainfrastructure">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Infrastructure &amp; External Sources</div>
+      <div class="mermaid-wrap" id="mermaid-datainfrastructure">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Applications
+        Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
+        Lean_QuantConnect_Optimizer_Launcher[&quot;QuantConnect.Optimizer.Launcher&quot;]
+        Lean_QuantConnect_DownloaderDataProvider_Launcher[&quot;QuantConnect.DownloaderDataProvider.Launcher&quot;]
+        Lean_QuantConnect_Lean_Launcher[&quot;QuantConnect.Lean.Launcher&quot;]
+        Lean_QuantConnect_Report[&quot;QuantConnect.Report&quot;]
+    end
+    subgraph DataSources
+        datasource_Lean_Dapper[(&quot;Dapper&quot;)]
+        datasource_Lean_Kafka[(&quot;Kafka&quot;)]
+        datasource_Lean_RabbitMQ[(&quot;RabbitMQ&quot;)]
+    end
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-nugetgroups">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> NuGet Package Groups</div>
+      <div class="mermaid-wrap" id="mermaid-nugetgroups">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Accord[&quot;Accord&quot;]
+        nuget_Accord[&quot;Accord&lt;br/&gt;3.6.0&quot;]
+        nuget_Accord_Fuzzy[&quot;Accord.Fuzzy&lt;br/&gt;3.6.0&quot;]
+        nuget_Accord_MachineLearning[&quot;Accord.MachineLearning&lt;br/&gt;3.6.0&quot;]
+        nuget_Accord_Math[&quot;Accord.Math&lt;br/&gt;3.6.0&quot;]
+        nuget_Accord_Statistics[&quot;Accord.Statistics&lt;br/&gt;3.6.0&quot;]
+    end
+    subgraph Plotly[&quot;Plotly&quot;]
+        nuget_Plotly_NET[&quot;Plotly.NET&lt;br/&gt;5.1.0&quot;]
+        nuget_Plotly_NET_CSharp[&quot;Plotly.NET.CSharp&lt;br/&gt;0.13.0&quot;]
+        nuget_Plotly_NET_Interactive[&quot;Plotly.NET.Interactive&lt;br/&gt;5.0.0&quot;]
+    end
+    subgraph Microsoft[&quot;Microsoft&quot;]
+        nuget_Microsoft_IO_RecyclableMemoryStream[&quot;Microsoft.IO.RecyclableMemoryStream&lt;br/&gt;3.0.1&quot;]
+        nuget_Microsoft_NET_Test_Sdk[&quot;Microsoft.NET.Test.Sdk&lt;br/&gt;16.9.4&quot;]
+        nuget_Microsoft_TestPlatform_ObjectModel[&quot;Microsoft.TestPlatform.ObjectModel&lt;br/&gt;16.9.4&quot;]
+    end
+    subgraph Common[&quot;Common&quot;]
+        nuget_Common_Logging[&quot;Common.Logging&lt;br/&gt;3.4.1&quot;]
+        nuget_Common_Logging_Core[&quot;Common.Logging.Core&lt;br/&gt;3.4.1&quot;]
+    end
+    subgraph Newtonsoft[&quot;Newtonsoft&quot;]
+        nuget_Newtonsoft_Json[&quot;Newtonsoft.Json&lt;br/&gt;13.0.2&quot;]
+    end
+    subgraph NodaTime[&quot;NodaTime&quot;]
+        nuget_NodaTime[&quot;NodaTime&lt;br/&gt;3.0.5&quot;]
+    end
+    subgraph RestSharp[&quot;RestSharp&quot;]
+        nuget_RestSharp[&quot;RestSharp&lt;br/&gt;106.12.0&quot;]
+    end
+    subgraph McMaster[&quot;McMaster&quot;]
+        nuget_McMaster_Extensions_CommandLineUtils[&quot;McMaster.Extensions.CommandLineUtils&lt;br/&gt;2.6.0&quot;]
+    end
+    subgraph DotNetZip[&quot;DotNetZip&quot;]
+        nuget_DotNetZip[&quot;DotNetZip&lt;br/&gt;1.16.0&quot;]
+    end
+    subgraph SharpZipLib[&quot;SharpZipLib&quot;]
+        nuget_SharpZipLib[&quot;SharpZipLib&lt;br/&gt;1.3.3&quot;]
+    end
+    subgraph NetMQ[&quot;NetMQ&quot;]
+        nuget_NetMQ[&quot;NetMQ&lt;br/&gt;4.0.1.6&quot;]
+    end
+    subgraph QuantConnect[&quot;QuantConnect&quot;]
+        nuget_QuantConnect_pythonnet[&quot;QuantConnect.pythonnet&lt;br/&gt;2.0.52&quot;]
+    end
+    subgraph CsvHelper[&quot;CsvHelper&quot;]
+        nuget_CsvHelper[&quot;CsvHelper&lt;br/&gt;19.0.0&quot;]
+    end
+    subgraph DynamicInterop[&quot;DynamicInterop&quot;]
+        nuget_DynamicInterop[&quot;DynamicInterop&lt;br/&gt;0.9.1&quot;]
+    end
+    subgraph MathNet[&quot;MathNet&quot;]
+        nuget_MathNet_Numerics[&quot;MathNet.Numerics&lt;br/&gt;5.0.0&quot;]
+    end
+        </pre>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-datasources">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>WebSocket</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>141</td>
+              <td>Brokerages</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>28</td>
+              <td>Algorithm, Algorithm.CSharp, Common, Configuration, Engine, ... +1 more</td>
+            </tr>
+            <tr>
+              <td><strong>FileStorage</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>13</td>
+              <td>Compression, Logging, Tests, ToolBox</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.New</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>8</td>
+              <td>Api, Common, Engine, Tests</td>
+            </tr>
+            <tr>
+              <td><strong>RabbitMQ</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>4</td>
+              <td>Tests</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>1</td>
+              <td>Common</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="tab-panel" id="panel-allprojects">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="table-wrap">
+        <table id="projectsTable">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Repo</th>
+              <th>Category</th>
+              <th>Project Refs</th>
+              <th>NuGet Deps</th>
+              <th>Path</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-10
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var categoryClass = {
+    'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
+    'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
+    'connector': 'tag-connector', 'desktopapp': 'tag-desktopapp'
+  };
+
+  function tagHTML(category) {
+    var lower = (category || '').toLowerCase();
+    var cls = categoryClass[lower] || 'tag-service';
+    return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function parseCSV(text) {
+    var lines = text.trim().split('\n');
+    if (lines.length === 0) return [];
+    var headers = lines[0].split(',');
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {
+      var vals = lines[i].split(',');
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h.trim()] = (vals[idx] || '').trim(); });
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels  = document.querySelectorAll('.tab-panel');
+  var renderedTabs = {};
+
+  function activateTab(tabId) {
+    tabButtons.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === tabId); });
+    tabPanels.forEach(function (p)  { p.classList.toggle('active', p.id === 'panel-' + tabId); });
+    lazyRenderMermaid(tabId);
+  }
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
+  });
+
+  var mermaidContainers = { 'landscape': 'mermaid-landscape', 'corelibraries': 'mermaid-corelibraries', 'datainfrastructure': 'mermaid-datainfrastructure', 'nugetgroups': 'mermaid-nugetgroups' };
+
+  function lazyRenderMermaid(tabId) {
+    var containerId = mermaidContainers[tabId];
+    if (!containerId || renderedTabs[tabId]) return;
+
+    function doRender() {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      var pre = container.querySelector('pre.mermaid');
+      if (!pre) return;
+      renderedTabs[tabId] = true;
+      var loading = container.querySelector('.loading');
+      pre.style.display = '';
+      if (loading) loading.style.display = 'none';
+      window.mermaidAPI.run({ nodes: [pre] }).catch(function (err) {
+        console.error('Mermaid render error for ' + tabId + ':', err);
+        if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
+      });
+    }
+
+    if (window.mermaidAPI) { doRender(); }
+    else {
+      var interval = setInterval(function () {
+        if (window.mermaidAPI) { clearInterval(interval); doRender(); }
+      }, 150);
+    }
+  }
+
+  // Render first tab on load
+  var firstTab = document.querySelector('.tab-btn');
+  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+
+  // Load All Projects data
+  Promise.all([
+    fetch('project-meta.json').then(function (r) { return r.json(); }),
+    fetch('project-refs.csv').then(function (r) { return r.text(); }),
+    fetch('dependencies.csv').then(function (r) { return r.text(); })
+  ]).then(function (results) {
+    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
+    var refCounts = {}, depCounts = {};
+    refs.forEach(function (r) { refCounts[r.project] = (refCounts[r.project] || 0) + 1; });
+    deps.forEach(function (d) { depCounts[d.project] = (depCounts[d.project] || 0) + 1; });
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '';
+    meta.forEach(function (p) {
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(p.project) + '</strong></td>' +
+        '<td>' + escHtml(p.repo || '') + '</td>' +
+        '<td>' + tagHTML(p.category) + '</td>' +
+        '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
+        '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
+        '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
+      tbody.appendChild(tr);
+    });
+  }).catch(function (err) {
+    console.error('Failed to load project data:', err);
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+  });
+
+  // Search
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {
+    var query = searchInput.value.trim().toLowerCase();
+    if (query.length > 0) activateTab('allprojects');
+    var rows = document.querySelectorAll('#projectsBody tr[data-search]');
+    rows.forEach(function (row) {
+      var text = row.getAttribute('data-search') || '';
+      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

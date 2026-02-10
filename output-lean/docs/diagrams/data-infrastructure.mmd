@@ -1,0 +1,13 @@
+graph LR
+    subgraph Applications
+        Lean_QuantConnect_Api["QuantConnect.Api"]
+        Lean_QuantConnect_Optimizer_Launcher["QuantConnect.Optimizer.Launcher"]
+        Lean_QuantConnect_DownloaderDataProvider_Launcher["QuantConnect.DownloaderDataProvider.Launcher"]
+        Lean_QuantConnect_Lean_Launcher["QuantConnect.Lean.Launcher"]
+        Lean_QuantConnect_Report["QuantConnect.Report"]
+    end
+    subgraph DataSources
+        datasource_Lean_Dapper[("Dapper")]
+        datasource_Lean_Kafka[("Kafka")]
+        datasource_Lean_RabbitMQ[("RabbitMQ")]
+    end

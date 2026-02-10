@@ -1,0 +1,87 @@
+graph LR
+    subgraph src["src"]
+        subgraph src_webapp["webapp"]
+            src_WebApp["WebApp"]
+            src_Identity_API["Identity.API"]
+            src_Catalog_API["Catalog.API"]
+            src_WebAppComponents["WebAppComponents"]
+            src_PaymentProcessor["PaymentProcessor"]
+            src_Basket_API["Basket.API"]
+            src_Ordering_API["Ordering.API"]
+            src_Webhooks_API["Webhooks.API"]
+        end
+        subgraph src_library["library"]
+            src_Ordering_Domain["Ordering.Domain"]
+            src_Ordering_Infrastructure["Ordering.Infrastructure"]
+            src_IntegrationEventLogEF["IntegrationEventLogEF"]
+            src_EventBus["EventBus"]
+            src_EventBusRabbitMQ["EventBusRabbitMQ"]
+        end
+        subgraph src_application["application"]
+            src_eShop_AppHost["eShop.AppHost"]
+            src_HybridApp["HybridApp"]
+        end
+        subgraph src_service["service"]
+            src_OrderProcessor["OrderProcessor"]
+            src_eShop_ServiceDefaults["eShop.ServiceDefaults"]
+        end
+        subgraph src_tool["tool"]
+            src_ClientApp["ClientApp"]
+            src_WebhookClient["WebhookClient"]
+        end
+    end
+    subgraph tests["tests"]
+        subgraph tests_test["test"]
+            tests_Ordering_UnitTests["Ordering.UnitTests"]
+            tests_Ordering_FunctionalTests["Ordering.FunctionalTests"]
+            tests_Catalog_FunctionalTests["Catalog.FunctionalTests"]
+            tests_Basket_UnitTests["Basket.UnitTests"]
+            tests_ClientApp_UnitTests["ClientApp.UnitTests"]
+        end
+    end
+    src_WebApp --> src_eShop_ServiceDefaults
+    src_WebApp --> src_EventBusRabbitMQ
+    src_WebApp --> src_WebAppComponents
+    src_Identity_API --> src_eShop_ServiceDefaults
+    src_Catalog_API --> src_EventBusRabbitMQ
+    src_Catalog_API --> src_IntegrationEventLogEF
+    src_Catalog_API --> src_eShop_ServiceDefaults
+    src_eShop_AppHost --> src_Basket_API
+    src_eShop_AppHost --> src_Catalog_API
+    src_eShop_AppHost --> src_Identity_API
+    src_eShop_AppHost --> src_Ordering_API
+    src_eShop_AppHost --> src_OrderProcessor
+    src_eShop_AppHost --> src_PaymentProcessor
+    src_eShop_AppHost --> src_Webhooks_API
+    src_eShop_AppHost --> src_WebApp
+    src_eShop_AppHost --> src_WebhookClient
+    src_Ordering_Infrastructure --> src_IntegrationEventLogEF
+    src_Ordering_Infrastructure --> src_Ordering_Domain
+    src_PaymentProcessor --> src_eShop_ServiceDefaults
+    src_PaymentProcessor --> src_EventBusRabbitMQ
+    src_OrderProcessor --> src_eShop_ServiceDefaults
+    src_OrderProcessor --> src_EventBusRabbitMQ
+    src_HybridApp --> src_WebAppComponents
+    src_Basket_API --> src_eShop_ServiceDefaults
+    src_Basket_API --> src_EventBusRabbitMQ
+    src_IntegrationEventLogEF --> src_EventBus
+    src_Ordering_API --> src_EventBusRabbitMQ
+    src_Ordering_API --> src_IntegrationEventLogEF
+    src_Ordering_API --> src_eShop_ServiceDefaults
+    src_Ordering_API --> src_Ordering_Domain
+    src_Ordering_API --> src_Ordering_Infrastructure
+    src_EventBusRabbitMQ --> src_EventBus
+    src_Webhooks_API --> src_EventBusRabbitMQ
+    src_Webhooks_API --> src_IntegrationEventLogEF
+    src_Webhooks_API --> src_eShop_ServiceDefaults
+    src_WebhookClient --> src_eShop_ServiceDefaults
+    tests_Ordering_UnitTests -.-> src_Ordering_API
+    tests_Ordering_UnitTests -.-> src_Ordering_Domain
+    tests_Ordering_UnitTests -.-> src_Ordering_Infrastructure
+    tests_Ordering_FunctionalTests -.-> src_Ordering_API
+    tests_Ordering_FunctionalTests -.-> src_Identity_API
+    tests_Ordering_FunctionalTests -.-> src_Ordering_Domain
+    tests_Ordering_FunctionalTests -.-> src_Ordering_Infrastructure
+    tests_Catalog_FunctionalTests -.-> src_Catalog_API
+    tests_Basket_UnitTests -.-> src_Basket_API
+    tests_ClientApp_UnitTests -.-> src_ClientApp

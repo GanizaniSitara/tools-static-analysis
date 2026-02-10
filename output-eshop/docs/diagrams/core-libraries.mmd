@@ -1,0 +1,12 @@
+graph TD
+    subgraph src["src"]
+        src_Ordering_Domain["Ordering.Domain"]
+        src_Ordering_Infrastructure["Ordering.Infrastructure"]
+        src_IntegrationEventLogEF["IntegrationEventLogEF"]
+        src_EventBus["EventBus"]
+        src_EventBusRabbitMQ["EventBusRabbitMQ"]
+    end
+    src_Ordering_Infrastructure --> src_IntegrationEventLogEF
+    src_Ordering_Infrastructure --> src_Ordering_Domain
+    src_IntegrationEventLogEF --> src_EventBus
+    src_EventBusRabbitMQ --> src_EventBus

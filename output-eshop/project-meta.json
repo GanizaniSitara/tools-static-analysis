@@ -1,0 +1,170 @@
+[
+  {
+    "project": "WebApp",
+    "repo": "src",
+    "path": "WebApp/WebApp.csproj",
+    "globalPath": "src/WebApp/WebApp.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "Identity.API",
+    "repo": "src",
+    "path": "Identity.API/Identity.API.csproj",
+    "globalPath": "src/Identity.API/Identity.API.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "Catalog.API",
+    "repo": "src",
+    "path": "Catalog.API/Catalog.API.csproj",
+    "globalPath": "src/Catalog.API/Catalog.API.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "Ordering.Domain",
+    "repo": "src",
+    "path": "Ordering.Domain/Ordering.Domain.csproj",
+    "globalPath": "src/Ordering.Domain/Ordering.Domain.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "eShop.AppHost",
+    "repo": "src",
+    "path": "eShop.AppHost/eShop.AppHost.csproj",
+    "globalPath": "src/eShop.AppHost/eShop.AppHost.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "WebAppComponents",
+    "repo": "src",
+    "path": "WebAppComponents/WebAppComponents.csproj",
+    "globalPath": "src/WebAppComponents/WebAppComponents.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "Ordering.Infrastructure",
+    "repo": "src",
+    "path": "Ordering.Infrastructure/Ordering.Infrastructure.csproj",
+    "globalPath": "src/Ordering.Infrastructure/Ordering.Infrastructure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "PaymentProcessor",
+    "repo": "src",
+    "path": "PaymentProcessor/PaymentProcessor.csproj",
+    "globalPath": "src/PaymentProcessor/PaymentProcessor.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrderProcessor",
+    "repo": "src",
+    "path": "OrderProcessor/OrderProcessor.csproj",
+    "globalPath": "src/OrderProcessor/OrderProcessor.csproj",
+    "category": "Service"
+  },
+  {
+    "project": "HybridApp",
+    "repo": "src",
+    "path": "HybridApp/HybridApp.csproj",
+    "globalPath": "src/HybridApp/HybridApp.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "Basket.API",
+    "repo": "src",
+    "path": "Basket.API/Basket.API.csproj",
+    "globalPath": "src/Basket.API/Basket.API.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "IntegrationEventLogEF",
+    "repo": "src",
+    "path": "IntegrationEventLogEF/IntegrationEventLogEF.csproj",
+    "globalPath": "src/IntegrationEventLogEF/IntegrationEventLogEF.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "EventBus",
+    "repo": "src",
+    "path": "EventBus/EventBus.csproj",
+    "globalPath": "src/EventBus/EventBus.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "Ordering.API",
+    "repo": "src",
+    "path": "Ordering.API/Ordering.API.csproj",
+    "globalPath": "src/Ordering.API/Ordering.API.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "EventBusRabbitMQ",
+    "repo": "src",
+    "path": "EventBusRabbitMQ/EventBusRabbitMQ.csproj",
+    "globalPath": "src/EventBusRabbitMQ/EventBusRabbitMQ.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "eShop.ServiceDefaults",
+    "repo": "src",
+    "path": "eShop.ServiceDefaults/eShop.ServiceDefaults.csproj",
+    "globalPath": "src/eShop.ServiceDefaults/eShop.ServiceDefaults.csproj",
+    "category": "Service"
+  },
+  {
+    "project": "ClientApp",
+    "repo": "src",
+    "path": "ClientApp/ClientApp.csproj",
+    "globalPath": "src/ClientApp/ClientApp.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "Webhooks.API",
+    "repo": "src",
+    "path": "Webhooks.API/Webhooks.API.csproj",
+    "globalPath": "src/Webhooks.API/Webhooks.API.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "WebhookClient",
+    "repo": "src",
+    "path": "WebhookClient/WebhookClient.csproj",
+    "globalPath": "src/WebhookClient/WebhookClient.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "Ordering.UnitTests",
+    "repo": "tests",
+    "path": "Ordering.UnitTests/Ordering.UnitTests.csproj",
+    "globalPath": "tests/Ordering.UnitTests/Ordering.UnitTests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Ordering.FunctionalTests",
+    "repo": "tests",
+    "path": "Ordering.FunctionalTests/Ordering.FunctionalTests.csproj",
+    "globalPath": "tests/Ordering.FunctionalTests/Ordering.FunctionalTests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Catalog.FunctionalTests",
+    "repo": "tests",
+    "path": "Catalog.FunctionalTests/Catalog.FunctionalTests.csproj",
+    "globalPath": "tests/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Basket.UnitTests",
+    "repo": "tests",
+    "path": "Basket.UnitTests/Basket.UnitTests.csproj",
+    "globalPath": "tests/Basket.UnitTests/Basket.UnitTests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ClientApp.UnitTests",
+    "repo": "tests",
+    "path": "ClientApp.UnitTests/ClientApp.UnitTests.csproj",
+    "globalPath": "tests/ClientApp.UnitTests/ClientApp.UnitTests.csproj",
+    "category": "Test"
+  }
+]

@@ -1,0 +1,4001 @@
+{
+  "nodes": [
+    {
+      "id": "StockSharp/Algo.Testing",
+      "project": "Algo.Testing",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Algo.Testing/Algo.Testing.csproj",
+      "globalPath": "Algo.Testing/Algo.Testing.csproj",
+      "description": "Test: Algo.Testing (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Media.Names",
+      "project": "Media.Names",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Media.Names/Media.Names.csproj",
+      "globalPath": "Media.Names/Media.Names.csproj",
+      "description": "Library: Media.Names (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Configuration",
+      "project": "Configuration",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Configuration/Configuration.csproj",
+      "globalPath": "Configuration/Configuration.csproj",
+      "description": "Library: Configuration (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Charting.Interfaces",
+      "project": "Charting.Interfaces",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Charting.Interfaces/Charting.Interfaces.csproj",
+      "globalPath": "Charting.Interfaces/Charting.Interfaces.csproj",
+      "description": "Library: Charting.Interfaces (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Indicators",
+      "project": "Algo.Indicators",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Indicators/Algo.Indicators.csproj",
+      "globalPath": "Algo.Indicators/Algo.Indicators.csproj",
+      "description": "Library: Algo.Indicators (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.Extractor",
+      "project": "Localization.Extractor",
+      "repo": "StockSharp",
+      "type": "tool",
+      "path": "Localization.Extractor/Localization.Extractor.csproj",
+      "globalPath": "Localization.Extractor/Localization.Extractor.csproj",
+      "description": "Tool: Localization.Extractor (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization",
+      "project": "Localization",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization/Localization.csproj",
+      "globalPath": "Localization/Localization.csproj",
+      "description": "Localization: Localization (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Diagram.Core",
+      "project": "Diagram.Core",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Diagram.Core/Diagram.Core.csproj",
+      "globalPath": "Diagram.Core/Diagram.Core.csproj",
+      "description": "Library: Diagram.Core (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Reporting",
+      "project": "Reporting",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Reporting/Reporting.csproj",
+      "globalPath": "Reporting/Reporting.csproj",
+      "description": "Library: Reporting (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Import",
+      "project": "Algo.Import",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Import/Algo.Import.csproj",
+      "globalPath": "Algo.Import/Algo.Import.csproj",
+      "description": "Library: Algo.Import (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Analytics.CSharp",
+      "project": "Algo.Analytics.CSharp",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Analytics.CSharp/Algo.Analytics.CSharp.csproj",
+      "globalPath": "Algo.Analytics.CSharp/Algo.Analytics.CSharp.csproj",
+      "description": "Library: Algo.Analytics.CSharp (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Tests",
+      "project": "Tests",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Tests/Tests.csproj",
+      "globalPath": "Tests/Tests.csproj",
+      "description": "Test: Tests (StockSharp)"
+    },
+    {
+      "id": "StockSharp/BusinessEntities",
+      "project": "BusinessEntities",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "BusinessEntities/BusinessEntities.csproj",
+      "globalPath": "BusinessEntities/BusinessEntities.csproj",
+      "description": "Library: BusinessEntities (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Messages",
+      "project": "Messages",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Messages/Messages.csproj",
+      "globalPath": "Messages/Messages.csproj",
+      "description": "Library: Messages (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Strategies",
+      "project": "Algo.Strategies",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Strategies/Algo.Strategies.csproj",
+      "globalPath": "Algo.Strategies/Algo.Strategies.csproj",
+      "description": "Library: Algo.Strategies (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Export",
+      "project": "Algo.Export",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Export/Algo.Export.csproj",
+      "globalPath": "Algo.Export/Algo.Export.csproj",
+      "description": "Library: Algo.Export (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Media",
+      "project": "Media",
+      "repo": "StockSharp",
+      "type": "desktopapp",
+      "path": "Media/Media.csproj",
+      "globalPath": "Media/Media.csproj",
+      "description": "DesktopApp: Media (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Alerts.Interfaces",
+      "project": "Alerts.Interfaces",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Alerts.Interfaces/Alerts.Interfaces.csproj",
+      "globalPath": "Alerts.Interfaces/Alerts.Interfaces.csproj",
+      "description": "Library: Alerts.Interfaces (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.Generator",
+      "project": "Localization.Generator",
+      "repo": "StockSharp",
+      "type": "tool",
+      "path": "Localization.Generator/Localization.Generator.csproj",
+      "globalPath": "Localization.Generator/Localization.Generator.csproj",
+      "description": "Tool: Localization.Generator (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Analytics",
+      "project": "Algo.Analytics",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Analytics/Algo.Analytics.csproj",
+      "globalPath": "Algo.Analytics/Algo.Analytics.csproj",
+      "description": "Library: Algo.Analytics (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Compilation",
+      "project": "Algo.Compilation",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Compilation/Algo.Compilation.csproj",
+      "globalPath": "Algo.Compilation/Algo.Compilation.csproj",
+      "description": "Library: Algo.Compilation (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Media.Generator",
+      "project": "Media.Generator",
+      "repo": "StockSharp",
+      "type": "tool",
+      "path": "Media.Generator/Media.Generator.csproj",
+      "globalPath": "Media.Generator/Media.Generator.csproj",
+      "description": "Tool: Media.Generator (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo.Gpu",
+      "project": "Algo.Gpu",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo.Gpu/Algo.Gpu.csproj",
+      "globalPath": "Algo.Gpu/Algo.Gpu.csproj",
+      "description": "Library: Algo.Gpu (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.all",
+      "project": "Localization.all",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/all/Localization.all.csproj",
+      "globalPath": "Localization.Langs/all/Localization.all.csproj",
+      "description": "Localization: Localization.all (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.my",
+      "project": "Localization.my",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/my/Localization.my.csproj",
+      "globalPath": "Localization.Langs/my/Localization.my.csproj",
+      "description": "Localization: Localization.my (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.nl",
+      "project": "Localization.nl",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/nl/Localization.nl.csproj",
+      "globalPath": "Localization.Langs/nl/Localization.nl.csproj",
+      "description": "Localization: Localization.nl (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.he",
+      "project": "Localization.he",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/he/Localization.he.csproj",
+      "globalPath": "Localization.Langs/he/Localization.he.csproj",
+      "description": "Localization: Localization.he (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.fi",
+      "project": "Localization.fi",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/fi/Localization.fi.csproj",
+      "globalPath": "Localization.Langs/fi/Localization.fi.csproj",
+      "description": "Localization: Localization.fi (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.el",
+      "project": "Localization.el",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/el/Localization.el.csproj",
+      "globalPath": "Localization.Langs/el/Localization.el.csproj",
+      "description": "Localization: Localization.el (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.da",
+      "project": "Localization.da",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/da/Localization.da.csproj",
+      "globalPath": "Localization.Langs/da/Localization.da.csproj",
+      "description": "Localization: Localization.da (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.sv",
+      "project": "Localization.sv",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/sv/Localization.sv.csproj",
+      "globalPath": "Localization.Langs/sv/Localization.sv.csproj",
+      "description": "Localization: Localization.sv (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.hi",
+      "project": "Localization.hi",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/hi/Localization.hi.csproj",
+      "globalPath": "Localization.Langs/hi/Localization.hi.csproj",
+      "description": "Localization: Localization.hi (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.no",
+      "project": "Localization.no",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/no/Localization.no.csproj",
+      "globalPath": "Localization.Langs/no/Localization.no.csproj",
+      "description": "Localization: Localization.no (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ko",
+      "project": "Localization.ko",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ko/Localization.ko.csproj",
+      "globalPath": "Localization.Langs/ko/Localization.ko.csproj",
+      "description": "Localization: Localization.ko (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ar",
+      "project": "Localization.ar",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ar/Localization.ar.csproj",
+      "globalPath": "Localization.Langs/ar/Localization.ar.csproj",
+      "description": "Localization: Localization.ar (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ta",
+      "project": "Localization.ta",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ta/Localization.ta.csproj",
+      "globalPath": "Localization.Langs/ta/Localization.ta.csproj",
+      "description": "Localization: Localization.ta (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.zh",
+      "project": "Localization.zh",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/zh/Localization.zh.csproj",
+      "globalPath": "Localization.Langs/zh/Localization.zh.csproj",
+      "description": "Localization: Localization.zh (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.pt",
+      "project": "Localization.pt",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/pt/Localization.pt.csproj",
+      "globalPath": "Localization.Langs/pt/Localization.pt.csproj",
+      "description": "Localization: Localization.pt (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.es",
+      "project": "Localization.es",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/es/Localization.es.csproj",
+      "globalPath": "Localization.Langs/es/Localization.es.csproj",
+      "description": "Localization: Localization.es (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.jv",
+      "project": "Localization.jv",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/jv/Localization.jv.csproj",
+      "globalPath": "Localization.Langs/jv/Localization.jv.csproj",
+      "description": "Localization: Localization.jv (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.fa",
+      "project": "Localization.fa",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/fa/Localization.fa.csproj",
+      "globalPath": "Localization.Langs/fa/Localization.fa.csproj",
+      "description": "Localization: Localization.fa (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.bn",
+      "project": "Localization.bn",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/bn/Localization.bn.csproj",
+      "globalPath": "Localization.Langs/bn/Localization.bn.csproj",
+      "description": "Localization: Localization.bn (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ro",
+      "project": "Localization.ro",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ro/Localization.ro.csproj",
+      "globalPath": "Localization.Langs/ro/Localization.ro.csproj",
+      "description": "Localization: Localization.ro (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ms",
+      "project": "Localization.ms",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ms/Localization.ms.csproj",
+      "globalPath": "Localization.Langs/ms/Localization.ms.csproj",
+      "description": "Localization: Localization.ms (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.cs",
+      "project": "Localization.cs",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/cs/Localization.cs.csproj",
+      "globalPath": "Localization.Langs/cs/Localization.cs.csproj",
+      "description": "Localization: Localization.cs (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.uz",
+      "project": "Localization.uz",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/uz/Localization.uz.csproj",
+      "globalPath": "Localization.Langs/uz/Localization.uz.csproj",
+      "description": "Localization: Localization.uz (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.hu",
+      "project": "Localization.hu",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/hu/Localization.hu.csproj",
+      "globalPath": "Localization.Langs/hu/Localization.hu.csproj",
+      "description": "Localization: Localization.hu (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.th",
+      "project": "Localization.th",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/th/Localization.th.csproj",
+      "globalPath": "Localization.Langs/th/Localization.th.csproj",
+      "description": "Localization: Localization.th (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.pl",
+      "project": "Localization.pl",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/pl/Localization.pl.csproj",
+      "globalPath": "Localization.Langs/pl/Localization.pl.csproj",
+      "description": "Localization: Localization.pl (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ja",
+      "project": "Localization.ja",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ja/Localization.ja.csproj",
+      "globalPath": "Localization.Langs/ja/Localization.ja.csproj",
+      "description": "Localization: Localization.ja (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.pa",
+      "project": "Localization.pa",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/pa/Localization.pa.csproj",
+      "globalPath": "Localization.Langs/pa/Localization.pa.csproj",
+      "description": "Localization: Localization.pa (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.vi",
+      "project": "Localization.vi",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/vi/Localization.vi.csproj",
+      "globalPath": "Localization.Langs/vi/Localization.vi.csproj",
+      "description": "Localization: Localization.vi (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.de",
+      "project": "Localization.de",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/de/Localization.de.csproj",
+      "globalPath": "Localization.Langs/de/Localization.de.csproj",
+      "description": "Localization: Localization.de (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.tl",
+      "project": "Localization.tl",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/tl/Localization.tl.csproj",
+      "globalPath": "Localization.Langs/tl/Localization.tl.csproj",
+      "description": "Localization: Localization.tl (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.fr",
+      "project": "Localization.fr",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/fr/Localization.fr.csproj",
+      "globalPath": "Localization.Langs/fr/Localization.fr.csproj",
+      "description": "Localization: Localization.fr (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.uk",
+      "project": "Localization.uk",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/uk/Localization.uk.csproj",
+      "globalPath": "Localization.Langs/uk/Localization.uk.csproj",
+      "description": "Localization: Localization.uk (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.it",
+      "project": "Localization.it",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/it/Localization.it.csproj",
+      "globalPath": "Localization.Langs/it/Localization.it.csproj",
+      "description": "Localization: Localization.it (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.sk",
+      "project": "Localization.sk",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/sk/Localization.sk.csproj",
+      "globalPath": "Localization.Langs/sk/Localization.sk.csproj",
+      "description": "Localization: Localization.sk (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.tr",
+      "project": "Localization.tr",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/tr/Localization.tr.csproj",
+      "globalPath": "Localization.Langs/tr/Localization.tr.csproj",
+      "description": "Localization: Localization.tr (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.sr",
+      "project": "Localization.sr",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/sr/Localization.sr.csproj",
+      "globalPath": "Localization.Langs/sr/Localization.sr.csproj",
+      "description": "Localization: Localization.sr (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ru",
+      "project": "Localization.ru",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ru/Localization.ru.csproj",
+      "globalPath": "Localization.Langs/ru/Localization.ru.csproj",
+      "description": "Localization: Localization.ru (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Localization.ca",
+      "project": "Localization.ca",
+      "repo": "StockSharp",
+      "type": "localization",
+      "path": "Localization.Langs/ca/Localization.ca.csproj",
+      "globalPath": "Localization.Langs/ca/Localization.ca.csproj",
+      "description": "Localization: Localization.ca (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Candles.Realtime_fromsrc",
+      "project": "01_Candles.Realtime_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/02_Candles/01_Realtime/01_Candles.Realtime_fromsrc.csproj",
+      "globalPath": "Samples/02_Candles/01_Realtime/01_Candles.Realtime_fromsrc.csproj",
+      "description": "Sample: 01_Candles.Realtime_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Candles.Realtime",
+      "project": "01_Candles.Realtime",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/02_Candles/01_Realtime/01_Candles.Realtime.csproj",
+      "globalPath": "Samples/02_Candles/01_Realtime/01_Candles.Realtime.csproj",
+      "description": "Sample: 01_Candles.Realtime (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "project": "02_Candles.CombineHistoryRealtime",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/02_Candles/02_CombineHistoryRealtime/02_Candles.CombineHistoryRealtime.csproj",
+      "globalPath": "Samples/02_Candles/02_CombineHistoryRealtime/02_Candles.CombineHistoryRealtime.csproj",
+      "description": "Sample: 02_Candles.CombineHistoryRealtime (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Candles.CombineHistoryRealtime_fromsrc",
+      "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/02_Candles/02_CombineHistoryRealtime/02_Candles.CombineHistoryRealtime_fromsrc.csproj",
+      "globalPath": "Samples/02_Candles/02_CombineHistoryRealtime/02_Candles.CombineHistoryRealtime_fromsrc.csproj",
+      "description": "Sample: 02_Candles.CombineHistoryRealtime_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Testing.HistoryConsole",
+      "project": "04_Testing.HistoryConsole",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/04_HistoryConsole/04_Testing.HistoryConsole.csproj",
+      "globalPath": "Samples/07_Testing/04_HistoryConsole/04_Testing.HistoryConsole.csproj",
+      "description": "Test: 04_Testing.HistoryConsole (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "project": "04_Testing.HistoryConsole_fromsrc",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/04_HistoryConsole/04_Testing.HistoryConsole_fromsrc.csproj",
+      "globalPath": "Samples/07_Testing/04_HistoryConsole/04_Testing.HistoryConsole_fromsrc.csproj",
+      "description": "Test: 04_Testing.HistoryConsole_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Testing.Optimization",
+      "project": "02_Testing.Optimization",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/02_Optimization/02_Testing.Optimization.csproj",
+      "globalPath": "Samples/07_Testing/02_Optimization/02_Testing.Optimization.csproj",
+      "description": "Test: 02_Testing.Optimization (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Testing.Optimization_fromsrc",
+      "project": "02_Testing.Optimization_fromsrc",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/02_Optimization/02_Testing.Optimization_fromsrc.csproj",
+      "globalPath": "Samples/07_Testing/02_Optimization/02_Testing.Optimization_fromsrc.csproj",
+      "description": "Test: 02_Testing.Optimization_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Testing.History",
+      "project": "01_Testing.History",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/01_History/01_Testing.History.csproj",
+      "globalPath": "Samples/07_Testing/01_History/01_Testing.History.csproj",
+      "description": "Test: 01_Testing.History (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Testing.History_fromsrc",
+      "project": "01_Testing.History_fromsrc",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/01_History/01_Testing.History_fromsrc.csproj",
+      "globalPath": "Samples/07_Testing/01_History/01_Testing.History_fromsrc.csproj",
+      "description": "Test: 01_Testing.History_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Testing.RealTime_fromsrc",
+      "project": "03_Testing.RealTime_fromsrc",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/03_RealTime/03_Testing.RealTime_fromsrc.csproj",
+      "globalPath": "Samples/07_Testing/03_RealTime/03_Testing.RealTime_fromsrc.csproj",
+      "description": "Test: 03_Testing.RealTime_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Testing.RealTime",
+      "project": "03_Testing.RealTime",
+      "repo": "StockSharp",
+      "type": "test",
+      "path": "Samples/07_Testing/03_RealTime/03_Testing.RealTime.csproj",
+      "globalPath": "Samples/07_Testing/03_RealTime/03_Testing.RealTime.csproj",
+      "description": "Test: 03_Testing.RealTime (StockSharp)"
+    },
+    {
+      "id": "StockSharp/06_Strategies.HistoryQuoting_fromsrc",
+      "project": "06_Strategies.HistoryQuoting_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/06_HistoryQuoting/06_Strategies.HistoryQuoting_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/06_HistoryQuoting/06_Strategies.HistoryQuoting_fromsrc.csproj",
+      "description": "Sample: 06_Strategies.HistoryQuoting_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/06_Strategies.HistoryQuoting",
+      "project": "06_Strategies.HistoryQuoting",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/06_HistoryQuoting/06_Strategies.HistoryQuoting.csproj",
+      "globalPath": "Samples/06_Strategies/06_HistoryQuoting/06_Strategies.HistoryQuoting.csproj",
+      "description": "Sample: 06_Strategies.HistoryQuoting (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Strategies.HistoryMarketRule",
+      "project": "04_Strategies.HistoryMarketRule",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/04_HistoryMarketRule/04_Strategies.HistoryMarketRule.csproj",
+      "globalPath": "Samples/06_Strategies/04_HistoryMarketRule/04_Strategies.HistoryMarketRule.csproj",
+      "description": "Sample: 04_Strategies.HistoryMarketRule (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Strategies.HistoryMarketRule_fromsrc",
+      "project": "04_Strategies.HistoryMarketRule_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/04_HistoryMarketRule/04_Strategies.HistoryMarketRule_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/04_HistoryMarketRule/04_Strategies.HistoryMarketRule_fromsrc.csproj",
+      "description": "Sample: 04_Strategies.HistoryMarketRule_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/08_Strategies.LiveArbitrage_fromsrc",
+      "project": "08_Strategies.LiveArbitrage_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/08_LiveArbitrage/08_Strategies.LiveArbitrage_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/08_LiveArbitrage/08_Strategies.LiveArbitrage_fromsrc.csproj",
+      "description": "Sample: 08_Strategies.LiveArbitrage_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/08_Strategies.LiveArbitrage",
+      "project": "08_Strategies.LiveArbitrage",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/08_LiveArbitrage/08_Strategies.LiveArbitrage.csproj",
+      "globalPath": "Samples/06_Strategies/08_LiveArbitrage/08_Strategies.LiveArbitrage.csproj",
+      "description": "Sample: 08_Strategies.LiveArbitrage (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Strategies.HistoryTrend_fromsrc",
+      "project": "03_Strategies.HistoryTrend_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/03_HistoryTrend/03_Strategies.HistoryTrend_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/03_HistoryTrend/03_Strategies.HistoryTrend_fromsrc.csproj",
+      "description": "Sample: 03_Strategies.HistoryTrend_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Strategies.HistoryTrend",
+      "project": "03_Strategies.HistoryTrend",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/03_HistoryTrend/03_Strategies.HistoryTrend.csproj",
+      "globalPath": "Samples/06_Strategies/03_HistoryTrend/03_Strategies.HistoryTrend.csproj",
+      "description": "Sample: 03_Strategies.HistoryTrend (StockSharp)"
+    },
+    {
+      "id": "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+      "project": "05_Strategies.HistoryIndex_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/05_HistoryIndex/05_Strategies.HistoryIndex_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/05_HistoryIndex/05_Strategies.HistoryIndex_fromsrc.csproj",
+      "description": "Sample: 05_Strategies.HistoryIndex_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/05_Strategies.HistoryIndex",
+      "project": "05_Strategies.HistoryIndex",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/05_HistoryIndex/05_Strategies.HistoryIndex.csproj",
+      "globalPath": "Samples/06_Strategies/05_HistoryIndex/05_Strategies.HistoryIndex.csproj",
+      "description": "Sample: 05_Strategies.HistoryIndex (StockSharp)"
+    },
+    {
+      "id": "StockSharp/10_Strategies.LiveTerminal",
+      "project": "10_Strategies.LiveTerminal",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/10_LiveTerminal/10_Strategies.LiveTerminal.csproj",
+      "globalPath": "Samples/06_Strategies/10_LiveTerminal/10_Strategies.LiveTerminal.csproj",
+      "description": "Sample: 10_Strategies.LiveTerminal (StockSharp)"
+    },
+    {
+      "id": "StockSharp/10_Strategies.LiveTerminal_fromsrc",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/10_LiveTerminal/10_Strategies.LiveTerminal_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/10_LiveTerminal/10_Strategies.LiveTerminal_fromsrc.csproj",
+      "description": "Sample: 10_Strategies.LiveTerminal_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/07_Strategies.LiveSpread",
+      "project": "07_Strategies.LiveSpread",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/07_LiveSpread/07_Strategies.LiveSpread.csproj",
+      "globalPath": "Samples/06_Strategies/07_LiveSpread/07_Strategies.LiveSpread.csproj",
+      "description": "Sample: 07_Strategies.LiveSpread (StockSharp)"
+    },
+    {
+      "id": "StockSharp/07_Strategies.LiveSpread_fromsrc",
+      "project": "07_Strategies.LiveSpread_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/07_LiveSpread/07_Strategies.LiveSpread_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/07_LiveSpread/07_Strategies.LiveSpread_fromsrc.csproj",
+      "description": "Sample: 07_Strategies.LiveSpread_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Strategies.HistoryBollingerBands",
+      "project": "02_Strategies.HistoryBollingerBands",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/02_HistoryBollingerBands/02_Strategies.HistoryBollingerBands.csproj",
+      "globalPath": "Samples/06_Strategies/02_HistoryBollingerBands/02_Strategies.HistoryBollingerBands.csproj",
+      "description": "Sample: 02_Strategies.HistoryBollingerBands (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Strategies.HistoryBollingerBands_fromsrc",
+      "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/02_HistoryBollingerBands/02_Strategies.HistoryBollingerBands_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/02_HistoryBollingerBands/02_Strategies.HistoryBollingerBands_fromsrc.csproj",
+      "description": "Sample: 02_Strategies.HistoryBollingerBands_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Strategies.HistorySMA_fromsrc",
+      "project": "01_Strategies.HistorySMA_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/01_HistorySMA/01_Strategies.HistorySMA_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/01_HistorySMA/01_Strategies.HistorySMA_fromsrc.csproj",
+      "description": "Sample: 01_Strategies.HistorySMA_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Strategies.HistorySMA",
+      "project": "01_Strategies.HistorySMA",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/01_HistorySMA/01_Strategies.HistorySMA.csproj",
+      "globalPath": "Samples/06_Strategies/01_HistorySMA/01_Strategies.HistorySMA.csproj",
+      "description": "Sample: 01_Strategies.HistorySMA (StockSharp)"
+    },
+    {
+      "id": "StockSharp/09_Strategies.LiveOptionsQuoting_fromsrc",
+      "project": "09_Strategies.LiveOptionsQuoting_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/09_LiveOptionsQuoting/09_Strategies.LiveOptionsQuoting_fromsrc.csproj",
+      "globalPath": "Samples/06_Strategies/09_LiveOptionsQuoting/09_Strategies.LiveOptionsQuoting_fromsrc.csproj",
+      "description": "Sample: 09_Strategies.LiveOptionsQuoting_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "project": "09_Strategies.LiveOptionsQuoting",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/06_Strategies/09_LiveOptionsQuoting/09_Strategies.LiveOptionsQuoting.csproj",
+      "globalPath": "Samples/06_Strategies/09_LiveOptionsQuoting/09_Strategies.LiveOptionsQuoting.csproj",
+      "description": "Sample: 09_Strategies.LiveOptionsQuoting (StockSharp)"
+    },
+    {
+      "id": "StockSharp/05_Storage.HydraServerSaveToLocal_fromsrc",
+      "project": "05_Storage.HydraServerSaveToLocal_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/05_HydraServerSaveToLocal/05_Storage.HydraServerSaveToLocal_fromsrc.csproj",
+      "globalPath": "Samples/03_Storage/05_HydraServerSaveToLocal/05_Storage.HydraServerSaveToLocal_fromsrc.csproj",
+      "description": "Sample: 05_Storage.HydraServerSaveToLocal_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/05_Storage.HydraServerSaveToLocal",
+      "project": "05_Storage.HydraServerSaveToLocal",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/05_HydraServerSaveToLocal/05_Storage.HydraServerSaveToLocal.csproj",
+      "globalPath": "Samples/03_Storage/05_HydraServerSaveToLocal/05_Storage.HydraServerSaveToLocal.csproj",
+      "description": "Sample: 05_Storage.HydraServerSaveToLocal (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Storage.HydraServerConnect_fromsrc",
+      "project": "04_Storage.HydraServerConnect_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/04_HydraServerConnect/04_Storage.HydraServerConnect_fromsrc.csproj",
+      "globalPath": "Samples/03_Storage/04_HydraServerConnect/04_Storage.HydraServerConnect_fromsrc.csproj",
+      "description": "Sample: 04_Storage.HydraServerConnect_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/04_Storage.HydraServerConnect",
+      "project": "04_Storage.HydraServerConnect",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/04_HydraServerConnect/04_Storage.HydraServerConnect.csproj",
+      "globalPath": "Samples/03_Storage/04_HydraServerConnect/04_Storage.HydraServerConnect.csproj",
+      "description": "Sample: 04_Storage.HydraServerConnect (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Storage.Local",
+      "project": "02_Storage.Local",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/02_Local/02_Storage.Local.csproj",
+      "globalPath": "Samples/03_Storage/02_Local/02_Storage.Local.csproj",
+      "description": "Sample: 02_Storage.Local (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Storage.Local_fromsrc",
+      "project": "02_Storage.Local_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/02_Local/02_Storage.Local_fromsrc.csproj",
+      "globalPath": "Samples/03_Storage/02_Local/02_Storage.Local_fromsrc.csproj",
+      "description": "Sample: 02_Storage.Local_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Storage.Random_fromsrc",
+      "project": "01_Storage.Random_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/01_Random/01_Storage.Random_fromsrc.csproj",
+      "globalPath": "Samples/03_Storage/01_Random/01_Storage.Random_fromsrc.csproj",
+      "description": "Sample: 01_Storage.Random_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Storage.Random",
+      "project": "01_Storage.Random",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/01_Random/01_Storage.Random.csproj",
+      "globalPath": "Samples/03_Storage/01_Random/01_Storage.Random.csproj",
+      "description": "Sample: 01_Storage.Random (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Storage.RemoteSource_fromsrc",
+      "project": "03_Storage.RemoteSource_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/03_RemoteSource/03_Storage.RemoteSource_fromsrc.csproj",
+      "globalPath": "Samples/03_Storage/03_RemoteSource/03_Storage.RemoteSource_fromsrc.csproj",
+      "description": "Sample: 03_Storage.RemoteSource_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Storage.RemoteSource",
+      "project": "03_Storage.RemoteSource",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/03_Storage/03_RemoteSource/03_Storage.RemoteSource.csproj",
+      "globalPath": "Samples/03_Storage/03_RemoteSource/03_Storage.RemoteSource.csproj",
+      "description": "Sample: 03_Storage.RemoteSource (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_CrossPlatform.ConsoleApp_fromsrc",
+      "project": "01_CrossPlatform.ConsoleApp_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/10_CrossPlatform/01_ConsoleApp/01_CrossPlatform.ConsoleApp_fromsrc.csproj",
+      "globalPath": "Samples/10_CrossPlatform/01_ConsoleApp/01_CrossPlatform.ConsoleApp_fromsrc.csproj",
+      "description": "Sample: 01_CrossPlatform.ConsoleApp_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "project": "01_CrossPlatform.ConsoleApp",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/10_CrossPlatform/01_ConsoleApp/01_CrossPlatform.ConsoleApp.csproj",
+      "globalPath": "Samples/10_CrossPlatform/01_ConsoleApp/01_CrossPlatform.ConsoleApp.csproj",
+      "description": "Sample: 01_CrossPlatform.ConsoleApp (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Misc.Logging_fromsrc",
+      "project": "01_Misc.Logging_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/08_Misc/01_Logging/01_Misc.Logging_fromsrc.csproj",
+      "globalPath": "Samples/08_Misc/01_Logging/01_Misc.Logging_fromsrc.csproj",
+      "description": "Sample: 01_Misc.Logging_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Misc.Logging",
+      "project": "01_Misc.Logging",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/08_Misc/01_Logging/01_Misc.Logging.csproj",
+      "globalPath": "Samples/08_Misc/01_Logging/01_Misc.Logging.csproj",
+      "description": "Sample: 01_Misc.Logging (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Misc.Unit",
+      "project": "02_Misc.Unit",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/08_Misc/02_Unit/02_Misc.Unit.csproj",
+      "globalPath": "Samples/08_Misc/02_Unit/02_Misc.Unit.csproj",
+      "description": "Sample: 02_Misc.Unit (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Misc.Unit_fromsrc",
+      "project": "02_Misc.Unit_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/08_Misc/02_Unit/02_Misc.Unit_fromsrc.csproj",
+      "globalPath": "Samples/08_Misc/02_Unit/02_Misc.Unit_fromsrc.csproj",
+      "description": "Sample: 02_Misc.Unit_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Advanced.MultiConnect_fromsrc",
+      "project": "01_Advanced.MultiConnect_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/09_Advanced/01_MultiConnect/01_Advanced.MultiConnect_fromsrc.csproj",
+      "globalPath": "Samples/09_Advanced/01_MultiConnect/01_Advanced.MultiConnect_fromsrc.csproj",
+      "description": "Sample: 01_Advanced.MultiConnect_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Advanced.MultiConnect",
+      "project": "01_Advanced.MultiConnect",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/09_Advanced/01_MultiConnect/01_Advanced.MultiConnect.csproj",
+      "globalPath": "Samples/09_Advanced/01_MultiConnect/01_Advanced.MultiConnect.csproj",
+      "description": "Sample: 01_Advanced.MultiConnect (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Advanced.SaveDataLocal_fromsrc",
+      "project": "02_Advanced.SaveDataLocal_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/09_Advanced/02_StoreDataLocal/02_Advanced.SaveDataLocal_fromsrc.csproj",
+      "globalPath": "Samples/09_Advanced/02_StoreDataLocal/02_Advanced.SaveDataLocal_fromsrc.csproj",
+      "description": "Sample: 02_Advanced.SaveDataLocal_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Advanced.SaveDataLocal",
+      "project": "02_Advanced.SaveDataLocal",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/09_Advanced/02_StoreDataLocal/02_Advanced.SaveDataLocal.csproj",
+      "globalPath": "Samples/09_Advanced/02_StoreDataLocal/02_Advanced.SaveDataLocal.csproj",
+      "description": "Sample: 02_Advanced.SaveDataLocal (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Indicators.CreateOwn",
+      "project": "03_Indicators.CreateOwn",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/03_CreateOwn/03_Indicators.CreateOwn.csproj",
+      "globalPath": "Samples/04_Indicators/03_CreateOwn/03_Indicators.CreateOwn.csproj",
+      "description": "Sample: 03_Indicators.CreateOwn (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Indicators.CreateOwn_fromsrc",
+      "project": "03_Indicators.CreateOwn_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/03_CreateOwn/03_Indicators.CreateOwn_fromsrc.csproj",
+      "globalPath": "Samples/04_Indicators/03_CreateOwn/03_Indicators.CreateOwn_fromsrc.csproj",
+      "description": "Sample: 03_Indicators.CreateOwn_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Indicators.SimpleSMA",
+      "project": "01_Indicators.SimpleSMA",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/01_SimpleSMA/01_Indicators.SimpleSMA.csproj",
+      "globalPath": "Samples/04_Indicators/01_SimpleSMA/01_Indicators.SimpleSMA.csproj",
+      "description": "Sample: 01_Indicators.SimpleSMA (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Indicators.SimpleSMA_fromsrc",
+      "project": "01_Indicators.SimpleSMA_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/01_SimpleSMA/01_Indicators.SimpleSMA_fromsrc.csproj",
+      "globalPath": "Samples/04_Indicators/01_SimpleSMA/01_Indicators.SimpleSMA_fromsrc.csproj",
+      "description": "Sample: 01_Indicators.SimpleSMA_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Indicators.ComplexBollinger",
+      "project": "02_Indicators.ComplexBollinger",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/02_ComplexBollinger/02_Indicators.ComplexBollinger.csproj",
+      "globalPath": "Samples/04_Indicators/02_ComplexBollinger/02_Indicators.ComplexBollinger.csproj",
+      "description": "Sample: 02_Indicators.ComplexBollinger (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Indicators.ComplexBollinger_fromsrc",
+      "project": "02_Indicators.ComplexBollinger_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/04_Indicators/02_ComplexBollinger/02_Indicators.ComplexBollinger_fromsrc.csproj",
+      "globalPath": "Samples/04_Indicators/02_ComplexBollinger/02_Indicators.ComplexBollinger_fromsrc.csproj",
+      "description": "Sample: 02_Indicators.ComplexBollinger_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Basic.MarketDepths_fromsrc",
+      "project": "02_Basic.MarketDepths_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/02_MarketDepths/02_Basic.MarketDepths_fromsrc.csproj",
+      "globalPath": "Samples/01_Basic/02_MarketDepths/02_Basic.MarketDepths_fromsrc.csproj",
+      "description": "Sample: 02_Basic.MarketDepths_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Basic.MarketDepths",
+      "project": "02_Basic.MarketDepths",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/02_MarketDepths/02_Basic.MarketDepths.csproj",
+      "globalPath": "Samples/01_Basic/02_MarketDepths/02_Basic.MarketDepths.csproj",
+      "description": "Sample: 02_Basic.MarketDepths (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Basic.Orders_fromsrc",
+      "project": "03_Basic.Orders_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/03_Orders/03_Basic.Orders_fromsrc.csproj",
+      "globalPath": "Samples/01_Basic/03_Orders/03_Basic.Orders_fromsrc.csproj",
+      "description": "Sample: 03_Basic.Orders_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Basic.Orders",
+      "project": "03_Basic.Orders",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/03_Orders/03_Basic.Orders.csproj",
+      "globalPath": "Samples/01_Basic/03_Orders/03_Basic.Orders.csproj",
+      "description": "Sample: 03_Basic.Orders (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "project": "01_Basic.ConnectAndDownloadInstruments",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/01_ConnectAndDownloadInstruments/01_Basic.ConnectAndDownloadInstruments.csproj",
+      "globalPath": "Samples/01_Basic/01_ConnectAndDownloadInstruments/01_Basic.ConnectAndDownloadInstruments.csproj",
+      "description": "Sample: 01_Basic.ConnectAndDownloadInstruments (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/01_Basic/01_ConnectAndDownloadInstruments/01_Basic.ConnectAndDownloadInstruments_fromsrc.csproj",
+      "globalPath": "Samples/01_Basic/01_ConnectAndDownloadInstruments/01_Basic.ConnectAndDownloadInstruments_fromsrc.csproj",
+      "description": "Sample: 01_Basic.ConnectAndDownloadInstruments_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Chart.ActiveOrders",
+      "project": "02_Chart.ActiveOrders",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/02_ActiveOrders/02_Chart.ActiveOrders.csproj",
+      "globalPath": "Samples/05_Chart/02_ActiveOrders/02_Chart.ActiveOrders.csproj",
+      "description": "Sample: 02_Chart.ActiveOrders (StockSharp)"
+    },
+    {
+      "id": "StockSharp/02_Chart.ActiveOrders_fromsrc",
+      "project": "02_Chart.ActiveOrders_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/02_ActiveOrders/02_Chart.ActiveOrders_fromsrc.csproj",
+      "globalPath": "Samples/05_Chart/02_ActiveOrders/02_Chart.ActiveOrders_fromsrc.csproj",
+      "description": "Sample: 02_Chart.ActiveOrders_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Chart_fromsrc",
+      "project": "01_Chart_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/01_Chart/01_Chart_fromsrc.csproj",
+      "globalPath": "Samples/05_Chart/01_Chart/01_Chart_fromsrc.csproj",
+      "description": "Sample: 01_Chart_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/01_Chart",
+      "project": "01_Chart",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/01_Chart/01_Chart.csproj",
+      "globalPath": "Samples/05_Chart/01_Chart/01_Chart.csproj",
+      "description": "Sample: 01_Chart (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Chart.Performance_fromsrc",
+      "project": "03_Chart.Performance_fromsrc",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/03_Performance/03_Chart.Performance_fromsrc.csproj",
+      "globalPath": "Samples/05_Chart/03_Performance/03_Chart.Performance_fromsrc.csproj",
+      "description": "Sample: 03_Chart.Performance_fromsrc (StockSharp)"
+    },
+    {
+      "id": "StockSharp/03_Chart.Performance",
+      "project": "03_Chart.Performance",
+      "repo": "StockSharp",
+      "type": "sample",
+      "path": "Samples/05_Chart/03_Performance/03_Chart.Performance.csproj",
+      "globalPath": "Samples/05_Chart/03_Performance/03_Chart.Performance.csproj",
+      "description": "Sample: 03_Chart.Performance (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Coinbase",
+      "project": "Coinbase",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/Coinbase/Coinbase.csproj",
+      "globalPath": "Connectors/Coinbase/Coinbase.csproj",
+      "description": "Connector: Coinbase (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Bitexbook",
+      "project": "Bitexbook",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/Bitexbook/Bitexbook.csproj",
+      "globalPath": "Connectors/Bitexbook/Bitexbook.csproj",
+      "description": "Connector: Bitexbook (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Tinkoff",
+      "project": "Tinkoff",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/Tinkoff/Tinkoff.csproj",
+      "globalPath": "Connectors/Tinkoff/Tinkoff.csproj",
+      "description": "Connector: Tinkoff (StockSharp)"
+    },
+    {
+      "id": "StockSharp/BitStamp",
+      "project": "BitStamp",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/BitStamp/BitStamp.csproj",
+      "globalPath": "Connectors/BitStamp/BitStamp.csproj",
+      "description": "Connector: BitStamp (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Bitalong",
+      "project": "Bitalong",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/Bitalong/Bitalong.csproj",
+      "globalPath": "Connectors/Bitalong/Bitalong.csproj",
+      "description": "Connector: Bitalong (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Btce",
+      "project": "Btce",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/Btce/Btce.csproj",
+      "globalPath": "Connectors/Btce/Btce.csproj",
+      "description": "Connector: Btce (StockSharp)"
+    },
+    {
+      "id": "StockSharp/FTX",
+      "project": "FTX",
+      "repo": "StockSharp",
+      "type": "connector",
+      "path": "Connectors/FTX/FTX.csproj",
+      "globalPath": "Connectors/FTX/FTX.csproj",
+      "description": "Connector: FTX (StockSharp)"
+    },
+    {
+      "id": "StockSharp/Algo",
+      "project": "Algo",
+      "repo": "StockSharp",
+      "type": "library",
+      "path": "Algo/Algo.csproj",
+      "globalPath": "Algo/Algo.csproj",
+      "description": "Library: Algo (StockSharp)"
+    },
+    {
+      "id": "nuget:Ecng.Configuration",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation",
+        "StockSharp/BusinessEntities",
+        "StockSharp/Configuration"
+      ],
+      "description": "NuGet: Ecng.Configuration (1.0.*)"
+    },
+    {
+      "id": "nuget:NuGet.Configuration",
+      "type": "nuget-package",
+      "versions": [
+        "7.0.1"
+      ],
+      "consumers": [
+        "StockSharp/Configuration"
+      ],
+      "description": "NuGet: NuGet.Configuration (7.0.1)"
+    },
+    {
+      "id": "nuget:Ecng.Serialization",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Extractor"
+      ],
+      "description": "NuGet: Ecng.Serialization (1.0.*)"
+    },
+    {
+      "id": "nuget:Spectre.Console.Cli",
+      "type": "nuget-package",
+      "versions": [
+        "0.48.0"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Extractor"
+      ],
+      "description": "NuGet: Spectre.Console.Cli (0.48.0)"
+    },
+    {
+      "id": "nuget:Ecng.ComponentModel",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Localization"
+      ],
+      "description": "NuGet: Ecng.ComponentModel (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Excel",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Reporting"
+      ],
+      "description": "NuGet: Ecng.Excel (1.0.*)"
+    },
+    {
+      "id": "nuget:Moq",
+      "type": "nuget-package",
+      "versions": [
+        "4.*"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Moq (4.*)"
+    },
+    {
+      "id": "nuget:Ecng.UnitTesting",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Ecng.UnitTesting (1.0.*)"
+    },
+    {
+      "id": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-package",
+      "versions": [
+        "17.13.0"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Microsoft.NET.Test.Sdk (17.13.0)"
+    },
+    {
+      "id": "nuget:MSTest.TestAdapter",
+      "type": "nuget-package",
+      "versions": [
+        "3.11.1"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: MSTest.TestAdapter (3.11.1)"
+    },
+    {
+      "id": "nuget:MSTest.TestFramework",
+      "type": "nuget-package",
+      "versions": [
+        "3.11.1"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: MSTest.TestFramework (3.11.1)"
+    },
+    {
+      "id": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Chart",
+        "StockSharp/01_Chart_fromsrc",
+        "StockSharp/01_Indicators.SimpleSMA",
+        "StockSharp/01_Indicators.SimpleSMA_fromsrc",
+        "StockSharp/01_Strategies.HistorySMA",
+        "StockSharp/01_Strategies.HistorySMA_fromsrc",
+        "StockSharp/01_Testing.History",
+        "StockSharp/01_Testing.History_fromsrc",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/02_Candles.CombineHistoryRealtime_fromsrc",
+        "StockSharp/02_Chart.ActiveOrders",
+        "StockSharp/02_Chart.ActiveOrders_fromsrc",
+        "StockSharp/02_Indicators.ComplexBollinger",
+        "StockSharp/02_Indicators.ComplexBollinger_fromsrc",
+        "StockSharp/02_Storage.Local",
+        "StockSharp/02_Storage.Local_fromsrc",
+        "StockSharp/02_Testing.Optimization",
+        "StockSharp/02_Testing.Optimization_fromsrc",
+        "StockSharp/03_Chart.Performance",
+        "StockSharp/03_Chart.Performance_fromsrc",
+        "StockSharp/03_Indicators.CreateOwn",
+        "StockSharp/03_Indicators.CreateOwn_fromsrc",
+        "StockSharp/03_Strategies.HistoryTrend",
+        "StockSharp/03_Strategies.HistoryTrend_fromsrc",
+        "StockSharp/04_Strategies.HistoryMarketRule",
+        "StockSharp/04_Strategies.HistoryMarketRule_fromsrc",
+        "StockSharp/04_Testing.HistoryConsole",
+        "StockSharp/04_Testing.HistoryConsole_fromsrc",
+        "StockSharp/05_Strategies.HistoryIndex",
+        "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+        "StockSharp/06_Strategies.HistoryQuoting",
+        "StockSharp/06_Strategies.HistoryQuoting_fromsrc",
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: StockSharp.Samples.HistoryData (5.*)"
+    },
+    {
+      "id": "nuget:Ecng.Excel.OpenXml",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/04_Testing.HistoryConsole",
+        "StockSharp/04_Testing.HistoryConsole_fromsrc",
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Ecng.Excel.OpenXml (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Data.Ado",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Ecng.Data.Ado (1.0.*)"
+    },
+    {
+      "id": "nuget:Microsoft.Data.SqlClient",
+      "type": "nuget-package",
+      "versions": [
+        "6.*"
+      ],
+      "consumers": [
+        "StockSharp/Tests"
+      ],
+      "description": "NuGet: Microsoft.Data.SqlClient (6.*)"
+    },
+    {
+      "id": "nuget:Ecng.Drawing",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/BusinessEntities"
+      ],
+      "description": "NuGet: Ecng.Drawing (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Logging",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Messages"
+      ],
+      "description": "NuGet: Ecng.Logging (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Linq",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo",
+        "StockSharp/Messages"
+      ],
+      "description": "NuGet: Ecng.Linq (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Data",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Export"
+      ],
+      "description": "NuGet: Ecng.Data (1.0.*)"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.CSharp",
+      "type": "nuget-package",
+      "versions": [
+        "4.12.0"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Generator",
+        "StockSharp/Media.Generator"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.CSharp (4.12.0)"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.Analyzers",
+      "type": "nuget-package",
+      "versions": [
+        "3.3.4"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Generator",
+        "StockSharp/Media.Generator"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.Analyzers (3.3.4)"
+    },
+    {
+      "id": "nuget:System.Text.Json",
+      "type": "nuget-package",
+      "versions": [
+        "8.*"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Generator"
+      ],
+      "description": "NuGet: System.Text.Json (8.*)"
+    },
+    {
+      "id": "nuget:System.Text.Encodings.Web",
+      "type": "nuget-package",
+      "versions": [
+        "8.*"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Generator"
+      ],
+      "description": "NuGet: System.Text.Encodings.Web (8.*)"
+    },
+    {
+      "id": "nuget:Microsoft.Bcl.AsyncInterfaces",
+      "type": "nuget-package",
+      "versions": [
+        "8.*"
+      ],
+      "consumers": [
+        "StockSharp/Localization.Generator"
+      ],
+      "description": "NuGet: Microsoft.Bcl.AsyncInterfaces (8.*)"
+    },
+    {
+      "id": "nuget:Ecng.Compilation.All",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: Ecng.Compilation.All (1.0.*)"
+    },
+    {
+      "id": "nuget:IronPython.StdLib",
+      "type": "nuget-package",
+      "versions": [
+        "3.4.2"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: IronPython.StdLib (3.4.2)"
+    },
+    {
+      "id": "nuget:NumpyDotNet",
+      "type": "nuget-package",
+      "versions": [
+        "0.9.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: NumpyDotNet (0.9.*)"
+    },
+    {
+      "id": "nuget:MathNet.Numerics.FSharp",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.0-beta2"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: MathNet.Numerics.FSharp (6.0.0-beta2)"
+    },
+    {
+      "id": "nuget:FSharp.Control.TaskSeq",
+      "type": "nuget-package",
+      "versions": [
+        "0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: FSharp.Control.TaskSeq (0.*)"
+    },
+    {
+      "id": "nuget:FSharpPlus",
+      "type": "nuget-package",
+      "versions": [
+        "1.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Compilation"
+      ],
+      "description": "NuGet: FSharpPlus (1.*)"
+    },
+    {
+      "id": "nuget:ILGPU.Algorithms",
+      "type": "nuget-package",
+      "versions": [
+        "1.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo.Gpu"
+      ],
+      "description": "NuGet: ILGPU.Algorithms (1.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Binance",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_CrossPlatform.ConsoleApp",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/09_Strategies.LiveOptionsQuoting",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.Binance (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Okex",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_CrossPlatform.ConsoleApp",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/09_Strategies.LiveOptionsQuoting",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.Okex (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.GateIO",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_CrossPlatform.ConsoleApp",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/09_Strategies.LiveOptionsQuoting",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.GateIO (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Bitmex",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_CrossPlatform.ConsoleApp",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/09_Strategies.LiveOptionsQuoting",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.Bitmex (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Fix",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_CrossPlatform.ConsoleApp",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/04_Storage.HydraServerConnect",
+        "StockSharp/05_Storage.HydraServerSaveToLocal",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/09_Strategies.LiveOptionsQuoting",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.Fix (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/01_Candles.Realtime",
+        "StockSharp/01_Chart",
+        "StockSharp/01_Indicators.SimpleSMA",
+        "StockSharp/01_Strategies.HistorySMA",
+        "StockSharp/01_Testing.History",
+        "StockSharp/02_Advanced.SaveDataLocal",
+        "StockSharp/02_Candles.CombineHistoryRealtime",
+        "StockSharp/02_Chart.ActiveOrders",
+        "StockSharp/02_Indicators.ComplexBollinger",
+        "StockSharp/02_Strategies.HistoryBollingerBands",
+        "StockSharp/02_Testing.Optimization",
+        "StockSharp/03_Chart.Performance",
+        "StockSharp/03_Indicators.CreateOwn",
+        "StockSharp/03_Strategies.HistoryTrend",
+        "StockSharp/03_Testing.RealTime",
+        "StockSharp/04_Storage.HydraServerConnect",
+        "StockSharp/05_Strategies.HistoryIndex",
+        "StockSharp/06_Strategies.HistoryQuoting",
+        "StockSharp/09_Strategies.LiveOptionsQuoting"
+      ],
+      "description": "NuGet: StockSharp.Xaml.Charting (5.*)"
+    },
+    {
+      "id": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Chart",
+        "StockSharp/01_Chart_fromsrc",
+        "StockSharp/02_Storage.Local",
+        "StockSharp/02_Storage.Local_fromsrc",
+        "StockSharp/02_Testing.Optimization",
+        "StockSharp/02_Testing.Optimization_fromsrc",
+        "StockSharp/05_Strategies.HistoryIndex",
+        "StockSharp/05_Strategies.HistoryIndex_fromsrc"
+      ],
+      "description": "NuGet: Ecng.Compilation.Roslyn (1.0.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Xaml",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+        "StockSharp/01_Misc.Logging",
+        "StockSharp/02_Basic.MarketDepths",
+        "StockSharp/03_Basic.Orders",
+        "StockSharp/04_Strategies.HistoryMarketRule",
+        "StockSharp/07_Strategies.LiveSpread",
+        "StockSharp/08_Strategies.LiveArbitrage",
+        "StockSharp/10_Strategies.LiveTerminal"
+      ],
+      "description": "NuGet: StockSharp.Xaml (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Web.Api.Client",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/03_Storage.RemoteSource",
+        "StockSharp/03_Storage.RemoteSource_fromsrc"
+      ],
+      "description": "NuGet: StockSharp.Web.Api.Client (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Finam",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/03_Storage.RemoteSource"
+      ],
+      "description": "NuGet: StockSharp.Finam (5.*)"
+    },
+    {
+      "id": "nuget:StockSharp.Studio.WebApi.UI",
+      "type": "nuget-package",
+      "versions": [
+        "5.*"
+      ],
+      "consumers": [
+        "StockSharp/01_Advanced.MultiConnect",
+        "StockSharp/02_Advanced.SaveDataLocal"
+      ],
+      "description": "NuGet: StockSharp.Studio.WebApi.UI (5.*)"
+    },
+    {
+      "id": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/BitStamp",
+        "StockSharp/Bitalong",
+        "StockSharp/Bitexbook",
+        "StockSharp/Btce",
+        "StockSharp/Coinbase",
+        "StockSharp/FTX",
+        "StockSharp/Tinkoff"
+      ],
+      "description": "NuGet: Ecng.Net.SocketIO (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.IO.Compression",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo",
+        "StockSharp/Tinkoff"
+      ],
+      "description": "NuGet: Ecng.IO.Compression (1.0.*)"
+    },
+    {
+      "id": "nuget:Grpc.Net.Client",
+      "type": "nuget-package",
+      "versions": [
+        "2.71.0"
+      ],
+      "consumers": [
+        "StockSharp/Tinkoff"
+      ],
+      "description": "NuGet: Grpc.Net.Client (2.71.0)"
+    },
+    {
+      "id": "nuget:Google.Protobuf",
+      "type": "nuget-package",
+      "versions": [
+        "3.*"
+      ],
+      "consumers": [
+        "StockSharp/Tinkoff"
+      ],
+      "description": "NuGet: Google.Protobuf (3.*)"
+    },
+    {
+      "id": "nuget:Ecng.Net",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo"
+      ],
+      "description": "NuGet: Ecng.Net (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.StringSearch",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo"
+      ],
+      "description": "NuGet: Ecng.StringSearch (1.0.*)"
+    },
+    {
+      "id": "nuget:Ecng.Compilation",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.*"
+      ],
+      "consumers": [
+        "StockSharp/Algo"
+      ],
+      "description": "NuGet: Ecng.Compilation (1.0.*)"
+    },
+    {
+      "id": "nuget:MathNet.Numerics",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.0-beta2"
+      ],
+      "consumers": [
+        "StockSharp/Algo"
+      ],
+      "description": "NuGet: MathNet.Numerics (6.0.0-beta2)"
+    },
+    {
+      "id": "datasource:StockSharp:IMessageAdapter",
+      "type": "datasource",
+      "subtype": "connector",
+      "pattern": "IMessageAdapter",
+      "repo": "StockSharp",
+      "occurrences": 104,
+      "description": "IMessageAdapter in StockSharp (104 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:SqlClient",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SqlClient",
+      "repo": "StockSharp",
+      "occurrences": 1,
+      "description": "SqlClient in StockSharp (1 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:WebSocket",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "WebSocket",
+      "repo": "StockSharp",
+      "occurrences": 26,
+      "description": "WebSocket in StockSharp (26 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "StockSharp",
+      "occurrences": 10,
+      "description": "gRPC in StockSharp (10 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:HttpClient.New",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.New",
+      "repo": "StockSharp",
+      "occurrences": 1,
+      "description": "HttpClient.New in StockSharp (1 occurrences)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "StockSharp/Algo.Testing",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Media.Names",
+      "to": "StockSharp/Media.Generator",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Configuration",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Charting.Interfaces",
+      "to": "StockSharp/BusinessEntities",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Indicators",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization",
+      "to": "StockSharp/Localization.Generator",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Diagram.Core",
+      "to": "StockSharp/Alerts.Interfaces",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Diagram.Core",
+      "to": "StockSharp/Algo.Strategies",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Diagram.Core",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Reporting",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Import",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Analytics.CSharp",
+      "to": "StockSharp/Algo.Analytics",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Analytics",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Compilation",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Export",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Import",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Gpu",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Strategies",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Algo.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Diagram.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "StockSharp/Alerts.Interfaces",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/BusinessEntities",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Messages",
+      "to": "StockSharp/Localization",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Strategies",
+      "to": "StockSharp/Alerts.Interfaces",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Strategies",
+      "to": "StockSharp/Algo.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Export",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Alerts.Interfaces",
+      "to": "StockSharp/BusinessEntities",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Analytics",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "StockSharp/Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo.Gpu",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ar",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.bn",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ca",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.cs",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.da",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.de",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.el",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.es",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.fa",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.fi",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.fr",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.he",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.hi",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.hu",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.it",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ja",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.jv",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ko",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ms",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.my",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.nl",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.no",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.pa",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.pl",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.pt",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ro",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ru",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.sk",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.sr",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.sv",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.ta",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.th",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.tl",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.tr",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.uk",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.uz",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.vi",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Localization.all",
+      "to": "StockSharp/Localization.zh",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole",
+      "to": "StockSharp/Algo.Strategies",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "to": "StockSharp/Algo.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "to": "StockSharp/Algo.Strategies",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Testing.History",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Testing.History_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Testing.History_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Strategies.HistoryBollingerBands",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Strategies.HistoryBollingerBands_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Strategies.HistoryBollingerBands_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/05_Storage.HydraServerSaveToLocal_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/05_Storage.HydraServerSaveToLocal_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/05_Storage.HydraServerSaveToLocal_fromsrc",
+      "to": "Fix",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/05_Storage.HydraServerSaveToLocal",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect_fromsrc",
+      "to": "Fix",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Storage.Random_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Storage.Random_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Storage.Random",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource_fromsrc",
+      "to": "Finam",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp_fromsrc",
+      "to": "Binance",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Misc.Logging_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Misc.Logging_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Misc.Logging",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Misc.Unit",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Misc.Unit_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Misc.Unit_fromsrc",
+      "to": "StockSharp/BusinessEntities",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect_fromsrc",
+      "to": "Studio.WebApi.UI",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal_fromsrc",
+      "to": "Studio.WebApi.UI",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "to": "Xaml",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Chart_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/01_Chart_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/01_Chart",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance_fromsrc",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance_fromsrc",
+      "to": "Xaml.Charting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance",
+      "to": "StockSharp/Algo",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "StockSharp/Coinbase",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Coinbase",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Bitexbook",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Bitexbook",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/BitStamp",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/BitStamp",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Bitalong",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Bitalong",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Btce",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Btce",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/FTX",
+      "to": "StockSharp/Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/FTX",
+      "to": "StockSharp/Media.Names",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "StockSharp/Reporting",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "StockSharp/Charting.Interfaces",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "StockSharp/Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "StockSharp/Configuration",
+      "to": "nuget:Ecng.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Configuration",
+      "to": "nuget:NuGet.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Extractor",
+      "to": "nuget:Ecng.Serialization",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Extractor",
+      "to": "nuget:Spectre.Console.Cli",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization",
+      "to": "nuget:Ecng.ComponentModel",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Reporting",
+      "to": "nuget:Ecng.Excel",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Moq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Ecng.UnitTesting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:MSTest.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:MSTest.TestFramework",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Ecng.Excel.OpenXml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Ecng.Data.Ado",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tests",
+      "to": "nuget:Microsoft.Data.SqlClient",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/BusinessEntities",
+      "to": "nuget:Ecng.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/BusinessEntities",
+      "to": "nuget:Ecng.Drawing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Messages",
+      "to": "nuget:Ecng.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Messages",
+      "to": "nuget:Ecng.Linq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Export",
+      "to": "nuget:Ecng.Data",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Generator",
+      "to": "nuget:Microsoft.CodeAnalysis.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Generator",
+      "to": "nuget:Microsoft.CodeAnalysis.Analyzers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Generator",
+      "to": "nuget:System.Text.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Generator",
+      "to": "nuget:System.Text.Encodings.Web",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Localization.Generator",
+      "to": "nuget:Microsoft.Bcl.AsyncInterfaces",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:Ecng.Compilation.All",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:Ecng.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:IronPython.StdLib",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:NumpyDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:MathNet.Numerics.FSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:FSharp.Control.TaskSeq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Compilation",
+      "to": "nuget:FSharpPlus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Media.Generator",
+      "to": "nuget:Microsoft.CodeAnalysis.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Media.Generator",
+      "to": "nuget:Microsoft.CodeAnalysis.Analyzers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo.Gpu",
+      "to": "nuget:ILGPU.Algorithms",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Candles.Realtime",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Candles.CombineHistoryRealtime_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole",
+      "to": "nuget:Ecng.Excel.OpenXml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Testing.HistoryConsole_fromsrc",
+      "to": "nuget:Ecng.Excel.OpenXml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization_fromsrc",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Testing.Optimization_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Testing.History",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Testing.History",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Testing.History_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Testing.RealTime",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/06_Strategies.HistoryQuoting",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Strategies.HistoryMarketRule_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/08_Strategies.LiveArbitrage",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Strategies.HistoryTrend",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Strategies.HistoryIndex",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/10_Strategies.LiveTerminal",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/07_Strategies.LiveSpread",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Strategies.HistoryBollingerBands",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Strategies.HistorySMA",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/09_Strategies.LiveOptionsQuoting",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/05_Storage.HydraServerSaveToLocal",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/04_Storage.HydraServerConnect",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local_fromsrc",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Storage.Local_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource_fromsrc",
+      "to": "nuget:StockSharp.Web.Api.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource",
+      "to": "nuget:StockSharp.Web.Api.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Storage.RemoteSource",
+      "to": "nuget:StockSharp.Finam",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_CrossPlatform.ConsoleApp",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Misc.Logging",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Advanced.MultiConnect",
+      "to": "nuget:StockSharp.Studio.WebApi.UI",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Advanced.SaveDataLocal",
+      "to": "nuget:StockSharp.Studio.WebApi.UI",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Indicators.CreateOwn_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Indicators.SimpleSMA_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Indicators.ComplexBollinger_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Basic.MarketDepths",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Basic.Orders",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.Binance",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.Okex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.GateIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.Bitmex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.Fix",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Basic.ConnectAndDownloadInstruments",
+      "to": "nuget:StockSharp.Xaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/02_Chart.ActiveOrders_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Chart_fromsrc",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Chart_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Chart",
+      "to": "nuget:Ecng.Compilation.Roslyn",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Chart",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/01_Chart",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance_fromsrc",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance",
+      "to": "nuget:StockSharp.Xaml.Charting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/03_Chart.Performance",
+      "to": "nuget:StockSharp.Samples.HistoryData",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Coinbase",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Bitexbook",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "nuget:Ecng.IO.Compression",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Tinkoff",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/BitStamp",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Bitalong",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Btce",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/FTX",
+      "to": "nuget:Ecng.Net.SocketIO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:Ecng.Net",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:Ecng.IO.Compression",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:Ecng.StringSearch",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:Ecng.Compilation",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "StockSharp/Algo",
+      "to": "nuget:Ecng.Linq",
+      "type": "nuget-dependency"
+    }
+  ],
+  "summary": {
+    "totalRepos": 1,
+    "totalProjects": 140,
+    "totalNuGetPackages": 50,
+    "totalProjectRefs": 200,
+    "totalCrossRepoRefs": 70,
+    "totalDataFindings": 144,
+    "totalConfigFiles": 1,
+    "repos": {
+      "StockSharp": {
+        "projects": 140,
+        "categories": {
+          "Test": 10,
+          "Library": 17,
+          "Tool": 3,
+          "Localization": 40,
+          "DesktopApp": 1,
+          "Sample": 62,
+          "Connector": 7
+        }
+      }
+    },
+    "categories": {
+      "Test": 10,
+      "Library": 17,
+      "Tool": 3,
+      "Localization": 40,
+      "DesktopApp": 1,
+      "Sample": 62,
+      "Connector": 7
+    }
+  }
+}

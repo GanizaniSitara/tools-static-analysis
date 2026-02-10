@@ -1,0 +1,108 @@
+digraph dependencies {
+    rankdir=LR;
+    node [shape=box, style=filled, fontname="Helvetica"];
+    edge [color="#666666"];
+
+    subgraph cluster_0 {
+        label="src";
+        style=filled; color="#DDDDDD";
+        subgraph cluster_1 {
+            label="webapp";
+            style=filled; color="#EEEEEE";
+            src_WebApp [label="WebApp", fillcolor="#1ABC9C", fontcolor="white"];
+            src_Identity_API [label="Identity.API", fillcolor="#1ABC9C", fontcolor="white"];
+            src_Catalog_API [label="Catalog.API", fillcolor="#1ABC9C", fontcolor="white"];
+            src_WebAppComponents [label="WebAppComponents", fillcolor="#1ABC9C", fontcolor="white"];
+            src_PaymentProcessor [label="PaymentProcessor", fillcolor="#1ABC9C", fontcolor="white"];
+            src_Basket_API [label="Basket.API", fillcolor="#1ABC9C", fontcolor="white"];
+            src_Ordering_API [label="Ordering.API", fillcolor="#1ABC9C", fontcolor="white"];
+            src_Webhooks_API [label="Webhooks.API", fillcolor="#1ABC9C", fontcolor="white"];
+        }
+        subgraph cluster_2 {
+            label="library";
+            style=filled; color="#EEEEEE";
+            src_Ordering_Domain [label="Ordering.Domain", fillcolor="#4A90D9", fontcolor="white"];
+            src_Ordering_Infrastructure [label="Ordering.Infrastructure", fillcolor="#4A90D9", fontcolor="white"];
+            src_IntegrationEventLogEF [label="IntegrationEventLogEF", fillcolor="#4A90D9", fontcolor="white"];
+            src_EventBus [label="EventBus", fillcolor="#4A90D9", fontcolor="white"];
+            src_EventBusRabbitMQ [label="EventBusRabbitMQ", fillcolor="#4A90D9", fontcolor="white"];
+        }
+        subgraph cluster_3 {
+            label="application";
+            style=filled; color="#EEEEEE";
+            src_eShop_AppHost [label="eShop.AppHost", fillcolor="#E74C3C", fontcolor="white"];
+            src_HybridApp [label="HybridApp", fillcolor="#E74C3C", fontcolor="white"];
+        }
+        subgraph cluster_4 {
+            label="service";
+            style=filled; color="#EEEEEE";
+            src_OrderProcessor [label="OrderProcessor", fillcolor="#3498DB", fontcolor="white"];
+            src_eShop_ServiceDefaults [label="eShop.ServiceDefaults", fillcolor="#3498DB", fontcolor="white"];
+        }
+        subgraph cluster_5 {
+            label="tool";
+            style=filled; color="#EEEEEE";
+            src_ClientApp [label="ClientApp", fillcolor="#F39C12", fontcolor="white"];
+            src_WebhookClient [label="WebhookClient", fillcolor="#F39C12", fontcolor="white"];
+        }
+    }
+    subgraph cluster_6 {
+        label="tests";
+        style=filled; color="#DDDDDD";
+        subgraph cluster_7 {
+            label="test";
+            style=filled; color="#EEEEEE";
+            tests_Ordering_UnitTests [label="Ordering.UnitTests", fillcolor="#9B59B6", fontcolor="white"];
+            tests_Ordering_FunctionalTests [label="Ordering.FunctionalTests", fillcolor="#9B59B6", fontcolor="white"];
+            tests_Catalog_FunctionalTests [label="Catalog.FunctionalTests", fillcolor="#9B59B6", fontcolor="white"];
+            tests_Basket_UnitTests [label="Basket.UnitTests", fillcolor="#9B59B6", fontcolor="white"];
+            tests_ClientApp_UnitTests [label="ClientApp.UnitTests", fillcolor="#9B59B6", fontcolor="white"];
+        }
+    }
+    src_WebApp -> src_eShop_ServiceDefaults;
+    src_WebApp -> src_EventBusRabbitMQ;
+    src_WebApp -> src_WebAppComponents;
+    src_Identity_API -> src_eShop_ServiceDefaults;
+    src_Catalog_API -> src_EventBusRabbitMQ;
+    src_Catalog_API -> src_IntegrationEventLogEF;
+    src_Catalog_API -> src_eShop_ServiceDefaults;
+    src_eShop_AppHost -> src_Basket_API;
+    src_eShop_AppHost -> src_Catalog_API;
+    src_eShop_AppHost -> src_Identity_API;
+    src_eShop_AppHost -> src_Ordering_API;
+    src_eShop_AppHost -> src_OrderProcessor;
+    src_eShop_AppHost -> src_PaymentProcessor;
+    src_eShop_AppHost -> src_Webhooks_API;
+    src_eShop_AppHost -> src_WebApp;
+    src_eShop_AppHost -> src_WebhookClient;
+    src_Ordering_Infrastructure -> src_IntegrationEventLogEF;
+    src_Ordering_Infrastructure -> src_Ordering_Domain;
+    src_PaymentProcessor -> src_eShop_ServiceDefaults;
+    src_PaymentProcessor -> src_EventBusRabbitMQ;
+    src_OrderProcessor -> src_eShop_ServiceDefaults;
+    src_OrderProcessor -> src_EventBusRabbitMQ;
+    src_HybridApp -> src_WebAppComponents;
+    src_Basket_API -> src_eShop_ServiceDefaults;
+    src_Basket_API -> src_EventBusRabbitMQ;
+    src_IntegrationEventLogEF -> src_EventBus;
+    src_Ordering_API -> src_EventBusRabbitMQ;
+    src_Ordering_API -> src_IntegrationEventLogEF;
+    src_Ordering_API -> src_eShop_ServiceDefaults;
+    src_Ordering_API -> src_Ordering_Domain;
+    src_Ordering_API -> src_Ordering_Infrastructure;
+    src_EventBusRabbitMQ -> src_EventBus;
+    src_Webhooks_API -> src_EventBusRabbitMQ;
+    src_Webhooks_API -> src_IntegrationEventLogEF;
+    src_Webhooks_API -> src_eShop_ServiceDefaults;
+    src_WebhookClient -> src_eShop_ServiceDefaults;
+    tests_Ordering_UnitTests -> src_Ordering_API [style=dashed, color="red"];
+    tests_Ordering_UnitTests -> src_Ordering_Domain [style=dashed, color="red"];
+    tests_Ordering_UnitTests -> src_Ordering_Infrastructure [style=dashed, color="red"];
+    tests_Ordering_FunctionalTests -> src_Ordering_API [style=dashed, color="red"];
+    tests_Ordering_FunctionalTests -> src_Identity_API [style=dashed, color="red"];
+    tests_Ordering_FunctionalTests -> src_Ordering_Domain [style=dashed, color="red"];
+    tests_Ordering_FunctionalTests -> src_Ordering_Infrastructure [style=dashed, color="red"];
+    tests_Catalog_FunctionalTests -> src_Catalog_API [style=dashed, color="red"];
+    tests_Basket_UnitTests -> src_Basket_API [style=dashed, color="red"];
+    tests_ClientApp_UnitTests -> src_ClientApp [style=dashed, color="red"];
+}

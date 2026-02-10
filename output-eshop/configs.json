@@ -1,0 +1,257 @@
+[
+  {
+    "file": "src/WebApp/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/WebApp/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\",\n  \"EventBus\": {\n    \"SubscriptionClientName\": \"Ordering.webapp\"\n  },\n  \"SessionCookieLifetimeMinutes\": 60\n}\n"
+  },
+  {
+    "file": "src/Identity.API/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "IdentityDB": "Host=localhost;Database=IdentityDB;Username=postgres;Password=yourWeak(!)Password"
+    },
+    "urls": {},
+    "raw": "{\n  \"ConnectionStrings\": {\n    \"IdentityDB\": \"Host=localhost;Database=IdentityDB;Username=postgres;Password=yourWeak(!)Password\"\n  }\n}"
+  },
+  {
+    "file": "src/Identity.API/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"MauiCallback\": \"maui://authcallback\",\n  \"UseCustomizationData\": false,\n  \"TokenLifetimeMinutes\": 120,\n  \"PermanentTokenLifetimeDays\": 365\n}\n"
+  },
+  {
+    "file": "src/Catalog.API/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "CatalogDB": "Host=localhost;Database=CatalogDB;Username=postgres;Password=yourWeak(!)Password"
+    },
+    "urls": {},
+    "raw": "{\n  \"ConnectionStrings\": {\n    \"CatalogDB\": \"Host=localhost;Database=CatalogDB;Username=postgres;Password=yourWeak(!)Password\"\n  }\n}"
+  },
+  {
+    "file": "src/Catalog.API/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"OpenApi\": {\n    \"Endpoint\": {\n      \"Name\": \"Catalog.API V1\"\n    },\n    \"Document\": {\n      \"Description\": \"The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample\",\n      \"Title\": \"eShop - Catalog HTTP API\",\n      \"Version\": \"v1\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"EventBus\": \"amqp://localhost\"\n  },\n  \"EventBus\": {\n    \"SubscriptionClientName\":"
+  },
+  {
+    "file": "src/eShop.AppHost/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\",\n      \"Aspire.Hosting.Dcp\": \"Warning\"\n    }\n  },\n  \"ConnectionStrings\": {\n    //\"OpenAi\": \"Endpoint=xxxx;Key=xxxx\"\n  }\n}\n"
+  },
+  {
+    "file": "src/PaymentProcessor/appsettings.Development.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"Console\": {\n      \"IncludeScopes\": false\n    },\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"System\": \"Information\",\n      \"Microsoft\": \"Information\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/PaymentProcessor/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"EventBus\": \"amqp://localhost\"\n  },\n  \"EventBus\": {\n    \"SubscriptionClientName\": \"PaymentProcessor\"\n  },\n  \"PaymentOptions\": {\n    \"PaymentSucceeded\": true\n  }\n}"
+  },
+  {
+    "file": "src/OrderProcessor/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "postgres": "Host=localhost;Database=OrderingDB;Username=postgres;Password=yourWeak(!)Password"
+    },
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"System\": \"Information\",\n      \"Microsoft\": \"Information\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"postgres\": \"Host=localhost;Database=OrderingDB;Username=postgres;Password=yourWeak(!)Password\"\n  }\n}\n"
+  },
+  {
+    "file": "src/OrderProcessor/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "EventBus": "amqp://localhost"
+    },
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"EventBus\": \"amqp://localhost\"\n  },\n  \"EventBus\": {\n    \"SubscriptionClientName\": \"OrderProcessor\"\n  },\n  \"BackgroundTaskOptions\": {\n    \"GracePeriodTime\": \"1\",\n    \"CheckUpdateTime\": \"30\"\n  }\n}"
+  },
+  {
+    "file": "src/Basket.API/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \n}"
+  },
+  {
+    "file": "src/Basket.API/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "Redis": "localhost",
+      "EventBus": "amqp://localhost"
+    },
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"Kestrel\": {\n    \"EndpointDefaults\": {\n      \"Protocols\": \"Http2\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"Redis\": \"localhost\",\n    \"EventBus\": \"amqp://localhost\"\n  },\n  \"Identity\": {\n    \"Audience\": \"basket\"\n  },\n  \"EventBus\": {\n    \"SubscriptionClientName\": \"Basket\"\n  }\n}\n"
+  },
+  {
+    "file": "src/Ordering.API/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "OrderingDB": "Host=localhost;Database=OrderingDB;Username=postgres;Password=yourWeak(!)Password"
+    },
+    "urls": {},
+    "raw": "{\n  \"ConnectionStrings\": {\n    \"OrderingDB\": \"Host=localhost;Database=OrderingDB;Username=postgres;Password=yourWeak(!)Password\"\n  }\n}"
+  },
+  {
+    "file": "src/Ordering.API/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\",\n  \"OpenApi\": {\n    \"Endpoint\": {\n      \"Name\": \"Ordering.API V1\"\n    },\n    \"Document\": {\n      \"Description\": \"The Ordering Service HTTP API\",\n      \"Title\": \"eShop - Ordering HTTP API\",\n      \"Version\": \"v1\"\n    },\n    \"Auth\": {\n      \"ClientId\": \"orderingswaggerui\",\n      \"AppName\": \"Ordering Swagger UI\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"EventBus"
+  },
+  {
+    "file": "src/Webhooks.API/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "WebHooksDB": "Host=localhost;Database=WebHooksDB;Username=postgres;Password=yourWeak(!)Password"
+    },
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"System\": \"Information\",\n      \"Microsoft\": \"Information\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"WebHooksDB\": \"Host=localhost;Database=WebHooksDB;Username=postgres;Password=yourWeak(!)Password\"\n  }\n}\n"
+  },
+  {
+    "file": "src/Webhooks.API/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {
+      "EventBus": "amqp://localhost"
+    },
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\",\n  \"OpenApi\": {\n    \"Endpoint\": {\n      \"Name\": \"Webhooks.API V1\"\n    },\n    \"Document\": {\n      \"Description\": \"The Webhooks Microservice HTTP API. This is a simple webhooks CRUD registration entrypoint\",\n      \"Title\": \"eShop - Webhooks HTTP API\",\n      \"Version\": \"v1\"\n    },\n    \"Auth\": {\n      \"ClientId\": \"webhooksswaggerui\",\n      \"AppName\": \"WebHooks Service Swagger UI\"\n    }\n  },\n  \"ConnectionStrings\": {\n    \"EventBus\": \"amqp://localhost\"\n  },\n  \"EventBus\": {\n    \"SubscriptionClientName\": \"Webhooks\"\n  },\n  \"Identity\": {\n    \"Url\": \"http://localhost:5223\",\n    \"Audience\": \"webhooks\",\n    \"Scopes\": {\n      \"webhooks\": \"Webhooks API\"\n    }\n  },\n  \"UseCustomizationData\": false\n}\n"
+  },
+  {
+    "file": "src/WebhookClient/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/WebhookClient/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\",\n  \"WebhookClientOptions\": {\n    \"Token\": \"6168DB8D-DC58-4094-AF24-483278923590\"\n  }\n}\n"
+  },
+  {
+    "file": "src/WebApp/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"$schema\": \"http://json.schemastore.org/launchsettings.json\",\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"dotnetRunMessages\": true,\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5045\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"https\": {\n      \"commandName\": \"Project\",\n      \"dotnetRunMessages\": true,\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"https://localhost:7298;http://localhost:5045\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/Identity.API/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5223\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"https\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"https://localhost:5243;http://localhost:5223\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Catalog.API/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5222/\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/eShop.AppHost/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"$schema\": \"http://json.schemastore.org/launchsettings.json\",\n  \"profiles\": {\n    \"https\": {\n      \"commandName\": \"Project\",\n      \"dotnetRunMessages\": true,\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"https://localhost:19888;http://localhost:18848\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\",\n        \"DOTNET_ENVIRONMENT\": \"Development\",\n        \"DOTNET_DASHBOARD_OTLP_ENDPOINT_URL\": \"https://localhost:18076\",\n        \"DOTNET_RESOURCE_SERVICE_ENDPOINT_URL\": \"https://localhost:19076\"\n      }\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/PaymentProcessor/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"PaymentProcessor\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": false,\n      \"applicationUrl\": \"http://localhost:5226\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/OrderProcessor/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"OrderProcessor\": {\n      \"commandName\": \"Project\",\n      \"environmentVariables\": {\n        \"DOTNET_ENVIRONMENT\": \"Development\"\n      },\n      \"applicationUrl\": \"http://localhost:16888\"\n    }\n  }\n}"
+  },
+  {
+    "file": "src/HybridApp/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"Windows Machine\": {\n      \"commandName\": \"MsixPackage\",\n      \"nativeDebugging\": false\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Basket.API/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5221\",\n      \"environmentVariables\": {\n        \"Identity__Url\": \"http://localhost:5223\",\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Ordering.API/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5224/\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/ClientApp/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"Windows Machine\": {\n      \"commandName\": \"MsixPackage\",\n      \"nativeDebugging\": false\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Webhooks.API/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"http://localhost:5227\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/WebhookClient/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"$schema\": \"http://json.schemastore.org/launchsettings.json\",\n    \"iisSettings\": {\n      \"windowsAuthentication\": false,\n      \"anonymousAuthentication\": true,\n      \"iisExpress\": {\n        \"applicationUrl\": \"http://localhost:64178\",\n        \"sslPort\": 44365\n      }\n    },\n    \"profiles\": {\n      \"http\": {\n        \"commandName\": \"Project\",\n        \"dotnetRunMessages\": true,\n        \"launchBrowser\": true,\n        \"applicationUrl\": \"http://localhost:5062\",\n        \"environmentVariables\": {\n          \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n        }\n      },\n      \"https\": {\n        \"commandName\": \"Project\",\n        \"dotnetRunMessages\": true,\n        \"launchBrowser\": true,\n        \"applicationUrl\": \"https://localhost:7260;http://localhost:5062\",\n        \"environmentVariables\": {\n          \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n        }\n      },\n      \"IIS Express\": {\n        \"commandName\": \"IISExpress\",\n        \"launchBrowser\": true,\n        \"environmentVariables\": {\n          \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n        }\n      }\n    }\n  }\n"
+  }
+]

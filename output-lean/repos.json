@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Lean",
+    "root": "/home/user/Lean",
+    "solutions": [
+      "QuantConnect.Lean.sln"
+    ]
+  }
+]

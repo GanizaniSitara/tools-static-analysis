@@ -1,0 +1,1298 @@
+[
+  {
+    "file": "Algo.Testing/EmulationMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 9,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class EmulationMessageAdapter",
+    "context": "public class EmulationMessageAdapter : MessageAdapterWrapper, IEmulationMessageAdapter"
+  },
+  {
+    "file": "Algo.Testing/HistoryMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class HistoryMessageAdapter",
+    "context": "public class HistoryMessageAdapter : MessageAdapter, IEmulationMessageAdapter"
+  },
+  {
+    "file": "Algo.Testing/MarketEmulatorAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MarketEmulatorAdapter",
+    "context": "public class MarketEmulatorAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/SecurityNativeIdMessageAdapterTests.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestPassThroughAdapter",
+    "context": "private sealed class TestPassThroughAdapter : PassThroughMessageAdapter"
+  },
+  {
+    "file": "Tests/RecordingMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class RecordingMessageAdapter",
+    "context": "sealed class RecordingMessageAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/BasketMessageAdapterRoutingTests.cs",
+    "repo": "StockSharp",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestRoutingInnerAdapter",
+    "context": "private sealed class TestRoutingInnerAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/StrategyReportTemplateHelper.cs",
+    "repo": "StockSharp",
+    "line": 141,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var file = File.Create(filePath);"
+  },
+  {
+    "file": "Tests/BasketRoutingManagerTests.cs",
+    "repo": "StockSharp",
+    "line": 14,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestRoutingAdapter",
+    "context": "private sealed class TestRoutingAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/AdapterRouterTests.cs",
+    "repo": "StockSharp",
+    "line": 14,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestRouterAdapter",
+    "context": "private sealed class TestRouterAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/StorageMessageAdapterTests.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestInnerAdapter",
+    "context": "private sealed class TestInnerAdapter : PassThroughMessageAdapter"
+  },
+  {
+    "file": "Tests/ConnectorBasketTests.cs",
+    "repo": "StockSharp",
+    "line": 35,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockAdapter",
+    "context": "private sealed class MockAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/FindAdaptersTests.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FindAdaptersTestValidAdapter",
+    "context": "public class FindAdaptersTestValidAdapter(IdGenerator transactionIdGenerator) : MessageAdapter(transactionIdGenerator)"
+  },
+  {
+    "file": "Tests/FindAdaptersTests.cs",
+    "repo": "StockSharp",
+    "line": 17,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FindAdaptersTestNoIdGeneratorConstructorAdapter",
+    "context": "public class FindAdaptersTestNoIdGeneratorConstructorAdapter() : MessageAdapter(new IncrementalIdGenerator())"
+  },
+  {
+    "file": "Tests/FindAdaptersTests.cs",
+    "repo": "StockSharp",
+    "line": 26,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FindAdaptersTestPrivateConstructorAdapter",
+    "context": "public class FindAdaptersTestPrivateConstructorAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/FindAdaptersTests.cs",
+    "repo": "StockSharp",
+    "line": 51,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FindAdaptersTestAbstractAdapter",
+    "context": "public abstract class FindAdaptersTestAbstractAdapter(IdGenerator transactionIdGenerator) : MessageAdapter(transactionIdGenerator)"
+  },
+  {
+    "file": "Tests/FindAdaptersTests.cs",
+    "repo": "StockSharp",
+    "line": 58,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FindAdaptersTestMultipleConstructorsAdapter",
+    "context": "public class FindAdaptersTestMultipleConstructorsAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/ConnectorRoutingTests.cs",
+    "repo": "StockSharp",
+    "line": 18,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LiveFeedCryptoAdapter",
+    "context": "private sealed class LiveFeedCryptoAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/BasketTestBase.cs",
+    "repo": "StockSharp",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestBasketInnerAdapter",
+    "context": "protected sealed class TestBasketInnerAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/ExtensionsMethodsTests.cs",
+    "repo": "StockSharp",
+    "line": 3528,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestMessageAdapter",
+    "context": "private sealed class TestMessageAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/AdapterTestHarness.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class PassThroughMessageAdapter",
+    "context": "class PassThroughMessageAdapter(IdGenerator transactionIdGenerator) : MessageAdapter(transactionIdGenerator)"
+  },
+  {
+    "file": "Tests/AdapterTestHarness.cs",
+    "repo": "StockSharp",
+    "line": 12,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class RecordingPassThroughMessageAdapter",
+    "context": "class RecordingPassThroughMessageAdapter : PassThroughMessageAdapter"
+  },
+  {
+    "file": "Tests/AdapterWrapperPipelineBuilderTests.cs",
+    "repo": "StockSharp",
+    "line": 19,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestPipelineAdapter",
+    "context": "private sealed class TestPipelineAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/CandleBuilderMessageAdapterTests.cs",
+    "repo": "StockSharp",
+    "line": 16,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockCandleAdapter",
+    "context": "private class MockCandleAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/PositionTests.cs",
+    "repo": "StockSharp",
+    "line": 207,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestInnerAdapter",
+    "context": "private class TestInnerAdapter(bool? emulate) : PassThroughMessageAdapter(new IncrementalIdGenerator())"
+  },
+  {
+    "file": "Tests/AsmInit.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "Microsoft.Data.SqlClient",
+    "context": "using Microsoft.Data.SqlClient;"
+  },
+  {
+    "file": "Tests/RemoteStorageClientTests.cs",
+    "repo": "StockSharp",
+    "line": 1387,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockRemoteAdapter",
+    "context": "class MockRemoteAdapter : MessageAdapter,"
+  },
+  {
+    "file": "Tests/ExportTests.cs",
+    "repo": "StockSharp",
+    "line": 51,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = GetSecret(\"DB_CONNECTION_STRING\"),"
+  },
+  {
+    "file": "Tests/AsyncExtensionsTests.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockAdapter",
+    "context": "private class MockAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/AsyncExtensionsTests.cs",
+    "repo": "StockSharp",
+    "line": 147,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockAsyncAdapter",
+    "context": "private class MockAsyncAdapter : HistoricalMessageAdapter"
+  },
+  {
+    "file": "Tests/AsyncExtensionsTests.cs",
+    "repo": "StockSharp",
+    "line": 852,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class NoFinishedMessageAdapter",
+    "context": "private class NoFinishedMessageAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/AsyncExtensionsTests.cs",
+    "repo": "StockSharp",
+    "line": 894,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ControlledTestAdapter",
+    "context": "private class ControlledTestAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/AsyncExtensionsTests.cs",
+    "repo": "StockSharp",
+    "line": 965,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OrderTestAdapter",
+    "context": "private class OrderTestAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/BasketMessageFlowTests.cs",
+    "repo": "StockSharp",
+    "line": 77,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LoggingInnerAdapter",
+    "context": "private sealed class LoggingInnerAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/CandleBuilderManagerTests.cs",
+    "repo": "StockSharp",
+    "line": 19,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestInnerAdapter",
+    "context": "private sealed class TestInnerAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/ConnectorMarketDataProtectionTests.cs",
+    "repo": "StockSharp",
+    "line": 28,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockMarketDataAdapter",
+    "context": "private sealed class MockMarketDataAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/BasketRoutingManagerMockTests.cs",
+    "repo": "StockSharp",
+    "line": 17,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestMockInnerAdapter",
+    "context": "private sealed class TestMockInnerAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/RiskTests.cs",
+    "repo": "StockSharp",
+    "line": 1459,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestInnerAdapter",
+    "context": "private class TestInnerAdapter : PassThroughMessageAdapter"
+  },
+  {
+    "file": "Tests/BacktestingTests.cs",
+    "repo": "StockSharp",
+    "line": 1653,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MockHistoryAdapter",
+    "context": "private class MockHistoryAdapter : MessageAdapter"
+  },
+  {
+    "file": "Tests/BacktestingTests.cs",
+    "repo": "StockSharp",
+    "line": 1967,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class RoutingTestAdapter",
+    "context": "private sealed class RoutingTestAdapter : MessageAdapter"
+  },
+  {
+    "file": "Messages/ChannelMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ChannelMessageAdapter",
+    "context": "public class ChannelMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Messages/MessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MessageAdapter",
+    "context": "public abstract partial class MessageAdapter : BaseLogReceiver, IMessageAdapter, INotifyPropertyChanged"
+  },
+  {
+    "file": "Messages/IMessageAdapterWrapper.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": ": IMessageAdapter",
+    "context": "public interface IMessageAdapterWrapper : IMessageAdapter"
+  },
+  {
+    "file": "Messages/Extensions.cs",
+    "repo": "StockSharp",
+    "line": 1521,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": ": IMessageAdapter",
+    "context": "where TAdapter : IMessageAdapter"
+  },
+  {
+    "file": "Messages/Extensions.cs",
+    "repo": "StockSharp",
+    "line": 1541,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": ": IMessageAdapter",
+    "context": "where TAdapter : IMessageAdapter"
+  },
+  {
+    "file": "Messages/HistoricalMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class HistoricalMessageAdapter",
+    "context": "public abstract class HistoricalMessageAdapter(IdGenerator transactionIdGenerator) : MessageAdapter(transactionIdGenerator)"
+  },
+  {
+    "file": "Connectors/Coinbase/CoinbaseMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoinbaseMessageAdapter",
+    "context": "public partial class CoinbaseMessageAdapter"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/Authenticator.cs",
+    "repo": "StockSharp",
+    "line": 120,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Generate JWT token for WebSocket authentication (CDP auth)."
+  },
+  {
+    "file": "Connectors/Coinbase/Native/Authenticator.cs",
+    "repo": "StockSharp",
+    "line": 122,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public string GenerateWebSocketJwt()"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/SocketClient.cs",
+    "repo": "StockSharp",
+    "line": 19,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly WebSocketClient _client;"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/SocketClient.cs",
+    "repo": "StockSharp",
+    "line": 68,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private async ValueTask OnProcess(WebSocketMessage msg, CancellationToken cancellationToken)"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/SocketClient.cs",
+    "repo": "StockSharp",
+    "line": 271,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "// Legacy HMAC authentication for WebSocket"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/SocketClient.cs",
+    "repo": "StockSharp",
+    "line": 287,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "// CDP JWT authentication for WebSocket"
+  },
+  {
+    "file": "Connectors/Coinbase/Native/SocketClient.cs",
+    "repo": "StockSharp",
+    "line": 288,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var jwt = _authenticator.GenerateWebSocketJwt();"
+  },
+  {
+    "file": "Connectors/Coinbase/CoinbaseMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 7,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoinbaseMessageAdapter",
+    "context": "public partial class CoinbaseMessageAdapter"
+  },
+  {
+    "file": "Connectors/Coinbase/CoinbaseMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoinbaseMessageAdapter",
+    "context": "public partial class CoinbaseMessageAdapter"
+  },
+  {
+    "file": "Connectors/Coinbase/CoinbaseMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 26,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoinbaseMessageAdapter",
+    "context": "public partial class CoinbaseMessageAdapter : MessageAdapter, IKeySecretAdapter, IPassphraseAdapter"
+  },
+  {
+    "file": "Connectors/Bitexbook/BitexbookMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitexbookMessageAdapter",
+    "context": "public partial class BitexbookMessageAdapter : MessageAdapter, IKeySecretAdapter"
+  },
+  {
+    "file": "Connectors/Bitexbook/BitexbookMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 4,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitexbookMessageAdapter",
+    "context": "public partial class BitexbookMessageAdapter"
+  },
+  {
+    "file": "Connectors/Bitexbook/BitexbookMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitexbookMessageAdapter",
+    "context": "public partial class BitexbookMessageAdapter"
+  },
+  {
+    "file": "Connectors/Bitexbook/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 25,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly WebSocketClient _client;"
+  },
+  {
+    "file": "Connectors/Bitexbook/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 74,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private async ValueTask OnProcess(WebSocketMessage msg, CancellationToken cancellationToken)"
+  },
+  {
+    "file": "Connectors/Bitexbook/BitexbookMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitexbookMessageAdapter",
+    "context": "public partial class BitexbookMessageAdapter"
+  },
+  {
+    "file": "Connectors/Tinkoff/TinkoffMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 24,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TinkoffMessageAdapter",
+    "context": "public partial class TinkoffMessageAdapter : MessageAdapter, ITokenAdapter, IDemoAdapter"
+  },
+  {
+    "file": "Connectors/Tinkoff/TinkoffMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TinkoffMessageAdapter",
+    "context": "public partial class TinkoffMessageAdapter"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/InstrumentsGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/MarketdataGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/StopordersGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/OrdersGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/SandboxGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/UsersGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/OperationsGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Native/Protos/Generated/SignalsGrpc.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/TinkoffMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TinkoffMessageAdapter",
+    "context": "public partial class TinkoffMessageAdapter"
+  },
+  {
+    "file": "Connectors/Tinkoff/Properties/Usings.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "global using global::Grpc.Core;"
+  },
+  {
+    "file": "Connectors/Tinkoff/Properties/Usings.cs",
+    "repo": "StockSharp",
+    "line": 12,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "global using global::Grpc.Net.Client;"
+  },
+  {
+    "file": "Connectors/Tinkoff/TinkoffMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 14,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TinkoffMessageAdapter",
+    "context": "public partial class TinkoffMessageAdapter"
+  },
+  {
+    "file": "Connectors/BitStamp/BitStampMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitStampMessageAdapter",
+    "context": "public partial class BitStampMessageAdapter : IKeySecretAdapter"
+  },
+  {
+    "file": "Connectors/BitStamp/BitStampMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitStampMessageAdapter",
+    "context": "partial class BitStampMessageAdapter"
+  },
+  {
+    "file": "Connectors/BitStamp/BitStampMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitStampMessageAdapter",
+    "context": "partial class BitStampMessageAdapter"
+  },
+  {
+    "file": "Connectors/BitStamp/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 24,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly WebSocketClient _client;"
+  },
+  {
+    "file": "Connectors/BitStamp/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 73,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private async ValueTask OnProcess(WebSocketMessage msg, CancellationToken cancellationToken)"
+  },
+  {
+    "file": "Connectors/BitStamp/BitStampMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 4,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitStampMessageAdapter",
+    "context": "public partial class BitStampMessageAdapter : MessageAdapter"
+  },
+  {
+    "file": "Connectors/Bitalong/BitalongMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitalongMessageAdapter",
+    "context": "public partial class BitalongMessageAdapter : MessageAdapter, IKeySecretAdapter, IAddressAdapter<string>"
+  },
+  {
+    "file": "Connectors/Bitalong/BitalongMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitalongMessageAdapter",
+    "context": "public partial class BitalongMessageAdapter"
+  },
+  {
+    "file": "Connectors/Bitalong/BitalongMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 76,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_httpClient = new HttpClient(Address, Key, Secret) { Parent = this };"
+  },
+  {
+    "file": "Connectors/Bitalong/BitalongMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 4,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitalongMessageAdapter",
+    "context": "public partial class BitalongMessageAdapter"
+  },
+  {
+    "file": "Connectors/Bitalong/BitalongMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BitalongMessageAdapter",
+    "context": "public partial class BitalongMessageAdapter"
+  },
+  {
+    "file": "Connectors/Btce/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 15,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly WebSocketClient _client;"
+  },
+  {
+    "file": "Connectors/Btce/Native/PusherClient.cs",
+    "repo": "StockSharp",
+    "line": 61,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private async ValueTask OnProcess(WebSocketMessage msg, CancellationToken cancellationToken)"
+  },
+  {
+    "file": "Connectors/Btce/BtceMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 5,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BtceMessageAdapter",
+    "context": "partial class BtceMessageAdapter"
+  },
+  {
+    "file": "Connectors/Btce/BtceMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 4,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BtceMessageAdapter",
+    "context": "public partial class BtceMessageAdapter"
+  },
+  {
+    "file": "Connectors/Btce/BtceMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BtceMessageAdapter",
+    "context": "partial class BtceMessageAdapter"
+  },
+  {
+    "file": "Connectors/Btce/BtceMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BtceMessageAdapter",
+    "context": "public partial class BtceMessageAdapter : MessageAdapter, IKeySecretAdapter, IAddressAdapter<string>"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private FtxWebSocketClient _wsClient;"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 144,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (_wsClient is FtxWebSocketClient sc)"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FtxMessageAdapter",
+    "context": "public partial class FtxMessageAdapter"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "class FtxWebSocketClient : BaseLogReceiver"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 36,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly WebSocketClient _client;"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 38,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public FtxWebSocketClient(SecureString key, SecureString secret, string subaccountName, int attemptsCount)"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 86,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Closes the WebSocket connection"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 244,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private async ValueTask OnProcess(WebSocketMessage msg, CancellationToken cancellationToken)"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 254,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketResponse<Level1> level1 = Parse<WebSocketResponse<Level1>>(obj);"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 265,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketResponse<List<Trade>> trade = Parse<WebSocketResponse<List<Trade>>>(obj);"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 277,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketResponse<OrderBook> ob = Parse<WebSocketResponse<OrderBook>>(obj);"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 288,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketResponse<Order> order = Parse<WebSocketResponse<Order>>(obj);"
+  },
+  {
+    "file": "Connectors/FTX/Native/FtxWebSocketClient.cs",
+    "repo": "StockSharp",
+    "line": 299,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketResponse<Fill> fill = Parse<WebSocketResponse<Fill>>(obj);"
+  },
+  {
+    "file": "Connectors/FTX/Native/Model/WebSocketResponse.cs",
+    "repo": "StockSharp",
+    "line": 4,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "internal class WebSocketResponse<T>"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter_MarketData.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FtxMessageAdapter",
+    "context": "partial class FtxMessageAdapter"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter_Transaction.cs",
+    "repo": "StockSharp",
+    "line": 3,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FtxMessageAdapter",
+    "context": "partial class FtxMessageAdapter"
+  },
+  {
+    "file": "Connectors/FTX/FtxMessageAdapter_Settings.cs",
+    "repo": "StockSharp",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FtxMessageAdapter",
+    "context": "public partial class FtxMessageAdapter : MessageAdapter, IKeySecretAdapter"
+  },
+  {
+    "file": "Algo/Positions/PositionMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class PositionMessageAdapter",
+    "context": "public class PositionMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/OrderLogMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OrderLogMessageAdapter",
+    "context": "public class OrderLogMessageAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/FilteredMarketDepthAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FilteredMarketDepthAdapter",
+    "context": "public class FilteredMarketDepthAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Slippage/SlippageMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SlippageMessageAdapter",
+    "context": "public class SlippageMessageAdapter(IMessageAdapter innerAdapter, ISlippageManager slippageManager) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/AssociatedSecurityAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AssociatedSecurityAdapter",
+    "context": "public class AssociatedSecurityAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/SnapshotHolderMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 185,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SnapshotHolderMessageAdapter",
+    "context": "public class SnapshotHolderMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Latency/LatencyMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LatencyMessageAdapter",
+    "context": "public class LatencyMessageAdapter(IMessageAdapter innerAdapter, ILatencyManager latencyManager) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/OfflineMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OfflineMessageAdapter",
+    "context": "public class OfflineMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/BasketSecurityMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BasketSecurityMessageAdapter",
+    "context": "public class BasketSecurityMessageAdapter(IMessageAdapter innerAdapter, ISecurityProvider securityProvider, IBasketSecurityProcessorProvider processorProvider, IExchangeInfoProvider exchangeInfoProvid"
+  },
+  {
+    "file": "Algo/TraderHelper.cs",
+    "repo": "StockSharp",
+    "line": 1083,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": ": IMessageAdapter",
+    "context": "where TAdapter : IMessageAdapter"
+  },
+  {
+    "file": "Algo/SubscriptionMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 9,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SubscriptionMessageAdapter",
+    "context": "public class SubscriptionMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/OrderBookIncrementMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OrderBookIncrementMessageAdapter",
+    "context": "public class OrderBookIncrementMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/SubscriptionSecurityAllMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SubscriptionSecurityAllMessageAdapter",
+    "context": "public class SubscriptionSecurityAllMessageAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Level1ExtendBuilderAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class Level1ExtendBuilderAdapter",
+    "context": "public class Level1ExtendBuilderAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Candles/Compression/CandleHolderMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CandleHolderMessageAdapter",
+    "context": "public class CandleHolderMessageAdapter(IMessageAdapter innerAdapter) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Candles/Compression/CandleBuilderMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 9,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CandleBuilderMessageAdapter",
+    "context": "public class CandleBuilderMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/HeartbeatMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class HeartbeatMessageAdapter",
+    "context": "public class HeartbeatMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/LookupTrackingMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LookupTrackingMessageAdapter",
+    "context": "public class LookupTrackingMessageAdapter(IMessageAdapter innerAdapter, ILookupTrackingManagerState state) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/OrderBookTruncateMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OrderBookTruncateMessageAdapter",
+    "context": "public class OrderBookTruncateMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/PnL/PnLMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class PnLMessageAdapter",
+    "context": "public class PnLMessageAdapter(IMessageAdapter innerAdapter, IPnLManager pnlManager) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/TransactionOrderingMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TransactionOrderingMessageAdapter",
+    "context": "public class TransactionOrderingMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Testing/IEmulationMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": ": IMessageAdapter",
+    "context": "public interface IEmulationMessageAdapter : IMessageAdapter"
+  },
+  {
+    "file": "Algo/SecurityMappingMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SecurityMappingMessageAdapter",
+    "context": "public class SecurityMappingMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Storages/StorageMetaInfoMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class StorageMetaInfoMessageAdapter",
+    "context": "public class StorageMetaInfoMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Storages/BufferMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BufferMessageAdapter",
+    "context": "public class BufferMessageAdapter(IMessageAdapter innerAdapter, StorageCoreSettings settings, IStorageBuffer buffer, ISnapshotRegistry snapshotRegistry) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Storages/StorageMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class StorageMessageAdapter",
+    "context": "public class StorageMessageAdapter(IMessageAdapter innerAdapter, IStorageProcessor storageProcessor) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/FillGapsMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FillGapsMessageAdapter",
+    "context": "public class FillGapsMessageAdapter(IMessageAdapter innerAdapter, IFillGapsBehaviour behaviour) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/Commissions/CommissionMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CommissionMessageAdapter",
+    "context": "public class CommissionMessageAdapter(IMessageAdapter innerAdapter, ICommissionManager commissionManager) : MessageAdapterWrapper(innerAdapter)"
+  },
+  {
+    "file": "Algo/SubscriptionOnlineMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 9,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SubscriptionOnlineMessageAdapter",
+    "context": "public class SubscriptionOnlineMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Risk/RiskMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class RiskMessageAdapter",
+    "context": "public class RiskMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/SecurityNativeIdMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class SecurityNativeIdMessageAdapter",
+    "context": "public class SecurityNativeIdMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/ExtendedInfoStorageMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ExtendedInfoStorageMessageAdapter",
+    "context": "public class ExtendedInfoStorageMessageAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/Level1DepthBuilderAdapter.cs",
+    "repo": "StockSharp",
+    "line": 6,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class Level1DepthBuilderAdapter",
+    "context": "public class Level1DepthBuilderAdapter : MessageAdapterWrapper"
+  },
+  {
+    "file": "Algo/BasketMessageAdapter.cs",
+    "repo": "StockSharp",
+    "line": 35,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BasketMessageAdapter",
+    "context": "public class BasketMessageAdapter : BaseLogReceiver, IMessageAdapterWrapper"
+  }
+]

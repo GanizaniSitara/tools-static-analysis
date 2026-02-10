@@ -1,0 +1,117 @@
+digraph dependencies {
+    rankdir=LR;
+    node [shape=box, style=filled, fontname="Helvetica"];
+    edge [color="#666666"];
+
+    subgraph cluster_0 {
+        label="tests"; style=filled; color="#EEEEEE";
+        StockSharp_Algo_Testing [label="Algo.Testing", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_Tests [label="Tests", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_04_Testing_HistoryConsole [label="04_Testing.HistoryConsole", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_04_Testing_HistoryConsole_fromsrc [label="04_Testing.HistoryConsole_fromsrc", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_02_Testing_Optimization [label="02_Testing.Optimization", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_02_Testing_Optimization_fromsrc [label="02_Testing.Optimization_fromsrc", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_01_Testing_History [label="01_Testing.History", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_01_Testing_History_fromsrc [label="01_Testing.History_fromsrc", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_03_Testing_RealTime_fromsrc [label="03_Testing.RealTime_fromsrc", fillcolor="#9B59B6", fontcolor="white"];
+        StockSharp_03_Testing_RealTime [label="03_Testing.RealTime", fillcolor="#9B59B6", fontcolor="white"];
+    }
+    subgraph cluster_1 {
+        label="librarys"; style=filled; color="#EEEEEE";
+        StockSharp_Media_Names [label="Media.Names", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Configuration [label="Configuration", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Charting_Interfaces [label="Charting.Interfaces", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Indicators [label="Algo.Indicators", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Diagram_Core [label="Diagram.Core", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Reporting [label="Reporting", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Import [label="Algo.Import", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Analytics_CSharp [label="Algo.Analytics.CSharp", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_BusinessEntities [label="BusinessEntities", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Messages [label="Messages", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Strategies [label="Algo.Strategies", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Export [label="Algo.Export", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Alerts_Interfaces [label="Alerts.Interfaces", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Analytics [label="Algo.Analytics", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Compilation [label="Algo.Compilation", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo_Gpu [label="Algo.Gpu", fillcolor="#4A90D9", fontcolor="white"];
+        StockSharp_Algo [label="Algo", fillcolor="#4A90D9", fontcolor="white"];
+    }
+    subgraph cluster_2 {
+        label="tools"; style=filled; color="#EEEEEE";
+        StockSharp_Localization_Extractor [label="Localization.Extractor", fillcolor="#F39C12", fontcolor="white"];
+        StockSharp_Localization_Generator [label="Localization.Generator", fillcolor="#F39C12", fontcolor="white"];
+        StockSharp_Media_Generator [label="Media.Generator", fillcolor="#F39C12", fontcolor="white"];
+    }
+    subgraph cluster_3 {
+        label="desktopapps"; style=filled; color="#EEEEEE";
+        StockSharp_Media [label="Media", fillcolor="#E91E63", fontcolor="white"];
+    }
+    subgraph cluster_4 {
+        label="connectors"; style=filled; color="#EEEEEE";
+        StockSharp_Coinbase [label="Coinbase", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_Bitexbook [label="Bitexbook", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_Tinkoff [label="Tinkoff", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_BitStamp [label="BitStamp", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_Bitalong [label="Bitalong", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_Btce [label="Btce", fillcolor="#E67E22", fontcolor="white"];
+        StockSharp_FTX [label="FTX", fillcolor="#E67E22", fontcolor="white"];
+    }
+    StockSharp_Algo_Testing -> StockSharp_Algo;
+    StockSharp_Media_Names -> StockSharp_Media_Generator;
+    StockSharp_Configuration -> StockSharp_Messages;
+    StockSharp_Charting_Interfaces -> StockSharp_BusinessEntities;
+    StockSharp_Algo_Indicators -> StockSharp_Algo;
+    StockSharp_Diagram_Core -> StockSharp_Alerts_Interfaces;
+    StockSharp_Diagram_Core -> StockSharp_Algo_Strategies;
+    StockSharp_Diagram_Core -> StockSharp_Algo_Indicators;
+    StockSharp_Reporting -> StockSharp_Messages;
+    StockSharp_Algo_Import -> StockSharp_Algo;
+    StockSharp_Algo_Analytics_CSharp -> StockSharp_Algo_Analytics;
+    StockSharp_Tests -> StockSharp_Algo_Analytics;
+    StockSharp_Tests -> StockSharp_Algo_Compilation;
+    StockSharp_Tests -> StockSharp_Algo_Export;
+    StockSharp_Tests -> StockSharp_Algo_Import;
+    StockSharp_Tests -> StockSharp_Algo_Gpu;
+    StockSharp_Tests -> StockSharp_Algo_Indicators;
+    StockSharp_Tests -> StockSharp_Algo_Strategies;
+    StockSharp_Tests -> StockSharp_Algo_Testing;
+    StockSharp_Tests -> StockSharp_Diagram_Core;
+    StockSharp_Tests -> StockSharp_Alerts_Interfaces;
+    StockSharp_BusinessEntities -> StockSharp_Messages;
+    StockSharp_Algo_Strategies -> StockSharp_Alerts_Interfaces;
+    StockSharp_Algo_Strategies -> StockSharp_Algo_Testing;
+    StockSharp_Algo_Export -> StockSharp_Algo_Indicators;
+    StockSharp_Alerts_Interfaces -> StockSharp_BusinessEntities;
+    StockSharp_Algo_Analytics -> StockSharp_Algo_Indicators;
+    StockSharp_Algo_Compilation -> StockSharp_Configuration;
+    StockSharp_Algo_Gpu -> StockSharp_Algo_Indicators;
+    StockSharp_04_Testing_HistoryConsole -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_04_Testing_HistoryConsole -> StockSharp_Algo_Indicators;
+    StockSharp_04_Testing_HistoryConsole -> StockSharp_Algo_Strategies;
+    StockSharp_04_Testing_HistoryConsole_fromsrc -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_04_Testing_HistoryConsole_fromsrc -> StockSharp_Algo_Indicators;
+    StockSharp_04_Testing_HistoryConsole_fromsrc -> StockSharp_Algo_Strategies;
+    StockSharp_02_Testing_Optimization -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_02_Testing_Optimization_fromsrc -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_01_Testing_History -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_01_Testing_History_fromsrc -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_03_Testing_RealTime_fromsrc -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_03_Testing_RealTime -> StockSharp_Algo [style=dashed, color="red"];
+    StockSharp_Coinbase -> StockSharp_Messages;
+    StockSharp_Coinbase -> StockSharp_Media_Names;
+    StockSharp_Bitexbook -> StockSharp_Messages;
+    StockSharp_Bitexbook -> StockSharp_Media_Names;
+    StockSharp_Tinkoff -> StockSharp_Messages;
+    StockSharp_Tinkoff -> StockSharp_Media_Names;
+    StockSharp_BitStamp -> StockSharp_Messages;
+    StockSharp_BitStamp -> StockSharp_Media_Names;
+    StockSharp_Bitalong -> StockSharp_Messages;
+    StockSharp_Bitalong -> StockSharp_Media_Names;
+    StockSharp_Btce -> StockSharp_Messages;
+    StockSharp_Btce -> StockSharp_Media_Names;
+    StockSharp_FTX -> StockSharp_Messages;
+    StockSharp_FTX -> StockSharp_Media_Names;
+    StockSharp_Algo -> StockSharp_Reporting;
+    StockSharp_Algo -> StockSharp_Charting_Interfaces;
+    StockSharp_Algo -> StockSharp_Configuration;
+}

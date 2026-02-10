@@ -1,0 +1,12 @@
+[
+  {
+    "name": "src",
+    "root": "/home/user/OrchardCore/src",
+    "solutions": []
+  },
+  {
+    "name": "test",
+    "root": "/home/user/OrchardCore/test",
+    "solutions": []
+  }
+]

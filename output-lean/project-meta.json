@@ -1,0 +1,163 @@
+[
+  {
+    "project": "QuantConnect.Api",
+    "repo": "Lean",
+    "path": "Api/QuantConnect.Api.csproj",
+    "globalPath": "Api/QuantConnect.Api.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "QuantConnect.Configuration",
+    "repo": "Lean",
+    "path": "Configuration/QuantConnect.Configuration.csproj",
+    "globalPath": "Configuration/QuantConnect.Configuration.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Compression",
+    "repo": "Lean",
+    "path": "Compression/QuantConnect.Compression.csproj",
+    "globalPath": "Compression/QuantConnect.Compression.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Optimizer.Launcher",
+    "repo": "Lean",
+    "path": "Optimizer.Launcher/QuantConnect.Optimizer.Launcher.csproj",
+    "globalPath": "Optimizer.Launcher/QuantConnect.Optimizer.Launcher.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "QuantConnect.Messaging",
+    "repo": "Lean",
+    "path": "Messaging/QuantConnect.Messaging.csproj",
+    "globalPath": "Messaging/QuantConnect.Messaging.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Research",
+    "repo": "Lean",
+    "path": "Research/QuantConnect.Research.csproj",
+    "globalPath": "Research/QuantConnect.Research.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Brokerages",
+    "repo": "Lean",
+    "path": "Brokerages/QuantConnect.Brokerages.csproj",
+    "globalPath": "Brokerages/QuantConnect.Brokerages.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.DownloaderDataProvider.Launcher",
+    "repo": "Lean",
+    "path": "DownloaderDataProvider/QuantConnect.DownloaderDataProvider.Launcher.csproj",
+    "globalPath": "DownloaderDataProvider/QuantConnect.DownloaderDataProvider.Launcher.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "QuantConnect.Algorithm.CSharp",
+    "repo": "Lean",
+    "path": "Algorithm.CSharp/QuantConnect.Algorithm.CSharp.csproj",
+    "globalPath": "Algorithm.CSharp/QuantConnect.Algorithm.CSharp.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Algorithm.Framework",
+    "repo": "Lean",
+    "path": "Algorithm.Framework/QuantConnect.Algorithm.Framework.csproj",
+    "globalPath": "Algorithm.Framework/QuantConnect.Algorithm.Framework.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Lean.Engine",
+    "repo": "Lean",
+    "path": "Engine/QuantConnect.Lean.Engine.csproj",
+    "globalPath": "Engine/QuantConnect.Lean.Engine.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Queues",
+    "repo": "Lean",
+    "path": "Queues/QuantConnect.Queues.csproj",
+    "globalPath": "Queues/QuantConnect.Queues.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.AlgorithmFactory",
+    "repo": "Lean",
+    "path": "AlgorithmFactory/QuantConnect.AlgorithmFactory.csproj",
+    "globalPath": "AlgorithmFactory/QuantConnect.AlgorithmFactory.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.ToolBox",
+    "repo": "Lean",
+    "path": "ToolBox/QuantConnect.ToolBox.csproj",
+    "globalPath": "ToolBox/QuantConnect.ToolBox.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "QuantConnect",
+    "repo": "Lean",
+    "path": "Common/QuantConnect.csproj",
+    "globalPath": "Common/QuantConnect.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Tests",
+    "repo": "Lean",
+    "path": "Tests/QuantConnect.Tests.csproj",
+    "globalPath": "Tests/QuantConnect.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "QuantConnect.Indicators",
+    "repo": "Lean",
+    "path": "Indicators/QuantConnect.Indicators.csproj",
+    "globalPath": "Indicators/QuantConnect.Indicators.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Optimizer",
+    "repo": "Lean",
+    "path": "Optimizer/QuantConnect.Optimizer.csproj",
+    "globalPath": "Optimizer/QuantConnect.Optimizer.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Algorithm.Python",
+    "repo": "Lean",
+    "path": "Algorithm.Python/QuantConnect.Algorithm.Python.csproj",
+    "globalPath": "Algorithm.Python/QuantConnect.Algorithm.Python.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Lean.Launcher",
+    "repo": "Lean",
+    "path": "Launcher/QuantConnect.Lean.Launcher.csproj",
+    "globalPath": "Launcher/QuantConnect.Lean.Launcher.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "QuantConnect.Logging",
+    "repo": "Lean",
+    "path": "Logging/QuantConnect.Logging.csproj",
+    "globalPath": "Logging/QuantConnect.Logging.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "QuantConnect.Report",
+    "repo": "Lean",
+    "path": "Report/QuantConnect.Report.csproj",
+    "globalPath": "Report/QuantConnect.Report.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "QuantConnect.Algorithm",
+    "repo": "Lean",
+    "path": "Algorithm/QuantConnect.Algorithm.csproj",
+    "globalPath": "Algorithm/QuantConnect.Algorithm.csproj",
+    "category": "Library"
+  }
+]

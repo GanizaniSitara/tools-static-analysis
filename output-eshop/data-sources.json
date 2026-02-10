@@ -1,0 +1,695 @@
+[
+  {
+    "file": "src/WebApp/Components/Chatbot/ChatState.cs",
+    "repo": "src",
+    "line": 145,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "catch (Grpc.Core.RpcException e) when (e.StatusCode == Grpc.Core.StatusCode.Unauthenticated)"
+  },
+  {
+    "file": "src/WebApp/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new(\"https+http://catalog-api\"))"
+  },
+  {
+    "file": "src/WebApp/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "builder.Services.AddHttpClient<OrderingService>(o => o.BaseAddress = new(\"https+http://ordering-api\"))"
+  },
+  {
+    "file": "src/WebApp/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 102,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "else if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString(\"chatModel\")))"
+  },
+  {
+    "file": "src/Catalog.API/Infrastructure/CatalogContext.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "public class CatalogContext : DbContext"
+  },
+  {
+    "file": "src/Catalog.API/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "else if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString(\"textEmbeddingModel\")))"
+  },
+  {
+    "file": "src/Catalog.API/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseNpgsql(",
+    "context": "dbContextOptionsBuilder.UseNpgsql(builder =>"
+  },
+  {
+    "file": "src/eShop.AppHost/Program.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "var rabbitMq = builder.AddRabbitMQ(\"eventbus\")"
+  },
+  {
+    "file": "src/eShop.AppHost/Extensions.cs",
+    "repo": "src",
+    "line": 125,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var openAIConnectionString = openAIConnectionBuilder.Build();"
+  },
+  {
+    "file": "src/eShop.AppHost/Extensions.cs",
+    "repo": "src",
+    "line": 127,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "catalogApi.WithReference(builder.AddConnectionString(textEmbeddingName, cs =>"
+  },
+  {
+    "file": "src/eShop.AppHost/Extensions.cs",
+    "repo": "src",
+    "line": 129,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "cs.Append($\"{openAIConnectionString};Deployment={embeddingModel}\");"
+  },
+  {
+    "file": "src/eShop.AppHost/Extensions.cs",
+    "repo": "src",
+    "line": 131,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "webApp.WithReference(builder.AddConnectionString(chatName, cs =>"
+  },
+  {
+    "file": "src/eShop.AppHost/Extensions.cs",
+    "repo": "src",
+    "line": 133,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "cs.Append($\"{openAIConnectionString};Deployment={chatModel}\");"
+  },
+  {
+    "file": "src/Ordering.Infrastructure/OrderingContext.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "public class OrderingContext : DbContext, IUnitOfWork"
+  },
+  {
+    "file": "src/Ordering.Infrastructure/Repositories/BuyerRepository.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class BuyerRepository",
+    "context": "public class BuyerRepository"
+  },
+  {
+    "file": "src/Ordering.Infrastructure/Repositories/OrderRepository.cs",
+    "repo": "src",
+    "line": 3,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class OrderRepository",
+    "context": "public class OrderRepository"
+  },
+  {
+    "file": "src/HybridApp/MauiProgram.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new(MobileBffHost));"
+  },
+  {
+    "file": "src/Basket.API/GlobalUsings.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "global using Grpc.Core;"
+  },
+  {
+    "file": "src/Basket.API/GlobalUsings.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "StackExchange.Redis",
+    "context": "global using StackExchange.Redis;"
+  },
+  {
+    "file": "src/Basket.API/Repositories/RedisBasketRepository.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RedisBasketRepository",
+    "context": "public class RedisBasketRepository(ILogger<RedisBasketRepository> logger, IConnectionMultiplexer redis) : IBasketRepository"
+  },
+  {
+    "file": "src/Basket.API/Repositories/RedisBasketRepository.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "Redis",
+    "type": "cache",
+    "match": "IConnectionMultiplexer",
+    "context": "public class RedisBasketRepository(ILogger<RedisBasketRepository> logger, IConnectionMultiplexer redis) : IBasketRepository"
+  },
+  {
+    "file": "src/IntegrationEventLogEF/Services/IntegrationEventLogService.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "where TContext : DbContext"
+  },
+  {
+    "file": "src/Ordering.API/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "options.UseNpgsql(builder.Configuration.GetConnectionString(\"orderingdb\"));"
+  },
+  {
+    "file": "src/Ordering.API/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "EntityFramework",
+    "type": "database",
+    "match": ".UseNpgsql(",
+    "context": "options.UseNpgsql(builder.Configuration.GetConnectionString(\"orderingdb\"));"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/GlobalUsings.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "global using RabbitMQ.Client;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/GlobalUsings.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "global using RabbitMQ.Client.Events;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/GlobalUsings.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "global using RabbitMQ.Client.Exceptions;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/EventBusOptions.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "\ufeffnamespace eShop.EventBusRabbitMQ;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "\ufeffnamespace eShop.EventBusRabbitMQ;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "public sealed class RabbitMQEventBus("
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "ILogger<RabbitMQEventBus> logger,"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "RabbitMQTelemetry rabbitMQTelemetry) : IEventBus, IDisposable, IHostedService"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Creating RabbitMQ channel to publish event: {EventId} ({EventName})\", @event.Id, routingKey);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 40,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "using var channel = (await _rabbitMQConnection?.CreateChannelAsync()) ?? throw new InvalidOperationException(\"RabbitMQ connection is not open\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 44,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Declaring RabbitMQ exchange to publish event: {EventId}\", @event.Id);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 92,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Publishing event to RabbitMQ: {EventId}\", @event.Id);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 187,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Processing RabbitMQ event: {EventName}\", eventName);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 233,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogInformation(\"Starting RabbitMQ connection on a background thread\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 243,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Creating RabbitMQ consumer channel\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 250,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogWarning(ea.Exception, \"Error with RabbitMQ consumer channel\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 267,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogTrace(\"Starting RabbitMQ basic consume\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 289,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "logger.LogError(ex, \"Error starting RabbitMQ connection\");"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQEventBus.cs",
+    "repo": "src",
+    "line": 57,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await _pipeline.Execute(async () =>"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 1,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "\ufeffusing eShop.EventBusRabbitMQ;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "builder.AddRabbitMQClient(connectionName);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 23,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "// RabbitMQ.Client doesn't have built-in support for OpenTelemetry, so we need to add it ourselves"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 27,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "tracing.AddSource(RabbitMQTelemetry.ActivitySourceName);"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "builder.Services.AddSingleton<RabbitMQTelemetry>();"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "builder.Services.AddSingleton<IEventBus, RabbitMQEventBus>();"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMqDependencyInjectionExtensions.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "builder.Services.AddSingleton<IHostedService>(sp => (RabbitMQEventBus)sp.GetRequiredService<IEventBus>());"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQTelemetry.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "namespace eShop.EventBusRabbitMQ;"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQTelemetry.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "public class RabbitMQTelemetry"
+  },
+  {
+    "file": "src/EventBusRabbitMQ/RabbitMQTelemetry.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "public static string ActivitySourceName = \"EventBusRabbitMQ\";"
+  },
+  {
+    "file": "src/ClientApp/Views/ProfileView.xaml.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_viewModel.RefreshCommand.Execute(null);"
+  },
+  {
+    "file": "src/ClientApp/Controls/ToggleButton.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Command.Execute(CommandParameter);"
+  },
+  {
+    "file": "src/ClientApp/Services/RequestProvider/RequestProvider.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = _messageHandler is not null ? new HttpClient(_messageHandler) : new HttpClient();"
+  },
+  {
+    "file": "src/ClientApp/Services/Basket/Protos/BasketGrpc.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using grpc = global::Grpc.Core;"
+  },
+  {
+    "file": "src/ClientApp/Services/Basket/BasketService.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/ClientApp/Services/Basket/BasketService.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/Webhooks.API/Infrastructure/WebhooksContext.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "public class WebhooksContext(DbContextOptions<WebhooksContext> options) : DbContext(options)"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 24,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "private static async Task MigrateDbContextAsync<TContext>(this IServiceProvider services, Func<TContext, IServiceProvider, Task> seeder) where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 59,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": ": BackgroundService where TContext : DbContext"
+  },
+  {
+    "file": "src/Shared/MigrateDbContextExtensions.cs",
+    "repo": "src",
+    "line": 90,
+    "pattern": "DbContext",
+    "type": "database",
+    "match": ": DbContext",
+    "context": "public interface IDbSeeder<in TContext> where TContext : DbContext"
+  },
+  {
+    "file": "src/WebhookClient/Extensions/Extensions.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "builder.Services.AddHttpClient<WebhooksClient>(o => o.BaseAddress = new(\"http://webhooks-api\"))"
+  },
+  {
+    "file": "src/WebhookClient/Services/HooksRepository.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class HooksRepository",
+    "context": "public class HooksRepository"
+  },
+  {
+    "file": "tests/Ordering.FunctionalTests/OrderingApiFixture.cs",
+    "repo": "tests",
+    "line": 17,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private string _postgresConnectionString;"
+  },
+  {
+    "file": "tests/Ordering.FunctionalTests/OrderingApiFixture.cs",
+    "repo": "tests",
+    "line": 35,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "{ $\"ConnectionStrings:{Postgres.Resource.Name}\", _postgresConnectionString },"
+  },
+  {
+    "file": "tests/Ordering.FunctionalTests/OrderingApiFixture.cs",
+    "repo": "tests",
+    "line": 63,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_postgresConnectionString = await Postgres.Resource.GetConnectionStringAsync();"
+  },
+  {
+    "file": "tests/Catalog.FunctionalTests/CatalogApiFixture.cs",
+    "repo": "tests",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private string _postgresConnectionString;"
+  },
+  {
+    "file": "tests/Catalog.FunctionalTests/CatalogApiFixture.cs",
+    "repo": "tests",
+    "line": 33,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "{ $\"ConnectionStrings:{Postgres.Resource.Name}\", _postgresConnectionString },"
+  },
+  {
+    "file": "tests/Catalog.FunctionalTests/CatalogApiFixture.cs",
+    "repo": "tests",
+    "line": 56,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_postgresConnectionString = await Postgres.Resource.GetConnectionStringAsync();"
+  },
+  {
+    "file": "tests/Basket.UnitTests/Helpers/TestServerCallContext.cs",
+    "repo": "tests",
+    "line": 1,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "\ufeffusing Grpc.Core;"
+  },
+  {
+    "file": "tests/ClientApp.UnitTests/TestingExtensions.cs",
+    "repo": "tests",
+    "line": 16,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "command.Execute(parameter);"
+  }
+]

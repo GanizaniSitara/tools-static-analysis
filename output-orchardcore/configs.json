@@ -1,0 +1,86 @@
+[
+  {
+    "file": "src/OrchardCore.Cms.Web/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"YesSql\": \"Information\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/OrchardCore.Cms.Web/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Warning\",\n      \"YesSql\": \"Information\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  },\n  //\"AllowedHosts\": \"example.com;localhost\", // A semicolon-delimited list of host names without port numbers. Set it for public-facing edge servers or when the Host header is directly forwarded.\n  \"OrchardCore\": {\n    // See https://docs.orchardcore.net/en/latest/reference/modules/Admin/#custom-admin-prefix\n    //\"OrchardCore_Admin\": {\n    //"
+  },
+  {
+    "file": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Web/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "{\n  //#if (UseNLog)\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Warning\",\n      \"YesSql\": \"Information\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  },\n  //#endif\n  //#if (UseSerilog)\n  \"Serilog\": {\n    \"MinimumLevel\": {\n      \"Default\": \"Warning\",\n      \"Override\": {\n        \"Default\": \"Warning\",\n        \"Microsoft.Hosting.Lifetime\": \"Information\"\n      }\n    },\n    \"WriteTo\": [\n      {\n        \"Name\": \"Console\",\n        \"Args\": {\n          \"theme\": \"Serilog.Sinks.SystemCon"
+  },
+  {
+    "file": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Web/appsettings.Development.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"System\": \"Information\",\n      \"Microsoft\": \"Information\"\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Web/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Warning\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  },\n  \"AllowedHosts\": \"*\"\n}\n"
+  },
+  {
+    "file": "src/OrchardCore.Mvc.Web/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"IncludeScopes\": false,\n    \"LogLevel\": {\n      \"Default\": \"Warning\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  },\n  \"Sample\": \"Sample Value\"\n}\n"
+  },
+  {
+    "file": "src/OrchardCore.Cms.Web/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false,\n    \"anonymousAuthentication\": true,\n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:2918\",\n      \"sslPort\": 44300\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"Kestrel\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"launchUrl\": \"https://localhost:5001\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      },\n      \"applicationUrl\": \"https://localhost:5001;http://localhost:5000\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Web/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false, \n    \"anonymousAuthentication\": true, \n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:8080\",\n      \"sslPort\": 44300\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"OrchardCore.Templates.Cms.Web\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"https://localhost:5001;http://localhost:5000\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Web/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false,\n    \"anonymousAuthentication\": true,\n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:8080\",\n      \"sslPort\": 44300\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"OrchardCore.Templates.Mvc.Web\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"applicationUrl\": \"https://localhost:5001;http://localhost:5000\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}"
+  },
+  {
+    "file": "src/OrchardCore.Mvc.Web/Properties/launchSettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false,\n    \"anonymousAuthentication\": true,\n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:17458/\",\n      \"sslPort\": 0\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"OrchardCore.Mvc.Web\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"launchUrl\": \"http://localhost:5000\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}\n"
+  },
+  {
+    "file": "test/OrchardCore.Tests.Pages/OrchardCore.Application.Pages/Properties/launchSettings.json",
+    "repo": "test",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false,\n    \"anonymousAuthentication\": true,\n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:26459/\",\n      \"sslPort\": 44301\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"OrchardCore.Application.Pages\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      },\n      \"applicationUrl\": \"http://localhost:26460/\"\n    }\n  }\n}\n"
+  }
+]

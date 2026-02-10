@@ -1,0 +1,1687 @@
+{
+  "nodes": [
+    {
+      "id": "Lean/QuantConnect.Api",
+      "project": "QuantConnect.Api",
+      "repo": "Lean",
+      "type": "webapp",
+      "path": "Api/QuantConnect.Api.csproj",
+      "globalPath": "Api/QuantConnect.Api.csproj",
+      "description": "WebApp: QuantConnect.Api (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Configuration",
+      "project": "QuantConnect.Configuration",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Configuration/QuantConnect.Configuration.csproj",
+      "globalPath": "Configuration/QuantConnect.Configuration.csproj",
+      "description": "Library: QuantConnect.Configuration (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Compression",
+      "project": "QuantConnect.Compression",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Compression/QuantConnect.Compression.csproj",
+      "globalPath": "Compression/QuantConnect.Compression.csproj",
+      "description": "Library: QuantConnect.Compression (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Optimizer.Launcher",
+      "project": "QuantConnect.Optimizer.Launcher",
+      "repo": "Lean",
+      "type": "application",
+      "path": "Optimizer.Launcher/QuantConnect.Optimizer.Launcher.csproj",
+      "globalPath": "Optimizer.Launcher/QuantConnect.Optimizer.Launcher.csproj",
+      "description": "Application: QuantConnect.Optimizer.Launcher (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Messaging",
+      "project": "QuantConnect.Messaging",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Messaging/QuantConnect.Messaging.csproj",
+      "globalPath": "Messaging/QuantConnect.Messaging.csproj",
+      "description": "Library: QuantConnect.Messaging (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Research",
+      "project": "QuantConnect.Research",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Research/QuantConnect.Research.csproj",
+      "globalPath": "Research/QuantConnect.Research.csproj",
+      "description": "Library: QuantConnect.Research (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Brokerages",
+      "project": "QuantConnect.Brokerages",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Brokerages/QuantConnect.Brokerages.csproj",
+      "globalPath": "Brokerages/QuantConnect.Brokerages.csproj",
+      "description": "Library: QuantConnect.Brokerages (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "project": "QuantConnect.DownloaderDataProvider.Launcher",
+      "repo": "Lean",
+      "type": "application",
+      "path": "DownloaderDataProvider/QuantConnect.DownloaderDataProvider.Launcher.csproj",
+      "globalPath": "DownloaderDataProvider/QuantConnect.DownloaderDataProvider.Launcher.csproj",
+      "description": "Application: QuantConnect.DownloaderDataProvider.Launcher (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Algorithm.CSharp",
+      "project": "QuantConnect.Algorithm.CSharp",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Algorithm.CSharp/QuantConnect.Algorithm.CSharp.csproj",
+      "globalPath": "Algorithm.CSharp/QuantConnect.Algorithm.CSharp.csproj",
+      "description": "Library: QuantConnect.Algorithm.CSharp (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Algorithm.Framework",
+      "project": "QuantConnect.Algorithm.Framework",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Algorithm.Framework/QuantConnect.Algorithm.Framework.csproj",
+      "globalPath": "Algorithm.Framework/QuantConnect.Algorithm.Framework.csproj",
+      "description": "Library: QuantConnect.Algorithm.Framework (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Lean.Engine",
+      "project": "QuantConnect.Lean.Engine",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Engine/QuantConnect.Lean.Engine.csproj",
+      "globalPath": "Engine/QuantConnect.Lean.Engine.csproj",
+      "description": "Library: QuantConnect.Lean.Engine (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Queues",
+      "project": "QuantConnect.Queues",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Queues/QuantConnect.Queues.csproj",
+      "globalPath": "Queues/QuantConnect.Queues.csproj",
+      "description": "Library: QuantConnect.Queues (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.AlgorithmFactory",
+      "project": "QuantConnect.AlgorithmFactory",
+      "repo": "Lean",
+      "type": "library",
+      "path": "AlgorithmFactory/QuantConnect.AlgorithmFactory.csproj",
+      "globalPath": "AlgorithmFactory/QuantConnect.AlgorithmFactory.csproj",
+      "description": "Library: QuantConnect.AlgorithmFactory (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.ToolBox",
+      "project": "QuantConnect.ToolBox",
+      "repo": "Lean",
+      "type": "tool",
+      "path": "ToolBox/QuantConnect.ToolBox.csproj",
+      "globalPath": "ToolBox/QuantConnect.ToolBox.csproj",
+      "description": "Tool: QuantConnect.ToolBox (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect",
+      "project": "QuantConnect",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Common/QuantConnect.csproj",
+      "globalPath": "Common/QuantConnect.csproj",
+      "description": "Library: QuantConnect (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Tests",
+      "project": "QuantConnect.Tests",
+      "repo": "Lean",
+      "type": "test",
+      "path": "Tests/QuantConnect.Tests.csproj",
+      "globalPath": "Tests/QuantConnect.Tests.csproj",
+      "description": "Test: QuantConnect.Tests (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Indicators",
+      "project": "QuantConnect.Indicators",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Indicators/QuantConnect.Indicators.csproj",
+      "globalPath": "Indicators/QuantConnect.Indicators.csproj",
+      "description": "Library: QuantConnect.Indicators (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Optimizer",
+      "project": "QuantConnect.Optimizer",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Optimizer/QuantConnect.Optimizer.csproj",
+      "globalPath": "Optimizer/QuantConnect.Optimizer.csproj",
+      "description": "Library: QuantConnect.Optimizer (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Algorithm.Python",
+      "project": "QuantConnect.Algorithm.Python",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Algorithm.Python/QuantConnect.Algorithm.Python.csproj",
+      "globalPath": "Algorithm.Python/QuantConnect.Algorithm.Python.csproj",
+      "description": "Library: QuantConnect.Algorithm.Python (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Lean.Launcher",
+      "project": "QuantConnect.Lean.Launcher",
+      "repo": "Lean",
+      "type": "application",
+      "path": "Launcher/QuantConnect.Lean.Launcher.csproj",
+      "globalPath": "Launcher/QuantConnect.Lean.Launcher.csproj",
+      "description": "Application: QuantConnect.Lean.Launcher (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Logging",
+      "project": "QuantConnect.Logging",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Logging/QuantConnect.Logging.csproj",
+      "globalPath": "Logging/QuantConnect.Logging.csproj",
+      "description": "Library: QuantConnect.Logging (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Report",
+      "project": "QuantConnect.Report",
+      "repo": "Lean",
+      "type": "application",
+      "path": "Report/QuantConnect.Report.csproj",
+      "globalPath": "Report/QuantConnect.Report.csproj",
+      "description": "Application: QuantConnect.Report (Lean)"
+    },
+    {
+      "id": "Lean/QuantConnect.Algorithm",
+      "project": "QuantConnect.Algorithm",
+      "repo": "Lean",
+      "type": "library",
+      "path": "Algorithm/QuantConnect.Algorithm.csproj",
+      "globalPath": "Algorithm/QuantConnect.Algorithm.csproj",
+      "description": "Library: QuantConnect.Algorithm (Lean)"
+    },
+    {
+      "id": "nuget:Newtonsoft.Json",
+      "type": "nuget-package",
+      "versions": [
+        "13.0.2"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Algorithm",
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Api",
+        "Lean/QuantConnect.Brokerages",
+        "Lean/QuantConnect.Configuration",
+        "Lean/QuantConnect.Lean.Engine",
+        "Lean/QuantConnect.Messaging",
+        "Lean/QuantConnect.Optimizer",
+        "Lean/QuantConnect.Optimizer.Launcher",
+        "Lean/QuantConnect.Queues",
+        "Lean/QuantConnect.Report",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Newtonsoft.Json (13.0.2)"
+    },
+    {
+      "id": "nuget:NodaTime",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.5"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Algorithm",
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework",
+        "Lean/QuantConnect.AlgorithmFactory",
+        "Lean/QuantConnect.Api",
+        "Lean/QuantConnect.Lean.Engine",
+        "Lean/QuantConnect.Report",
+        "Lean/QuantConnect.Research",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: NodaTime (3.0.5)"
+    },
+    {
+      "id": "nuget:RestSharp",
+      "type": "nuget-package",
+      "versions": [
+        "106.12.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Api",
+        "Lean/QuantConnect.Brokerages"
+      ],
+      "description": "NuGet: RestSharp (106.12.0)"
+    },
+    {
+      "id": "nuget:McMaster.Extensions.CommandLineUtils",
+      "type": "nuget-package",
+      "versions": [
+        "2.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Configuration"
+      ],
+      "description": "NuGet: McMaster.Extensions.CommandLineUtils (2.6.0)"
+    },
+    {
+      "id": "nuget:DotNetZip",
+      "type": "nuget-package",
+      "versions": [
+        "1.16.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Compression"
+      ],
+      "description": "NuGet: DotNetZip (1.16.0)"
+    },
+    {
+      "id": "nuget:SharpZipLib",
+      "type": "nuget-package",
+      "versions": [
+        "1.3.3"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Compression"
+      ],
+      "description": "NuGet: SharpZipLib (1.3.3)"
+    },
+    {
+      "id": "nuget:NetMQ",
+      "type": "nuget-package",
+      "versions": [
+        "4.0.1.6"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Messaging",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: NetMQ (4.0.1.6)"
+    },
+    {
+      "id": "nuget:Plotly.NET",
+      "type": "nuget-package",
+      "versions": [
+        "5.1.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Research"
+      ],
+      "description": "NuGet: Plotly.NET (5.1.0)"
+    },
+    {
+      "id": "nuget:Plotly.NET.CSharp",
+      "type": "nuget-package",
+      "versions": [
+        "0.13.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Research"
+      ],
+      "description": "NuGet: Plotly.NET.CSharp (0.13.0)"
+    },
+    {
+      "id": "nuget:Plotly.NET.Interactive",
+      "type": "nuget-package",
+      "versions": [
+        "5.0.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Research"
+      ],
+      "description": "NuGet: Plotly.NET.Interactive (5.0.0)"
+    },
+    {
+      "id": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-package",
+      "versions": [
+        "2.0.52"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Algorithm",
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework",
+        "Lean/QuantConnect.Algorithm.Python",
+        "Lean/QuantConnect.AlgorithmFactory",
+        "Lean/QuantConnect.Indicators",
+        "Lean/QuantConnect.Lean.Engine",
+        "Lean/QuantConnect.Report",
+        "Lean/QuantConnect.Research",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: QuantConnect.pythonnet (2.0.52)"
+    },
+    {
+      "id": "nuget:CsvHelper",
+      "type": "nuget-package",
+      "versions": [
+        "19.0.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Brokerages"
+      ],
+      "description": "NuGet: CsvHelper (19.0.0)"
+    },
+    {
+      "id": "nuget:Accord",
+      "type": "nuget-package",
+      "versions": [
+        "3.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Accord (3.6.0)"
+    },
+    {
+      "id": "nuget:Accord.Fuzzy",
+      "type": "nuget-package",
+      "versions": [
+        "3.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp"
+      ],
+      "description": "NuGet: Accord.Fuzzy (3.6.0)"
+    },
+    {
+      "id": "nuget:Accord.MachineLearning",
+      "type": "nuget-package",
+      "versions": [
+        "3.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp"
+      ],
+      "description": "NuGet: Accord.MachineLearning (3.6.0)"
+    },
+    {
+      "id": "nuget:Accord.Math",
+      "type": "nuget-package",
+      "versions": [
+        "3.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Accord.Math (3.6.0)"
+    },
+    {
+      "id": "nuget:Accord.Statistics",
+      "type": "nuget-package",
+      "versions": [
+        "3.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework"
+      ],
+      "description": "NuGet: Accord.Statistics (3.6.0)"
+    },
+    {
+      "id": "nuget:DynamicInterop",
+      "type": "nuget-package",
+      "versions": [
+        "0.9.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Lean.Launcher"
+      ],
+      "description": "NuGet: DynamicInterop (0.9.1)"
+    },
+    {
+      "id": "nuget:MathNet.Numerics",
+      "type": "nuget-package",
+      "versions": [
+        "5.0.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Algorithm",
+        "Lean/QuantConnect.Algorithm.CSharp",
+        "Lean/QuantConnect.Algorithm.Framework",
+        "Lean/QuantConnect.Indicators",
+        "Lean/QuantConnect.Lean.Engine",
+        "Lean/QuantConnect.Report"
+      ],
+      "description": "NuGet: MathNet.Numerics (5.0.0)"
+    },
+    {
+      "id": "nuget:fasterflect",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Lean.Engine"
+      ],
+      "description": "NuGet: fasterflect (3.0.0)"
+    },
+    {
+      "id": "nuget:CloneExtensions",
+      "type": "nuget-package",
+      "versions": [
+        "1.3.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect"
+      ],
+      "description": "NuGet: CloneExtensions (1.3.0)"
+    },
+    {
+      "id": "nuget:Microsoft.IO.RecyclableMemoryStream",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect"
+      ],
+      "description": "NuGet: Microsoft.IO.RecyclableMemoryStream (3.0.1)"
+    },
+    {
+      "id": "nuget:protobuf-net",
+      "type": "nuget-package",
+      "versions": [
+        "3.1.33"
+      ],
+      "consumers": [
+        "Lean/QuantConnect",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: protobuf-net (3.1.33)"
+    },
+    {
+      "id": "nuget:QLNet",
+      "type": "nuget-package",
+      "versions": [
+        "1.13.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect"
+      ],
+      "description": "NuGet: QLNet (1.13.1)"
+    },
+    {
+      "id": "nuget:Common.Logging",
+      "type": "nuget-package",
+      "versions": [
+        "3.4.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Common.Logging (3.4.1)"
+    },
+    {
+      "id": "nuget:Common.Logging.Core",
+      "type": "nuget-package",
+      "versions": [
+        "3.4.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Common.Logging.Core (3.4.1)"
+    },
+    {
+      "id": "nuget:Deedle",
+      "type": "nuget-package",
+      "versions": [
+        "2.1.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Report",
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Deedle (2.1.0)"
+    },
+    {
+      "id": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-package",
+      "versions": [
+        "16.9.4"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Microsoft.NET.Test.Sdk (16.9.4)"
+    },
+    {
+      "id": "nuget:Microsoft.TestPlatform.ObjectModel",
+      "type": "nuget-package",
+      "versions": [
+        "16.9.4"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Microsoft.TestPlatform.ObjectModel (16.9.4)"
+    },
+    {
+      "id": "nuget:Moq",
+      "type": "nuget-package",
+      "versions": [
+        "4.16.1"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: Moq (4.16.1)"
+    },
+    {
+      "id": "nuget:NUnit",
+      "type": "nuget-package",
+      "versions": [
+        "4.2.2"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: NUnit (4.2.2)"
+    },
+    {
+      "id": "nuget:NUnit3TestAdapter",
+      "type": "nuget-package",
+      "versions": [
+        "4.6.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Tests"
+      ],
+      "description": "NuGet: NUnit3TestAdapter (4.6.0)"
+    },
+    {
+      "id": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.0"
+      ],
+      "consumers": [
+        "Lean/QuantConnect.Logging"
+      ],
+      "description": "NuGet: System.ComponentModel.Composition (6.0.0)"
+    },
+    {
+      "id": "datasource:Lean:HttpClient.New",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.New",
+      "repo": "Lean",
+      "occurrences": 8,
+      "description": "HttpClient.New in Lean (8 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:Dapper",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper",
+      "repo": "Lean",
+      "occurrences": 28,
+      "description": "Dapper in Lean (28 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:WebSocket",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "WebSocket",
+      "repo": "Lean",
+      "occurrences": 141,
+      "description": "WebSocket in Lean (141 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:Kafka",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka",
+      "repo": "Lean",
+      "occurrences": 1,
+      "description": "Kafka in Lean (1 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:RabbitMQ",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "RabbitMQ",
+      "repo": "Lean",
+      "occurrences": 4,
+      "description": "RabbitMQ in Lean (4 occurrences)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Configuration",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Compression",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer.Launcher",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer.Launcher",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer.Launcher",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer.Launcher",
+      "to": "Lean/QuantConnect.Optimizer",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Messaging",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Messaging",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Messaging",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Algorithm.Framework",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "Lean/QuantConnect.Queues",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "Lean/QuantConnect.Compression",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "Lean/QuantConnect.Algorithm.Framework",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Algorithm.CSharp",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.AlgorithmFactory",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Brokerages",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Compression",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Queues",
+      "to": "Lean/QuantConnect.Brokerages",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Queues",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Queues",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Queues",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.ToolBox",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "Lean/QuantConnect.Compression",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Algorithm.CSharp",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Algorithm.Framework",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.AlgorithmFactory",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Brokerages",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Compression",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Optimizer",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Research",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Lean.Launcher",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Messaging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Queues",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.Report",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "Lean/QuantConnect.ToolBox",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Indicators",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Indicators",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Python",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Python",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Python",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Algorithm.CSharp",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.AlgorithmFactory",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Brokerages",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Compression",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.DownloaderDataProvider.Launcher",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Optimizer.Launcher",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Research",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Messaging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.Queues",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "Lean/QuantConnect.ToolBox",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Algorithm",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Api",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Brokerages",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Lean.Engine",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.Messaging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "Lean/QuantConnect.ToolBox",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "Lean/QuantConnect.Configuration",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "Lean/QuantConnect.Indicators",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "Lean/QuantConnect",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "Lean/QuantConnect.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Api",
+      "to": "nuget:RestSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Configuration",
+      "to": "nuget:McMaster.Extensions.CommandLineUtils",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Configuration",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Compression",
+      "to": "nuget:DotNetZip",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Compression",
+      "to": "nuget:SharpZipLib",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer.Launcher",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Messaging",
+      "to": "nuget:NetMQ",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Messaging",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "nuget:Plotly.NET",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "nuget:Plotly.NET.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "nuget:Plotly.NET.Interactive",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Research",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "nuget:CsvHelper",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Brokerages",
+      "to": "nuget:RestSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Accord",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Accord.Fuzzy",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Accord.MachineLearning",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Accord.Math",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Accord.Statistics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:DynamicInterop",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.CSharp",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:Accord",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:Accord.Math",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:Accord.Statistics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Framework",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "nuget:fasterflect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Engine",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Queues",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.AlgorithmFactory",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:CloneExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:fasterflect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:Microsoft.IO.RecyclableMemoryStream",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:protobuf-net",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect",
+      "to": "nuget:QLNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Accord",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Accord.Math",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Common.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Common.Logging.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Deedle",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Microsoft.TestPlatform.ObjectModel",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Moq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:NetMQ",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:NUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:NUnit3TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Tests",
+      "to": "nuget:protobuf-net",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Indicators",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Indicators",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Optimizer",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm.Python",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Lean.Launcher",
+      "to": "nuget:DynamicInterop",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Logging",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "nuget:Deedle",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Report",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "nuget:QuantConnect.pythonnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "Lean/QuantConnect.Algorithm",
+      "to": "nuget:NodaTime",
+      "type": "nuget-dependency"
+    }
+  ],
+  "summary": {
+    "totalRepos": 1,
+    "totalProjects": 23,
+    "totalNuGetPackages": 33,
+    "totalProjectRefs": 117,
+    "totalCrossRepoRefs": 0,
+    "totalDataFindings": 195,
+    "totalConfigFiles": 0,
+    "repos": {
+      "Lean": {
+        "projects": 23,
+        "categories": {
+          "WebApp": 1,
+          "Library": 16,
+          "Application": 4,
+          "Tool": 1,
+          "Test": 1
+        }
+      }
+    },
+    "categories": {
+      "WebApp": 1,
+      "Library": 16,
+      "Application": 4,
+      "Tool": 1,
+      "Test": 1
+    }
+  }
+}

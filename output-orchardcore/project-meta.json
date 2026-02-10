@@ -1,0 +1,1612 @@
+[
+  {
+    "project": "OrchardCore.Cms.Web",
+    "repo": "src",
+    "path": "OrchardCore.Cms.Web/OrchardCore.Cms.Web.csproj",
+    "globalPath": "src/OrchardCore.Cms.Web/OrchardCore.Cms.Web.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "TheComingSoonTheme",
+    "repo": "src",
+    "path": "OrchardCore.Themes/TheComingSoonTheme/TheComingSoonTheme.csproj",
+    "globalPath": "src/OrchardCore.Themes/TheComingSoonTheme/TheComingSoonTheme.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "TheTheme",
+    "repo": "src",
+    "path": "OrchardCore.Themes/TheTheme/TheTheme.csproj",
+    "globalPath": "src/OrchardCore.Themes/TheTheme/TheTheme.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "TheBlogTheme",
+    "repo": "src",
+    "path": "OrchardCore.Themes/TheBlogTheme/TheBlogTheme.csproj",
+    "globalPath": "src/OrchardCore.Themes/TheBlogTheme/TheBlogTheme.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "TheAdmin",
+    "repo": "src",
+    "path": "OrchardCore.Themes/TheAdmin/TheAdmin.csproj",
+    "globalPath": "src/OrchardCore.Themes/TheAdmin/TheAdmin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "TheAgencyTheme",
+    "repo": "src",
+    "path": "OrchardCore.Themes/TheAgencyTheme/TheAgencyTheme.csproj",
+    "globalPath": "src/OrchardCore.Themes/TheAgencyTheme/TheAgencyTheme.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "SafeMode",
+    "repo": "src",
+    "path": "OrchardCore.Themes/SafeMode/SafeMode.csproj",
+    "globalPath": "src/OrchardCore.Themes/SafeMode/SafeMode.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Docs",
+    "repo": "src",
+    "path": "docs/OrchardCore.Docs.csproj",
+    "globalPath": "src/docs/OrchardCore.Docs.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ProjectTemplates",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/OrchardCore.ProjectTemplates.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/OrchardCore.ProjectTemplates.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Templates.Cms.Web",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Web/OrchardCore.Templates.Cms.Web.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Web/OrchardCore.Templates.Cms.Web.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrchardCore.Templates.Theme",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Theme/OrchardCore.Templates.Theme.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Theme/OrchardCore.Templates.Theme.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Templates.Mvc.Module",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Module/OrchardCore.Templates.Mvc.Module.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Module/OrchardCore.Templates.Mvc.Module.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Templates.Mvc.Web",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Web/OrchardCore.Templates.Mvc.Web.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Mvc.Web/OrchardCore.Templates.Mvc.Web.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrchardCore.Templates.Cms.Module",
+    "repo": "src",
+    "path": "Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Module/OrchardCore.Templates.Cms.Module.csproj",
+    "globalPath": "src/Templates/OrchardCore.ProjectTemplates/content/OrchardCore.Templates.Cms.Module/OrchardCore.Templates.Cms.Module.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Resources",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Resources/OrchardCore.Resources.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Resources/OrchardCore.Resources.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Queries",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Queries/OrchardCore.Queries.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Queries/OrchardCore.Queries.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AdminMenu",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.AdminMenu/OrchardCore.AdminMenu.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.AdminMenu/OrchardCore.AdminMenu.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Deployment",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Deployment/OrchardCore.Deployment.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Deployment/OrchardCore.Deployment.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Shortcodes",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Shortcodes/OrchardCore.Shortcodes.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Shortcodes/OrchardCore.Shortcodes.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AuditTrail",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.AuditTrail/OrchardCore.AuditTrail.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.AuditTrail/OrchardCore.AuditTrail.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentPreview",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ContentPreview/OrchardCore.ContentPreview.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ContentPreview/OrchardCore.ContentPreview.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Email.Azure",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Email.Azure/OrchardCore.Email.Azure.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Email.Azure/OrchardCore.Email.Azure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Twitter",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Twitter/OrchardCore.Twitter.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Twitter/OrchardCore.Twitter.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.BackgroundTasks",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.BackgroundTasks/OrchardCore.BackgroundTasks.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.BackgroundTasks/OrchardCore.BackgroundTasks.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Settings",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Settings/OrchardCore.Settings.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Settings/OrchardCore.Settings.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Navigation",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Navigation/OrchardCore.Navigation.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Navigation/OrchardCore.Navigation.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Features",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Features/OrchardCore.Features.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Features/OrchardCore.Features.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.Azure",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Media.Azure/OrchardCore.Media.Azure.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Media.Azure/OrchardCore.Media.Azure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Taxonomies",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Taxonomies/OrchardCore.Taxonomies.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Taxonomies/OrchardCore.Taxonomies.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Setup",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Setup/OrchardCore.Setup.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Setup/OrchardCore.Setup.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Flows",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Flows/OrchardCore.Flows.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Flows/OrchardCore.Flows.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.XmlRpc",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.XmlRpc/OrchardCore.XmlRpc.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.XmlRpc/OrchardCore.XmlRpc.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.PublishLater",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.PublishLater/OrchardCore.PublishLater.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.PublishLater/OrchardCore.PublishLater.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Sms",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Sms/OrchardCore.Sms.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Sms/OrchardCore.Sms.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Microsoft.Authentication",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Microsoft.Authentication/OrchardCore.Microsoft.Authentication.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Microsoft.Authentication/OrchardCore.Microsoft.Authentication.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ArchiveLater",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ArchiveLater/OrchardCore.ArchiveLater.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ArchiveLater/OrchardCore.ArchiveLater.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Workflows",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Workflows/OrchardCore.Workflows.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Workflows/OrchardCore.Workflows.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.MiniProfiler",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.MiniProfiler/OrchardCore.MiniProfiler.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.MiniProfiler/OrchardCore.MiniProfiler.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ResponseCompression",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ResponseCompression/OrchardCore.ResponseCompression.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ResponseCompression/OrchardCore.ResponseCompression.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Google",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Google/OrchardCore.Google.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Google/OrchardCore.Google.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Users",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Users/OrchardCore.Users.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Users/OrchardCore.Users.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Elasticsearch",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Search.Elasticsearch/OrchardCore.Search.Elasticsearch.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Search.Elasticsearch/OrchardCore.Search.Elasticsearch.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.Indexing.Pdf",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Media.Indexing.Pdf/OrchardCore.Media.Indexing.Pdf.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Media.Indexing.Pdf/OrchardCore.Media.Indexing.Pdf.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Themes",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Themes/OrchardCore.Themes.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Themes/OrchardCore.Themes.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DynamicCache",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.DynamicCache/OrchardCore.DynamicCache.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.DynamicCache/OrchardCore.DynamicCache.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Mvc.HelloWorld",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Mvc.HelloWorld/OrchardCore.Mvc.HelloWorld.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Mvc.HelloWorld/OrchardCore.Mvc.HelloWorld.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentFields",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ContentFields/OrchardCore.ContentFields.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ContentFields/OrchardCore.ContentFields.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.OpenId",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.OpenId/OrchardCore.OpenId.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.OpenId/OrchardCore.OpenId.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Notifications",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Notifications/OrchardCore.Notifications.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Notifications/OrchardCore.Notifications.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Rules",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Rules/OrchardCore.Rules.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Rules/OrchardCore.Rules.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AdminDashboard",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.AdminDashboard/OrchardCore.AdminDashboard.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.AdminDashboard/OrchardCore.AdminDashboard.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Admin",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Admin/OrchardCore.Admin.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Admin/OrchardCore.Admin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ReverseProxy",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ReverseProxy/OrchardCore.ReverseProxy.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ReverseProxy/OrchardCore.ReverseProxy.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.HealthChecks",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.HealthChecks/OrchardCore.HealthChecks.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.HealthChecks/OrchardCore.HealthChecks.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DataLocalization",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.DataLocalization/OrchardCore.DataLocalization.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.DataLocalization/OrchardCore.DataLocalization.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.Autoroute",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Autoroute/OrchardCore.Autoroute.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Autoroute/OrchardCore.Autoroute.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.GitHub",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.GitHub/OrchardCore.GitHub.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.GitHub/OrchardCore.GitHub.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Menu",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Menu/OrchardCore.Menu.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Menu/OrchardCore.Menu.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Alias",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Alias/OrchardCore.Alias.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Alias/OrchardCore.Alias.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Security",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Security/OrchardCore.Security.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Security/OrchardCore.Security.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Liquid",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Liquid/OrchardCore.Liquid.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Liquid/OrchardCore.Liquid.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Lists",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Lists/OrchardCore.Lists.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Lists/OrchardCore.Lists.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Contents",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Contents/OrchardCore.Contents.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Contents/OrchardCore.Contents.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.AmazonS3",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Media.AmazonS3/OrchardCore.Media.AmazonS3.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Media.AmazonS3/OrchardCore.Media.AmazonS3.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AutoSetup",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.AutoSetup/OrchardCore.AutoSetup.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.AutoSetup/OrchardCore.AutoSetup.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Facebook",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Facebook/OrchardCore.Facebook.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Facebook/OrchardCore.Facebook.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Layers",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Layers/OrchardCore.Layers.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Layers/OrchardCore.Layers.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Lucene",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Search.Lucene/OrchardCore.Search.Lucene.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Search.Lucene/OrchardCore.Search.Lucene.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Localization",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Localization/OrchardCore.Localization.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Localization/OrchardCore.Localization.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.Deployment.Remote",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Deployment.Remote/OrchardCore.Deployment.Remote.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Deployment.Remote/OrchardCore.Deployment.Remote.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Media/OrchardCore.Media.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Media/OrchardCore.Media.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Sitemaps",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Sitemaps/OrchardCore.Sitemaps.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Sitemaps/OrchardCore.Sitemaps.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Seo",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Seo/OrchardCore.Seo.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Seo/OrchardCore.Seo.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.Indexing.OpenXML",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Media.Indexing.OpenXML/OrchardCore.Media.Indexing.OpenXML.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Media.Indexing.OpenXML/OrchardCore.Media.Indexing.OpenXML.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DataProtection.Azure",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.DataProtection.Azure/OrchardCore.DataProtection.Azure.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.DataProtection.Azure/OrchardCore.DataProtection.Azure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Html",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Html/OrchardCore.Html.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Html/OrchardCore.Html.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Roles",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Roles/OrchardCore.Roles.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Roles/OrchardCore.Roles.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Diagnostics",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Diagnostics/OrchardCore.Diagnostics.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Diagnostics/OrchardCore.Diagnostics.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Email",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Email/OrchardCore.Email.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Email/OrchardCore.Email.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Https",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Https/OrchardCore.Https.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Https/OrchardCore.Https.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Title",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Title/OrchardCore.Title.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Title/OrchardCore.Title.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Recipes",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Recipes/OrchardCore.Recipes.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Recipes/OrchardCore.Recipes.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Markdown",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Markdown/OrchardCore.Markdown.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Markdown/OrchardCore.Markdown.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.UrlRewriting",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.UrlRewriting/OrchardCore.UrlRewriting.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.UrlRewriting/OrchardCore.UrlRewriting.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Search/OrchardCore.Search.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Search/OrchardCore.Search.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Demo",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Demo/OrchardCore.Demo.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Demo/OrchardCore.Demo.csproj",
+    "category": "Sample"
+  },
+  {
+    "project": "OrchardCore.HomeRoute",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.HomeRoute/OrchardCore.HomeRoute.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.HomeRoute/OrchardCore.HomeRoute.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Apis.GraphQL",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Apis.GraphQL/OrchardCore.Apis.GraphQL.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Apis.GraphQL/OrchardCore.Apis.GraphQL.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrchardCore.CustomSettings",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.CustomSettings/OrchardCore.CustomSettings.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.CustomSettings/OrchardCore.CustomSettings.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Widgets",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Widgets/OrchardCore.Widgets.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Widgets/OrchardCore.Widgets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Email.Smtp",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Email.Smtp/OrchardCore.Email.Smtp.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Email.Smtp/OrchardCore.Email.Smtp.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Templates",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Templates/OrchardCore.Templates.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Templates/OrchardCore.Templates.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Sms.Azure",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Sms.Azure/OrchardCore.Sms.Azure.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Sms.Azure/OrchardCore.Sms.Azure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Scripting",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Scripting/OrchardCore.Scripting.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Scripting/OrchardCore.Scripting.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Redis",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Redis/OrchardCore.Redis.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Redis/OrchardCore.Redis.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Spatial",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Spatial/OrchardCore.Spatial.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Spatial/OrchardCore.Spatial.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Cors",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Cors/OrchardCore.Cors.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Cors/OrchardCore.Cors.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Indexing",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Indexing/OrchardCore.Indexing.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Indexing/OrchardCore.Indexing.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentLocalization",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ContentLocalization/OrchardCore.ContentLocalization.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ContentLocalization/OrchardCore.ContentLocalization.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.Feeds",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Feeds/OrchardCore.Feeds.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Feeds/OrchardCore.Feeds.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ReCaptcha",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ReCaptcha/OrchardCore.ReCaptcha.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ReCaptcha/OrchardCore.ReCaptcha.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Forms",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Forms/OrchardCore.Forms.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Forms/OrchardCore.Forms.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.AzureAI",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Search.AzureAI/OrchardCore.Search.AzureAI.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Search.AzureAI/OrchardCore.Search.AzureAI.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentTypes",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.ContentTypes/OrchardCore.ContentTypes.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.ContentTypes/OrchardCore.ContentTypes.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Tenants",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Tenants/OrchardCore.Tenants.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Tenants/OrchardCore.Tenants.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Placements",
+    "repo": "src",
+    "path": "OrchardCore.Modules/OrchardCore.Placements/OrchardCore.Placements.csproj",
+    "globalPath": "src/OrchardCore.Modules/OrchardCore.Placements/OrchardCore.Placements.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Setup.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Setup.Core/OrchardCore.Setup.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Setup.Core/OrchardCore.Setup.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Shortcodes.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Shortcodes.Abstractions/OrchardCore.Shortcodes.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Shortcodes.Abstractions/OrchardCore.Shortcodes.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AdminMenu.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.AdminMenu.Abstractions/OrchardCore.AdminMenu.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.AdminMenu.Abstractions/OrchardCore.AdminMenu.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.Abstractions/OrchardCore.Search.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.Abstractions/OrchardCore.Search.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Indexing.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Indexing.Core/OrchardCore.Indexing.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Indexing.Core/OrchardCore.Indexing.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Apis.GraphQL.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Apis.GraphQL.Abstractions/OrchardCore.Apis.GraphQL.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Apis.GraphQL.Abstractions/OrchardCore.Apis.GraphQL.Abstractions.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrchardCore.Module.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Module.Targets/OrchardCore.Module.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Module.Targets/OrchardCore.Module.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.FileStorage.AzureBlob",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.FileStorage.AzureBlob/OrchardCore.FileStorage.AzureBlob.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.FileStorage.AzureBlob/OrchardCore.FileStorage.AzureBlob.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Notifications.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Notifications.Core/OrchardCore.Notifications.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Notifications.Core/OrchardCore.Notifications.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DisplayManagement",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.DisplayManagement/OrchardCore.DisplayManagement.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.DisplayManagement/OrchardCore.DisplayManagement.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Recipes.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Recipes.Core/OrchardCore.Recipes.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Recipes.Core/OrchardCore.Recipes.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Application.Cms.Core.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Application.Cms.Core.Targets/OrchardCore.Application.Cms.Core.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Application.Cms.Core.Targets/OrchardCore.Application.Cms.Core.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.UrlRewriting.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.UrlRewriting.Core/OrchardCore.UrlRewriting.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.UrlRewriting.Core/OrchardCore.UrlRewriting.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Sitemaps.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Sitemaps.Abstractions/OrchardCore.Sitemaps.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Sitemaps.Abstractions/OrchardCore.Sitemaps.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Queries.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Queries.Abstractions/OrchardCore.Queries.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Queries.Abstractions/OrchardCore.Queries.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Data",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Data/OrchardCore.Data.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Data/OrchardCore.Data.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Elasticsearch.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.Elasticsearch.Core/OrchardCore.Search.Elasticsearch.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/OrchardCore.Search.Elasticsearch.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Mvc.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Mvc.Core/OrchardCore.Mvc.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Mvc.Core/OrchardCore.Mvc.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Infrastructure.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Infrastructure.Abstractions/OrchardCore.Infrastructure.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Infrastructure.Abstractions/OrchardCore.Infrastructure.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Lucene.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.Lucene.Abstractions/OrchardCore.Search.Lucene.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.Lucene.Abstractions/OrchardCore.Search.Lucene.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Apis.GraphQL.Client",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Apis.GraphQL.Client/OrchardCore.Apis.GraphQL.Client.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Apis.GraphQL.Client/OrchardCore.Apis.GraphQL.Client.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "OrchardCore.Email.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Email.Core/OrchardCore.Email.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Email.Core/OrchardCore.Email.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Liquid.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Liquid.Abstractions/OrchardCore.Liquid.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Liquid.Abstractions/OrchardCore.Liquid.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Deployment.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Deployment.Abstractions/OrchardCore.Deployment.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Deployment.Abstractions/OrchardCore.Deployment.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Workflows.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Workflows.Abstractions/OrchardCore.Workflows.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Workflows.Abstractions/OrchardCore.Workflows.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Email.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Email.Abstractions/OrchardCore.Email.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Email.Abstractions/OrchardCore.Email.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.FileStorage.FileSystem",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.FileStorage.FileSystem/OrchardCore.FileStorage.FileSystem.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.FileStorage.FileSystem/OrchardCore.FileStorage.FileSystem.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ResourceManagement.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ResourceManagement.Core/OrchardCore.ResourceManagement.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ResourceManagement.Core/OrchardCore.ResourceManagement.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Redis.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Redis.Abstractions/OrchardCore.Redis.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Redis.Abstractions/OrchardCore.Redis.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Logging.NLog",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Logging.NLog/OrchardCore.Logging.NLog.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Logging.NLog/OrchardCore.Logging.NLog.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Lucene.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.Lucene.Core/OrchardCore.Search.Lucene.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.Lucene.Core/OrchardCore.Search.Lucene.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Indexing.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Indexing.Abstractions/OrchardCore.Indexing.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Indexing.Abstractions/OrchardCore.Indexing.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Recipes.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Recipes.Abstractions/OrchardCore.Recipes.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Recipes.Abstractions/OrchardCore.Recipes.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.MetaWeblog.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.MetaWeblog.Abstractions/OrchardCore.MetaWeblog.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.MetaWeblog.Abstractions/OrchardCore.MetaWeblog.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.Elasticsearch.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.Elasticsearch.Abstractions/OrchardCore.Search.Elasticsearch.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.Elasticsearch.Abstractions/OrchardCore.Search.Elasticsearch.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Feeds.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Feeds.Abstractions/OrchardCore.Feeds.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Feeds.Abstractions/OrchardCore.Feeds.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Shells.Azure",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Shells.Azure/OrchardCore.Shells.Azure.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Shells.Azure/OrchardCore.Shells.Azure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Contents.TagHelpers",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Contents.TagHelpers/OrchardCore.Contents.TagHelpers.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Contents.TagHelpers/OrchardCore.Contents.TagHelpers.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Configuration.KeyVault",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Configuration.KeyVault/OrchardCore.Configuration.KeyVault.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Configuration.KeyVault/OrchardCore.Configuration.KeyVault.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ResourceManagement",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ResourceManagement/OrchardCore.ResourceManagement.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ResourceManagement/OrchardCore.ResourceManagement.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.XmlRpc.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.XmlRpc.Abstractions/OrchardCore.XmlRpc.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.XmlRpc.Abstractions/OrchardCore.XmlRpc.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Application.Mvc.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Application.Mvc.Targets/OrchardCore.Application.Mvc.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Application.Mvc.Targets/OrchardCore.Application.Mvc.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Search.AzureAI.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Search.AzureAI.Core/OrchardCore.Search.AzureAI.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Search.AzureAI.Core/OrchardCore.Search.AzureAI.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Localization.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Localization.Core/OrchardCore.Localization.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Localization.Core/OrchardCore.Localization.Core.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.ContentManagement.GraphQL",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentManagement.GraphQL/OrchardCore.ContentManagement.GraphQL.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentManagement.GraphQL/OrchardCore.ContentManagement.GraphQL.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Seo.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Seo.Abstractions/OrchardCore.Seo.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Seo.Abstractions/OrchardCore.Seo.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Users.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Users.Abstractions/OrchardCore.Users.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Users.Abstractions/OrchardCore.Users.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Media.Abstractions/OrchardCore.Media.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Media.Abstractions/OrchardCore.Media.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DisplayManagement.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.DisplayManagement.Abstractions/OrchardCore.DisplayManagement.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.DisplayManagement.Abstractions/OrchardCore.DisplayManagement.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Rules.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Rules.Core/OrchardCore.Rules.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Rules.Core/OrchardCore.Rules.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Infrastructure",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Infrastructure/OrchardCore.Infrastructure.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Infrastructure/OrchardCore.Infrastructure.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Data.YesSql",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Data.YesSql/OrchardCore.Data.YesSql.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Data.YesSql/OrchardCore.Data.YesSql.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Application.Cms.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Application.Cms.Targets/OrchardCore.Application.Cms.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Application.Cms.Targets/OrchardCore.Application.Cms.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Navigation.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Navigation.Core/OrchardCore.Navigation.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Navigation.Core/OrchardCore.Navigation.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Roles.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Roles.Abstractions/OrchardCore.Roles.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Roles.Abstractions/OrchardCore.Roles.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.FileStorage.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.FileStorage.Abstractions/OrchardCore.FileStorage.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.FileStorage.Abstractions/OrchardCore.FileStorage.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.HealthChecks.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.HealthChecks.Abstractions/OrchardCore.HealthChecks.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.HealthChecks.Abstractions/OrchardCore.HealthChecks.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentPreview.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentPreview.Abstractions/OrchardCore.ContentPreview.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentPreview.Abstractions/OrchardCore.ContentPreview.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Media.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Media.Core/OrchardCore.Media.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Media.Core/OrchardCore.Media.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Roles.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Roles.Core/OrchardCore.Roles.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Roles.Core/OrchardCore.Roles.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Queries.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Queries.Core/OrchardCore.Queries.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Queries.Core/OrchardCore.Queries.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Theme.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Theme.Targets/OrchardCore.Theme.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Theme.Targets/OrchardCore.Theme.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Scripting.JavaScript",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Scripting.JavaScript/OrchardCore.Scripting.JavaScript.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Scripting.JavaScript/OrchardCore.Scripting.JavaScript.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DisplayManagement.Liquid",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.DisplayManagement.Liquid/OrchardCore.DisplayManagement.Liquid.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.DisplayManagement.Liquid/OrchardCore.DisplayManagement.Liquid.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Localization.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Localization.Abstractions/OrchardCore.Localization.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Localization.Abstractions/OrchardCore.Localization.Abstractions.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.ContentManagement.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentManagement.Abstractions/OrchardCore.ContentManagement.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentManagement.Abstractions/OrchardCore.ContentManagement.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Contents.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Contents.Core/OrchardCore.Contents.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Contents.Core/OrchardCore.Contents.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Data.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Data.Abstractions/OrchardCore.Data.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Data.Abstractions/OrchardCore.Data.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Flows.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Flows.Core/OrchardCore.Flows.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Flows.Core/OrchardCore.Flows.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Users.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Users.Core/OrchardCore.Users.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Users.Core/OrchardCore.Users.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.FileStorage.AmazonS3",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.FileStorage.AmazonS3/OrchardCore.FileStorage.AmazonS3.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.FileStorage.AmazonS3/OrchardCore.FileStorage.AmazonS3.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Taxonomies.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Taxonomies.Core/OrchardCore.Taxonomies.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Taxonomies.Core/OrchardCore.Taxonomies.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Data.YesSql.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Data.YesSql.Abstractions/OrchardCore.Data.YesSql.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Data.YesSql.Abstractions/OrchardCore.Data.YesSql.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore/OrchardCore.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore/OrchardCore.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Abstractions/OrchardCore.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Abstractions/OrchardCore.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Settings.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Settings.Core/OrchardCore.Settings.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Settings.Core/OrchardCore.Settings.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Autoroute.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Autoroute.Core/OrchardCore.Autoroute.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Autoroute.Core/OrchardCore.Autoroute.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Setup.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Setup.Abstractions/OrchardCore.Setup.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Setup.Abstractions/OrchardCore.Setup.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Feeds.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Feeds.Core/OrchardCore.Feeds.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Feeds.Core/OrchardCore.Feeds.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Rules.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Rules.Abstractions/OrchardCore.Rules.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Rules.Abstractions/OrchardCore.Rules.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentManagement.Display",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentManagement.Display/OrchardCore.ContentManagement.Display.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentManagement.Display/OrchardCore.ContentManagement.Display.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Application.Targets",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Application.Targets/OrchardCore.Application.Targets.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Application.Targets/OrchardCore.Application.Targets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Notifications.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Notifications.Abstractions/OrchardCore.Notifications.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Notifications.Abstractions/OrchardCore.Notifications.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ReCaptcha.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ReCaptcha.Core/OrchardCore.ReCaptcha.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ReCaptcha.Core/OrchardCore.ReCaptcha.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Features.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Features.Core/OrchardCore.Features.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Features.Core/OrchardCore.Features.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Deployment.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Deployment.Core/OrchardCore.Deployment.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Deployment.Core/OrchardCore.Deployment.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Markdown.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Markdown.Abstractions/OrchardCore.Markdown.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Markdown.Abstractions/OrchardCore.Markdown.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentManagement",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentManagement/OrchardCore.ContentManagement.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentManagement/OrchardCore.ContentManagement.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Sms.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Sms.Core/OrchardCore.Sms.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Sms.Core/OrchardCore.Sms.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ResourceManagement.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ResourceManagement.Abstractions/OrchardCore.ResourceManagement.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ResourceManagement.Abstractions/OrchardCore.ResourceManagement.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.OpenId.Core",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.OpenId.Core/OrchardCore.OpenId.Core.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.OpenId.Core/OrchardCore.OpenId.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.AuditTrail.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.AuditTrail.Abstractions/OrchardCore.AuditTrail.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.AuditTrail.Abstractions/OrchardCore.AuditTrail.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.DynamicCache.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.DynamicCache.Abstractions/OrchardCore.DynamicCache.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.DynamicCache.Abstractions/OrchardCore.DynamicCache.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Admin.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Admin.Abstractions/OrchardCore.Admin.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Admin.Abstractions/OrchardCore.Admin.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentLocalization.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentLocalization.Abstractions/OrchardCore.ContentLocalization.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentLocalization.Abstractions/OrchardCore.ContentLocalization.Abstractions.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "OrchardCore.Sms.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Sms.Abstractions/OrchardCore.Sms.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Sms.Abstractions/OrchardCore.Sms.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Logging.Serilog",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.Logging.Serilog/OrchardCore.Logging.Serilog.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.Logging.Serilog/OrchardCore.Logging.Serilog.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.ContentTypes.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.ContentTypes.Abstractions/OrchardCore.ContentTypes.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.ContentTypes.Abstractions/OrchardCore.ContentTypes.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.UrlRewriting.Abstractions",
+    "repo": "src",
+    "path": "OrchardCore/OrchardCore.UrlRewriting.Abstractions/OrchardCore.UrlRewriting.Abstractions.csproj",
+    "globalPath": "src/OrchardCore/OrchardCore.UrlRewriting.Abstractions/OrchardCore.UrlRewriting.Abstractions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "OrchardCore.Mvc.Web",
+    "repo": "src",
+    "path": "OrchardCore.Mvc.Web/OrchardCore.Mvc.Web.csproj",
+    "globalPath": "src/OrchardCore.Mvc.Web/OrchardCore.Mvc.Web.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "OrchardCore.Tests",
+    "repo": "test",
+    "path": "OrchardCore.Tests/OrchardCore.Tests.csproj",
+    "globalPath": "test/OrchardCore.Tests/OrchardCore.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "OrchardCore.Benchmarks",
+    "repo": "test",
+    "path": "OrchardCore.Benchmarks/OrchardCore.Benchmarks.csproj",
+    "globalPath": "test/OrchardCore.Benchmarks/OrchardCore.Benchmarks.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "ModuleSample",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/ModuleSample/ModuleSample.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/ModuleSample/ModuleSample.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "DerivedThemeSample",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/DerivedThemeSample/DerivedThemeSample.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/DerivedThemeSample/DerivedThemeSample.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Errors.OrchardCoreModules.TwoPlus",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/Errors.OrchardCoreModules.TwoPlus/Errors.OrchardCoreModules.TwoPlus.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/Errors.OrchardCoreModules.TwoPlus/Errors.OrchardCoreModules.TwoPlus.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "BaseThemeSample2",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/BaseThemeSample2/BaseThemeSample2.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/BaseThemeSample2/BaseThemeSample2.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Modules.AssyAttrib.Charlie",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Charlie/Examples.Modules.AssyAttrib.Charlie.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Charlie/Examples.Modules.AssyAttrib.Charlie.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Modules.AssyAttrib.Bravo",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Bravo/Examples.Modules.AssyAttrib.Bravo.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Bravo/Examples.Modules.AssyAttrib.Bravo.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "DerivedThemeSample2",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/DerivedThemeSample2/DerivedThemeSample2.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/DerivedThemeSample2/DerivedThemeSample2.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Modules.AssyAttrib.Alpha",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Alpha/Examples.Modules.AssyAttrib.Alpha.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/Examples.Modules.AssyAttrib.Alpha/Examples.Modules.AssyAttrib.Alpha.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "BaseThemeSample",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/BaseThemeSample/BaseThemeSample.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/BaseThemeSample/BaseThemeSample.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.OrchardCoreModules.Alpha",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Modules/Examples.OrchardCoreModules.Alpha/Examples.OrchardCoreModules.Alpha.csproj",
+    "globalPath": "test/OrchardCore.Tests.Modules/Examples.OrchardCoreModules.Alpha/Examples.OrchardCoreModules.Alpha.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Features.AssyAttrib",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Features/Examples.Features.AssyAttrib/Examples.Features.AssyAttrib.csproj",
+    "globalPath": "test/OrchardCore.Tests.Features/Examples.Features.AssyAttrib/Examples.Features.AssyAttrib.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "OrchardCore.Application.Pages",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Pages/OrchardCore.Application.Pages/OrchardCore.Application.Pages.csproj",
+    "globalPath": "test/OrchardCore.Tests.Pages/OrchardCore.Application.Pages/OrchardCore.Application.Pages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Theme.Pages",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Pages/OrchardCore.Themes.Pages/Theme.Pages/Theme.Pages.csproj",
+    "globalPath": "test/OrchardCore.Tests.Pages/OrchardCore.Themes.Pages/Theme.Pages/Theme.Pages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Module.Pages",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Pages/OrchardCore.Modules.Pages/Module.Pages/Module.Pages.csproj",
+    "globalPath": "test/OrchardCore.Tests.Pages/OrchardCore.Modules.Pages/Module.Pages/Module.Pages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Themes.AssyAttrib.Charlie",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Charlie/Examples.Themes.AssyAttrib.Charlie.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Charlie/Examples.Themes.AssyAttrib.Charlie.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Themes.AssyAttrib.Bravo",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Bravo/Examples.Themes.AssyAttrib.Bravo.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Bravo/Examples.Themes.AssyAttrib.Bravo.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Errors.OrchardCoreThemes.ThemeAndModule",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Errors.OrchardCoreThemes.ThemeAndModule/Errors.OrchardCoreThemes.ThemeAndModule.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Errors.OrchardCoreThemes.ThemeAndModule/Errors.OrchardCoreThemes.ThemeAndModule.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.Themes.AssyAttrib.Alpha",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Alpha/Examples.Themes.AssyAttrib.Alpha.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Examples.Themes.AssyAttrib.Alpha/Examples.Themes.AssyAttrib.Alpha.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Examples.OrchardCoreThemes.Alpha",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Examples.OrchardCoreThemes.Alpha/Examples.OrchardCoreThemes.Alpha.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Examples.OrchardCoreThemes.Alpha/Examples.OrchardCoreThemes.Alpha.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Errors.OrchardCoreThemes.TwoPlus",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Themes/Errors.OrchardCoreThemes.TwoPlus/Errors.OrchardCoreThemes.TwoPlus.csproj",
+    "globalPath": "test/OrchardCore.Tests.Themes/Errors.OrchardCoreThemes.TwoPlus/Errors.OrchardCoreThemes.TwoPlus.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "OrchardCore.Tests.Functional",
+    "repo": "test",
+    "path": "OrchardCore.Tests.Functional/OrchardCore.Tests.Functional.csproj",
+    "globalPath": "test/OrchardCore.Tests.Functional/OrchardCore.Tests.Functional.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "OrchardCore.Abstractions.Tests",
+    "repo": "test",
+    "path": "OrchardCore.Abstractions.Tests/OrchardCore.Abstractions.Tests.csproj",
+    "globalPath": "test/OrchardCore.Abstractions.Tests/OrchardCore.Abstractions.Tests.csproj",
+    "category": "Test"
+  }
+]

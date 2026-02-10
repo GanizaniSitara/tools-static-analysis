@@ -1,0 +1,1757 @@
+[
+  {
+    "file": "Api/ApiConnection.cs",
+    "repo": "Lean",
+    "line": 102,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_httpClient = new HttpClient() { BaseAddress = new Uri($\"{baseUrl.TrimEnd('/')}/\") };"
+  },
+  {
+    "file": "Configuration/ApplicationParser.cs",
+    "repo": "Lean",
+    "line": 89,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "application.Execute(args);"
+  },
+  {
+    "file": "Compression/ZipStreamWriter.cs",
+    "repo": "Lean",
+    "line": 48,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "_archive = ZipFile.Open(filename, ZipArchiveMode.Create);"
+  },
+  {
+    "file": "Compression/ZipStreamWriter.cs",
+    "repo": "Lean",
+    "line": 54,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "_archive = ZipFile.Open(filename, ZipArchiveMode.Update);"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 64,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = new ZipOutputStream(File.Create(zipPath)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 105,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = new ZipOutputStream(File.Create(zipPath)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 150,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = new ZipOutputStream(File.Create(zipPath)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 396,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fileOutput = File.Create(newFileOutput))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 429,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = new ZipOutputStream(File.Create(destination)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 478,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = new ZipOutputStream(File.Create(zipPath)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 582,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zipStream = new ZipOutputStream(File.Create(destination)))"
+  },
+  {
+    "file": "Compression/Compression.cs",
+    "repo": "Lean",
+    "line": 905,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var streamWriter = File.Create(fullZipToPath))"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 31,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class BrokerageMultiWebSocketSubscriptionManager : EventBasedDataQueueHandlerSubscriptionManager, IDisposable"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 34,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly int _maximumSymbolsPerWebSocket;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 35,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly int _maximumWebSocketConnections;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 36,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly Func<WebSocketClientWrapper> _webSocketFactory;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 37,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly Func<IWebSocket, Symbol, bool> _subscribeFunc;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 38,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly Func<IWebSocket, Symbol, bool> _unsubscribeFunc;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 39,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly Action<WebSocketMessage> _messageHandler;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 46,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private readonly List<BrokerageMultiWebSocketEntry> _webSocketEntries = new();"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 49,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"BrokerageMultiWebSocketSubscriptionManager\"/> class"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 52,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// <param name=\"maximumSymbolsPerWebSocket\">The maximum number of symbols per websocket connection</param>"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 53,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// <param name=\"maximumWebSocketConnections\">The maximum number of websocket connections allowed (if zero, symbol weighting is disabled)</param>"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 61,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public BrokerageMultiWebSocketSubscriptionManager("
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 63,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "int maximumSymbolsPerWebSocket,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 64,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "int maximumWebSocketConnections,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 66,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Func<WebSocketClientWrapper> webSocketFactory,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 67,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Func<IWebSocket, Symbol, bool> subscribeFunc,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 68,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Func<IWebSocket, Symbol, bool> unsubscribeFunc,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 69,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Action<WebSocketMessage> messageHandler,"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 74,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_maximumSymbolsPerWebSocket = maximumSymbolsPerWebSocket;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 75,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_maximumWebSocketConnections = maximumWebSocketConnections;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 83,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (_maximumWebSocketConnections > 0)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 86,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "for (var i = 0; i < _maximumWebSocketConnections; i++)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 88,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var webSocket = CreateWebSocket();"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 90,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_webSocketEntries.Add(new BrokerageMultiWebSocketEntry(symbolWeights, webSocket));"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 103,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "List<BrokerageMultiWebSocketEntry> webSocketEntries;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 110,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager(): Restarting {webSocketEntries.Count} websocket connections\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 114,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (entry.WebSocket.IsOpen)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 116,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager(): Websocket restart - disconnect: ({entry.WebSocket.GetHashCode()})\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 117,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Disconnect(entry.WebSocket);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 119,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager(): Websocket restart - connect: ({entry.WebSocket.GetHashCode()})\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 120,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Connect(entry.WebSocket);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 126,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager(): WebSocket connections will be restarted every: {webSocketConnectionDuration}\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 137,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager.Subscribe(): {string.Join(\",\", symbols.Select(x => x.Value))}\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 143,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var webSocket = GetWebSocketForSymbol(symbol);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 158,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager.Unsubscribe(): {string.Join(\",\", symbols.Select(x => x.Value))}\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 164,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var entry = GetWebSocketEntryBySymbol(symbol);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 169,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "success &= _unsubscribeFunc(entry.WebSocket, symbol);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 189,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "entry.WebSocket.Open -= OnOpen;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 190,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "entry.WebSocket.Message -= EventHandler;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 191,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "entry.WebSocket.Close();"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 202,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private BrokerageMultiWebSocketEntry GetWebSocketEntryBySymbol(Symbol symbol)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 218,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private IWebSocket GetWebSocketForSymbol(Symbol symbol)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 220,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "BrokerageMultiWebSocketEntry entry;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 224,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (_webSocketEntries.All(x => x.SymbolCount >= _maximumSymbolsPerWebSocket))"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 226,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (_maximumWebSocketConnections > 0)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 228,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "throw new NotSupportedException($\"Maximum symbol count reached for the current configuration [MaxSymbolsPerWebSocket={_maximumSymbolsPerWebSocket}, MaxWebSocketConnections:{_maximumWebSocketConnection"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 232,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var webSocket = CreateWebSocket();"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 234,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_webSocketEntries.Add(new BrokerageMultiWebSocketEntry(webSocket));"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 239,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "x.SymbolCount >= _maximumSymbolsPerWebSocket"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 241,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": ": y.SymbolCount >= _maximumSymbolsPerWebSocket"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 248,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (!entry.WebSocket.IsOpen)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 250,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Connect(entry.WebSocket);"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 255,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager.GetWebSocketForSymbol(): added symbol: {symbol} to websocket: {entry.WebSocket.GetHashCode()} - Count: {entry.SymbolCount}\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 257,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "return entry.WebSocket;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 263,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// <remarks>Note that the websocket is no connected yet <see cref=\"Connect(IWebSocket)\"/></remarks>"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 264,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private IWebSocket CreateWebSocket()"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 275,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private void EventHandler(object _, WebSocketMessage message)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 280,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private void Connect(IWebSocket webSocket)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 298,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "throw new TimeoutException($\"BrokerageMultiWebSocketSubscriptionManager.Connect(): WebSocket connection timeout: {webSocket.GetHashCode()}\");"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 309,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private void Disconnect(IWebSocket webSocket)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 316,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "var webSocket = (IWebSocket)sender;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 322,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (entry.WebSocket == webSocket && entry.Symbols.Count > 0)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketSubscriptionManager.cs",
+    "repo": "Lean",
+    "line": 324,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BrokerageMultiWebSocketSubscriptionManager.Connect(): WebSocket opened: {webSocket.GetHashCode()} - Resubscribing existing symbols: {entry.Symbols.Count}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketError.cs",
+    "repo": "Lean",
+    "line": 23,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class WebSocketError"
+  },
+  {
+    "file": "Brokerages/WebSocketError.cs",
+    "repo": "Lean",
+    "line": 36,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"WebSocketError\"/> class"
+  },
+  {
+    "file": "Brokerages/WebSocketError.cs",
+    "repo": "Lean",
+    "line": 40,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public WebSocketError(string message, Exception exception)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 22,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Helper class for <see cref=\"BrokerageMultiWebSocketSubscriptionManager\"/>"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 24,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class BrokerageMultiWebSocketEntry"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 33,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public IWebSocket WebSocket { get; }"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 83,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"BrokerageMultiWebSocketEntry\"/> class"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 87,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public BrokerageMultiWebSocketEntry(Dictionary<Symbol, int> symbolWeights, IWebSocket webSocket)"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 92,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket = webSocket;"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 96,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"BrokerageMultiWebSocketEntry\"/> class"
+  },
+  {
+    "file": "Brokerages/BrokerageMultiWebSocketEntry.cs",
+    "repo": "Lean",
+    "line": 99,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public BrokerageMultiWebSocketEntry(IWebSocket webSocket)"
+  },
+  {
+    "file": "Brokerages/DefaultConnectionHandler.cs",
+    "repo": "Lean",
+    "line": 195,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Error(\"DefaultConnectionHandler.OnConnectionLost(): WebSocket connection lost.\");"
+  },
+  {
+    "file": "Brokerages/DefaultConnectionHandler.cs",
+    "repo": "Lean",
+    "line": 204,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace(\"DefaultConnectionHandler.OnConnectionRestored(): WebSocket connection restored.\");"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 21,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class WebSocketMessage"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 26,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public IWebSocket WebSocket { get; }"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 31,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public WebSocketClientWrapper.MessageData Data { get; }"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 34,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"WebSocketMessage\"/> class"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 38,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public WebSocketMessage(IWebSocket webSocket, WebSocketClientWrapper.MessageData data)"
+  },
+  {
+    "file": "Brokerages/WebSocketMessage.cs",
+    "repo": "Lean",
+    "line": 40,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket = webSocket;"
+  },
+  {
+    "file": "Brokerages/IWebSocket.cs",
+    "repo": "Lean",
+    "line": 21,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Wrapper for WebSocket4Net to enhance testability"
+  },
+  {
+    "file": "Brokerages/IWebSocket.cs",
+    "repo": "Lean",
+    "line": 23,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public interface IWebSocket"
+  },
+  {
+    "file": "Brokerages/IWebSocket.cs",
+    "repo": "Lean",
+    "line": 56,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "event EventHandler<WebSocketMessage> Message;"
+  },
+  {
+    "file": "Brokerages/IWebSocket.cs",
+    "repo": "Lean",
+    "line": 61,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "event EventHandler<WebSocketError> Error;"
+  },
+  {
+    "file": "Brokerages/IWebSocket.cs",
+    "repo": "Lean",
+    "line": 71,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "event EventHandler<WebSocketCloseData> Closed;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 20,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "using System.Net.WebSockets;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 29,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "ClientWebSocket",
+    "context": "/// Wrapper for System.Net.Websockets.ClientWebSocket to enhance testability"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 31,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class WebSocketClientWrapper : IWebSocket"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 38,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "ClientWebSocket",
+    "context": "private ClientWebSocket _client;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 63,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_client.SendAsync(buffer, WebSocketMessageType.Text, true, _cts.Token).SynchronouslyAwaitTask();"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 85,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper connection task started: {_url}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 93,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Error(e, $\"Error in WebSocketClientWrapper connection task: {_url}: \");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 96,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper connection task ended: {_url}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 128,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "_client?.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, \"\", _cts.Token).SynchronouslyAwaitTask();"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 141,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Error($\"WebSocketClientWrapper.Close({_url}): {e}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 149,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "OnClose(new WebSocketCloseData(0, string.Empty, true));"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 156,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public bool IsOpen => _client?.State == WebSocketState.Open;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 161,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public event EventHandler<WebSocketMessage> Message;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 166,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public event EventHandler<WebSocketError> Error;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 176,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public event EventHandler<WebSocketCloseData> Closed;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 181,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected virtual void OnMessage(WebSocketMessage e)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 190,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected virtual void OnError(WebSocketError e)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 192,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Error(e.Exception, $\"WebSocketClientWrapper.OnError(): (IsOpen:{IsOpen}, State:{_client.State}): {_url}: {e.Message}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 201,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper.OnOpen(): Connection opened (IsOpen:{IsOpen}, State:{_client.State}): {_url}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 208,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected virtual void OnClose(WebSocketCloseData e)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 210,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper.OnClose(): Connection closed (IsOpen:{IsOpen}, State:{_client.State}): {_url}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 220,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper.HandleConnection({_url}): Connecting...\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 232,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "ClientWebSocket",
+    "context": "_client = new ClientWebSocket();"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 241,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "while ((_client.State == WebSocketState.Open || _client.State == WebSocketState.CloseSent) &&"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 253,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "OnMessage(new WebSocketMessage(this, messageData));"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 258,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "catch (WebSocketException ex)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 262,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "OnError(new WebSocketError(ex.Message, ex));"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 273,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "OnError(new WebSocketError(ex.Message, ex));"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 287,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "ClientWebSocket",
+    "context": "ClientWebSocket webSocket,"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 295,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocketReceiveResult result;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 304,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "if (result.MessageType == WebSocketMessageType.Binary)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 312,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "else if (result.MessageType == WebSocketMessageType.Text)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 319,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "else if (result.MessageType == WebSocketMessageType.Close)"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 321,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"WebSocketClientWrapper.HandleConnection({_url}): WebSocketMessageType.Close - Data: {Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)ms.Length)}\");"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 336,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public WebSocketMessageType MessageType { get; set; }"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 354,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "MessageType = WebSocketMessageType.Text;"
+  },
+  {
+    "file": "Brokerages/WebSocketClientWrapper.cs",
+    "repo": "Lean",
+    "line": 378,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "MessageType = WebSocketMessageType.Binary;"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 48,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected IWebSocket WebSocket { get; set; }"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 123,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected void Initialize(string wssUrl, IWebSocket websocket, IRestClient restClient, string apiKey, string apiSecret)"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 139,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected void Initialize(string wssUrl, IWebSocket websocket, HttpClient httpClient, string apiKey, string apiSecret)"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 147,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "private bool TryInitialize(string wssUrl, IWebSocket websocket, string apiKey, string apiSecret)"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 157,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket = websocket;"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 158,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Initialize(wssUrl);"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 159,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Message += OnMessage;"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 161,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Open += (sender, args) =>"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 163,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace($\"BaseWebsocketsBrokerage(): WebSocket.Open. Subscribing\");"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 186,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "protected abstract void OnMessage(object sender, WebSocketMessage e);"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 196,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "Log.Trace(\"BaseWebSocketsBrokerage.Connect(): Connecting...\");"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 223,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Open += triggerEvent;"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 225,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Connect();"
+  },
+  {
+    "file": "Brokerages/BaseWebsocketsBrokerage.cs",
+    "repo": "Lean",
+    "line": 231,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "WebSocket.Open -= triggerEvent;"
+  },
+  {
+    "file": "Brokerages/WebSocketCloseData.cs",
+    "repo": "Lean",
+    "line": 21,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public class WebSocketCloseData"
+  },
+  {
+    "file": "Brokerages/WebSocketCloseData.cs",
+    "repo": "Lean",
+    "line": 39,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "/// Initializes a new instance of the <see cref=\"WebSocketCloseData\"/> class"
+  },
+  {
+    "file": "Brokerages/WebSocketCloseData.cs",
+    "repo": "Lean",
+    "line": 44,
+    "pattern": "WebSocket",
+    "type": "api",
+    "match": "WebSocket",
+    "context": "public WebSocketCloseData(ushort code, string reason, bool wasClean)"
+  },
+  {
+    "file": "Algorithm.CSharp/PortfolioTargetTagsRegressionAlgorithm.cs",
+    "repo": "Lean",
+    "line": 119,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "base.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Engine/DataFeeds/DownloaderDataProvider.cs",
+    "repo": "Lean",
+    "line": 260,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return DiskSynchronizer.Execute(key, () =>"
+  },
+  {
+    "file": "Engine/DataFeeds/BaseDownloaderDataProvider.cs",
+    "repo": "Lean",
+    "line": 45,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_singleDownloadSynchronizer.Execute(key, singleExecution: true, () => download(key));"
+  },
+  {
+    "file": "Engine/DataFeeds/BaseDownloaderDataProvider.cs",
+    "repo": "Lean",
+    "line": 51,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _singleDownloadSynchronizer.Execute(key, () => GetStream(key));"
+  },
+  {
+    "file": "Engine/DataFeeds/Transport/RestSubscriptionStreamReader.cs",
+    "repo": "Lean",
+    "line": 31,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "private static readonly HttpClient _client = new HttpClient();"
+  },
+  {
+    "file": "Engine/DataFeeds/LiveOptionChainProvider.cs",
+    "repo": "Lean",
+    "line": 64,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });"
+  },
+  {
+    "file": "ToolBox/AlgoSeekFuturesConverter/AlgoSeekFuturesConverter.cs",
+    "repo": "Lean",
+    "line": 277,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "var zip = ZipFile.Open(outputFileName, ZipArchiveMode.Create);"
+  },
+  {
+    "file": "Common/Data/DiskDataCacheProvider.cs",
+    "repo": "Lean",
+    "line": 65,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _synchronizer.Execute(filePath, () =>"
+  },
+  {
+    "file": "Common/Data/DiskDataCacheProvider.cs",
+    "repo": "Lean",
+    "line": 117,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_synchronizer.Execute(filePath, singleExecution: false, () =>"
+  },
+  {
+    "file": "Common/Data/DiskDataCacheProvider.cs",
+    "repo": "Lean",
+    "line": 128,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _synchronizer.Execute(zipFile, () =>"
+  },
+  {
+    "file": "Common/Data/LeanDataWriter.cs",
+    "repo": "Lean",
+    "line": 315,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_keySynchronizer.Execute(filePath, singleExecution: false, () =>"
+  },
+  {
+    "file": "Common/Extensions.cs",
+    "repo": "Lean",
+    "line": 338,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient();"
+  },
+  {
+    "file": "Common/Extensions.cs",
+    "repo": "Lean",
+    "line": 348,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var wc = new HttpClient())"
+  },
+  {
+    "file": "Common/Extensions.cs",
+    "repo": "Lean",
+    "line": 2820,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public static void ProcessUntilEmpty<T>(this IProducerConsumerCollection<T> collection, Action<T> handler)"
+  },
+  {
+    "file": "Tests/Brokerages/Authentication/TokenHandlerTests.cs",
+    "repo": "Lean",
+    "line": 41,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(tokenHandler);"
+  },
+  {
+    "file": "Tests/Brokerages/Authentication/TokenHandlerTests.cs",
+    "repo": "Lean",
+    "line": 56,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(tokenHandler);"
+  },
+  {
+    "file": "Tests/Brokerages/Authentication/TokenHandlerTests.cs",
+    "repo": "Lean",
+    "line": 71,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(tokenHandler);"
+  },
+  {
+    "file": "Tests/Python/PythonWrapperTests.cs",
+    "repo": "Lean",
+    "line": 40,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "Assert.That(() => model.ValidateImplementationOf<IModel>(), Throws"
+  },
+  {
+    "file": "Tests/Python/PythonWrapperTests.cs",
+    "repo": "Lean",
+    "line": 56,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "Assert.That(() => model.ValidateImplementationOf<IModel>(), Throws.Nothing);"
+  },
+  {
+    "file": "Tests/Python/PythonWrapperTests.cs",
+    "repo": "Lean",
+    "line": 318,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "interface IModel"
+  },
+  {
+    "file": "Tests/Python/PythonWrapperTests.cs",
+    "repo": "Lean",
+    "line": 325,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "IModel",
+    "context": "public class Model : IModel"
+  },
+  {
+    "file": "Tests/Engine/DataProviders/ApiDataProviderTests.cs",
+    "repo": "Lean",
+    "line": 103,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(path).Dispose();"
+  },
+  {
+    "file": "Tests/Common/Util/KeyStringSynchronizerTests.cs",
+    "repo": "Lean",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "synchronizer.Execute(key, singleExecution: true, () =>"
+  },
+  {
+    "file": "Tests/Common/Util/KeyStringSynchronizerTests.cs",
+    "repo": "Lean",
+    "line": 41,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "synchronizer.Execute(key, singleExecution: true, () =>"
+  },
+  {
+    "file": "Tests/Common/Util/KeyStringSynchronizerTests.cs",
+    "repo": "Lean",
+    "line": 68,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "synchronizer.Execute(new string(\"someKey\"), singleExecution: true, () =>"
+  },
+  {
+    "file": "Tests/Common/Util/KeyStringSynchronizerTests.cs",
+    "repo": "Lean",
+    "line": 107,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "synchronizer.Execute(\"someKey\", singleExecution: false, () =>"
+  },
+  {
+    "file": "Tests/Common/Util/KeyStringSynchronizerTests.cs",
+    "repo": "Lean",
+    "line": 154,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var newResult = synchronizer.Execute(\"someKey\", () =>"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/StandardDeviationExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 61,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, new IPortfolioTarget[0]);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/StandardDeviationExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 118,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/SpreadExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 59,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, new IPortfolioTarget[0]);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/SpreadExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 106,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/SpreadExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 161,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/VolumeWeightedAveragePriceExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 61,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, new IPortfolioTarget[0]);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/VolumeWeightedAveragePriceExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 127,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 62,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, new IPortfolioTarget[0]);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 122,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 166,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 205,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, targets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 215,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm, newTargets);"
+  },
+  {
+    "file": "Tests/Algorithm/Framework/Execution/ImmediateExecutionModelTests.cs",
+    "repo": "Lean",
+    "line": 252,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "model.Execute(algorithm,"
+  },
+  {
+    "file": "Logging/FileLogHandler.cs",
+    "repo": "Lean",
+    "line": 44,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "() => new StreamWriter(File.Open(filepath, FileMode.Append, FileAccess.Write, FileShare.Read))"
+  },
+  {
+    "file": "Algorithm/QCAlgorithm.Framework.cs",
+    "repo": "Lean",
+    "line": 243,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Execution.Execute(this, riskAdjustedTargets);"
+  }
+]

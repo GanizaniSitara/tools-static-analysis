@@ -1,0 +1,1872 @@
+{
+  "nodes": [
+    {
+      "id": "src/WebApp",
+      "project": "WebApp",
+      "repo": "src",
+      "type": "webapp",
+      "path": "WebApp/WebApp.csproj",
+      "globalPath": "src/WebApp/WebApp.csproj",
+      "description": "WebApp: WebApp (src)"
+    },
+    {
+      "id": "src/Identity.API",
+      "project": "Identity.API",
+      "repo": "src",
+      "type": "webapp",
+      "path": "Identity.API/Identity.API.csproj",
+      "globalPath": "src/Identity.API/Identity.API.csproj",
+      "description": "WebApp: Identity.API (src)"
+    },
+    {
+      "id": "src/Catalog.API",
+      "project": "Catalog.API",
+      "repo": "src",
+      "type": "webapp",
+      "path": "Catalog.API/Catalog.API.csproj",
+      "globalPath": "src/Catalog.API/Catalog.API.csproj",
+      "description": "WebApp: Catalog.API (src)"
+    },
+    {
+      "id": "src/Ordering.Domain",
+      "project": "Ordering.Domain",
+      "repo": "src",
+      "type": "library",
+      "path": "Ordering.Domain/Ordering.Domain.csproj",
+      "globalPath": "src/Ordering.Domain/Ordering.Domain.csproj",
+      "description": "Library: Ordering.Domain (src)"
+    },
+    {
+      "id": "src/eShop.AppHost",
+      "project": "eShop.AppHost",
+      "repo": "src",
+      "type": "application",
+      "path": "eShop.AppHost/eShop.AppHost.csproj",
+      "globalPath": "src/eShop.AppHost/eShop.AppHost.csproj",
+      "description": "Application: eShop.AppHost (src)"
+    },
+    {
+      "id": "src/WebAppComponents",
+      "project": "WebAppComponents",
+      "repo": "src",
+      "type": "webapp",
+      "path": "WebAppComponents/WebAppComponents.csproj",
+      "globalPath": "src/WebAppComponents/WebAppComponents.csproj",
+      "description": "WebApp: WebAppComponents (src)"
+    },
+    {
+      "id": "src/Ordering.Infrastructure",
+      "project": "Ordering.Infrastructure",
+      "repo": "src",
+      "type": "library",
+      "path": "Ordering.Infrastructure/Ordering.Infrastructure.csproj",
+      "globalPath": "src/Ordering.Infrastructure/Ordering.Infrastructure.csproj",
+      "description": "Library: Ordering.Infrastructure (src)"
+    },
+    {
+      "id": "src/PaymentProcessor",
+      "project": "PaymentProcessor",
+      "repo": "src",
+      "type": "webapp",
+      "path": "PaymentProcessor/PaymentProcessor.csproj",
+      "globalPath": "src/PaymentProcessor/PaymentProcessor.csproj",
+      "description": "WebApp: PaymentProcessor (src)"
+    },
+    {
+      "id": "src/OrderProcessor",
+      "project": "OrderProcessor",
+      "repo": "src",
+      "type": "service",
+      "path": "OrderProcessor/OrderProcessor.csproj",
+      "globalPath": "src/OrderProcessor/OrderProcessor.csproj",
+      "description": "Service: OrderProcessor (src)"
+    },
+    {
+      "id": "src/HybridApp",
+      "project": "HybridApp",
+      "repo": "src",
+      "type": "application",
+      "path": "HybridApp/HybridApp.csproj",
+      "globalPath": "src/HybridApp/HybridApp.csproj",
+      "description": "Application: HybridApp (src)"
+    },
+    {
+      "id": "src/Basket.API",
+      "project": "Basket.API",
+      "repo": "src",
+      "type": "webapp",
+      "path": "Basket.API/Basket.API.csproj",
+      "globalPath": "src/Basket.API/Basket.API.csproj",
+      "description": "WebApp: Basket.API (src)"
+    },
+    {
+      "id": "src/IntegrationEventLogEF",
+      "project": "IntegrationEventLogEF",
+      "repo": "src",
+      "type": "library",
+      "path": "IntegrationEventLogEF/IntegrationEventLogEF.csproj",
+      "globalPath": "src/IntegrationEventLogEF/IntegrationEventLogEF.csproj",
+      "description": "Library: IntegrationEventLogEF (src)"
+    },
+    {
+      "id": "src/EventBus",
+      "project": "EventBus",
+      "repo": "src",
+      "type": "library",
+      "path": "EventBus/EventBus.csproj",
+      "globalPath": "src/EventBus/EventBus.csproj",
+      "description": "Library: EventBus (src)"
+    },
+    {
+      "id": "src/Ordering.API",
+      "project": "Ordering.API",
+      "repo": "src",
+      "type": "webapp",
+      "path": "Ordering.API/Ordering.API.csproj",
+      "globalPath": "src/Ordering.API/Ordering.API.csproj",
+      "description": "WebApp: Ordering.API (src)"
+    },
+    {
+      "id": "src/EventBusRabbitMQ",
+      "project": "EventBusRabbitMQ",
+      "repo": "src",
+      "type": "library",
+      "path": "EventBusRabbitMQ/EventBusRabbitMQ.csproj",
+      "globalPath": "src/EventBusRabbitMQ/EventBusRabbitMQ.csproj",
+      "description": "Library: EventBusRabbitMQ (src)"
+    },
+    {
+      "id": "src/eShop.ServiceDefaults",
+      "project": "eShop.ServiceDefaults",
+      "repo": "src",
+      "type": "service",
+      "path": "eShop.ServiceDefaults/eShop.ServiceDefaults.csproj",
+      "globalPath": "src/eShop.ServiceDefaults/eShop.ServiceDefaults.csproj",
+      "description": "Service: eShop.ServiceDefaults (src)"
+    },
+    {
+      "id": "src/ClientApp",
+      "project": "ClientApp",
+      "repo": "src",
+      "type": "tool",
+      "path": "ClientApp/ClientApp.csproj",
+      "globalPath": "src/ClientApp/ClientApp.csproj",
+      "description": "Tool: ClientApp (src)"
+    },
+    {
+      "id": "src/Webhooks.API",
+      "project": "Webhooks.API",
+      "repo": "src",
+      "type": "webapp",
+      "path": "Webhooks.API/Webhooks.API.csproj",
+      "globalPath": "src/Webhooks.API/Webhooks.API.csproj",
+      "description": "WebApp: Webhooks.API (src)"
+    },
+    {
+      "id": "src/WebhookClient",
+      "project": "WebhookClient",
+      "repo": "src",
+      "type": "tool",
+      "path": "WebhookClient/WebhookClient.csproj",
+      "globalPath": "src/WebhookClient/WebhookClient.csproj",
+      "description": "Tool: WebhookClient (src)"
+    },
+    {
+      "id": "tests/Ordering.UnitTests",
+      "project": "Ordering.UnitTests",
+      "repo": "tests",
+      "type": "test",
+      "path": "Ordering.UnitTests/Ordering.UnitTests.csproj",
+      "globalPath": "tests/Ordering.UnitTests/Ordering.UnitTests.csproj",
+      "description": "Test: Ordering.UnitTests (tests)"
+    },
+    {
+      "id": "tests/Ordering.FunctionalTests",
+      "project": "Ordering.FunctionalTests",
+      "repo": "tests",
+      "type": "test",
+      "path": "Ordering.FunctionalTests/Ordering.FunctionalTests.csproj",
+      "globalPath": "tests/Ordering.FunctionalTests/Ordering.FunctionalTests.csproj",
+      "description": "Test: Ordering.FunctionalTests (tests)"
+    },
+    {
+      "id": "tests/Catalog.FunctionalTests",
+      "project": "Catalog.FunctionalTests",
+      "repo": "tests",
+      "type": "test",
+      "path": "Catalog.FunctionalTests/Catalog.FunctionalTests.csproj",
+      "globalPath": "tests/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj",
+      "description": "Test: Catalog.FunctionalTests (tests)"
+    },
+    {
+      "id": "tests/Basket.UnitTests",
+      "project": "Basket.UnitTests",
+      "repo": "tests",
+      "type": "test",
+      "path": "Basket.UnitTests/Basket.UnitTests.csproj",
+      "globalPath": "tests/Basket.UnitTests/Basket.UnitTests.csproj",
+      "description": "Test: Basket.UnitTests (tests)"
+    },
+    {
+      "id": "tests/ClientApp.UnitTests",
+      "project": "ClientApp.UnitTests",
+      "repo": "tests",
+      "type": "test",
+      "path": "ClientApp.UnitTests/ClientApp.UnitTests.csproj",
+      "globalPath": "tests/ClientApp.UnitTests/ClientApp.UnitTests.csproj",
+      "description": "Test: ClientApp.UnitTests (tests)"
+    },
+    {
+      "id": "nuget:Asp.Versioning.Http.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebApp",
+        "src/WebhookClient",
+        "tests/Catalog.FunctionalTests",
+        "tests/Ordering.FunctionalTests"
+      ],
+      "description": "NuGet: Asp.Versioning.Http.Client ()"
+    },
+    {
+      "id": "nuget:Aspire.Azure.AI.OpenAI",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API",
+        "src/WebApp"
+      ],
+      "description": "NuGet: Aspire.Azure.AI.OpenAI ()"
+    },
+    {
+      "id": "nuget:CommunityToolkit.Aspire.OllamaSharp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API",
+        "src/WebApp"
+      ],
+      "description": "NuGet: CommunityToolkit.Aspire.OllamaSharp ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.ServiceDiscovery.Yarp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebApp"
+      ],
+      "description": "NuGet: Microsoft.Extensions.ServiceDiscovery.Yarp ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Authentication.OpenIdConnect",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebApp",
+        "src/WebhookClient"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Authentication.OpenIdConnect ()"
+    },
+    {
+      "id": "nuget:Google.Protobuf",
+      "type": "nuget-package",
+      "versions": [
+        "",
+        "3.29.3"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "src/WebApp"
+      ],
+      "description": "NuGet: Google.Protobuf (, 3.29.3)"
+    },
+    {
+      "id": "nuget:Grpc.Net.ClientFactory",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebApp"
+      ],
+      "description": "NuGet: Grpc.Net.ClientFactory ()"
+    },
+    {
+      "id": "nuget:Grpc.Tools",
+      "type": "nuget-package",
+      "versions": [
+        "",
+        "2.69.0"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "src/WebApp"
+      ],
+      "description": "NuGet: Grpc.Tools (, 2.69.0)"
+    },
+    {
+      "id": "nuget:Duende.IdentityServer.AspNetIdentity",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Duende.IdentityServer.AspNetIdentity ()"
+    },
+    {
+      "id": "nuget:Duende.IdentityServer.EntityFramework",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Duende.IdentityServer.EntityFramework ()"
+    },
+    {
+      "id": "nuget:Duende.IdentityServer.Storage",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Duende.IdentityServer.Storage ()"
+    },
+    {
+      "id": "nuget:Duende.IdentityServer",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Duende.IdentityServer ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Identity.EntityFrameworkCore ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Identity.UI",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Identity.UI ()"
+    },
+    {
+      "id": "nuget:Microsoft.EntityFrameworkCore.Tools",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API",
+        "src/Identity.API",
+        "src/Ordering.API",
+        "src/Webhooks.API"
+      ],
+      "description": "NuGet: Microsoft.EntityFrameworkCore.Tools ()"
+    },
+    {
+      "id": "nuget:Aspire.Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API",
+        "src/Identity.API",
+        "src/Ordering.API",
+        "src/Webhooks.API"
+      ],
+      "description": "NuGet: Aspire.Npgsql.EntityFrameworkCore.PostgreSQL ()"
+    },
+    {
+      "id": "nuget:Microsoft.Web.LibraryManager.Build",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Identity.API"
+      ],
+      "description": "NuGet: Microsoft.Web.LibraryManager.Build ()"
+    },
+    {
+      "id": "nuget:Asp.Versioning.Http",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API",
+        "src/Ordering.API",
+        "src/Webhooks.API"
+      ],
+      "description": "NuGet: Asp.Versioning.Http ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.ApiDescription.Server",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API"
+      ],
+      "description": "NuGet: Microsoft.Extensions.ApiDescription.Server ()"
+    },
+    {
+      "id": "nuget:Pgvector",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API"
+      ],
+      "description": "NuGet: Pgvector ()"
+    },
+    {
+      "id": "nuget:Pgvector.EntityFrameworkCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Catalog.API"
+      ],
+      "description": "NuGet: Pgvector.EntityFrameworkCore ()"
+    },
+    {
+      "id": "nuget:MediatR",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Ordering.Domain"
+      ],
+      "description": "NuGet: MediatR ()"
+    },
+    {
+      "id": "nuget:System.Reflection.TypeExtensions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Ordering.Domain"
+      ],
+      "description": "NuGet: System.Reflection.TypeExtensions ()"
+    },
+    {
+      "id": "nuget:Aspire.Hosting.RabbitMQ",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost"
+      ],
+      "description": "NuGet: Aspire.Hosting.RabbitMQ ()"
+    },
+    {
+      "id": "nuget:Aspire.Hosting.Redis",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost"
+      ],
+      "description": "NuGet: Aspire.Hosting.Redis ()"
+    },
+    {
+      "id": "nuget:Aspire.Hosting.PostgreSQL",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost",
+        "tests/Catalog.FunctionalTests",
+        "tests/Ordering.FunctionalTests"
+      ],
+      "description": "NuGet: Aspire.Hosting.PostgreSQL ()"
+    },
+    {
+      "id": "nuget:Aspire.Hosting.Azure.CognitiveServices",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost"
+      ],
+      "description": "NuGet: Aspire.Hosting.Azure.CognitiveServices ()"
+    },
+    {
+      "id": "nuget:Aspire.Hosting.Yarp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost"
+      ],
+      "description": "NuGet: Aspire.Hosting.Yarp ()"
+    },
+    {
+      "id": "nuget:CommunityToolkit.Aspire.Hosting.Ollama",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.AppHost"
+      ],
+      "description": "NuGet: CommunityToolkit.Aspire.Hosting.Ollama ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.Web",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebAppComponents"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.Web ()"
+    },
+    {
+      "id": "nuget:Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/IntegrationEventLogEF",
+        "src/Ordering.Infrastructure"
+      ],
+      "description": "NuGet: Npgsql.EntityFrameworkCore.PostgreSQL ()"
+    },
+    {
+      "id": "nuget:Aspire.Npgsql",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/OrderProcessor"
+      ],
+      "description": "NuGet: Aspire.Npgsql ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.WebView.Maui",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.30"
+      ],
+      "consumers": [
+        "src/HybridApp"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.WebView.Maui (9.0.30)"
+    },
+    {
+      "id": "nuget:Microsoft.Maui.Controls",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.30",
+        "9.0.40"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "src/HybridApp",
+        "tests/ClientApp.UnitTests"
+      ],
+      "description": "NuGet: Microsoft.Maui.Controls (9.0.30, 9.0.40)"
+    },
+    {
+      "id": "nuget:Microsoft.Maui.Controls.Compatibility",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.30",
+        "9.0.40"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "src/HybridApp",
+        "tests/ClientApp.UnitTests"
+      ],
+      "description": "NuGet: Microsoft.Maui.Controls.Compatibility (9.0.30, 9.0.40)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Http",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.0"
+      ],
+      "consumers": [
+        "src/HybridApp"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Http (9.0.0)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Logging.Debug",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.0"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "src/HybridApp"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Logging.Debug (9.0.0)"
+    },
+    {
+      "id": "nuget:Aspire.StackExchange.Redis",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Basket.API"
+      ],
+      "description": "NuGet: Aspire.StackExchange.Redis ()"
+    },
+    {
+      "id": "nuget:Grpc.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Basket.API"
+      ],
+      "description": "NuGet: Grpc.AspNetCore ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Options",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/EventBus"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Options ()"
+    },
+    {
+      "id": "nuget:FluentValidation",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Ordering.API"
+      ],
+      "description": "NuGet: FluentValidation ()"
+    },
+    {
+      "id": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/Ordering.API"
+      ],
+      "description": "NuGet: FluentValidation.DependencyInjectionExtensions ()"
+    },
+    {
+      "id": "nuget:Aspire.RabbitMQ.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/EventBusRabbitMQ"
+      ],
+      "description": "NuGet: Aspire.RabbitMQ.Client ()"
+    },
+    {
+      "id": "nuget:Asp.Versioning.Mvc.ApiExplorer",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Asp.Versioning.Mvc.ApiExplorer ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.OpenApi",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.OpenApi ()"
+    },
+    {
+      "id": "nuget:Microsoft.OpenApi",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Microsoft.OpenApi ()"
+    },
+    {
+      "id": "nuget:Scalar.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Scalar.AspNetCore ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Authentication.JwtBearer",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Authentication.JwtBearer ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Http.Resilience",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Http.Resilience ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.ServiceDiscovery",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: Microsoft.Extensions.ServiceDiscovery ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Exporter.OpenTelemetryProtocol ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Extensions.Hosting",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Extensions.Hosting ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Instrumentation.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Instrumentation.AspNetCore ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Instrumentation.GrpcNetClient",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Instrumentation.GrpcNetClient ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Instrumentation.Http",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Instrumentation.Http ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Instrumentation.Runtime",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/eShop.ServiceDefaults"
+      ],
+      "description": "NuGet: OpenTelemetry.Instrumentation.Runtime ()"
+    },
+    {
+      "id": "nuget:Grpc.Net.Client",
+      "type": "nuget-package",
+      "versions": [
+        "2.67.0"
+      ],
+      "consumers": [
+        "src/ClientApp"
+      ],
+      "description": "NuGet: Grpc.Net.Client (2.67.0)"
+    },
+    {
+      "id": "nuget:IdentityModel.OidcClient",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.0"
+      ],
+      "consumers": [
+        "src/ClientApp"
+      ],
+      "description": "NuGet: IdentityModel.OidcClient (6.0.0)"
+    },
+    {
+      "id": "nuget:Microsoft.Maui.Controls.Maps",
+      "type": "nuget-package",
+      "versions": [
+        "9.0.30",
+        "9.0.40"
+      ],
+      "consumers": [
+        "src/ClientApp",
+        "tests/ClientApp.UnitTests"
+      ],
+      "description": "NuGet: Microsoft.Maui.Controls.Maps (9.0.30, 9.0.40)"
+    },
+    {
+      "id": "nuget:CommunityToolkit.Maui",
+      "type": "nuget-package",
+      "versions": [
+        "9.1.1"
+      ],
+      "consumers": [
+        "src/ClientApp"
+      ],
+      "description": "NuGet: CommunityToolkit.Maui (9.1.1)"
+    },
+    {
+      "id": "nuget:IdentityModel",
+      "type": "nuget-package",
+      "versions": [
+        "7.0.0"
+      ],
+      "consumers": [
+        "src/ClientApp"
+      ],
+      "description": "NuGet: IdentityModel (7.0.0)"
+    },
+    {
+      "id": "nuget:CommunityToolkit.Mvvm",
+      "type": "nuget-package",
+      "versions": [
+        "8.3.2"
+      ],
+      "consumers": [
+        "src/ClientApp"
+      ],
+      "description": "NuGet: CommunityToolkit.Mvvm (8.3.2)"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.QuickGrid",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/WebhookClient"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.QuickGrid ()"
+    },
+    {
+      "id": "nuget:NSubstitute",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Basket.UnitTests",
+        "tests/Ordering.UnitTests"
+      ],
+      "description": "NuGet: NSubstitute ()"
+    },
+    {
+      "id": "nuget:NSubstitute.Analyzers.CSharp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Basket.UnitTests",
+        "tests/Ordering.UnitTests"
+      ],
+      "description": "NuGet: NSubstitute.Analyzers.CSharp ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Basket.UnitTests",
+        "tests/Catalog.FunctionalTests",
+        "tests/Ordering.FunctionalTests"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Mvc.Testing ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Catalog.FunctionalTests",
+        "tests/Ordering.FunctionalTests"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.TestHost ()"
+    },
+    {
+      "id": "nuget:xunit.v3.mtp-v2",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Catalog.FunctionalTests",
+        "tests/Ordering.FunctionalTests"
+      ],
+      "description": "NuGet: xunit.v3.mtp-v2 ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Identity.Stores",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "tests/Basket.UnitTests"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Identity.Stores ()"
+    },
+    {
+      "id": "datasource:src:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "src",
+      "occurrences": 5,
+      "description": "gRPC in src (5 occurrences)"
+    },
+    {
+      "id": "datasource:src:HttpClient.Injection",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.Injection",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "HttpClient.Injection in src (4 occurrences)"
+    },
+    {
+      "id": "datasource:src:DbContext",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "DbContext",
+      "repo": "src",
+      "occurrences": 11,
+      "description": "DbContext in src (11 occurrences)"
+    },
+    {
+      "id": "datasource:src:EntityFramework",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "EntityFramework",
+      "repo": "src",
+      "occurrences": 2,
+      "description": "EntityFramework in src (2 occurrences)"
+    },
+    {
+      "id": "datasource:src:RabbitMQ",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "RabbitMQ",
+      "repo": "src",
+      "occurrences": 29,
+      "description": "RabbitMQ in src (29 occurrences)"
+    },
+    {
+      "id": "datasource:src:Redis",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis",
+      "repo": "src",
+      "occurrences": 2,
+      "description": "Redis in src (2 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "Dapper in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:HttpClient.New",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.New",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "HttpClient.New in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:tests:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "tests",
+      "occurrences": 1,
+      "description": "gRPC in tests (1 occurrences)"
+    },
+    {
+      "id": "datasource:tests:Dapper",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper",
+      "repo": "tests",
+      "occurrences": 1,
+      "description": "Dapper in tests (1 occurrences)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "src/WebApp",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "src/WebAppComponents",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "src/IntegrationEventLogEF",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/Basket.API",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/Catalog.API",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/Identity.API",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/Ordering.API",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/OrderProcessor",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/PaymentProcessor",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/Webhooks.API",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/WebApp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "src/WebhookClient",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.Infrastructure",
+      "to": "src/IntegrationEventLogEF",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.Infrastructure",
+      "to": "src/Ordering.Domain",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/PaymentProcessor",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/PaymentProcessor",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/OrderProcessor",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/OrderProcessor",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "src/WebAppComponents",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Basket.API",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Basket.API",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/IntegrationEventLogEF",
+      "to": "src/EventBus",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "src/IntegrationEventLogEF",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "src/Ordering.Domain",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "src/Ordering.Infrastructure",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/EventBusRabbitMQ",
+      "to": "src/EventBus",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "src/EventBusRabbitMQ",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "src/IntegrationEventLogEF",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/WebhookClient",
+      "to": "src/eShop.ServiceDefaults",
+      "type": "project-reference"
+    },
+    {
+      "from": "tests/Ordering.UnitTests",
+      "to": "src/Ordering.API",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.UnitTests",
+      "to": "src/Ordering.Domain",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.UnitTests",
+      "to": "src/Ordering.Infrastructure",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "src/Ordering.API",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "src/Identity.API",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "src/Ordering.Domain",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "src/Ordering.Infrastructure",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "src/Catalog.API",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/Basket.UnitTests",
+      "to": "src/Basket.API",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "tests/ClientApp.UnitTests",
+      "to": "src/ClientApp",
+      "type": "cross-repo-reference"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Asp.Versioning.Http.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Aspire.Azure.AI.OpenAI",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:CommunityToolkit.Aspire.OllamaSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Microsoft.Extensions.ServiceDiscovery.Yarp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Microsoft.AspNetCore.Authentication.OpenIdConnect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Grpc.Net.ClientFactory",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebApp",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Duende.IdentityServer.AspNetIdentity",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Duende.IdentityServer.EntityFramework",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Duende.IdentityServer.Storage",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Duende.IdentityServer",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Microsoft.AspNetCore.Identity.UI",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Microsoft.EntityFrameworkCore.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Aspire.Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Identity.API",
+      "to": "nuget:Microsoft.Web.LibraryManager.Build",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Asp.Versioning.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Aspire.Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:CommunityToolkit.Aspire.OllamaSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Microsoft.EntityFrameworkCore.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Microsoft.Extensions.ApiDescription.Server",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Aspire.Azure.AI.OpenAI",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Pgvector",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Catalog.API",
+      "to": "nuget:Pgvector.EntityFrameworkCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.Domain",
+      "to": "nuget:MediatR",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.Domain",
+      "to": "nuget:System.Reflection.TypeExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:Aspire.Hosting.RabbitMQ",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:Aspire.Hosting.Redis",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:Aspire.Hosting.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:Aspire.Hosting.Azure.CognitiveServices",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:Aspire.Hosting.Yarp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.AppHost",
+      "to": "nuget:CommunityToolkit.Aspire.Hosting.Ollama",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebAppComponents",
+      "to": "nuget:Microsoft.AspNetCore.Components.Web",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.Infrastructure",
+      "to": "nuget:Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/OrderProcessor",
+      "to": "nuget:Aspire.Npgsql",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "nuget:Microsoft.AspNetCore.Components.WebView.Maui",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "nuget:Microsoft.Maui.Controls",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "nuget:Microsoft.Maui.Controls.Compatibility",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "nuget:Microsoft.Extensions.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/HybridApp",
+      "to": "nuget:Microsoft.Extensions.Logging.Debug",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Basket.API",
+      "to": "nuget:Aspire.StackExchange.Redis",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Basket.API",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/IntegrationEventLogEF",
+      "to": "nuget:Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/EventBus",
+      "to": "nuget:Microsoft.Extensions.Options",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "nuget:Asp.Versioning.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "nuget:Aspire.Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "nuget:FluentValidation",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Ordering.API",
+      "to": "nuget:Microsoft.EntityFrameworkCore.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/EventBusRabbitMQ",
+      "to": "nuget:Aspire.RabbitMQ.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Asp.Versioning.Mvc.ApiExplorer",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Microsoft.AspNetCore.OpenApi",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Microsoft.OpenApi",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Scalar.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Microsoft.AspNetCore.Authentication.JwtBearer",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Microsoft.Extensions.Http.Resilience",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:Microsoft.Extensions.ServiceDiscovery",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Instrumentation.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Instrumentation.GrpcNetClient",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Instrumentation.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/eShop.ServiceDefaults",
+      "to": "nuget:OpenTelemetry.Instrumentation.Runtime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:IdentityModel.OidcClient",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Microsoft.Maui.Controls",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Microsoft.Maui.Controls.Compatibility",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Microsoft.Maui.Controls.Maps",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:Microsoft.Extensions.Logging.Debug",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:CommunityToolkit.Maui",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:IdentityModel",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/ClientApp",
+      "to": "nuget:CommunityToolkit.Mvvm",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "nuget:Asp.Versioning.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "nuget:Aspire.Npgsql.EntityFrameworkCore.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/Webhooks.API",
+      "to": "nuget:Microsoft.EntityFrameworkCore.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebhookClient",
+      "to": "nuget:Asp.Versioning.Http.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebhookClient",
+      "to": "nuget:Microsoft.AspNetCore.Authentication.OpenIdConnect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/WebhookClient",
+      "to": "nuget:Microsoft.AspNetCore.Components.QuickGrid",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.UnitTests",
+      "to": "nuget:NSubstitute",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.UnitTests",
+      "to": "nuget:NSubstitute.Analyzers.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "nuget:Asp.Versioning.Http.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "nuget:Aspire.Hosting.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Ordering.FunctionalTests",
+      "to": "nuget:xunit.v3.mtp-v2",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "nuget:Asp.Versioning.Http.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "nuget:Aspire.Hosting.PostgreSQL",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Catalog.FunctionalTests",
+      "to": "nuget:xunit.v3.mtp-v2",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Basket.UnitTests",
+      "to": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Basket.UnitTests",
+      "to": "nuget:Microsoft.Extensions.Identity.Stores",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Basket.UnitTests",
+      "to": "nuget:NSubstitute",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/Basket.UnitTests",
+      "to": "nuget:NSubstitute.Analyzers.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/ClientApp.UnitTests",
+      "to": "nuget:Microsoft.Maui.Controls",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/ClientApp.UnitTests",
+      "to": "nuget:Microsoft.Maui.Controls.Compatibility",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "tests/ClientApp.UnitTests",
+      "to": "nuget:Microsoft.Maui.Controls.Maps",
+      "type": "nuget-dependency"
+    }
+  ],
+  "summary": {
+    "totalRepos": 2,
+    "totalProjects": 24,
+    "totalNuGetPackages": 69,
+    "totalProjectRefs": 46,
+    "totalCrossRepoRefs": 10,
+    "totalDataFindings": 77,
+    "totalConfigFiles": 31,
+    "repos": {
+      "src": {
+        "projects": 19,
+        "categories": {
+          "WebApp": 8,
+          "Library": 5,
+          "Application": 2,
+          "Service": 2,
+          "Tool": 2
+        }
+      },
+      "tests": {
+        "projects": 5,
+        "categories": {
+          "Test": 5
+        }
+      }
+    },
+    "categories": {
+      "WebApp": 8,
+      "Library": 5,
+      "Application": 2,
+      "Service": 2,
+      "Tool": 2,
+      "Test": 5
+    }
+  }
+}

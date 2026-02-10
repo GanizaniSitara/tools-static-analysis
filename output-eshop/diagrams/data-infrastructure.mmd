@@ -1,0 +1,23 @@
+graph LR
+    subgraph src["src"]
+        src_WebApp["WebApp"]
+        src_Identity_API["Identity.API"]
+        src_Catalog_API["Catalog.API"]
+        src_eShop_AppHost["eShop.AppHost"]
+        src_WebAppComponents["WebAppComponents"]
+        src_PaymentProcessor["PaymentProcessor"]
+        src_OrderProcessor["OrderProcessor"]
+        src_HybridApp["HybridApp"]
+        src_Basket_API["Basket.API"]
+        src_Ordering_API["Ordering.API"]
+        src_eShop_ServiceDefaults["eShop.ServiceDefaults"]
+        src_Webhooks_API["Webhooks.API"]
+    end
+    subgraph DataSources
+        datasource_src_DbContext[("DbContext")]
+        datasource_src_EntityFramework[("EntityFramework")]
+        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_Redis[("Redis")]
+        datasource_src_Dapper[("Dapper")]
+        datasource_tests_Dapper[("Dapper")]
+    end

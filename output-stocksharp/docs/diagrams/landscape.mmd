@@ -1,0 +1,107 @@
+graph LR
+    subgraph Tests
+        StockSharp_Algo_Testing["Algo.Testing"]
+        StockSharp_Tests["Tests"]
+        StockSharp_04_Testing_HistoryConsole["04_Testing.HistoryConsole"]
+        StockSharp_04_Testing_HistoryConsole_fromsrc["04_Testing.HistoryConsole_fromsrc"]
+        StockSharp_02_Testing_Optimization["02_Testing.Optimization"]
+        StockSharp_02_Testing_Optimization_fromsrc["02_Testing.Optimization_fromsrc"]
+        StockSharp_01_Testing_History["01_Testing.History"]
+        StockSharp_01_Testing_History_fromsrc["01_Testing.History_fromsrc"]
+        StockSharp_03_Testing_RealTime_fromsrc["03_Testing.RealTime_fromsrc"]
+        StockSharp_03_Testing_RealTime["03_Testing.RealTime"]
+    end
+    subgraph Librarys
+        StockSharp_Media_Names["Media.Names"]
+        StockSharp_Configuration["Configuration"]
+        StockSharp_Charting_Interfaces["Charting.Interfaces"]
+        StockSharp_Algo_Indicators["Algo.Indicators"]
+        StockSharp_Diagram_Core["Diagram.Core"]
+        StockSharp_Reporting["Reporting"]
+        StockSharp_Algo_Import["Algo.Import"]
+        StockSharp_Algo_Analytics_CSharp["Algo.Analytics.CSharp"]
+        StockSharp_BusinessEntities["BusinessEntities"]
+        StockSharp_Messages["Messages"]
+        StockSharp_Algo_Strategies["Algo.Strategies"]
+        StockSharp_Algo_Export["Algo.Export"]
+        StockSharp_Alerts_Interfaces["Alerts.Interfaces"]
+        StockSharp_Algo_Analytics["Algo.Analytics"]
+        StockSharp_Algo_Compilation["Algo.Compilation"]
+        StockSharp_Algo_Gpu["Algo.Gpu"]
+        StockSharp_Algo["Algo"]
+    end
+    subgraph Tools
+        StockSharp_Localization_Extractor["Localization.Extractor"]
+        StockSharp_Localization_Generator["Localization.Generator"]
+        StockSharp_Media_Generator["Media.Generator"]
+    end
+    subgraph Desktopapps
+        StockSharp_Media["Media"]
+    end
+    subgraph Connectors
+        StockSharp_Coinbase["Coinbase"]
+        StockSharp_Bitexbook["Bitexbook"]
+        StockSharp_Tinkoff["Tinkoff"]
+        StockSharp_BitStamp["BitStamp"]
+        StockSharp_Bitalong["Bitalong"]
+        StockSharp_Btce["Btce"]
+        StockSharp_FTX["FTX"]
+    end
+    StockSharp_Algo_Testing --> StockSharp_Algo
+    StockSharp_Media_Names --> StockSharp_Media_Generator
+    StockSharp_Configuration --> StockSharp_Messages
+    StockSharp_Charting_Interfaces --> StockSharp_BusinessEntities
+    StockSharp_Algo_Indicators --> StockSharp_Algo
+    StockSharp_Diagram_Core --> StockSharp_Alerts_Interfaces
+    StockSharp_Diagram_Core --> StockSharp_Algo_Strategies
+    StockSharp_Diagram_Core --> StockSharp_Algo_Indicators
+    StockSharp_Reporting --> StockSharp_Messages
+    StockSharp_Algo_Import --> StockSharp_Algo
+    StockSharp_Algo_Analytics_CSharp --> StockSharp_Algo_Analytics
+    StockSharp_Tests --> StockSharp_Algo_Analytics
+    StockSharp_Tests --> StockSharp_Algo_Compilation
+    StockSharp_Tests --> StockSharp_Algo_Export
+    StockSharp_Tests --> StockSharp_Algo_Import
+    StockSharp_Tests --> StockSharp_Algo_Gpu
+    StockSharp_Tests --> StockSharp_Algo_Indicators
+    StockSharp_Tests --> StockSharp_Algo_Strategies
+    StockSharp_Tests --> StockSharp_Algo_Testing
+    StockSharp_Tests --> StockSharp_Diagram_Core
+    StockSharp_Tests --> StockSharp_Alerts_Interfaces
+    StockSharp_BusinessEntities --> StockSharp_Messages
+    StockSharp_Algo_Strategies --> StockSharp_Alerts_Interfaces
+    StockSharp_Algo_Strategies --> StockSharp_Algo_Testing
+    StockSharp_Algo_Export --> StockSharp_Algo_Indicators
+    StockSharp_Alerts_Interfaces --> StockSharp_BusinessEntities
+    StockSharp_Algo_Analytics --> StockSharp_Algo_Indicators
+    StockSharp_Algo_Compilation --> StockSharp_Configuration
+    StockSharp_Algo_Gpu --> StockSharp_Algo_Indicators
+    StockSharp_04_Testing_HistoryConsole -.-> StockSharp_Algo
+    StockSharp_04_Testing_HistoryConsole --> StockSharp_Algo_Indicators
+    StockSharp_04_Testing_HistoryConsole --> StockSharp_Algo_Strategies
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> StockSharp_Algo
+    StockSharp_04_Testing_HistoryConsole_fromsrc --> StockSharp_Algo_Indicators
+    StockSharp_04_Testing_HistoryConsole_fromsrc --> StockSharp_Algo_Strategies
+    StockSharp_02_Testing_Optimization -.-> StockSharp_Algo
+    StockSharp_02_Testing_Optimization_fromsrc -.-> StockSharp_Algo
+    StockSharp_01_Testing_History -.-> StockSharp_Algo
+    StockSharp_01_Testing_History_fromsrc -.-> StockSharp_Algo
+    StockSharp_03_Testing_RealTime_fromsrc -.-> StockSharp_Algo
+    StockSharp_03_Testing_RealTime -.-> StockSharp_Algo
+    StockSharp_Coinbase --> StockSharp_Messages
+    StockSharp_Coinbase --> StockSharp_Media_Names
+    StockSharp_Bitexbook --> StockSharp_Messages
+    StockSharp_Bitexbook --> StockSharp_Media_Names
+    StockSharp_Tinkoff --> StockSharp_Messages
+    StockSharp_Tinkoff --> StockSharp_Media_Names
+    StockSharp_BitStamp --> StockSharp_Messages
+    StockSharp_BitStamp --> StockSharp_Media_Names
+    StockSharp_Bitalong --> StockSharp_Messages
+    StockSharp_Bitalong --> StockSharp_Media_Names
+    StockSharp_Btce --> StockSharp_Messages
+    StockSharp_Btce --> StockSharp_Media_Names
+    StockSharp_FTX --> StockSharp_Messages
+    StockSharp_FTX --> StockSharp_Media_Names
+    StockSharp_Algo --> StockSharp_Reporting
+    StockSharp_Algo --> StockSharp_Charting_Interfaces
+    StockSharp_Algo --> StockSharp_Configuration

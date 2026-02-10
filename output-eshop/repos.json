@@ -1,0 +1,16 @@
+[
+  {
+    "name": "src",
+    "root": "/home/user/eShop/src",
+    "solutions": [
+      "ClientApp/ClientApp.sln"
+    ]
+  },
+  {
+    "name": "tests",
+    "root": "/home/user/eShop/tests",
+    "solutions": [
+      "ClientApp.UnitTests/ClientApp.UnitTests.sln"
+    ]
+  }
+]

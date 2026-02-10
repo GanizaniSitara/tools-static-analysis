@@ -1,0 +1,836 @@
+#!/usr/bin/env python3
+"""
+Dependency Mapper — Documentation Generator (Python)
+
+Reads analysis outputs and generates structured markdown documentation.
+Supports single-repo and multi-repo modes.
+"""
+
+import json
+import os
+import re
+import shutil
+import sys
+from datetime import date
+from pathlib import Path
+
+OUT_DIR = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "output")
+DOCS_DIR = os.path.join(OUT_DIR, "docs")
+
+# Load analysis data
+graph = json.loads(Path(os.path.join(OUT_DIR, "graph.json")).read_text(encoding="utf-8"))
+project_meta = json.loads(Path(os.path.join(OUT_DIR, "project-meta.json")).read_text(encoding="utf-8"))
+data_findings = json.loads(Path(os.path.join(OUT_DIR, "data-sources.json")).read_text(encoding="utf-8"))
+configs = json.loads(Path(os.path.join(OUT_DIR, "configs.json")).read_text(encoding="utf-8"))
+
+
+# ─── Parse CSVs ──────────────────────────────────────────────────────
+
+def read_csv(filepath: str) -> list[dict]:
+    """Read a CSV file, handling quoted values with commas."""
+    content = Path(filepath).read_text(encoding="utf-8")
+    lines = content.strip().split("\n")
+    if not lines:
+        return []
+
+    headers = lines[0].split(",")
+    rows = []
+
+    for line in lines[1:]:
+        if not line.strip():
+            continue
+        values = []
+        current = ""
+        in_quotes = False
+        for ch in line:
+            if ch == '"':
+                in_quotes = not in_quotes
+                continue
+            if ch == "," and not in_quotes:
+                values.append(current)
+                current = ""
+                continue
+            current += ch
+        values.append(current)
+
+        row = {}
+        for i, h in enumerate(headers):
+            row[h] = values[i] if i < len(values) else ""
+        rows.append(row)
+
+    return rows
+
+
+package_deps = read_csv(os.path.join(OUT_DIR, "dependencies.csv"))
+project_refs_csv = read_csv(os.path.join(OUT_DIR, "project-refs.csv"))
+
+# Determine repos
+repos = sorted({p["repo"] for p in project_meta if p.get("repo")})
+is_multi_repo = len(repos) > 1
+
+# Create directory structure
+dirs = ["", "applications", "libraries", "connectors", "data-sources", "diagrams"]
+if is_multi_repo:
+    for repo in repos:
+        dirs.append(f"repos/{repo}")
+for d in dirs:
+    os.makedirs(os.path.join(DOCS_DIR, d), exist_ok=True)
+
+
+# ─── Build lookup maps ──────────────────────────────────────────────
+
+def sanitize_id(id_str: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9_]", "_", id_str)
+
+
+projects_by_name: dict[str, dict] = {pm["project"]: pm for pm in project_meta}
+
+deps_by_project: dict[str, list] = {}
+for pd in package_deps:
+    deps_by_project.setdefault(pd["project"], []).append(pd)
+
+refs_by_project: dict[str, list] = {}
+referenced_by: dict[str, list] = {}
+for pr in project_refs_csv:
+    refs_by_project.setdefault(pr["project"], []).append(pr)
+    referenced_by.setdefault(pr["references"], []).append(pr["project"])
+
+data_by_project: dict[str, list] = {}
+for f in data_findings:
+    parts = f["file"].replace("\\", "/").split("/")
+    proj_dir = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
+    data_by_project.setdefault(proj_dir, []).append(f)
+
+
+def get_dir_for_category(cat: str) -> str:
+    if cat == "Connector":
+        return "connectors"
+    if cat == "Library":
+        return "libraries"
+    return "applications"
+
+
+# ─── Generate index.md ─────────────────────────────────────────────
+
+def generate_index() -> str:
+    categories = graph["summary"]["categories"]
+
+    md = f"""# Dependency Map
+
+## Overview
+
+| Metric | Count |
+|--------|-------|
+| Repositories | {graph['summary'].get('totalRepos', 1)} |
+| Total Projects | {graph['summary']['totalProjects']} |
+| NuGet Packages | {graph['summary']['totalNuGetPackages']} |
+| Project References | {graph['summary']['totalProjectRefs']} |
+"""
+
+    if graph["summary"].get("totalCrossRepoRefs", 0) > 0:
+        md += f"| Cross-Repo References | {graph['summary']['totalCrossRepoRefs']} |\n"
+
+    md += f"""| Data Access Findings | {graph['summary']['totalDataFindings']} |
+| Config Files | {graph['summary']['totalConfigFiles']} |
+
+"""
+
+    if is_multi_repo and graph["summary"].get("repos"):
+        md += "## Repositories\n\n| Repo | Projects | Categories |\n|------|----------|------------|\n"
+        for repo_name, info in graph["summary"]["repos"].items():
+            cats = ", ".join(f"{k}:{v}" for k, v in info["categories"].items())
+            md += f"| **{repo_name}** | {info['projects']} | {cats} |\n"
+        md += "\n"
+
+    md += "## Project Categories\n\n| Category | Count |\n|----------|-------|\n"
+    for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
+        md += f"| {cat} | {count} |\n"
+
+    # Diagrams
+    landscape_path = os.path.join(OUT_DIR, "diagrams", "landscape.mmd")
+    if os.path.isfile(landscape_path):
+        content = Path(landscape_path).read_text(encoding="utf-8")
+        md += f"\n## Full Landscape\n\n```mermaid\n{content}\n```\n"
+
+    core_path = os.path.join(OUT_DIR, "diagrams", "core-libraries.mmd")
+    if os.path.isfile(core_path):
+        content = Path(core_path).read_text(encoding="utf-8")
+        md += f"\n## Core Library Hierarchy\n\n```mermaid\n{content}\n```\n"
+
+    data_infra_path = os.path.join(OUT_DIR, "diagrams", "data-infrastructure.mmd")
+    if os.path.isfile(data_infra_path):
+        content = Path(data_infra_path).read_text(encoding="utf-8")
+        md += f"\n## Data Infrastructure\n\n```mermaid\n{content}\n```\n"
+
+    nuget_path = os.path.join(OUT_DIR, "diagrams", "nuget-groups.mmd")
+    if os.path.isfile(nuget_path):
+        content = Path(nuget_path).read_text(encoding="utf-8")
+        md += f"\n## NuGet Package Groups\n\n```mermaid\n{content}\n```\n"
+
+    # Navigation
+    md += "\n## Navigation\n\n"
+
+    if is_multi_repo:
+        for repo in repos:
+            repo_projects = [p for p in project_meta if p.get("repo") == repo]
+            md += f"### {repo}\n"
+            for cat in sorted({p["category"] for p in repo_projects}):
+                cat_projects = [p for p in repo_projects if p["category"] == cat]
+                links = ", ".join(f"[{p['project']}](repos/{repo}/{p['project']}.md)" for p in cat_projects[:10])
+                md += f"**{cat}** ({len(cat_projects)}): {links}"
+                if len(cat_projects) > 10:
+                    md += f", ... +{len(cat_projects) - 10} more"
+                md += "\n\n"
+    else:
+        for cat in sorted({p["category"] for p in project_meta}):
+            cat_projects = [p for p in project_meta if p["category"] == cat]
+            dir_name = get_dir_for_category(cat)
+            md += f"### {cat} ({len(cat_projects)})\n"
+            md += "\n".join(f"- [{p['project']}]({dir_name}/{p['project']}.md)" for p in cat_projects[:20])
+            if len(cat_projects) > 20:
+                md += f"\n- ... +{len(cat_projects) - 20} more"
+            md += "\n\n"
+
+    md += "- [Data Source Registry](data-sources/registry.md)\n\n"
+    md += f"---\n\n*Generated: {date.today().isoformat()}*\n*Tool: Dependency Mapper (Static Analysis)*\n"
+
+    return md
+
+
+# ─── Generate per-project page ──────────────────────────────────────
+
+def generate_project_page(pm: dict) -> str:
+    project = pm["project"]
+    repo = pm.get("repo", "")
+    category = pm["category"]
+    deps = deps_by_project.get(project, [])
+    refs = refs_by_project.get(project, [])
+    consumers = referenced_by.get(project, [])
+    data_patterns = data_by_project.get(project, [])
+
+    md = f"""# {project}
+
+## Overview
+
+| Property | Value |
+|----------|-------|
+| Category | {category} |
+"""
+    if repo:
+        md += f"| Repository | {repo} |\n"
+
+    md += f"""| Path | `{pm['path']}` |
+| Project References | {len(refs)} |
+| NuGet Dependencies | {len(deps)} |
+| Consumers | {len(consumers)} |
+
+"""
+
+    # Dependency diagram
+    if refs or consumers:
+        md += "## Dependency Diagram\n\n```mermaid\ngraph TD\n"
+        md += f'    {sanitize_id(project)}["<strong>{project}</strong>"]\n'
+        for r in refs:
+            ref_name = r["references"]
+            is_cross = r.get("crossRepo") == "true"
+            md += f'    {sanitize_id(ref_name)}["{ref_name}"]\n'
+            arrow = " -.->" if is_cross else " -->"
+            md += f"    {sanitize_id(project)}{arrow} {sanitize_id(ref_name)}\n"
+        for c in consumers[:15]:
+            md += f'    {sanitize_id(c)}["{c}"]\n'
+            md += f"    {sanitize_id(c)} -.-> {sanitize_id(project)}\n"
+        if len(consumers) > 15:
+            md += f'    more_consumers["... +{len(consumers) - 15} more"]\n'
+            md += f"    more_consumers -.-> {sanitize_id(project)}\n"
+        md += "```\n\n"
+
+    if refs:
+        md += "## Project References\n"
+        for r in refs:
+            is_cross = r.get("crossRepo") == "true"
+            md += f"- {r['references']}{' *(cross-repo)*' if is_cross else ''}\n"
+        md += "\n"
+
+    if consumers:
+        md += "## Consumed By\n" + "\n".join(f"- {c}" for c in consumers) + "\n\n"
+
+    external_pkgs = [d for d in deps if not d["package"].startswith(("StockSharp.", "Ecng."))]
+    internal_pkgs = [d for d in deps if d["package"].startswith(("StockSharp.", "Ecng."))]
+
+    if external_pkgs:
+        md += "## External NuGet Packages\n| Package | Version |\n|---------|---------||\n"
+        md += "\n".join(f"| {d['package']} | {d['version']} |" for d in external_pkgs)
+        md += "\n\n"
+
+    if internal_pkgs:
+        md += "## Internal NuGet Packages\n| Package | Version |\n|---------|---------|\n"
+        md += "\n".join(f"| {d['package']} | {d['version']} |" for d in internal_pkgs)
+        md += "\n\n"
+
+    if data_patterns:
+        grouped: dict[str, list] = {}
+        for dp in data_patterns:
+            grouped.setdefault(dp["pattern"], []).append(dp)
+
+        md += "## Data Access Patterns\n"
+        for pattern, findings in grouped.items():
+            md += f"### {pattern}\n| File | Line | Context |\n|------|------|---------||\n"
+            for f in findings[:15]:
+                ctx = f["context"][:70].replace("|", "\\|")
+                md += f"| `{f['file']}` | {f['line']} | `{ctx}` |\n"
+            if len(findings) > 15:
+                md += f"\n*... and {len(findings) - 15} more*\n"
+            md += "\n"
+
+    back_path = "../../" if is_multi_repo else "../"
+    md += f"\n---\n\n*[Back to Index]({back_path}index.md)*\n"
+    return md
+
+
+# ─── Generate data source registry ──────────────────────────────────
+
+def generate_data_source_registry() -> str:
+    by_type: dict[str, list] = {}
+    for f in data_findings:
+        by_type.setdefault(f["type"], []).append(f)
+
+    md = "# Data Source Registry\n\n## Summary\n\n| Type | Occurrences |\n|------|-------------|\n"
+    for type_name, findings in sorted(by_type.items(), key=lambda x: -len(x[1])):
+        md += f"| {type_name} | {len(findings)} |\n"
+    md += "\n"
+
+    # Connection strings
+    configs_with_conn = [c for c in configs if c.get("connectionStrings")]
+    if configs_with_conn:
+        md += "## Connection Strings Found\n\n| File | Repo | Connection Name | Value |\n|------|------|----------------|-------|\n"
+        for c in configs_with_conn:
+            for name, val in c["connectionStrings"].items():
+                sanitized_val = str(val)[:80].replace("|", "\\|")
+                md += f"| `{c['file']}` | {c.get('repo', '')} | {name} | `{sanitized_val}` |\n"
+        md += "\n"
+
+    for type_name, findings in sorted(by_type.items(), key=lambda x: -len(x[1])):
+        by_pattern: dict[str, list] = {}
+        for f in findings:
+            by_pattern.setdefault(f["pattern"], []).append(f)
+
+        md += f"## {type_name[0].upper()}{type_name[1:]}\n\n"
+        for pattern, p_findings in sorted(by_pattern.items(), key=lambda x: -len(x[1])):
+            by_repo: dict[str, list] = {}
+            for f in p_findings:
+                by_repo.setdefault(f.get("repo", "default"), []).append(f)
+
+            md += f"### {pattern} ({len(p_findings)} occurrences)\n\n"
+            md += "| Repo | File | Line | Context |\n|------|------|------|---------||\n"
+            for f in p_findings[:25]:
+                ctx = f["context"][:60].replace("|", "\\|")
+                md += f"| {f.get('repo', '')} | `{f['file']}` | {f['line']} | `{ctx}` |\n"
+            if len(p_findings) > 25:
+                md += f"\n*... and {len(p_findings) - 25} more*\n"
+            md += f"\n**Repos:** {', '.join(by_repo.keys())}\n\n"
+
+    md += "\n---\n\n*[Back to Index](../index.md)*\n"
+    return md
+
+
+# ─── Generate viewer.html ────────────────────────────────────────
+
+def _esc_html(text: str) -> str:
+    """Escape HTML special characters."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def generate_viewer_html() -> str:
+    summary = graph["summary"]
+    categories = summary["categories"]
+    repo_count = summary.get("totalRepos", 1)
+    repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
+    title = ", ".join(repo_list) if repo_list else "Project"
+
+    # ── Collect all .drawio diagram files ──
+    diagrams_dir = os.path.join(OUT_DIR, "diagrams")
+    diagram_tabs: list[dict] = []
+    diagram_tab_order = [
+        ("landscape", "Full Landscape", "Full Solution Dependency Graph"),
+        ("core-libraries", "Core Libraries", "Core Library Dependencies"),
+        ("data-infrastructure", "Data Infrastructure", "Data Infrastructure &amp; External Sources"),
+        ("nuget-groups", "NuGet Packages", "NuGet Package Groups"),
+    ]
+    for filename_stem, tab_label, card_title in diagram_tab_order:
+        dio_path = os.path.join(diagrams_dir, f"{filename_stem}.drawio")
+        if os.path.isfile(dio_path):
+            content = Path(dio_path).read_text(encoding="utf-8")
+            diagram_tabs.append({
+                "id": filename_stem.replace("-", ""),
+                "label": tab_label,
+                "title": card_title,
+                "drawio_xml": content,
+            })
+
+    # Also pick up any extra .drawio files not in the predefined list
+    known_stems = {t[0] for t in diagram_tab_order}
+    if os.path.isdir(diagrams_dir):
+        for fname in sorted(os.listdir(diagrams_dir)):
+            if fname.endswith(".drawio"):
+                stem = fname[:-7]
+                if stem not in known_stems:
+                    content = Path(os.path.join(diagrams_dir, fname)).read_text(encoding="utf-8")
+                    label = stem.replace("-", " ").title()
+                    diagram_tabs.append({
+                        "id": sanitize_id(stem),
+                        "label": label,
+                        "title": label,
+                        "drawio_xml": content,
+                    })
+
+    # ── Aggregate data sources by pattern ──
+    pattern_summary: dict[str, dict] = {}
+    for f in data_findings:
+        p = f["pattern"]
+        if p not in pattern_summary:
+            pattern_summary[p] = {"type": f["type"], "count": 0, "projects": set()}
+        pattern_summary[p]["count"] += 1
+        parts = f["file"].replace("\\", "/").split("/")
+        proj_dir = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
+        pattern_summary[p]["projects"].add(proj_dir)
+
+    # ── Connection strings ──
+    conn_strings: list[dict] = []
+    for c in configs:
+        if c.get("connectionStrings"):
+            for name, val in c["connectionStrings"].items():
+                conn_strings.append({
+                    "file": c["file"],
+                    "repo": c.get("repo", ""),
+                    "name": name,
+                    "value": str(val)[:80],
+                })
+
+    # ── Build HTML ──
+    # Stats bar
+    stats_items = [
+        (summary["totalProjects"], "Projects"),
+        (summary["totalNuGetPackages"], "NuGet Packages"),
+        (summary["totalProjectRefs"], "Project References"),
+        (summary["totalDataFindings"], "Data Patterns"),
+        (summary["totalConfigFiles"], "Config Files"),
+    ]
+    if repo_count > 1:
+        stats_items.append((repo_count, f"Repos ({', '.join(repo_list)})"))
+
+    stats_html = "\n".join(
+        f'    <div class="stat"><span class="stat-value">{count}</span> {label}</div>'
+        for count, label in stats_items
+    )
+
+    # Tab buttons
+    all_tab_ids: list[tuple[str, str]] = []
+    for dt in diagram_tabs:
+        all_tab_ids.append((dt["id"], dt["label"]))
+    if pattern_summary:
+        all_tab_ids.append(("datasources", "Data Sources"))
+    if conn_strings:
+        all_tab_ids.append(("connstrings", "Connection Strings"))
+    all_tab_ids.append(("allprojects", "All Projects"))
+
+    tab_buttons = "\n".join(
+        f'  <button class="tab-btn{" active" if i == 0 else ""}" data-tab="{tid}">{label}</button>'
+        for i, (tid, label) in enumerate(all_tab_ids)
+    )
+
+    # Diagram panels (DrawIO)
+    diagram_panels = ""
+    for i, dt in enumerate(diagram_tabs):
+        active = " active" if i == 0 else ""
+        dio_config = json.dumps({
+            "highlight": "#0000ff", "nav": True, "resize": True,
+            "toolbar": "zoom layers lightbox", "xml": dt["drawio_xml"],
+        })
+        dio_attr = _esc_html(dio_config)
+        diagram_panels += (
+            f'\n  <section class="tab-panel{active}" id="panel-{dt["id"]}">\n'
+            f'    <div class="card">\n'
+            f'      <div class="card-title"><span class="icon">&#9670;</span> {dt["title"]}</div>\n'
+            f'      <div class="drawio-wrap">\n'
+            '        <div class="mxgraph" data-mxgraph="' + dio_attr + '"></div>\n'
+            f'      </div>\n'
+            f'    </div>\n'
+            f'  </section>\n'
+        )
+
+    # Data sources panel
+    datasources_panel = ""
+    if pattern_summary:
+        type_tag_class = {
+            "database": "tag-db", "messaging": "tag-messaging",
+            "api": "tag-api", "cache": "tag-cache", "config": "tag-config",
+        }
+        rows = ""
+        for pattern, info in sorted(pattern_summary.items(), key=lambda x: -x[1]["count"]):
+            tag_cls = type_tag_class.get(info["type"], "tag-config")
+            type_label = info["type"].capitalize()
+            projects_str = _esc_html(", ".join(sorted(info["projects"])[:5]))
+            if len(info["projects"]) > 5:
+                projects_str += f", ... +{len(info['projects']) - 5} more"
+            rows += f"""            <tr>
+              <td><strong>{_esc_html(pattern)}</strong></td>
+              <td><span class="tag {tag_cls}">{type_label}</span></td>
+              <td>{info['count']}</td>
+              <td>{projects_str}</td>
+            </tr>
+"""
+        datasources_panel = f"""
+  <section class="tab-panel" id="panel-datasources">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+          </thead>
+          <tbody>
+{rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
+    # Connection strings panel
+    connstrings_panel = ""
+    if conn_strings:
+        rows = ""
+        for cs in conn_strings:
+            rows += f"""            <tr>
+              <td class="mono">{_esc_html(cs['file'])}</td>
+              <td>{_esc_html(cs['repo'])}</td>
+              <td>{_esc_html(cs['name'])}</td>
+              <td class="mono">{_esc_html(cs['value'])}</td>
+            </tr>
+"""
+        connstrings_panel = f"""
+  <section class="tab-panel" id="panel-connstrings">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Connection Strings</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Config File</th><th>Repo</th><th>Connection Name</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+{rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
+    # All projects panel
+    all_projects_panel = f"""
+  <section class="tab-panel" id="panel-allprojects">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="table-wrap">
+        <table id="projectsTable">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Repo</th>
+              <th>Category</th>
+              <th>Project Refs</th>
+              <th>NuGet Deps</th>
+              <th>Path</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{_esc_html(title)} — Dependency Map</title>
+<style>
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  html {{ font-size: 15px; scroll-behavior: smooth; }}
+  body {{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh;
+  }}
+  a {{ color: #3b82f6; text-decoration: none; }}
+  a:hover {{ text-decoration: underline; }}
+  .header {{
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    border-bottom: 1px solid #334155; padding: 1.5rem 2rem 1rem;
+  }}
+  .header-top {{
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
+  }}
+  .header h1 {{ font-size: 1.6rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }}
+  .header h1 span {{ color: #3b82f6; }}
+  .search-box {{ position: relative; width: 280px; }}
+  .search-box input {{
+    width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.2rem; border-radius: 6px;
+    border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    font-size: 0.875rem; outline: none; transition: border-color .2s;
+  }}
+  .search-box input::placeholder {{ color: #64748b; }}
+  .search-box input:focus {{ border-color: #3b82f6; }}
+  .search-box .search-icon {{
+    position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+    color: #64748b; font-size: 0.85rem; pointer-events: none;
+  }}
+  .stats-row {{ display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }}
+  .stat {{ display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8; }}
+  .stat-value {{ font-weight: 700; font-size: 1rem; color: #3b82f6; }}
+  .tabs {{
+    display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
+    background: #0f172a; border-bottom: 1px solid #334155;
+  }}
+  .tab-btn {{
+    padding: 0.6rem 1rem; background: transparent; border: none; color: #94a3b8;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap;
+  }}
+  .tab-btn:hover {{ color: #e2e8f0; }}
+  .tab-btn.active {{ color: #3b82f6; border-bottom-color: #3b82f6; }}
+  .content {{ padding: 1.5rem 2rem 3rem; }}
+  .tab-panel {{ display: none; }}
+  .tab-panel.active {{ display: block; }}
+  .card {{
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+  }}
+  .card-title {{
+    font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }}
+  .card-title .icon {{ color: #3b82f6; }}
+  .drawio-wrap {{
+    background: #f8fafc; border-radius: 8px; overflow: hidden; min-height: 500px;
+  }}
+  .drawio-wrap .mxgraph {{ min-height: 500px; }}
+  .drawio-wrap .geDiagramContainer {{ background: #f8fafc !important; }}
+  .table-wrap {{ overflow-x: auto; }}
+  table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
+  thead th {{
+    background: #1a2438; color: #94a3b8; font-weight: 600; text-transform: uppercase;
+    font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.6rem 0.75rem; text-align: left;
+    border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 1;
+  }}
+  tbody td {{ padding: 0.55rem 0.75rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }}
+  tbody tr:hover {{ background: rgba(59,130,246,0.06); }}
+  .tag {{
+    display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+  }}
+  .tag-webapp      {{ background: rgba(26,188,156,.15); color: #1ABC9C; }}
+  .tag-library     {{ background: rgba(74,144,217,.15); color: #4A90D9; }}
+  .tag-application {{ background: rgba(231,76,60,.15);  color: #E74C3C; }}
+  .tag-service     {{ background: rgba(52,152,219,.15); color: #3498DB; }}
+  .tag-tool        {{ background: rgba(243,156,18,.15); color: #F39C12; }}
+  .tag-test        {{ background: rgba(155,89,182,.15); color: #9B59B6; }}
+  .tag-connector   {{ background: rgba(230,126,34,.15); color: #E67E22; }}
+  .tag-desktopapp  {{ background: rgba(233,30,99,.15);  color: #E91E63; }}
+  .tag-db       {{ background: rgba(74,144,217,.15);  color: #4A90D9; }}
+  .tag-messaging{{ background: rgba(231,76,60,.15);   color: #E74C3C; }}
+  .tag-api      {{ background: rgba(52,152,219,.15);  color: #3498DB; }}
+  .tag-cache    {{ background: rgba(243,156,18,.15);  color: #F39C12; }}
+  .tag-config   {{ background: rgba(155,89,182,.15);  color: #9B59B6; }}
+  .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }}
+  .footer {{
+    text-align: center; padding: 1.5rem 2rem; color: #475569;
+    font-size: 0.78rem; font-style: italic; border-top: 1px solid #334155;
+  }}
+  @media (max-width: 768px) {{
+    .header {{ padding: 1rem; }}
+    .content {{ padding: 1rem; }}
+    .tabs {{ padding: 0 1rem; }}
+    .search-box {{ width: 100%; }}
+  }}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
+    </div>
+  </div>
+  <div class="stats-row">
+{stats_html}
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav">
+{tab_buttons}
+</nav>
+
+<main class="content">
+{diagram_panels}
+{datasources_panel}
+{connstrings_panel}
+{all_projects_panel}
+</main>
+
+<footer class="footer">
+  Generated by Dependency Mapper (Python) &mdash; {date.today().isoformat()}
+</footer>
+
+<script>
+(function () {{
+  'use strict';
+
+  var categoryClass = {{
+    'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
+    'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
+    'connector': 'tag-connector', 'desktopapp': 'tag-desktopapp'
+  }};
+
+  function tagHTML(category) {{
+    var lower = (category || '').toLowerCase();
+    var cls = categoryClass[lower] || 'tag-service';
+    return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
+  }}
+
+  function escHtml(s) {{
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }}
+
+  function parseCSV(text) {{
+    var lines = text.trim().split('\\n');
+    if (lines.length === 0) return [];
+    var headers = lines[0].split(',');
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {{
+      var vals = lines[i].split(',');
+      var obj = {{}};
+      headers.forEach(function (h, idx) {{ obj[h.trim()] = (vals[idx] || '').trim(); }});
+      rows.push(obj);
+    }}
+    return rows;
+  }}
+
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels  = document.querySelectorAll('.tab-panel');
+
+  function activateTab(tabId) {{
+    tabButtons.forEach(function (b) {{ b.classList.toggle('active', b.dataset.tab === tabId); }});
+    tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
+  }}
+
+  tabButtons.forEach(function (btn) {{
+    btn.addEventListener('click', function () {{ activateTab(btn.dataset.tab); }});
+  }});
+
+  // Load All Projects data
+  Promise.all([
+    fetch('project-meta.json').then(function (r) {{ return r.json(); }}),
+    fetch('project-refs.csv').then(function (r) {{ return r.text(); }}),
+    fetch('dependencies.csv').then(function (r) {{ return r.text(); }})
+  ]).then(function (results) {{
+    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
+    var refCounts = {{}}, depCounts = {{}};
+    refs.forEach(function (r) {{ refCounts[r.project] = (refCounts[r.project] || 0) + 1; }});
+    deps.forEach(function (d) {{ depCounts[d.project] = (depCounts[d.project] || 0) + 1; }});
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '';
+    meta.forEach(function (p) {{
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(p.project) + '</strong></td>' +
+        '<td>' + escHtml(p.repo || '') + '</td>' +
+        '<td>' + tagHTML(p.category) + '</td>' +
+        '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
+        '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
+        '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
+      tbody.appendChild(tr);
+    }});
+  }}).catch(function (err) {{
+    console.error('Failed to load project data:', err);
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+  }});
+
+  // Search
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {{
+    var query = searchInput.value.trim().toLowerCase();
+    if (query.length > 0) activateTab('allprojects');
+    var rows = document.querySelectorAll('#projectsBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var text = row.getAttribute('data-search') || '';
+      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+    }});
+  }});
+}})();
+</script>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+</body>
+</html>"""
+
+    return html
+
+
+# ─── Main ───────────────────────────────────────────────────────────
+
+def main():
+    print("=== Generating Documentation (Python) ===\n")
+
+    # Index
+    Path(os.path.join(DOCS_DIR, "index.md")).write_text(generate_index(), encoding="utf-8")
+    print("  Wrote index.md")
+
+    # Per-project pages
+    page_count = 0
+    for pm in project_meta:
+        page = generate_project_page(pm)
+
+        if is_multi_repo:
+            out_dir = os.path.join(DOCS_DIR, "repos", pm.get("repo", "unknown"))
+        else:
+            out_dir = os.path.join(DOCS_DIR, get_dir_for_category(pm["category"]))
+
+        os.makedirs(out_dir, exist_ok=True)
+        Path(os.path.join(out_dir, f"{pm['project']}.md")).write_text(page, encoding="utf-8")
+        page_count += 1
+
+    print(f"  Wrote {page_count} project pages")
+
+    # Data source registry
+    Path(os.path.join(DOCS_DIR, "data-sources", "registry.md")).write_text(
+        generate_data_source_registry(), encoding="utf-8"
+    )
+    print("  Wrote data-sources/registry.md")
+
+    # Copy diagrams
+    diagrams_src = os.path.join(OUT_DIR, "diagrams")
+    diagrams_dst = os.path.join(DOCS_DIR, "diagrams")
+    if os.path.isdir(diagrams_src):
+        for f in os.listdir(diagrams_src):
+            shutil.copy2(os.path.join(diagrams_src, f), os.path.join(diagrams_dst, f))
+        print("  Copied diagrams/")
+
+    # Viewer HTML
+    Path(os.path.join(OUT_DIR, "viewer.html")).write_text(generate_viewer_html(), encoding="utf-8")
+    print("  Wrote viewer.html")
+
+    print(f"\n=== Documentation complete ({page_count} pages) ===\n")
+
+
+if __name__ == "__main__":
+    main()

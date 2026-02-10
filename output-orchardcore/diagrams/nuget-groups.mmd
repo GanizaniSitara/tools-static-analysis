@@ -1,0 +1,85 @@
+graph LR
+    subgraph Microsoft["Microsoft"]
+        nuget_Microsoft_AspNetCore_Mvc_Razor_RuntimeCompilation["Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation<br/>"]
+        nuget_Microsoft_AspNetCore_Authentication_Twitter["Microsoft.AspNetCore.Authentication.Twitter<br/>"]
+        nuget_Microsoft_Extensions_Http_Resilience["Microsoft.Extensions.Http.Resilience<br/>"]
+        nuget_Microsoft_AspNetCore_Authentication_MicrosoftAccount["Microsoft.AspNetCore.Authentication.MicrosoftAccount<br/>"]
+        nuget_Microsoft_Identity_Web["Microsoft.Identity.Web<br/>"]
+        nuget_Microsoft_AspNetCore_Authentication_Google["Microsoft.AspNetCore.Authentication.Google<br/>"]
+        nuget_Microsoft_AspNetCore_Authentication_OpenIdConnect["Microsoft.AspNetCore.Authentication.OpenIdConnect<br/>"]
+        nuget_Microsoft_IdentityModel_Protocols_OpenIdConnect["Microsoft.IdentityModel.Protocols.OpenIdConnect<br/>"]
+        Microsoft_more["... +7 more"]
+    end
+    subgraph OrchardCore["OrchardCore"]
+        nuget_OrchardCore_Logging_NLog["OrchardCore.Logging.NLog<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_Logging_Serilog["OrchardCore.Logging.Serilog<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_Application_Cms_Targets["OrchardCore.Application.Cms.Targets<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_Theme_Targets["OrchardCore.Theme.Targets<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_ContentManagement["OrchardCore.ContentManagement<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_DisplayManagement["OrchardCore.DisplayManagement<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_ResourceManagement["OrchardCore.ResourceManagement<br/>$(TemplateOrchardPackageVersion)"]
+        nuget_OrchardCore_Module_Targets["OrchardCore.Module.Targets<br/>$(TemplateOrchardPackageVersion)"]
+        OrchardCore_more["... +3 more"]
+    end
+    subgraph Azure["Azure"]
+        nuget_Azure_Communication_Email["Azure.Communication.Email<br/>"]
+        nuget_Azure_Extensions_AspNetCore_DataProtection_Blobs["Azure.Extensions.AspNetCore.DataProtection.Blobs<br/>"]
+        nuget_Azure_Communication_Sms["Azure.Communication.Sms<br/>"]
+        nuget_Azure_Search_Documents["Azure.Search.Documents<br/>"]
+        nuget_Azure_Storage_Blobs["Azure.Storage.Blobs<br/>"]
+        nuget_Azure_Extensions_AspNetCore_Configuration_Secrets["Azure.Extensions.AspNetCore.Configuration.Secrets<br/>"]
+        nuget_Azure_Identity["Azure.Identity<br/>"]
+    end
+    subgraph OpenIddict["OpenIddict"]
+        nuget_OpenIddict_Server_AspNetCore["OpenIddict.Server.AspNetCore<br/>"]
+        nuget_OpenIddict_Server_DataProtection["OpenIddict.Server.DataProtection<br/>"]
+        nuget_OpenIddict_Validation_AspNetCore["OpenIddict.Validation.AspNetCore<br/>"]
+        nuget_OpenIddict_Validation_DataProtection["OpenIddict.Validation.DataProtection<br/>"]
+        nuget_OpenIddict_Validation_SystemNetHttp["OpenIddict.Validation.SystemNetHttp<br/>"]
+        nuget_OpenIddict_Core["OpenIddict.Core<br/>"]
+    end
+    subgraph YesSql["YesSql"]
+        nuget_YesSql_Core["YesSql.Core<br/>"]
+        nuget_YesSql_Filters_Query["YesSql.Filters.Query<br/>"]
+        nuget_YesSql_Abstractions["YesSql.Abstractions<br/>"]
+        nuget_YesSql["YesSql<br/>"]
+    end
+    subgraph Lucene["Lucene"]
+        nuget_Lucene_Net_Analysis_Common["Lucene.Net.Analysis.Common<br/>"]
+        nuget_Lucene_Net_QueryParser["Lucene.Net.QueryParser<br/>"]
+        nuget_Lucene_Net_Spatial["Lucene.Net.Spatial<br/>"]
+        nuget_Lucene_Net["Lucene.Net<br/>"]
+    end
+    subgraph GraphQL["GraphQL"]
+        nuget_GraphQL["GraphQL<br/>"]
+        nuget_GraphQL_DataLoader["GraphQL.DataLoader<br/>"]
+        nuget_GraphQL_MicrosoftDI["GraphQL.MicrosoftDI<br/>"]
+        nuget_GraphQL_SystemTextJson["GraphQL.SystemTextJson<br/>"]
+    end
+    subgraph SixLabors["SixLabors"]
+        nuget_SixLabors_ImageSharp_Web_Providers_Azure["SixLabors.ImageSharp.Web.Providers.Azure<br/>"]
+        nuget_SixLabors_ImageSharp_Web_Providers_AWS["SixLabors.ImageSharp.Web.Providers.AWS<br/>"]
+        nuget_SixLabors_ImageSharp_Web["SixLabors.ImageSharp.Web<br/>"]
+    end
+    subgraph AWSSDK["AWSSDK"]
+        nuget_AWSSDK_S3["AWSSDK.S3<br/>"]
+        nuget_AWSSDK_Extensions_NETCore_Setup["AWSSDK.Extensions.NETCore.Setup<br/>"]
+    end
+    subgraph Parlot["Parlot"]
+        nuget_Parlot["Parlot<br/>"]
+    end
+    subgraph ncrontab["ncrontab"]
+        nuget_ncrontab["ncrontab<br/>"]
+    end
+    subgraph MiniProfiler["MiniProfiler"]
+        nuget_MiniProfiler_AspNetCore_Mvc["MiniProfiler.AspNetCore.Mvc<br/>"]
+    end
+    subgraph Elastic["Elastic"]
+        nuget_Elastic_Clients_Elasticsearch["Elastic.Clients.Elasticsearch<br/>"]
+    end
+    subgraph PdfPig["PdfPig"]
+        nuget_PdfPig["PdfPig<br/>"]
+    end
+    subgraph Jint["Jint"]
+        nuget_Jint["Jint<br/>"]
+    end
