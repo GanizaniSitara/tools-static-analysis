@@ -163,6 +163,8 @@
   .tag-unclassified  { background: rgba(100,116,139,.15); color: #64748b; }
   .flow-row { cursor: pointer; }
   .flow-row:hover { background: rgba(59,130,246,0.12) !important; }
+  .ft-row { cursor: pointer; }
+  .ft-row:hover { background: rgba(34,197,94,0.08) !important; }
   .flow-step { display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }
   .flow-arrow { color: #64748b; margin: 0 0.2rem; }
   .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
@@ -210,8 +212,10 @@
   <button class="tab-btn" data-tab="cat_tool">Tool (2)</button>
   <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="businesslayers">Business Layers</button>
+  <button class="tab-btn" data-tab="fieldtracediagram">Field Trace Diagram</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
+  <button class="tab-btn" data-tab="fieldtrace">Field Traceability</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
 
@@ -595,6 +599,110 @@ graph TD
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-fieldtracediagram">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Field Traceability — XAML Binding to Database Column
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-fieldtracediagram">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph XAML[&quot;XAML Views&quot;]
+        xaml_MapView_Description[&quot;MapView\nDescription&quot;]
+        xaml_FiltersView_Value_Brand[&quot;FiltersView\nValue.Brand&quot;]
+        xaml_FiltersView_Value_Type[&quot;FiltersView\nValue.Type&quot;]
+        xaml_CatalogView_Value_Brand[&quot;CatalogView\nValue.Brand&quot;]
+        xaml_CatalogView_Value_Type[&quot;CatalogView\nValue.Type&quot;]
+        xaml_CampaignTemplate_PictureUri[&quot;CampaignTemplate\nPictureUri&quot;]
+        xaml_CampaignTemplate_Name[&quot;CampaignTemplate\nName&quot;]
+        xaml_BasketItemTemplate_PictureUrl[&quot;BasketItemTemplate\nPictureUrl&quot;]
+        xaml_BasketItemTemplate_ProductName[&quot;BasketItemTemplate\nProductName&quot;]
+        xaml_BasketItemTemplate_UnitPrice[&quot;BasketItemTemplate\nUnitPrice&quot;]
+        xaml_BasketItemTemplate_Quantity[&quot;BasketItemTemplate\nQuantity&quot;]
+        xaml_BasketItemTemplate_Total[&quot;BasketItemTemplate\nTotal&quot;]
+        xaml_OrderItemTemplate_PictureUrl[&quot;OrderItemTemplate\nPictureUrl&quot;]
+        xaml_OrderItemTemplate_ProductName[&quot;OrderItemTemplate\nProductName&quot;]
+        xaml_OrderItemTemplate_UnitPrice[&quot;OrderItemTemplate\nUnitPrice&quot;]
+        xaml_OrderItemTemplate_Quantity[&quot;OrderItemTemplate\nQuantity&quot;]
+        xaml_OrderItemTemplate_Total[&quot;OrderItemTemplate\nTotal&quot;]
+        xaml_OrderTemplate_OrderNumber[&quot;OrderTemplate\nOrderNumber&quot;]
+        xaml_OrderTemplate_Total[&quot;OrderTemplate\nTotal&quot;]
+        xaml_OrderTemplate_OrderDate[&quot;OrderTemplate\nOrderDate&quot;]
+    end
+    subgraph VM[&quot;ViewModels&quot;]
+        vm_MapViewModel_Description[&quot;MapViewModel\nDescription: string&quot;]
+    end
+    subgraph Entity[&quot;Entities&quot;]
+        ent_CatalogItem_Description[&quot;CatalogItem\nDescription: string&quot;]
+        ent_CatalogBrand_Brand[&quot;CatalogBrand\nBrand: string&quot;]
+        ent_CatalogType_Type[&quot;CatalogType\nType: string&quot;]
+        ent_CatalogItem_PictureUri[&quot;CatalogItem\nPictureUri: string&quot;]
+        ent_CatalogItem_Name[&quot;CatalogItem\nName: string&quot;]
+        ent_OrderItem_PictureUrl[&quot;OrderItem\nPictureUrl: string&quot;]
+        ent_OrderItem_ProductName[&quot;OrderItem\nProductName: string&quot;]
+        ent_OrderItem_UnitPrice[&quot;OrderItem\nUnitPrice: decimal&quot;]
+        ent_OrderItem_Quantity[&quot;OrderItem\nQuantity: int&quot;]
+        ent_Order_Total[&quot;Order\nTotal: decimal&quot;]
+        ent_Order_OrderNumber[&quot;Order\nOrderNumber: int&quot;]
+        ent_Order_OrderDate[&quot;Order\nOrderDate: DateTime&quot;]
+    end
+    subgraph DB[&quot;Database Columns&quot;]
+        db_CatalogItems_Description[(&quot;CatalogItems\nDescription&quot;)]
+        db_CatalogBrands_Brand[(&quot;CatalogBrands\nBrand&quot;)]
+        db_CatalogTypes_Type[(&quot;CatalogTypes\nType&quot;)]
+        db_CatalogItems_PictureUri[(&quot;CatalogItems\nPictureUri&quot;)]
+        db_CatalogItems_Name[(&quot;CatalogItems\nName&quot;)]
+        db_OrderItems_PictureUrl[(&quot;OrderItems\nPictureUrl&quot;)]
+        db_OrderItems_ProductName[(&quot;OrderItems\nProductName&quot;)]
+        db_OrderItems_UnitPrice[(&quot;OrderItems\nUnitPrice&quot;)]
+        db_OrderItems_Quantity[(&quot;OrderItems\nQuantity&quot;)]
+        db_Orders_Total[(&quot;Orders\nTotal&quot;)]
+        db_Orders_OrderNumber[(&quot;Orders\nOrderNumber&quot;)]
+        db_Orders_OrderDate[(&quot;Orders\nOrderDate&quot;)]
+    end
+    xaml_MapView_Description --&gt; vm_MapViewModel_Description
+    vm_MapViewModel_Description --&gt; ent_CatalogItem_Description
+    ent_CatalogItem_Description --&gt; db_CatalogItems_Description
+    xaml_FiltersView_Value_Brand -.-&gt; ent_CatalogBrand_Brand
+    ent_CatalogBrand_Brand -.-&gt; db_CatalogBrands_Brand
+    xaml_FiltersView_Value_Type -.-&gt; ent_CatalogType_Type
+    ent_CatalogType_Type -.-&gt; db_CatalogTypes_Type
+    xaml_CatalogView_Value_Brand -.-&gt; ent_CatalogBrand_Brand
+    xaml_CatalogView_Value_Type -.-&gt; ent_CatalogType_Type
+    xaml_CampaignTemplate_PictureUri -.-&gt; ent_CatalogItem_PictureUri
+    ent_CatalogItem_PictureUri -.-&gt; db_CatalogItems_PictureUri
+    xaml_CampaignTemplate_Name -.-&gt; ent_CatalogItem_Name
+    ent_CatalogItem_Name -.-&gt; db_CatalogItems_Name
+    xaml_BasketItemTemplate_PictureUrl -.-&gt; ent_OrderItem_PictureUrl
+    ent_OrderItem_PictureUrl -.-&gt; db_OrderItems_PictureUrl
+    xaml_BasketItemTemplate_ProductName -.-&gt; ent_OrderItem_ProductName
+    ent_OrderItem_ProductName -.-&gt; db_OrderItems_ProductName
+    xaml_BasketItemTemplate_UnitPrice -.-&gt; ent_OrderItem_UnitPrice
+    ent_OrderItem_UnitPrice -.-&gt; db_OrderItems_UnitPrice
+    xaml_BasketItemTemplate_Quantity -.-&gt; ent_OrderItem_Quantity
+    ent_OrderItem_Quantity -.-&gt; db_OrderItems_Quantity
+    xaml_BasketItemTemplate_Total -.-&gt; ent_Order_Total
+    ent_Order_Total -.-&gt; db_Orders_Total
+    xaml_OrderItemTemplate_PictureUrl -.-&gt; ent_OrderItem_PictureUrl
+    xaml_OrderItemTemplate_ProductName -.-&gt; ent_OrderItem_ProductName
+    xaml_OrderItemTemplate_UnitPrice -.-&gt; ent_OrderItem_UnitPrice
+    xaml_OrderItemTemplate_Quantity -.-&gt; ent_OrderItem_Quantity
+    xaml_OrderItemTemplate_Total -.-&gt; ent_Order_Total
+    xaml_OrderTemplate_OrderNumber -.-&gt; ent_Order_OrderNumber
+    ent_Order_OrderNumber -.-&gt; db_Orders_OrderNumber
+    xaml_OrderTemplate_Total -.-&gt; ent_Order_Total
+    xaml_OrderTemplate_OrderDate -.-&gt; ent_Order_OrderDate
+    ent_Order_OrderDate -.-&gt; db_Orders_OrderDate
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -862,6 +970,1661 @@ graph TD
     </div>
   </section>
 
+
+
+  <section class="tab-panel" id="panel-fieldtrace">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Field-Level Traceability (180 chains)</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Traces XAML bindings through ViewModel properties and entity classes to database columns.
+        Click a row to see the full chain detail. Click a badge to filter by completeness level.
+      </p>
+      <div style="margin-bottom:0.75rem;"><span class="ft-badge" data-filter="full" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(34,197,94,0.15);color:#22c55e;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">Full: 1</span><span class="ft-badge" data-filter="xaml-to-entity" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(234,179,8,0.15);color:#eab308;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">XAML→Entity: 45</span><span class="ft-badge" data-filter="xaml-to-viewmodel" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">XAML→VM: 6</span><span class="ft-badge" data-filter="entity-to-column" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(59,130,246,0.15);color:#3b82f6;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">Entity→DB: 49</span><span class="ft-badge" data-filter="xaml-only" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(100,116,139,0.15);color:#64748b;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">XAML Only: 79</span></div>
+      <input type="text" id="ftSearchInput" placeholder="Search fields..." style="
+        width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
+        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        font-size:0.85rem;margin-bottom:0.75rem;outline:none;
+      ">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>XAML View</th><th>Binding Path</th><th>ViewModel</th><th>VM Property</th><th>Entity</th><th>DB Table.Column</th><th>Completeness</th></tr>
+          </thead>
+          <tbody id="ftBody">
+            <tr class="ft-row" data-ft-idx="0" data-completeness="xaml-to-entity" data-search="filtersview value.brand   catalogbrand catalogbrands.brand xaml-to-entity">
+              <td>FiltersView</td>
+              <td><strong>Value.Brand</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogBrand</td>
+              <td class="mono">CatalogBrands.Brand</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="1" data-completeness="xaml-only" data-search="filtersview brands     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>Brands</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="2" data-completeness="xaml-only" data-search="filtersview selectedbrand     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>SelectedBrand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="3" data-completeness="xaml-to-entity" data-search="filtersview value.type   catalogtype catalogtypes.type xaml-to-entity">
+              <td>FiltersView</td>
+              <td><strong>Value.Type</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogType</td>
+              <td class="mono">CatalogTypes.Type</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="4" data-completeness="xaml-only" data-search="filtersview types     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>Types</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="5" data-completeness="xaml-only" data-search="filtersview selectedtype     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>SelectedType</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="6" data-completeness="xaml-only" data-search="filtersview filtercommand     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>FilterCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="7" data-completeness="xaml-only" data-search="filtersview clearfiltercommand     xaml-only">
+              <td>FiltersView</td>
+              <td><strong>ClearFilterCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="8" data-completeness="xaml-only" data-search="catalogview filtercommand     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>FilterCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="9" data-completeness="xaml-only" data-search="catalogview products     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Products</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="10" data-completeness="xaml-only" data-search="catalogview selectedproduct     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>SelectedProduct</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="11" data-completeness="xaml-only" data-search="catalogview viewcatalogitemcommand     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>ViewCatalogItemCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="12" data-completeness="xaml-only" data-search="catalogview selecteditem     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>SelectedItem</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="13" data-completeness="xaml-only" data-search="catalogview badgecount     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>BadgeCount</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="14" data-completeness="xaml-only" data-search="catalogview viewbasketcommand     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>ViewBasketCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="15" data-completeness="xaml-only" data-search="catalogview isfiltering     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>IsFiltering</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="16" data-completeness="xaml-only" data-search="catalogview brands     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Brands</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="17" data-completeness="xaml-only" data-search="catalogview value     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Value</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="18" data-completeness="xaml-to-entity" data-search="catalogview value.brand   catalogbrand catalogbrands.brand xaml-to-entity">
+              <td>CatalogView</td>
+              <td><strong>Value.Brand</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogBrand</td>
+              <td class="mono">CatalogBrands.Brand</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="19" data-completeness="xaml-only" data-search="catalogview selected     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Selected</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="20" data-completeness="xaml-only" data-search="catalogview types     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Types</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="21" data-completeness="xaml-only" data-search="catalogview value     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Value</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="22" data-completeness="xaml-to-entity" data-search="catalogview value.type   catalogtype catalogtypes.type xaml-to-entity">
+              <td>CatalogView</td>
+              <td><strong>Value.Type</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogType</td>
+              <td class="mono">CatalogTypes.Type</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="23" data-completeness="xaml-only" data-search="catalogview selected     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>Selected</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="24" data-completeness="xaml-only" data-search="catalogview clearfiltercommand     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>ClearFilterCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="25" data-completeness="xaml-only" data-search="catalogview applyfiltercommand     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>ApplyFilterCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="26" data-completeness="xaml-only" data-search="catalogview isbusy     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="27" data-completeness="xaml-only" data-search="catalogview isbusy     xaml-only">
+              <td>CatalogView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="28" data-completeness="xaml-only" data-search="mapview stores     xaml-only">
+              <td>MapView</td>
+              <td><strong>Stores</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="29" data-completeness="xaml-to-viewmodel" data-search="mapview address mapviewmodel address   xaml-to-viewmodel">
+              <td>MapView</td>
+              <td><strong>Address</strong></td>
+              <td>MapViewModel</td>
+              <td>Address</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="30" data-completeness="full" data-search="mapview description mapviewmodel description catalogitem catalogitems.description full">
+              <td>MapView</td>
+              <td><strong>Description</strong></td>
+              <td>MapViewModel</td>
+              <td>Description</td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Description</td>
+              <td><span style="color:#22c55e;font-size:0.75rem;font-weight:600;">Full</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="31" data-completeness="xaml-to-viewmodel" data-search="mapview location mapviewmodel location   xaml-to-viewmodel">
+              <td>MapView</td>
+              <td><strong>Location</strong></td>
+              <td>MapViewModel</td>
+              <td>Location</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="32" data-completeness="xaml-only" data-search="profileview logoutcommand     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>LogoutCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="33" data-completeness="xaml-only" data-search="profileview isbusy     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="34" data-completeness="xaml-only" data-search="profileview orders.count     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>Orders.Count</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="35" data-completeness="xaml-only" data-search="profileview orders     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>Orders</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="36" data-completeness="xaml-only" data-search="profileview selectedorder     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>SelectedOrder</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="37" data-completeness="xaml-only" data-search="profileview orderdetailcommand     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>OrderDetailCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="38" data-completeness="xaml-only" data-search="profileview selecteditem     xaml-only">
+              <td>ProfileView</td>
+              <td><strong>SelectedItem</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="39" data-completeness="xaml-to-entity" data-search="campaigntemplate pictureuri   catalogitem catalogitems.pictureuri xaml-to-entity">
+              <td>CampaignTemplate</td>
+              <td><strong>PictureUri</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.PictureUri</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="40" data-completeness="xaml-to-entity" data-search="campaigntemplate name   catalogitem catalogitems.name xaml-to-entity">
+              <td>CampaignTemplate</td>
+              <td><strong>Name</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Name</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="41" data-completeness="xaml-to-entity" data-search="basketitemtemplate pictureurl   orderitem orderitems.pictureurl xaml-to-entity">
+              <td>BasketItemTemplate</td>
+              <td><strong>PictureUrl</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.PictureUrl</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="42" data-completeness="xaml-to-entity" data-search="basketitemtemplate productname   orderitem orderitems.productname xaml-to-entity">
+              <td>BasketItemTemplate</td>
+              <td><strong>ProductName</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.ProductName</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="43" data-completeness="xaml-to-entity" data-search="basketitemtemplate unitprice   orderitem orderitems.unitprice xaml-to-entity">
+              <td>BasketItemTemplate</td>
+              <td><strong>UnitPrice</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.UnitPrice</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="44" data-completeness="xaml-to-entity" data-search="basketitemtemplate quantity   orderitem orderitems.quantity xaml-to-entity">
+              <td>BasketItemTemplate</td>
+              <td><strong>Quantity</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.Quantity</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="45" data-completeness="xaml-to-entity" data-search="basketitemtemplate total   order orders.total xaml-to-entity">
+              <td>BasketItemTemplate</td>
+              <td><strong>Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="46" data-completeness="xaml-only" data-search="basketitemtemplate hasnewprice     xaml-only">
+              <td>BasketItemTemplate</td>
+              <td><strong>HasNewPrice</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="47" data-completeness="xaml-only" data-search="basketitemtemplate oldunitprice     xaml-only">
+              <td>BasketItemTemplate</td>
+              <td><strong>OldUnitPrice</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="48" data-completeness="xaml-to-entity" data-search="orderitemtemplate pictureurl   orderitem orderitems.pictureurl xaml-to-entity">
+              <td>OrderItemTemplate</td>
+              <td><strong>PictureUrl</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.PictureUrl</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="49" data-completeness="xaml-to-entity" data-search="orderitemtemplate productname   orderitem orderitems.productname xaml-to-entity">
+              <td>OrderItemTemplate</td>
+              <td><strong>ProductName</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.ProductName</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="50" data-completeness="xaml-to-entity" data-search="orderitemtemplate unitprice   orderitem orderitems.unitprice xaml-to-entity">
+              <td>OrderItemTemplate</td>
+              <td><strong>UnitPrice</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.UnitPrice</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="51" data-completeness="xaml-to-entity" data-search="orderitemtemplate quantity   orderitem orderitems.quantity xaml-to-entity">
+              <td>OrderItemTemplate</td>
+              <td><strong>Quantity</strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.Quantity</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="52" data-completeness="xaml-to-entity" data-search="orderitemtemplate total   order orders.total xaml-to-entity">
+              <td>OrderItemTemplate</td>
+              <td><strong>Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="53" data-completeness="xaml-to-entity" data-search="ordertemplate ordernumber   order orders.ordernumber xaml-to-entity">
+              <td>OrderTemplate</td>
+              <td><strong>OrderNumber</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderNumber</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="54" data-completeness="xaml-to-entity" data-search="ordertemplate total   order orders.total xaml-to-entity">
+              <td>OrderTemplate</td>
+              <td><strong>Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="55" data-completeness="xaml-to-entity" data-search="ordertemplate orderdate   order orders.orderdate xaml-to-entity">
+              <td>OrderTemplate</td>
+              <td><strong>OrderDate</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderDate</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="56" data-completeness="xaml-to-entity" data-search="ordertemplate orderstatus   order orders.orderstatus xaml-to-entity">
+              <td>OrderTemplate</td>
+              <td><strong>OrderStatus</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderStatus</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="57" data-completeness="xaml-to-entity" data-search="producttemplate pictureuri   catalogitem catalogitems.pictureuri xaml-to-entity">
+              <td>ProductTemplate</td>
+              <td><strong>PictureUri</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.PictureUri</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="58" data-completeness="xaml-to-entity" data-search="producttemplate name   catalogitem catalogitems.name xaml-to-entity">
+              <td>ProductTemplate</td>
+              <td><strong>Name</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Name</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="59" data-completeness="xaml-to-entity" data-search="producttemplate price   catalogitem catalogitems.price xaml-to-entity">
+              <td>ProductTemplate</td>
+              <td><strong>Price</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Price</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="60" data-completeness="xaml-only" data-search="settingsview titleuseazureservices     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>TitleUseAzureServices</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="61" data-completeness="xaml-only" data-search="settingsview descriptionuseazureservices     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>DescriptionUseAzureServices</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="62" data-completeness="xaml-only" data-search="settingsview useazureservices     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseAzureServices</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="63" data-completeness="xaml-to-viewmodel" data-search="settingsview togglemockservicescommand settingsviewmodel togglemockservicescommand   xaml-to-viewmodel">
+              <td>SettingsView</td>
+              <td><strong>ToggleMockServicesCommand</strong></td>
+              <td>SettingsViewModel</td>
+              <td>ToggleMockServicesCommand</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="64" data-completeness="xaml-only" data-search="settingsview useazureservices     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseAzureServices</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="65" data-completeness="xaml-only" data-search="settingsview identityendpoint     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>IdentityEndpoint</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="66" data-completeness="xaml-only" data-search="settingsview gatewaycatalogendpoint     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>GatewayCatalogEndpoint</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="67" data-completeness="xaml-only" data-search="settingsview gatewayordersendpoint     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>GatewayOrdersEndpoint</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="68" data-completeness="xaml-only" data-search="settingsview gatewaybasketendpoint     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>GatewayBasketEndpoint</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="69" data-completeness="xaml-only" data-search="settingsview userislogged     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UserIsLogged</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="70" data-completeness="xaml-only" data-search="settingsview titleusefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>TitleUseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="71" data-completeness="xaml-only" data-search="settingsview descriptionusefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>DescriptionUseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="72" data-completeness="xaml-only" data-search="settingsview usefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="73" data-completeness="xaml-to-viewmodel" data-search="settingsview togglefakelocationcommand settingsviewmodel togglefakelocationcommand   xaml-to-viewmodel">
+              <td>SettingsView</td>
+              <td><strong>ToggleFakeLocationCommand</strong></td>
+              <td>SettingsViewModel</td>
+              <td>ToggleFakeLocationCommand</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="74" data-completeness="xaml-only" data-search="settingsview userislogged     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UserIsLogged</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="75" data-completeness="xaml-only" data-search="settingsview usefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="76" data-completeness="xaml-only" data-search="settingsview latitude     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>Latitude</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="77" data-completeness="xaml-only" data-search="settingsview longitude     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>Longitude</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="78" data-completeness="xaml-to-viewmodel" data-search="settingsview togglesendlocationcommand settingsviewmodel togglesendlocationcommand   xaml-to-viewmodel">
+              <td>SettingsView</td>
+              <td><strong>ToggleSendLocationCommand</strong></td>
+              <td>SettingsViewModel</td>
+              <td>ToggleSendLocationCommand</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="79" data-completeness="xaml-only" data-search="settingsview usefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="80" data-completeness="xaml-only" data-search="settingsview titleallowgpslocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>TitleAllowGpsLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="81" data-completeness="xaml-only" data-search="settingsview descriptionallowgpslocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>DescriptionAllowGpsLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="82" data-completeness="xaml-only" data-search="settingsview gpswarningmessage     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>GpsWarningMessage</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="83" data-completeness="xaml-only" data-search="settingsview allowgpslocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>AllowGpsLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="84" data-completeness="xaml-to-viewmodel" data-search="settingsview toggleallowgpslocationcommand settingsviewmodel toggleallowgpslocationcommand   xaml-to-viewmodel">
+              <td>SettingsView</td>
+              <td><strong>ToggleAllowGpsLocationCommand</strong></td>
+              <td>SettingsViewModel</td>
+              <td>ToggleAllowGpsLocationCommand</td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#f59e0b;font-size:0.75rem;font-weight:600;">XAML→VM</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="85" data-completeness="xaml-only" data-search="settingsview usefakelocation     xaml-only">
+              <td>SettingsView</td>
+              <td><strong>UseFakeLocation</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="86" data-completeness="xaml-only" data-search="basketview basketitems     xaml-only">
+              <td>BasketView</td>
+              <td><strong>BasketItems</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="87" data-completeness="xaml-only" data-search="basketview addcommand     xaml-only">
+              <td>BasketView</td>
+              <td><strong>AddCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="88" data-completeness="xaml-only" data-search="basketview selecteditem     xaml-only">
+              <td>BasketView</td>
+              <td><strong>SelectedItem</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="89" data-completeness="xaml-only" data-search="basketview basketitems.count     xaml-only">
+              <td>BasketView</td>
+              <td><strong>BasketItems.Count</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="90" data-completeness="xaml-to-entity" data-search="basketview total   order orders.total xaml-to-entity">
+              <td>BasketView</td>
+              <td><strong>Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="91" data-completeness="xaml-only" data-search="basketview checkoutcommand     xaml-only">
+              <td>BasketView</td>
+              <td><strong>CheckoutCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="92" data-completeness="xaml-to-entity" data-search="orderdetailview order.ordernumber   order orders.ordernumber xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.OrderNumber</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderNumber</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="93" data-completeness="xaml-only" data-search="orderdetailview issubmittedorder     xaml-only">
+              <td>OrderDetailView</td>
+              <td><strong>IsSubmittedOrder</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="94" data-completeness="xaml-only" data-search="orderdetailview togglecancelordercommand     xaml-only">
+              <td>OrderDetailView</td>
+              <td><strong>ToggleCancelOrderCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="95" data-completeness="xaml-to-entity" data-search="orderdetailview order.ordernumber   order orders.ordernumber xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.OrderNumber</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderNumber</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="96" data-completeness="xaml-to-entity" data-search="orderdetailview order.total   order orders.total xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="97" data-completeness="xaml-to-entity" data-search="orderdetailview order.orderdate   order orders.orderdate xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.OrderDate</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderDate</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="98" data-completeness="xaml-to-entity" data-search="orderdetailview order.orderstatus   order orders.orderstatus xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.OrderStatus</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderStatus</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="99" data-completeness="xaml-to-entity" data-search="orderdetailview order.shippingstreet   order orders.shippingstreet xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.ShippingStreet</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingStreet</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="100" data-completeness="xaml-to-entity" data-search="orderdetailview order.shippingcity   order orders.shippingcity xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.ShippingCity</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingCity</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="101" data-completeness="xaml-to-entity" data-search="orderdetailview order.shippingstate   order orders.shippingstate xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.ShippingState</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingState</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="102" data-completeness="xaml-to-entity" data-search="orderdetailview order.shippingcountry   order orders.shippingcountry xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.ShippingCountry</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingCountry</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="103" data-completeness="xaml-to-entity" data-search="orderdetailview order.orderitems   order orders.orderitems xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.OrderItems</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderItems</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="104" data-completeness="xaml-to-entity" data-search="orderdetailview order.total   order orders.total xaml-to-entity">
+              <td>OrderDetailView</td>
+              <td><strong>Order.Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="105" data-completeness="xaml-only" data-search="orderdetailview isbusy     xaml-only">
+              <td>OrderDetailView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="106" data-completeness="xaml-only" data-search="orderdetailview isbusy     xaml-only">
+              <td>OrderDetailView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="107" data-completeness="xaml-to-entity" data-search="checkoutview order.ordernumber   order orders.ordernumber xaml-to-entity">
+              <td>CheckoutView</td>
+              <td><strong>Order.OrderNumber</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderNumber</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="108" data-completeness="xaml-to-entity" data-search="checkoutview order.total   order orders.total xaml-to-entity">
+              <td>CheckoutView</td>
+              <td><strong>Order.Total</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="109" data-completeness="xaml-to-entity" data-search="checkoutview order.orderdate   order orders.orderdate xaml-to-entity">
+              <td>CheckoutView</td>
+              <td><strong>Order.OrderDate</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderDate</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="110" data-completeness="xaml-to-entity" data-search="checkoutview order.orderstatus   order orders.orderstatus xaml-to-entity">
+              <td>CheckoutView</td>
+              <td><strong>Order.OrderStatus</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderStatus</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="111" data-completeness="xaml-only" data-search="checkoutview shippingaddress.street     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>ShippingAddress.Street</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="112" data-completeness="xaml-only" data-search="checkoutview shippingaddress.zipcode     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>ShippingAddress.ZipCode</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="113" data-completeness="xaml-only" data-search="checkoutview shippingaddress.state     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>ShippingAddress.State</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="114" data-completeness="xaml-only" data-search="checkoutview shippingaddress.country     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>ShippingAddress.Country</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="115" data-completeness="xaml-to-entity" data-search="checkoutview order.orderitems   order orders.orderitems xaml-to-entity">
+              <td>CheckoutView</td>
+              <td><strong>Order.OrderItems</strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderItems</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="116" data-completeness="xaml-only" data-search="checkoutview checkoutcommand     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>CheckoutCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="117" data-completeness="xaml-only" data-search="checkoutview isbusy     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="118" data-completeness="xaml-only" data-search="checkoutview isbusy     xaml-only">
+              <td>CheckoutView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="119" data-completeness="xaml-to-entity" data-search="catalogitemview catalogitem.pictureuri   catalogitem catalogitems.pictureuri xaml-to-entity">
+              <td>CatalogItemView</td>
+              <td><strong>CatalogItem.PictureUri</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.PictureUri</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="120" data-completeness="xaml-only" data-search="catalogitemview dismisscommand     xaml-only">
+              <td>CatalogItemView</td>
+              <td><strong>DismissCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="121" data-completeness="xaml-to-entity" data-search="catalogitemview catalogitem.name   catalogitem catalogitems.name xaml-to-entity">
+              <td>CatalogItemView</td>
+              <td><strong>CatalogItem.Name</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Name</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="122" data-completeness="xaml-to-entity" data-search="catalogitemview catalogitem.catalogbrand.brand   catalogbrand catalogbrands.brand xaml-to-entity">
+              <td>CatalogItemView</td>
+              <td><strong>CatalogItem.CatalogBrand.Brand</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogBrand</td>
+              <td class="mono">CatalogBrands.Brand</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="123" data-completeness="xaml-to-entity" data-search="catalogitemview catalogitem.description   catalogitem catalogitems.description xaml-to-entity">
+              <td>CatalogItemView</td>
+              <td><strong>CatalogItem.Description</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Description</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="124" data-completeness="xaml-to-entity" data-search="catalogitemview catalogitem.price   catalogitem catalogitems.price xaml-to-entity">
+              <td>CatalogItemView</td>
+              <td><strong>CatalogItem.Price</strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Price</td>
+              <td><span style="color:#eab308;font-size:0.75rem;font-weight:600;">XAML→Entity</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="125" data-completeness="xaml-only" data-search="catalogitemview addcatalogitemcommand     xaml-only">
+              <td>CatalogItemView</td>
+              <td><strong>AddCatalogItemCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="126" data-completeness="xaml-only" data-search="loginview ismock     xaml-only">
+              <td>LoginView</td>
+              <td><strong>IsMock</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="127" data-completeness="xaml-only" data-search="loginview settingscommand     xaml-only">
+              <td>LoginView</td>
+              <td><strong>SettingsCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="128" data-completeness="xaml-only" data-search="loginview signincommand     xaml-only">
+              <td>LoginView</td>
+              <td><strong>SignInCommand</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="129" data-completeness="xaml-only" data-search="loginview isbusy     xaml-only">
+              <td>LoginView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="130" data-completeness="xaml-only" data-search="loginview isbusy     xaml-only">
+              <td>LoginView</td>
+              <td><strong>IsBusy</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="131" data-completeness="entity-to-column" data-search="    catalogtype catalogtypes.id entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogType</td>
+              <td class="mono">CatalogTypes.Id</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="132" data-completeness="entity-to-column" data-search="    catalogtype catalogtypes.type entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogType</td>
+              <td class="mono">CatalogTypes.Type</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="133" data-completeness="entity-to-column" data-search="    catalogbrand catalogbrands.id entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogBrand</td>
+              <td class="mono">CatalogBrands.Id</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="134" data-completeness="entity-to-column" data-search="    catalogbrand catalogbrands.brand entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogBrand</td>
+              <td class="mono">CatalogBrands.Brand</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="135" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.id entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Id</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="136" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.name entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Name</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="137" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.description entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Description</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="138" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.price entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.Price</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="139" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.pictureuri entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.PictureUri</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="140" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.catalogbrandid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.CatalogBrandId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="141" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.catalogbrand entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.CatalogBrand</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="142" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.catalogtypeid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.CatalogTypeId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="143" data-completeness="entity-to-column" data-search="    catalogitem catalogitems.catalogtype entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CatalogItem</td>
+              <td class="mono">CatalogItems.CatalogType</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="144" data-completeness="entity-to-column" data-search="    buyer buyers.identityguid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Buyer</td>
+              <td class="mono">Buyers.IdentityGuid</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="145" data-completeness="entity-to-column" data-search="    buyer buyers.name entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Buyer</td>
+              <td class="mono">Buyers.Name</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="146" data-completeness="entity-to-column" data-search="    cardtype cardtypes.id entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CardType</td>
+              <td class="mono">CardTypes.Id</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="147" data-completeness="entity-to-column" data-search="    cardtype cardtypes.name entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>CardType</td>
+              <td class="mono">CardTypes.Name</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="148" data-completeness="entity-to-column" data-search="    paymentmethod paymentmethods.cardtype entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>PaymentMethod</td>
+              <td class="mono">PaymentMethods.CardType</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="149" data-completeness="entity-to-column" data-search="    orderitem orderitems.productid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.ProductId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="150" data-completeness="entity-to-column" data-search="    orderitem orderitems.orderid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.OrderId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="151" data-completeness="entity-to-column" data-search="    orderitem orderitems.unitprice entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.UnitPrice</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="152" data-completeness="entity-to-column" data-search="    orderitem orderitems.productname entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.ProductName</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="153" data-completeness="entity-to-column" data-search="    orderitem orderitems.pictureurl entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.PictureUrl</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="154" data-completeness="entity-to-column" data-search="    orderitem orderitems.quantity entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.Quantity</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="155" data-completeness="entity-to-column" data-search="    orderitem orderitems.discount entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>OrderItem</td>
+              <td class="mono">OrderItems.Discount</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="156" data-completeness="entity-to-column" data-search="    order orders.userid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.UserId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="157" data-completeness="entity-to-column" data-search="    order orders.username entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.UserName</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="158" data-completeness="entity-to-column" data-search="    order orders.sequencenumber entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.SequenceNumber</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="159" data-completeness="entity-to-column" data-search="    order orders.orderdate entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderDate</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="160" data-completeness="entity-to-column" data-search="    order orders.orderstatus entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderStatus</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="161" data-completeness="entity-to-column" data-search="    order orders.shippingcity entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingCity</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="162" data-completeness="entity-to-column" data-search="    order orders.shippingstreet entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingStreet</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="163" data-completeness="entity-to-column" data-search="    order orders.shippingstate entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingState</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="164" data-completeness="entity-to-column" data-search="    order orders.shippingcountry entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingCountry</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="165" data-completeness="entity-to-column" data-search="    order orders.shippingzipcode entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.ShippingZipCode</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="166" data-completeness="entity-to-column" data-search="    order orders.cardtypeid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.CardTypeId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="167" data-completeness="entity-to-column" data-search="    order orders.cardnumber entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.CardNumber</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="168" data-completeness="entity-to-column" data-search="    order orders.cardholdername entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.CardHolderName</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="169" data-completeness="entity-to-column" data-search="    order orders.cardexpiration entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.CardExpiration</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="170" data-completeness="entity-to-column" data-search="    order orders.cardsecuritynumber entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.CardSecurityNumber</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="171" data-completeness="entity-to-column" data-search="    order orders.orderitems entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderItems</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="172" data-completeness="entity-to-column" data-search="    order orders.total entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.Total</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="173" data-completeness="entity-to-column" data-search="    order orders.ordernumber entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>Order</td>
+              <td class="mono">Orders.OrderNumber</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="174" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.id entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.Id</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="175" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.type entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.Type</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="176" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.date entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.Date</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="177" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.desturl entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.DestUrl</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="178" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.token entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.Token</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="179" data-completeness="entity-to-column" data-search="    webhooksubscription webhooksubscriptions.userid entity-to-column">
+              <td></td>
+              <td><strong></strong></td>
+              <td></td>
+              <td></td>
+              <td>WebhookSubscription</td>
+              <td class="mono">WebhookSubscriptions.UserId</td>
+              <td><span style="color:#3b82f6;font-size:0.75rem;font-weight:600;">Entity→DB</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="ftDetailContainer" style="margin-top:1rem;display:none;">
+        <div class="card" style="border-color:#22c55e;">
+          <div class="card-title"><span class="icon">&#9670;</span> Field Chain Detail
+            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+          </div>
+          <div id="ftDetailContent"></div>
+          <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
   <section class="tab-panel" id="panel-allprojects">
@@ -1339,7 +3102,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_webapp': 'mermaid-cat_webapp', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_service': 'mermaid-cat_service', 'cat_tool': 'mermaid-cat_tool', 'dataflow': 'mermaid-dataflow', 'businesslayers': 'mermaid-businesslayers' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_webapp': 'mermaid-cat_webapp', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_service': 'mermaid-cat_service', 'cat_tool': 'mermaid-cat_tool', 'dataflow': 'mermaid-dataflow', 'businesslayers': 'mermaid-businesslayers', 'fieldtracediagram': 'mermaid-fieldtracediagram' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1396,6 +3159,12 @@ function zoomDiagram(containerId, delta) {
   fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
     window._dataFlow = df;
   }).catch(function () { /* data-flow.json may not exist on older runs */ });
+
+  // Load field-traceability.json
+  window._fieldTrace = { fieldChains: [], summary: {} };
+  fetch('field-traceability.json').then(function (r) { return r.json(); }).then(function (ft) {
+    window._fieldTrace = ft;
+  }).catch(function () { /* field-traceability.json may not exist */ });
 
   // Load flow-paths.json for E2E flows tab, then load All Projects data
   window._flowData = { businessLayers: {}, flowPaths: [], layerSummary: {} };
@@ -1573,6 +3342,176 @@ function zoomDiagram(containerId, delta) {
       }
       prevId = nid;
     });
+    return lines.join('\n');
+  }
+
+  // Field traceability search
+  var ftSearchInput = document.getElementById('ftSearchInput');
+  if (ftSearchInput) {
+    ftSearchInput.addEventListener('input', function () {
+      var query = ftSearchInput.value.trim().toLowerCase();
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      rows.forEach(function (row) {
+        var text = row.getAttribute('data-search') || '';
+        row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+      });
+    });
+  }
+
+  // Field traceability badge click-to-filter
+  document.querySelectorAll('.ft-badge').forEach(function (badge) {
+    badge.addEventListener('click', function () {
+      var filter = badge.getAttribute('data-filter');
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      var allVisible = true;
+      rows.forEach(function (row) {
+        if (row.getAttribute('data-completeness') !== filter && row.style.display === 'none') {
+          allVisible = false;
+        }
+      });
+      // Toggle: if already filtered to this level, show all; otherwise filter
+      var isFiltered = badge.classList.contains('ft-badge-active');
+      document.querySelectorAll('.ft-badge').forEach(function (b) { b.classList.remove('ft-badge-active'); b.style.outline = ''; });
+      if (isFiltered) {
+        rows.forEach(function (row) { row.style.display = ''; });
+      } else {
+        badge.classList.add('ft-badge-active');
+        badge.style.outline = '2px solid ' + badge.style.color;
+        rows.forEach(function (row) {
+          row.style.display = row.getAttribute('data-completeness') === filter ? '' : 'none';
+        });
+      }
+    });
+  });
+
+  // Field traceability click-to-expand
+  var ftBody = document.getElementById('ftBody');
+  if (ftBody) {
+    ftBody.addEventListener('click', function (e) {
+      var row = e.target.closest('.ft-row');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-ft-idx'), 10);
+      showFieldChainDetail(idx);
+    });
+  }
+
+  function showFieldChainDetail(idx) {
+    var ft = window._fieldTrace || {};
+    var chains = ft.fieldChains || [];
+    if (idx < 0 || idx >= chains.length) return;
+    var ch = chains[idx];
+    var container = document.getElementById('ftDetailContainer');
+    var content = document.getElementById('ftDetailContent');
+    var mermaidDiv = document.getElementById('ftDetailMermaid');
+    if (!container || !content) return;
+
+    var xaml = ch.xamlBinding || {};
+    var vm = ch.viewModelProperty || {};
+    var ent = ch.entityProperty || {};
+    var db = ch.dbColumn || {};
+
+    var html = '<div style="margin-bottom:0.5rem;">';
+    html += '<span style="color:#94a3b8;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#22c55e;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
+    html += '</div>';
+
+    // Step-by-step chain
+    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">';
+    if (xaml.viewType) {
+      html += '<div style="background:#1e293b;border:1px solid #E91E63;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#E91E63;text-transform:uppercase;">XAML View</div>';
+      html += '<strong>' + escHtml(xaml.viewType) + '</strong>';
+      html += '<div class="mono" style="font-size:0.75rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (vm.className) {
+      html += '<div style="background:#1e293b;border:1px solid #FF9800;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#FF9800;text-transform:uppercase;">ViewModel</div>';
+      html += '<strong>' + escHtml(vm.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (ent.className) {
+      html += '<div style="background:#1e293b;border:1px solid #3b82f6;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#3b82f6;text-transform:uppercase;">Entity</div>';
+      html += '<strong>' + escHtml(ent.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (db.table) {
+      html += '<div style="background:#1e293b;border:1px solid #22c55e;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#22c55e;text-transform:uppercase;">DB Column</div>';
+      html += '<strong>' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
+      html += '<div style="font-size:0.8rem;">Source: ' + escHtml(db.source || '') + '</div>';
+      if (db.file) html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    content.innerHTML = html;
+
+    // Render inline Mermaid for this chain
+    if (mermaidDiv && window.mermaidAPI) {
+      var mSrc = buildFieldChainMermaid(ch);
+      mermaidDiv.innerHTML = '<pre class="mermaid">' + escHtml(mSrc) + '</pre>';
+      var pre = mermaidDiv.querySelector('pre.mermaid');
+      if (pre) {
+        window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+          var svg = mermaidDiv.querySelector('svg');
+          if (svg) {
+            var vb = svg.getAttribute('viewBox');
+            if (vb) {
+              var parts = vb.split(' ');
+              svg.style.width = parseFloat(parts[2]) + 'px';
+              svg.style.height = parseFloat(parts[3]) + 'px';
+              svg.style.maxWidth = 'none';
+              svg.removeAttribute('width');
+            }
+          }
+        }).catch(function (err) { console.error('Field chain mermaid error:', err); });
+      }
+    }
+
+    container.style.display = 'block';
+  }
+
+  function buildFieldChainMermaid(ch) {
+    var lines = ['graph LR'];
+    var prevId = null;
+
+    var xaml = ch.xamlBinding || {};
+    var vm = ch.viewModelProperty || {};
+    var ent = ch.entityProperty || {};
+    var db = ch.dbColumn || {};
+
+    if (xaml.viewType) {
+      var xid = (xaml.viewType + '_' + (xaml.bindingPath || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + xid + '["' + xaml.viewType + '\n' + (xaml.bindingPath || '') + '"]');
+      prevId = xid;
+    }
+    if (vm.className) {
+      var vid = (vm.className + '_' + (vm.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + vid + '["' + vm.className + '\n' + (vm.propertyName || '') + ': ' + (vm.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + vid);
+      prevId = vid;
+    }
+    if (ent.className) {
+      var eid = (ent.className + '_' + (ent.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + eid + '["' + ent.className + '\n' + (ent.propertyName || '') + ': ' + (ent.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + eid);
+      prevId = eid;
+    }
+    if (db.table) {
+      var did = (db.table + '_' + (db.column || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + did + '[("' + db.table + '\n' + (db.column || '') + '")]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + did);
+    }
+
     return lines.join('\n');
   }
 })();

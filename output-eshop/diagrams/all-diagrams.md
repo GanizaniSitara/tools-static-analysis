@@ -336,3 +336,95 @@ graph TD
 graph TD
     no_data[No end-to-end flow paths found]
 ```
+
+## field traceability
+
+```mermaid
+graph TD
+    subgraph XAML["XAML Views"]
+        xaml_MapView_Description["MapView\nDescription"]
+        xaml_FiltersView_Value_Brand["FiltersView\nValue.Brand"]
+        xaml_FiltersView_Value_Type["FiltersView\nValue.Type"]
+        xaml_CatalogView_Value_Brand["CatalogView\nValue.Brand"]
+        xaml_CatalogView_Value_Type["CatalogView\nValue.Type"]
+        xaml_CampaignTemplate_PictureUri["CampaignTemplate\nPictureUri"]
+        xaml_CampaignTemplate_Name["CampaignTemplate\nName"]
+        xaml_BasketItemTemplate_PictureUrl["BasketItemTemplate\nPictureUrl"]
+        xaml_BasketItemTemplate_ProductName["BasketItemTemplate\nProductName"]
+        xaml_BasketItemTemplate_UnitPrice["BasketItemTemplate\nUnitPrice"]
+        xaml_BasketItemTemplate_Quantity["BasketItemTemplate\nQuantity"]
+        xaml_BasketItemTemplate_Total["BasketItemTemplate\nTotal"]
+        xaml_OrderItemTemplate_PictureUrl["OrderItemTemplate\nPictureUrl"]
+        xaml_OrderItemTemplate_ProductName["OrderItemTemplate\nProductName"]
+        xaml_OrderItemTemplate_UnitPrice["OrderItemTemplate\nUnitPrice"]
+        xaml_OrderItemTemplate_Quantity["OrderItemTemplate\nQuantity"]
+        xaml_OrderItemTemplate_Total["OrderItemTemplate\nTotal"]
+        xaml_OrderTemplate_OrderNumber["OrderTemplate\nOrderNumber"]
+        xaml_OrderTemplate_Total["OrderTemplate\nTotal"]
+        xaml_OrderTemplate_OrderDate["OrderTemplate\nOrderDate"]
+    end
+    subgraph VM["ViewModels"]
+        vm_MapViewModel_Description["MapViewModel\nDescription: string"]
+    end
+    subgraph Entity["Entities"]
+        ent_CatalogItem_Description["CatalogItem\nDescription: string"]
+        ent_CatalogBrand_Brand["CatalogBrand\nBrand: string"]
+        ent_CatalogType_Type["CatalogType\nType: string"]
+        ent_CatalogItem_PictureUri["CatalogItem\nPictureUri: string"]
+        ent_CatalogItem_Name["CatalogItem\nName: string"]
+        ent_OrderItem_PictureUrl["OrderItem\nPictureUrl: string"]
+        ent_OrderItem_ProductName["OrderItem\nProductName: string"]
+        ent_OrderItem_UnitPrice["OrderItem\nUnitPrice: decimal"]
+        ent_OrderItem_Quantity["OrderItem\nQuantity: int"]
+        ent_Order_Total["Order\nTotal: decimal"]
+        ent_Order_OrderNumber["Order\nOrderNumber: int"]
+        ent_Order_OrderDate["Order\nOrderDate: DateTime"]
+    end
+    subgraph DB["Database Columns"]
+        db_CatalogItems_Description[("CatalogItems\nDescription")]
+        db_CatalogBrands_Brand[("CatalogBrands\nBrand")]
+        db_CatalogTypes_Type[("CatalogTypes\nType")]
+        db_CatalogItems_PictureUri[("CatalogItems\nPictureUri")]
+        db_CatalogItems_Name[("CatalogItems\nName")]
+        db_OrderItems_PictureUrl[("OrderItems\nPictureUrl")]
+        db_OrderItems_ProductName[("OrderItems\nProductName")]
+        db_OrderItems_UnitPrice[("OrderItems\nUnitPrice")]
+        db_OrderItems_Quantity[("OrderItems\nQuantity")]
+        db_Orders_Total[("Orders\nTotal")]
+        db_Orders_OrderNumber[("Orders\nOrderNumber")]
+        db_Orders_OrderDate[("Orders\nOrderDate")]
+    end
+    xaml_MapView_Description --> vm_MapViewModel_Description
+    vm_MapViewModel_Description --> ent_CatalogItem_Description
+    ent_CatalogItem_Description --> db_CatalogItems_Description
+    xaml_FiltersView_Value_Brand -.-> ent_CatalogBrand_Brand
+    ent_CatalogBrand_Brand -.-> db_CatalogBrands_Brand
+    xaml_FiltersView_Value_Type -.-> ent_CatalogType_Type
+    ent_CatalogType_Type -.-> db_CatalogTypes_Type
+    xaml_CatalogView_Value_Brand -.-> ent_CatalogBrand_Brand
+    xaml_CatalogView_Value_Type -.-> ent_CatalogType_Type
+    xaml_CampaignTemplate_PictureUri -.-> ent_CatalogItem_PictureUri
+    ent_CatalogItem_PictureUri -.-> db_CatalogItems_PictureUri
+    xaml_CampaignTemplate_Name -.-> ent_CatalogItem_Name
+    ent_CatalogItem_Name -.-> db_CatalogItems_Name
+    xaml_BasketItemTemplate_PictureUrl -.-> ent_OrderItem_PictureUrl
+    ent_OrderItem_PictureUrl -.-> db_OrderItems_PictureUrl
+    xaml_BasketItemTemplate_ProductName -.-> ent_OrderItem_ProductName
+    ent_OrderItem_ProductName -.-> db_OrderItems_ProductName
+    xaml_BasketItemTemplate_UnitPrice -.-> ent_OrderItem_UnitPrice
+    ent_OrderItem_UnitPrice -.-> db_OrderItems_UnitPrice
+    xaml_BasketItemTemplate_Quantity -.-> ent_OrderItem_Quantity
+    ent_OrderItem_Quantity -.-> db_OrderItems_Quantity
+    xaml_BasketItemTemplate_Total -.-> ent_Order_Total
+    ent_Order_Total -.-> db_Orders_Total
+    xaml_OrderItemTemplate_PictureUrl -.-> ent_OrderItem_PictureUrl
+    xaml_OrderItemTemplate_ProductName -.-> ent_OrderItem_ProductName
+    xaml_OrderItemTemplate_UnitPrice -.-> ent_OrderItem_UnitPrice
+    xaml_OrderItemTemplate_Quantity -.-> ent_OrderItem_Quantity
+    xaml_OrderItemTemplate_Total -.-> ent_Order_Total
+    xaml_OrderTemplate_OrderNumber -.-> ent_Order_OrderNumber
+    ent_Order_OrderNumber -.-> db_Orders_OrderNumber
+    xaml_OrderTemplate_Total -.-> ent_Order_Total
+    xaml_OrderTemplate_OrderDate -.-> ent_Order_OrderDate
+    ent_Order_OrderDate -.-> db_Orders_OrderDate
+```

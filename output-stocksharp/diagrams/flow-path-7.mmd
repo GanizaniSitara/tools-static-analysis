@@ -1,8 +1,8 @@
 graph TD
-    01_Testing_History_fromsrc["01_Testing.History_fromsrc\n(Presentation)"]
+    02_Candles_CombineHistoryRealtime_fromsrc["02_Candles.CombineHistoryRealtime_fromsrc\n(Presentation)"]
     Algo["Algo\n(Engine)"]
-    01_Testing_History_fromsrc --> Algo
-    Charting_Interfaces["Charting.Interfaces\n(Unclassified)"]
-    Algo --> Charting_Interfaces
-    BusinessEntities["BusinessEntities\n(DataAccess)"]
-    Charting_Interfaces --> BusinessEntities
+    02_Candles_CombineHistoryRealtime_fromsrc --> Algo
+    Configuration["Configuration\n(Infrastructure)"]
+    Algo --> Configuration
+    Messages["Messages\n(DataAccess)"]
+    Configuration --> Messages

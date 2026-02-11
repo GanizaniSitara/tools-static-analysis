@@ -842,13 +842,13 @@
       "endpointType": "route"
     },
     {
-      "from": "Webhooks.API",
+      "from": "Ordering.API",
       "to": "route:/",
       "direction": "expose",
       "endpointType": "route"
     },
     {
-      "from": "Ordering.API",
+      "from": "Webhooks.API",
       "to": "route:/",
       "direction": "expose",
       "endpointType": "route"

@@ -163,6 +163,8 @@
   .tag-unclassified  { background: rgba(100,116,139,.15); color: #64748b; }
   .flow-row { cursor: pointer; }
   .flow-row:hover { background: rgba(59,130,246,0.12) !important; }
+  .ft-row { cursor: pointer; }
+  .ft-row:hover { background: rgba(34,197,94,0.08) !important; }
   .flow-step { display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }
   .flow-arrow { color: #64748b; margin: 0 0.2rem; }
   .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
@@ -209,8 +211,10 @@
   <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="businesslayers">Business Layers</button>
   <button class="tab-btn" data-tab="e2eflowsdiagram">E2E Flows Diagram</button>
+  <button class="tab-btn" data-tab="fieldtracediagram">Field Trace Diagram</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="e2eflows">E2E Flows</button>
+  <button class="tab-btn" data-tab="fieldtrace">Field Traceability</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
 
@@ -538,10 +542,12 @@ graph TD
     subgraph sg_Engine[&quot;Engine (1)&quot;]
         Algo[&quot;Algo&quot;]
     end
-    subgraph sg_DataAccess[&quot;DataAccess (3)&quot;]
+    subgraph sg_DataAccess[&quot;DataAccess (2)&quot;]
         BusinessEntities[&quot;BusinessEntities&quot;]
         Messages[&quot;Messages&quot;]
-        Reporting[&quot;Reporting&quot;]
+    end
+    subgraph sg_Infrastructure[&quot;Infrastructure (1)&quot;]
+        Configuration[&quot;Configuration&quot;]
     end
     subgraph sg_Unclassified[&quot;Unclassified (1)&quot;]
         Charting_Interfaces[&quot;Charting.Interfaces&quot;]
@@ -549,6 +555,8 @@ graph TD
     grp_Candles --&gt; Algo
     Algo --&gt; Charting_Interfaces
     Charting_Interfaces --&gt; BusinessEntities
+    Algo --&gt; Configuration
+    Configuration --&gt; Messages
     grp_Testing --&gt; Algo
     grp_Strategies --&gt; Algo
     grp_Other --&gt; Algo
@@ -556,8 +564,28 @@ graph TD
     grp_Indicators --&gt; Algo
     grp_Basic --&gt; Algo
     grp_Chart --&gt; Algo
-    Algo --&gt; Reporting
-    Reporting --&gt; Messages
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-fieldtracediagram">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Field Traceability — XAML Binding to Database Column
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-fieldtracediagram', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-fieldtracediagram">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph XAML[&quot;XAML Views&quot;]
+        xaml_MainWindow_TimeZone[&quot;MainWindow\nTimeZone&quot;]
+        xaml_MainWindow_Title[&quot;MainWindow\nTitle&quot;]
+    end
         </pre>
       </div>
     </div>
@@ -728,697 +756,697 @@ graph TD
               <td style="font-size:0.78rem">01_Candles.Realtime_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="1" data-search="01_candles.realtime presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="1" data-search="01_candles.realtime_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Candles.Realtime_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Candles.Realtime_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="2" data-search="01_candles.realtime presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Candles.Realtime</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Candles.Realtime &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="2" data-search="02_candles.combinehistoryrealtime presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="3" data-search="01_candles.realtime presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Candles.Realtime</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Candles.Realtime &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="4" data-search="02_candles.combinehistoryrealtime presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Candles.CombineHistoryRealtime</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="3" data-search="02_candles.combinehistoryrealtime_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="5" data-search="02_candles.combinehistoryrealtime presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Candles.CombineHistoryRealtime</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="6" data-search="02_candles.combinehistoryrealtime_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Candles.CombineHistoryRealtime_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="4" data-search="02_testing.optimization presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="7" data-search="02_candles.combinehistoryrealtime_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Candles.CombineHistoryRealtime_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="8" data-search="02_testing.optimization presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Testing.Optimization</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Testing.Optimization &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="5" data-search="02_testing.optimization_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="9" data-search="02_testing.optimization presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Testing.Optimization</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Testing.Optimization &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="10" data-search="02_testing.optimization_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Testing.Optimization_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Testing.Optimization_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="6" data-search="01_testing.history presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="11" data-search="02_testing.optimization_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Testing.Optimization_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Testing.Optimization_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="12" data-search="01_testing.history presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Testing.History</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Testing.History &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="7" data-search="01_testing.history_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="13" data-search="01_testing.history presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Testing.History</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Testing.History &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="14" data-search="01_testing.history_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Testing.History_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Testing.History_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="8" data-search="03_testing.realtime_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="15" data-search="01_testing.history_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Testing.History_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Testing.History_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="16" data-search="03_testing.realtime_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Testing.RealTime_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Testing.RealTime_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="9" data-search="03_testing.realtime presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="17" data-search="03_testing.realtime_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Testing.RealTime_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Testing.RealTime_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="18" data-search="03_testing.realtime presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Testing.RealTime</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Testing.RealTime &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="10" data-search="06_strategies.historyquoting_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="19" data-search="03_testing.realtime presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Testing.RealTime</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Testing.RealTime &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="20" data-search="06_strategies.historyquoting_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>06_Strategies.HistoryQuoting_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">06_Strategies.HistoryQuoting_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="11" data-search="06_strategies.historyquoting presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="21" data-search="06_strategies.historyquoting_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>06_Strategies.HistoryQuoting_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">06_Strategies.HistoryQuoting_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="22" data-search="06_strategies.historyquoting presentation, engine, unclassified, dataaccess ">
               <td><strong>06_Strategies.HistoryQuoting</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">06_Strategies.HistoryQuoting &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="12" data-search="04_strategies.historymarketrule presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="23" data-search="06_strategies.historyquoting presentation, engine, infrastructure, dataaccess ">
+              <td><strong>06_Strategies.HistoryQuoting</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">06_Strategies.HistoryQuoting &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="24" data-search="04_strategies.historymarketrule presentation, engine, unclassified, dataaccess ">
               <td><strong>04_Strategies.HistoryMarketRule</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="13" data-search="04_strategies.historymarketrule_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="25" data-search="04_strategies.historymarketrule presentation, engine, infrastructure, dataaccess ">
+              <td><strong>04_Strategies.HistoryMarketRule</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="26" data-search="04_strategies.historymarketrule_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>04_Strategies.HistoryMarketRule_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="14" data-search="08_strategies.livearbitrage_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="27" data-search="04_strategies.historymarketrule_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>04_Strategies.HistoryMarketRule_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="28" data-search="08_strategies.livearbitrage_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>08_Strategies.LiveArbitrage_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">08_Strategies.LiveArbitrage_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="15" data-search="08_strategies.livearbitrage presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="29" data-search="08_strategies.livearbitrage_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>08_Strategies.LiveArbitrage_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">08_Strategies.LiveArbitrage_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="30" data-search="08_strategies.livearbitrage presentation, engine, unclassified, dataaccess ">
               <td><strong>08_Strategies.LiveArbitrage</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">08_Strategies.LiveArbitrage &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="16" data-search="03_strategies.historytrend_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="31" data-search="08_strategies.livearbitrage presentation, engine, infrastructure, dataaccess ">
+              <td><strong>08_Strategies.LiveArbitrage</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">08_Strategies.LiveArbitrage &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="32" data-search="03_strategies.historytrend_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Strategies.HistoryTrend_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Strategies.HistoryTrend_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="17" data-search="03_strategies.historytrend presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="33" data-search="03_strategies.historytrend_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Strategies.HistoryTrend_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Strategies.HistoryTrend_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="34" data-search="03_strategies.historytrend presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Strategies.HistoryTrend</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Strategies.HistoryTrend &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="18" data-search="05_strategies.historyindex_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="35" data-search="03_strategies.historytrend presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Strategies.HistoryTrend</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Strategies.HistoryTrend &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="36" data-search="05_strategies.historyindex_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>05_Strategies.HistoryIndex_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">05_Strategies.HistoryIndex_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="19" data-search="05_strategies.historyindex presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="37" data-search="05_strategies.historyindex_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>05_Strategies.HistoryIndex_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">05_Strategies.HistoryIndex_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="38" data-search="05_strategies.historyindex presentation, engine, unclassified, dataaccess ">
               <td><strong>05_Strategies.HistoryIndex</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">05_Strategies.HistoryIndex &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="20" data-search="10_strategies.liveterminal presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="39" data-search="05_strategies.historyindex presentation, engine, infrastructure, dataaccess ">
+              <td><strong>05_Strategies.HistoryIndex</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">05_Strategies.HistoryIndex &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="40" data-search="10_strategies.liveterminal presentation, engine, unclassified, dataaccess ">
               <td><strong>10_Strategies.LiveTerminal</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">10_Strategies.LiveTerminal &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="21" data-search="10_strategies.liveterminal_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="41" data-search="10_strategies.liveterminal presentation, engine, infrastructure, dataaccess ">
+              <td><strong>10_Strategies.LiveTerminal</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">10_Strategies.LiveTerminal &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="42" data-search="10_strategies.liveterminal_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>10_Strategies.LiveTerminal_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">10_Strategies.LiveTerminal_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="22" data-search="07_strategies.livespread presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="43" data-search="10_strategies.liveterminal_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>10_Strategies.LiveTerminal_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">10_Strategies.LiveTerminal_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="44" data-search="07_strategies.livespread presentation, engine, unclassified, dataaccess ">
               <td><strong>07_Strategies.LiveSpread</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">07_Strategies.LiveSpread &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="23" data-search="07_strategies.livespread_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="45" data-search="07_strategies.livespread presentation, engine, infrastructure, dataaccess ">
+              <td><strong>07_Strategies.LiveSpread</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">07_Strategies.LiveSpread &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="46" data-search="07_strategies.livespread_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>07_Strategies.LiveSpread_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">07_Strategies.LiveSpread_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="24" data-search="02_strategies.historybollingerbands presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="47" data-search="07_strategies.livespread_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>07_Strategies.LiveSpread_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">07_Strategies.LiveSpread_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="48" data-search="02_strategies.historybollingerbands presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Strategies.HistoryBollingerBands</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="25" data-search="02_strategies.historybollingerbands_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="49" data-search="02_strategies.historybollingerbands presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Strategies.HistoryBollingerBands</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="50" data-search="02_strategies.historybollingerbands_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Strategies.HistoryBollingerBands_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="26" data-search="01_strategies.historysma_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="51" data-search="02_strategies.historybollingerbands_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Strategies.HistoryBollingerBands_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="52" data-search="01_strategies.historysma_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Strategies.HistorySMA_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Strategies.HistorySMA_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="27" data-search="01_strategies.historysma presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="53" data-search="01_strategies.historysma_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Strategies.HistorySMA_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Strategies.HistorySMA_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="54" data-search="01_strategies.historysma presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Strategies.HistorySMA</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Strategies.HistorySMA &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="28" data-search="09_strategies.liveoptionsquoting_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="55" data-search="01_strategies.historysma presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Strategies.HistorySMA</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Strategies.HistorySMA &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="56" data-search="09_strategies.liveoptionsquoting_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>09_Strategies.LiveOptionsQuoting_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="29" data-search="09_strategies.liveoptionsquoting presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="57" data-search="09_strategies.liveoptionsquoting_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>09_Strategies.LiveOptionsQuoting_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="58" data-search="09_strategies.liveoptionsquoting presentation, engine, unclassified, dataaccess ">
               <td><strong>09_Strategies.LiveOptionsQuoting</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="30" data-search="04_storage.hydraserverconnect_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="59" data-search="09_strategies.liveoptionsquoting presentation, engine, infrastructure, dataaccess ">
+              <td><strong>09_Strategies.LiveOptionsQuoting</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="60" data-search="04_storage.hydraserverconnect_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>04_Storage.HydraServerConnect_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">04_Storage.HydraServerConnect_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="31" data-search="01_misc.logging_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="61" data-search="04_storage.hydraserverconnect_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>04_Storage.HydraServerConnect_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">04_Storage.HydraServerConnect_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="62" data-search="01_misc.logging_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Misc.Logging_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Misc.Logging_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="32" data-search="01_misc.logging presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="63" data-search="01_misc.logging_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Misc.Logging_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Misc.Logging_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="64" data-search="01_misc.logging presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Misc.Logging</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Misc.Logging &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="33" data-search="01_advanced.multiconnect_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="65" data-search="01_misc.logging presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Misc.Logging</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Misc.Logging &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="66" data-search="01_advanced.multiconnect_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Advanced.MultiConnect_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Advanced.MultiConnect_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="34" data-search="01_advanced.multiconnect presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="67" data-search="01_advanced.multiconnect_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Advanced.MultiConnect_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Advanced.MultiConnect_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="68" data-search="01_advanced.multiconnect presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Advanced.MultiConnect</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Advanced.MultiConnect &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="35" data-search="02_advanced.savedatalocal_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="69" data-search="01_advanced.multiconnect presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Advanced.MultiConnect</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Advanced.MultiConnect &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="70" data-search="02_advanced.savedatalocal_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Advanced.SaveDataLocal_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Advanced.SaveDataLocal_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="36" data-search="02_advanced.savedatalocal presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="71" data-search="02_advanced.savedatalocal_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Advanced.SaveDataLocal_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Advanced.SaveDataLocal_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="72" data-search="02_advanced.savedatalocal presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Advanced.SaveDataLocal</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Advanced.SaveDataLocal &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="37" data-search="03_indicators.createown presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="73" data-search="02_advanced.savedatalocal presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Advanced.SaveDataLocal</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Advanced.SaveDataLocal &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="74" data-search="03_indicators.createown presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Indicators.CreateOwn</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Indicators.CreateOwn &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="38" data-search="03_indicators.createown_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="75" data-search="03_indicators.createown presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Indicators.CreateOwn</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Indicators.CreateOwn &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="76" data-search="03_indicators.createown_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Indicators.CreateOwn_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Indicators.CreateOwn_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="39" data-search="01_indicators.simplesma presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="77" data-search="03_indicators.createown_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Indicators.CreateOwn_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Indicators.CreateOwn_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="78" data-search="01_indicators.simplesma presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Indicators.SimpleSMA</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Indicators.SimpleSMA &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="40" data-search="01_indicators.simplesma_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="79" data-search="01_indicators.simplesma presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Indicators.SimpleSMA</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Indicators.SimpleSMA &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="80" data-search="01_indicators.simplesma_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Indicators.SimpleSMA_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Indicators.SimpleSMA_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="41" data-search="02_indicators.complexbollinger presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="81" data-search="01_indicators.simplesma_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Indicators.SimpleSMA_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Indicators.SimpleSMA_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="82" data-search="02_indicators.complexbollinger presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Indicators.ComplexBollinger</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Indicators.ComplexBollinger &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="42" data-search="02_indicators.complexbollinger_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="83" data-search="02_indicators.complexbollinger presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Indicators.ComplexBollinger</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Indicators.ComplexBollinger &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="84" data-search="02_indicators.complexbollinger_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Indicators.ComplexBollinger_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Indicators.ComplexBollinger_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="43" data-search="02_basic.marketdepths_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="85" data-search="02_indicators.complexbollinger_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Indicators.ComplexBollinger_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Indicators.ComplexBollinger_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="86" data-search="02_basic.marketdepths_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Basic.MarketDepths_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Basic.MarketDepths_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="44" data-search="02_basic.marketdepths presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="87" data-search="02_basic.marketdepths_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Basic.MarketDepths_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Basic.MarketDepths_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="88" data-search="02_basic.marketdepths presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Basic.MarketDepths</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Basic.MarketDepths &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="45" data-search="03_basic.orders_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="89" data-search="02_basic.marketdepths presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Basic.MarketDepths</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">02_Basic.MarketDepths &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="90" data-search="03_basic.orders_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Basic.Orders_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Basic.Orders_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="46" data-search="03_basic.orders presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="91" data-search="03_basic.orders_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Basic.Orders_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Basic.Orders_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="92" data-search="03_basic.orders presentation, engine, unclassified, dataaccess ">
               <td><strong>03_Basic.Orders</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">03_Basic.Orders &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="47" data-search="01_basic.connectanddownloadinstruments presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="93" data-search="03_basic.orders presentation, engine, infrastructure, dataaccess ">
+              <td><strong>03_Basic.Orders</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">03_Basic.Orders &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="94" data-search="01_basic.connectanddownloadinstruments presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Basic.ConnectAndDownloadInstruments</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Basic.ConnectAndDownloadInstruments &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="48" data-search="01_basic.connectanddownloadinstruments_fromsrc presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="95" data-search="01_basic.connectanddownloadinstruments presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Basic.ConnectAndDownloadInstruments</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Basic.ConnectAndDownloadInstruments &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="96" data-search="01_basic.connectanddownloadinstruments_fromsrc presentation, engine, unclassified, dataaccess ">
               <td><strong>01_Basic.ConnectAndDownloadInstruments_fromsrc</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">01_Basic.ConnectAndDownloadInstruments_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="49" data-search="02_chart.activeorders presentation, engine, unclassified, dataaccess ">
+            <tr class="flow-row" data-flow-idx="97" data-search="01_basic.connectanddownloadinstruments_fromsrc presentation, engine, infrastructure, dataaccess ">
+              <td><strong>01_Basic.ConnectAndDownloadInstruments_fromsrc</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
+              <td style="text-align:center">4</td>
+              <td style="font-size:0.78rem">01_Basic.ConnectAndDownloadInstruments_fromsrc &rarr; Algo &rarr; Configuration &rarr; Messages</td>
+              <td></td>
+            </tr>
+            <tr class="flow-row" data-flow-idx="98" data-search="02_chart.activeorders presentation, engine, unclassified, dataaccess ">
               <td><strong>02_Chart.ActiveOrders</strong></td>
               <td>Presentation, Engine, Unclassified, DataAccess</td>
               <td style="text-align:center">4</td>
               <td style="font-size:0.78rem">02_Chart.ActiveOrders &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
               <td></td>
             </tr>
-            <tr class="flow-row" data-flow-idx="50" data-search="02_chart.activeorders_fromsrc presentation, engine, unclassified, dataaccess ">
-              <td><strong>02_Chart.ActiveOrders_fromsrc</strong></td>
-              <td>Presentation, Engine, Unclassified, DataAccess</td>
+            <tr class="flow-row" data-flow-idx="99" data-search="02_chart.activeorders presentation, engine, infrastructure, dataaccess ">
+              <td><strong>02_Chart.ActiveOrders</strong></td>
+              <td>Presentation, Engine, Infrastructure, DataAccess</td>
               <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Chart.ActiveOrders_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="51" data-search="01_chart_fromsrc presentation, engine, unclassified, dataaccess ">
-              <td><strong>01_Chart_fromsrc</strong></td>
-              <td>Presentation, Engine, Unclassified, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Chart_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="52" data-search="01_chart presentation, engine, unclassified, dataaccess ">
-              <td><strong>01_Chart</strong></td>
-              <td>Presentation, Engine, Unclassified, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Chart &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="53" data-search="03_chart.performance_fromsrc presentation, engine, unclassified, dataaccess ">
-              <td><strong>03_Chart.Performance_fromsrc</strong></td>
-              <td>Presentation, Engine, Unclassified, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Chart.Performance_fromsrc &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="54" data-search="03_chart.performance presentation, engine, unclassified, dataaccess ">
-              <td><strong>03_Chart.Performance</strong></td>
-              <td>Presentation, Engine, Unclassified, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Chart.Performance &rarr; Algo &rarr; Charting.Interfaces &rarr; BusinessEntities</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="55" data-search="01_candles.realtime_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Candles.Realtime_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Candles.Realtime_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="56" data-search="01_candles.realtime presentation, engine, dataaccess ">
-              <td><strong>01_Candles.Realtime</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Candles.Realtime &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="57" data-search="02_candles.combinehistoryrealtime presentation, engine, dataaccess ">
-              <td><strong>02_Candles.CombineHistoryRealtime</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="58" data-search="02_candles.combinehistoryrealtime_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Candles.CombineHistoryRealtime_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Candles.CombineHistoryRealtime_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="59" data-search="02_testing.optimization presentation, engine, dataaccess ">
-              <td><strong>02_Testing.Optimization</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Testing.Optimization &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="60" data-search="02_testing.optimization_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Testing.Optimization_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Testing.Optimization_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="61" data-search="01_testing.history presentation, engine, dataaccess ">
-              <td><strong>01_Testing.History</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Testing.History &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="62" data-search="01_testing.history_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Testing.History_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Testing.History_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="63" data-search="03_testing.realtime_fromsrc presentation, engine, dataaccess ">
-              <td><strong>03_Testing.RealTime_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Testing.RealTime_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="64" data-search="03_testing.realtime presentation, engine, dataaccess ">
-              <td><strong>03_Testing.RealTime</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Testing.RealTime &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="65" data-search="06_strategies.historyquoting_fromsrc presentation, engine, dataaccess ">
-              <td><strong>06_Strategies.HistoryQuoting_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">06_Strategies.HistoryQuoting_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="66" data-search="06_strategies.historyquoting presentation, engine, dataaccess ">
-              <td><strong>06_Strategies.HistoryQuoting</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">06_Strategies.HistoryQuoting &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="67" data-search="04_strategies.historymarketrule presentation, engine, dataaccess ">
-              <td><strong>04_Strategies.HistoryMarketRule</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="68" data-search="04_strategies.historymarketrule_fromsrc presentation, engine, dataaccess ">
-              <td><strong>04_Strategies.HistoryMarketRule_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">04_Strategies.HistoryMarketRule_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="69" data-search="08_strategies.livearbitrage_fromsrc presentation, engine, dataaccess ">
-              <td><strong>08_Strategies.LiveArbitrage_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">08_Strategies.LiveArbitrage_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="70" data-search="08_strategies.livearbitrage presentation, engine, dataaccess ">
-              <td><strong>08_Strategies.LiveArbitrage</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">08_Strategies.LiveArbitrage &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="71" data-search="03_strategies.historytrend_fromsrc presentation, engine, dataaccess ">
-              <td><strong>03_Strategies.HistoryTrend_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Strategies.HistoryTrend_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="72" data-search="03_strategies.historytrend presentation, engine, dataaccess ">
-              <td><strong>03_Strategies.HistoryTrend</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Strategies.HistoryTrend &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="73" data-search="05_strategies.historyindex_fromsrc presentation, engine, dataaccess ">
-              <td><strong>05_Strategies.HistoryIndex_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">05_Strategies.HistoryIndex_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="74" data-search="05_strategies.historyindex presentation, engine, dataaccess ">
-              <td><strong>05_Strategies.HistoryIndex</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">05_Strategies.HistoryIndex &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="75" data-search="10_strategies.liveterminal presentation, engine, dataaccess ">
-              <td><strong>10_Strategies.LiveTerminal</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">10_Strategies.LiveTerminal &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="76" data-search="10_strategies.liveterminal_fromsrc presentation, engine, dataaccess ">
-              <td><strong>10_Strategies.LiveTerminal_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">10_Strategies.LiveTerminal_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="77" data-search="07_strategies.livespread presentation, engine, dataaccess ">
-              <td><strong>07_Strategies.LiveSpread</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">07_Strategies.LiveSpread &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="78" data-search="07_strategies.livespread_fromsrc presentation, engine, dataaccess ">
-              <td><strong>07_Strategies.LiveSpread_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">07_Strategies.LiveSpread_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="79" data-search="02_strategies.historybollingerbands presentation, engine, dataaccess ">
-              <td><strong>02_Strategies.HistoryBollingerBands</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="80" data-search="02_strategies.historybollingerbands_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Strategies.HistoryBollingerBands_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Strategies.HistoryBollingerBands_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="81" data-search="01_strategies.historysma_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Strategies.HistorySMA_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Strategies.HistorySMA_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="82" data-search="01_strategies.historysma presentation, engine, dataaccess ">
-              <td><strong>01_Strategies.HistorySMA</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Strategies.HistorySMA &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="83" data-search="09_strategies.liveoptionsquoting_fromsrc presentation, engine, dataaccess ">
-              <td><strong>09_Strategies.LiveOptionsQuoting_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="84" data-search="09_strategies.liveoptionsquoting presentation, engine, dataaccess ">
-              <td><strong>09_Strategies.LiveOptionsQuoting</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">09_Strategies.LiveOptionsQuoting &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="85" data-search="04_storage.hydraserverconnect_fromsrc presentation, engine, dataaccess ">
-              <td><strong>04_Storage.HydraServerConnect_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">04_Storage.HydraServerConnect_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="86" data-search="01_misc.logging_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Misc.Logging_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Misc.Logging_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="87" data-search="01_misc.logging presentation, engine, dataaccess ">
-              <td><strong>01_Misc.Logging</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Misc.Logging &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="88" data-search="01_advanced.multiconnect_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Advanced.MultiConnect_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Advanced.MultiConnect_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="89" data-search="01_advanced.multiconnect presentation, engine, dataaccess ">
-              <td><strong>01_Advanced.MultiConnect</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Advanced.MultiConnect &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="90" data-search="02_advanced.savedatalocal_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Advanced.SaveDataLocal_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Advanced.SaveDataLocal_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="91" data-search="02_advanced.savedatalocal presentation, engine, dataaccess ">
-              <td><strong>02_Advanced.SaveDataLocal</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Advanced.SaveDataLocal &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="92" data-search="03_indicators.createown presentation, engine, dataaccess ">
-              <td><strong>03_Indicators.CreateOwn</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Indicators.CreateOwn &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="93" data-search="03_indicators.createown_fromsrc presentation, engine, dataaccess ">
-              <td><strong>03_Indicators.CreateOwn_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">03_Indicators.CreateOwn_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="94" data-search="01_indicators.simplesma presentation, engine, dataaccess ">
-              <td><strong>01_Indicators.SimpleSMA</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Indicators.SimpleSMA &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="95" data-search="01_indicators.simplesma_fromsrc presentation, engine, dataaccess ">
-              <td><strong>01_Indicators.SimpleSMA_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">01_Indicators.SimpleSMA_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="96" data-search="02_indicators.complexbollinger presentation, engine, dataaccess ">
-              <td><strong>02_Indicators.ComplexBollinger</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Indicators.ComplexBollinger &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="97" data-search="02_indicators.complexbollinger_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Indicators.ComplexBollinger_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Indicators.ComplexBollinger_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="98" data-search="02_basic.marketdepths_fromsrc presentation, engine, dataaccess ">
-              <td><strong>02_Basic.MarketDepths_fromsrc</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Basic.MarketDepths_fromsrc &rarr; Algo &rarr; Reporting &rarr; Messages</td>
-              <td></td>
-            </tr>
-            <tr class="flow-row" data-flow-idx="99" data-search="02_basic.marketdepths presentation, engine, dataaccess ">
-              <td><strong>02_Basic.MarketDepths</strong></td>
-              <td>Presentation, Engine, DataAccess</td>
-              <td style="text-align:center">4</td>
-              <td style="font-size:0.78rem">02_Basic.MarketDepths &rarr; Algo &rarr; Reporting &rarr; Messages</td>
+              <td style="font-size:0.78rem">02_Chart.ActiveOrders &rarr; Algo &rarr; Configuration &rarr; Messages</td>
               <td></td>
             </tr>
           </tbody>
@@ -1431,6 +1459,59 @@ graph TD
           </div>
           <div id="flowDetailContent"></div>
           <div class="mermaid-wrap" id="flowDetailMermaid" style="margin-top:0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-fieldtrace">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Field-Level Traceability (2 chains)</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Traces XAML bindings through ViewModel properties and entity classes to database columns.
+        Click a row to see the full chain detail. Click a badge to filter by completeness level.
+      </p>
+      <div style="margin-bottom:0.75rem;"><span class="ft-badge" data-filter="xaml-only" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;background:rgba(100,116,139,0.15);color:#64748b;font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">XAML Only: 2</span></div>
+      <input type="text" id="ftSearchInput" placeholder="Search fields..." style="
+        width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
+        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        font-size:0.85rem;margin-bottom:0.75rem;outline:none;
+      ">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>XAML View</th><th>Binding Path</th><th>ViewModel</th><th>VM Property</th><th>Entity</th><th>DB Table.Column</th><th>Completeness</th></tr>
+          </thead>
+          <tbody id="ftBody">
+            <tr class="ft-row" data-ft-idx="0" data-completeness="xaml-only" data-search="mainwindow timezone     xaml-only">
+              <td>MainWindow</td>
+              <td><strong>TimeZone</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+            <tr class="ft-row" data-ft-idx="1" data-completeness="xaml-only" data-search="mainwindow title     xaml-only">
+              <td>MainWindow</td>
+              <td><strong>Title</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="mono"></td>
+              <td><span style="color:#64748b;font-size:0.75rem;font-weight:600;">XAML Only</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="ftDetailContainer" style="margin-top:1rem;display:none;">
+        <div class="card" style="border-color:#22c55e;">
+          <div class="card-title"><span class="icon">&#9670;</span> Field Chain Detail
+            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+          </div>
+          <div id="ftDetailContent"></div>
+          <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
         </div>
       </div>
     </div>
@@ -1912,7 +1993,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool', 'cat_desktopapp': 'mermaid-cat_desktopapp', 'dataflow': 'mermaid-dataflow', 'businesslayers': 'mermaid-businesslayers', 'e2eflowsdiagram': 'mermaid-e2eflowsdiagram' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool', 'cat_desktopapp': 'mermaid-cat_desktopapp', 'dataflow': 'mermaid-dataflow', 'businesslayers': 'mermaid-businesslayers', 'e2eflowsdiagram': 'mermaid-e2eflowsdiagram', 'fieldtracediagram': 'mermaid-fieldtracediagram' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1969,6 +2050,12 @@ function zoomDiagram(containerId, delta) {
   fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
     window._dataFlow = df;
   }).catch(function () { /* data-flow.json may not exist on older runs */ });
+
+  // Load field-traceability.json
+  window._fieldTrace = { fieldChains: [], summary: {} };
+  fetch('field-traceability.json').then(function (r) { return r.json(); }).then(function (ft) {
+    window._fieldTrace = ft;
+  }).catch(function () { /* field-traceability.json may not exist */ });
 
   // Load flow-paths.json for E2E flows tab, then load All Projects data
   window._flowData = { businessLayers: {}, flowPaths: [], layerSummary: {} };
@@ -2146,6 +2233,176 @@ function zoomDiagram(containerId, delta) {
       }
       prevId = nid;
     });
+    return lines.join('\n');
+  }
+
+  // Field traceability search
+  var ftSearchInput = document.getElementById('ftSearchInput');
+  if (ftSearchInput) {
+    ftSearchInput.addEventListener('input', function () {
+      var query = ftSearchInput.value.trim().toLowerCase();
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      rows.forEach(function (row) {
+        var text = row.getAttribute('data-search') || '';
+        row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+      });
+    });
+  }
+
+  // Field traceability badge click-to-filter
+  document.querySelectorAll('.ft-badge').forEach(function (badge) {
+    badge.addEventListener('click', function () {
+      var filter = badge.getAttribute('data-filter');
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      var allVisible = true;
+      rows.forEach(function (row) {
+        if (row.getAttribute('data-completeness') !== filter && row.style.display === 'none') {
+          allVisible = false;
+        }
+      });
+      // Toggle: if already filtered to this level, show all; otherwise filter
+      var isFiltered = badge.classList.contains('ft-badge-active');
+      document.querySelectorAll('.ft-badge').forEach(function (b) { b.classList.remove('ft-badge-active'); b.style.outline = ''; });
+      if (isFiltered) {
+        rows.forEach(function (row) { row.style.display = ''; });
+      } else {
+        badge.classList.add('ft-badge-active');
+        badge.style.outline = '2px solid ' + badge.style.color;
+        rows.forEach(function (row) {
+          row.style.display = row.getAttribute('data-completeness') === filter ? '' : 'none';
+        });
+      }
+    });
+  });
+
+  // Field traceability click-to-expand
+  var ftBody = document.getElementById('ftBody');
+  if (ftBody) {
+    ftBody.addEventListener('click', function (e) {
+      var row = e.target.closest('.ft-row');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-ft-idx'), 10);
+      showFieldChainDetail(idx);
+    });
+  }
+
+  function showFieldChainDetail(idx) {
+    var ft = window._fieldTrace || {};
+    var chains = ft.fieldChains || [];
+    if (idx < 0 || idx >= chains.length) return;
+    var ch = chains[idx];
+    var container = document.getElementById('ftDetailContainer');
+    var content = document.getElementById('ftDetailContent');
+    var mermaidDiv = document.getElementById('ftDetailMermaid');
+    if (!container || !content) return;
+
+    var xaml = ch.xamlBinding || {};
+    var vm = ch.viewModelProperty || {};
+    var ent = ch.entityProperty || {};
+    var db = ch.dbColumn || {};
+
+    var html = '<div style="margin-bottom:0.5rem;">';
+    html += '<span style="color:#94a3b8;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#22c55e;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
+    html += '</div>';
+
+    // Step-by-step chain
+    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">';
+    if (xaml.viewType) {
+      html += '<div style="background:#1e293b;border:1px solid #E91E63;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#E91E63;text-transform:uppercase;">XAML View</div>';
+      html += '<strong>' + escHtml(xaml.viewType) + '</strong>';
+      html += '<div class="mono" style="font-size:0.75rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (vm.className) {
+      html += '<div style="background:#1e293b;border:1px solid #FF9800;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#FF9800;text-transform:uppercase;">ViewModel</div>';
+      html += '<strong>' + escHtml(vm.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (ent.className) {
+      html += '<div style="background:#1e293b;border:1px solid #3b82f6;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#3b82f6;text-transform:uppercase;">Entity</div>';
+      html += '<strong>' + escHtml(ent.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }
+    if (db.table) {
+      html += '<div style="background:#1e293b;border:1px solid #22c55e;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#22c55e;text-transform:uppercase;">DB Column</div>';
+      html += '<strong>' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
+      html += '<div style="font-size:0.8rem;">Source: ' + escHtml(db.source || '') + '</div>';
+      if (db.file) html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    content.innerHTML = html;
+
+    // Render inline Mermaid for this chain
+    if (mermaidDiv && window.mermaidAPI) {
+      var mSrc = buildFieldChainMermaid(ch);
+      mermaidDiv.innerHTML = '<pre class="mermaid">' + escHtml(mSrc) + '</pre>';
+      var pre = mermaidDiv.querySelector('pre.mermaid');
+      if (pre) {
+        window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+          var svg = mermaidDiv.querySelector('svg');
+          if (svg) {
+            var vb = svg.getAttribute('viewBox');
+            if (vb) {
+              var parts = vb.split(' ');
+              svg.style.width = parseFloat(parts[2]) + 'px';
+              svg.style.height = parseFloat(parts[3]) + 'px';
+              svg.style.maxWidth = 'none';
+              svg.removeAttribute('width');
+            }
+          }
+        }).catch(function (err) { console.error('Field chain mermaid error:', err); });
+      }
+    }
+
+    container.style.display = 'block';
+  }
+
+  function buildFieldChainMermaid(ch) {
+    var lines = ['graph LR'];
+    var prevId = null;
+
+    var xaml = ch.xamlBinding || {};
+    var vm = ch.viewModelProperty || {};
+    var ent = ch.entityProperty || {};
+    var db = ch.dbColumn || {};
+
+    if (xaml.viewType) {
+      var xid = (xaml.viewType + '_' + (xaml.bindingPath || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + xid + '["' + xaml.viewType + '\n' + (xaml.bindingPath || '') + '"]');
+      prevId = xid;
+    }
+    if (vm.className) {
+      var vid = (vm.className + '_' + (vm.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + vid + '["' + vm.className + '\n' + (vm.propertyName || '') + ': ' + (vm.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + vid);
+      prevId = vid;
+    }
+    if (ent.className) {
+      var eid = (ent.className + '_' + (ent.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + eid + '["' + ent.className + '\n' + (ent.propertyName || '') + ': ' + (ent.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + eid);
+      prevId = eid;
+    }
+    if (db.table) {
+      var did = (db.table + '_' + (db.column || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + did + '[("' + db.table + '\n' + (db.column || '') + '")]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + did);
+    }
+
     return lines.join('\n');
   }
 })();

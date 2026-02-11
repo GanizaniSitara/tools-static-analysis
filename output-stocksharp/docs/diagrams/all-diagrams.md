@@ -311,10 +311,12 @@ graph TD
     subgraph sg_Engine["Engine (1)"]
         Algo["Algo"]
     end
-    subgraph sg_DataAccess["DataAccess (3)"]
+    subgraph sg_DataAccess["DataAccess (2)"]
         BusinessEntities["BusinessEntities"]
         Messages["Messages"]
-        Reporting["Reporting"]
+    end
+    subgraph sg_Infrastructure["Infrastructure (1)"]
+        Configuration["Configuration"]
     end
     subgraph sg_Unclassified["Unclassified (1)"]
         Charting_Interfaces["Charting.Interfaces"]
@@ -322,6 +324,8 @@ graph TD
     grp_Candles --> Algo
     Algo --> Charting_Interfaces
     Charting_Interfaces --> BusinessEntities
+    Algo --> Configuration
+    Configuration --> Messages
     grp_Testing --> Algo
     grp_Strategies --> Algo
     grp_Other --> Algo
@@ -329,6 +333,14 @@ graph TD
     grp_Indicators --> Algo
     grp_Basic --> Algo
     grp_Chart --> Algo
-    Algo --> Reporting
-    Reporting --> Messages
+```
+
+## field traceability
+
+```mermaid
+graph TD
+    subgraph XAML["XAML Views"]
+        xaml_MainWindow_TimeZone["MainWindow\nTimeZone"]
+        xaml_MainWindow_Title["MainWindow\nTitle"]
+    end
 ```
