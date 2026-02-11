@@ -256,7 +256,7 @@ def generate_category_detail_mermaid(category: str) -> str:
 
 def _category_detail_full(category: str, cat_nodes: list, cat_ids: set, node_type: dict) -> str:
     """Render individual project nodes for small categories."""
-    lines = ["graph TD"]
+    lines = ["graph LR"]
 
     # Category subgraph
     cat_label = category[0].upper() + category[1:]
@@ -312,7 +312,7 @@ def _category_detail_full(category: str, cat_nodes: list, cat_ids: set, node_typ
 
 def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_type: dict) -> str:
     """Group projects by name prefix (first 2 dot-segments) for large categories."""
-    lines = ["graph TD"]
+    lines = ["graph LR"]
 
     # Group by prefix
     groups: dict[str, list] = {}
