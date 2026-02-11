@@ -83,6 +83,19 @@
   }
   .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
   .mermaid-wrap svg { max-width: none !important; height: auto; transform-origin: top left; }
+  .flowchart-link { transition: stroke 0.15s, stroke-width 0.15s, opacity 0.15s; }
+  .edge-hover-target { stroke: transparent; stroke-width: 15px; fill: none; cursor: pointer; pointer-events: stroke; }
+  .flowchart-link.edge-highlight { stroke: #3b82f6 !important; stroke-width: 3px !important; }
+  .edgePaths:has(.flowchart-link:hover) .flowchart-link:not(:hover) { opacity: 0.15; }
+  .edge-tooltip {
+    position: fixed; background: #1e293b; color: #e2e8f0; border: 1px solid #3b82f6;
+    border-radius: 6px; padding: 0.4rem 0.7rem; font-size: 0.8rem; pointer-events: none;
+    z-index: 1000; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+  }
+  .edge-tooltip .edge-from { color: #60a5fa; }
+  .edge-tooltip .edge-to { color: #34d399; }
+  .edge-tooltip .edge-arrow { color: #94a3b8; margin: 0 0.3rem; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -123,6 +136,7 @@
 </style>
 </head>
 <body>
+<div class="edge-tooltip" id="edgeTooltip"></div>
 
 <header class="header">
   <div class="header-top">
@@ -529,6 +543,91 @@ graph TD
 
 <script>
 var diagramZoomLevels = {};
+
+function attachEdgeTooltips(svg) {
+  var tooltip = document.getElementById('edgeTooltip');
+  if (!tooltip) return;
+
+  // Build node ID -> display name lookup from rendered nodes
+  var nodeNames = {};
+  svg.querySelectorAll('.node').forEach(function (n) {
+    var match = n.id.match(/^flowchart-(.+)-\d+$/);
+    if (match) {
+      nodeNames[match[1]] = n.textContent.trim();
+    }
+  });
+
+  // Get sorted node keys longest-first for greedy matching
+  var nodeKeys = Object.keys(nodeNames).sort(function (a, b) { return b.length - a.length; });
+
+  function resolveEdgeEndpoints(edgeId) {
+    var inner = edgeId.replace(/^L_/, '').replace(/_\d+$/, '');
+    for (var i = 0; i < nodeKeys.length; i++) {
+      var key = nodeKeys[i];
+      if (inner.indexOf(key) === 0) {
+        var rest = inner.substring(key.length + 1);
+        if (nodeNames[rest] !== undefined) {
+          return { from: nodeNames[key], to: nodeNames[rest] };
+        }
+      }
+    }
+    return null;
+  }
+
+  // For each edge path, create a wider invisible hover target and attach events
+  var edgePaths = svg.querySelector('.edgePaths');
+  if (!edgePaths) return;
+
+  svg.querySelectorAll('.flowchart-link').forEach(function (edge) {
+    if (!edge.id) return;
+
+    // Clone the path as a wider invisible hover target
+    var hitArea = edge.cloneNode(false);
+    hitArea.removeAttribute('id');
+    hitArea.removeAttribute('marker-end');
+    hitArea.setAttribute('class', 'edge-hover-target');
+    hitArea.removeAttribute('style');
+    edge.parentNode.insertBefore(hitArea, edge);
+
+    function showTip(e) {
+      var ep = resolveEdgeEndpoints(edge.id);
+      if (!ep) return;
+      tooltip.innerHTML = '<span class="edge-from">' + ep.from + '</span>'
+        + '<span class="edge-arrow"> &#8594; </span>'
+        + '<span class="edge-to">' + ep.to + '</span>';
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY - 10) + 'px';
+      edge.classList.add('edge-highlight');
+      // Dim other edges
+      svg.querySelectorAll('.flowchart-link').forEach(function (other) {
+        if (other !== edge) other.style.opacity = '0.15';
+      });
+    }
+
+    function moveTip(e) {
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY - 10) + 'px';
+    }
+
+    function hideTip() {
+      tooltip.style.display = 'none';
+      edge.classList.remove('edge-highlight');
+      svg.querySelectorAll('.flowchart-link').forEach(function (other) {
+        other.style.opacity = '';
+      });
+    }
+
+    hitArea.addEventListener('mouseenter', showTip);
+    hitArea.addEventListener('mousemove', moveTip);
+    hitArea.addEventListener('mouseleave', hideTip);
+    // Also attach to the edge itself for direct hover
+    edge.addEventListener('mouseenter', showTip);
+    edge.addEventListener('mousemove', moveTip);
+    edge.addEventListener('mouseleave', hideTip);
+  });
+}
+
 function zoomDiagram(containerId, delta) {
   if (delta === 0) { diagramZoomLevels[containerId] = 1; }
   else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
@@ -618,6 +717,7 @@ function zoomDiagram(containerId, delta) {
             svg.style.maxWidth = 'none';
             svg.removeAttribute('width');
           }
+          attachEdgeTooltips(svg);
         }
       }).catch(function (err) {
         console.error('Mermaid render error for ' + tabId + ':', err);
