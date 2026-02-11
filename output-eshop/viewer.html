@@ -6,7 +6,7 @@
 <title>src, tests — Dependency Map</title>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 100000 });
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 200000, maxEdges: 600 });
   window.mermaidAPI = mermaid;
 </script>
 <style>
@@ -74,11 +74,11 @@
   }
   .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
   .mermaid-wrap {
-    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
-    min-height: 120px;
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
+    min-height: 120px; max-height: 80vh;
   }
   .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
-  .mermaid-wrap svg { max-width: none; height: auto; transform-origin: top left; }
+  .mermaid-wrap svg { max-width: none !important; height: auto; transform-origin: top left; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -660,7 +660,22 @@ function zoomDiagram(containerId, delta) {
       var loading = container.querySelector('.loading');
       pre.style.display = '';
       if (loading) loading.style.display = 'none';
-      window.mermaidAPI.run({ nodes: [pre] }).catch(function (err) {
+      window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+        // Fix SVG sizing: use natural viewBox width instead of 100%
+        var svg = container.querySelector('svg');
+        if (svg) {
+          var vb = svg.getAttribute('viewBox');
+          if (vb) {
+            var parts = vb.split(' ');
+            var naturalWidth = parseFloat(parts[2]);
+            var naturalHeight = parseFloat(parts[3]);
+            svg.style.width = naturalWidth + 'px';
+            svg.style.height = naturalHeight + 'px';
+            svg.style.maxWidth = 'none';
+            svg.removeAttribute('width');
+          }
+        }
+      }).catch(function (err) {
         console.error('Mermaid render error for ' + tabId + ':', err);
         if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
       });

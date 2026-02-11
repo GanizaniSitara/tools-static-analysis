@@ -367,11 +367,6 @@ def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_
                 key = (from_grp, to_grp)
                 group_edges[key] = group_edges.get(key, 0) + 1
 
-    for (from_grp, to_grp), count in sorted(group_edges.items(), key=lambda x: -x[1]):
-        from_id = sanitize_id(f"grp_{from_grp}")
-        to_id = sanitize_id(f"grp_{to_grp}")
-        lines.append(f"    {from_id} -->|{count}| {to_id}")
-
     # Aggregate edges to/from external category groups
     ext_edges_out: dict[tuple[str, str], int] = {}
     ext_edges_in: dict[tuple[str, str], int] = {}
@@ -389,12 +384,36 @@ def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_
                 key = (from_type, to_grp)
                 ext_edges_in[key] = ext_edges_in.get(key, 0) + 1
 
+    # Determine minimum edge count to stay under Mermaid's 500-edge limit
+    all_edge_counts = (
+        list(group_edges.values())
+        + list(ext_edges_out.values())
+        + list(ext_edges_in.values())
+    )
+    MAX_EDGES = 400
+    min_count = 1
+    if len(all_edge_counts) > MAX_EDGES:
+        min_count = 2
+        while sum(1 for c in all_edge_counts if c >= min_count) > MAX_EDGES:
+            min_count += 1
+
+    for (from_grp, to_grp), count in sorted(group_edges.items(), key=lambda x: -x[1]):
+        if count < min_count:
+            continue
+        from_id = sanitize_id(f"grp_{from_grp}")
+        to_id = sanitize_id(f"grp_{to_grp}")
+        lines.append(f"    {from_id} -->|{count}| {to_id}")
+
     for (from_grp, to_type), count in ext_edges_out.items():
+        if count < min_count:
+            continue
         from_id = sanitize_id(f"grp_{from_grp}")
         to_id = f"ext_{sanitize_id(to_type)}"
         lines.append(f"    {from_id} -.->|{count}| {to_id}")
 
     for (from_type, to_grp), count in ext_edges_in.items():
+        if count < min_count:
+            continue
         from_id = f"ext_{sanitize_id(from_type)}"
         to_id = sanitize_id(f"grp_{to_grp}")
         lines.append(f"    {from_id} -.->|{count}| {to_id}")
