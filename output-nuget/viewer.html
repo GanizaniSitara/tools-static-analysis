@@ -883,11 +883,11 @@ function attachEdgeTooltips(svg) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
       if (!ep) return;
-      // Only open detail panel for project-to-project edges
       var meta = (window._projData || {}).meta || [];
       var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
       var toIsProject = meta.some(function (m) { return m.project === ep.to; });
-      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
+      if (fromIsProject && toIsProject) { showEdgeDetail(ep.from, ep.to); }
+      else { showDataFlowDetail(ep.from, ep.to, fromIsProject, toIsProject); }
     }
 
     hitArea.addEventListener('mouseenter', showTip);
@@ -1064,6 +1064,101 @@ function showEdgeDetail(fromName, toName) {
     html += '<div class="detail-empty">No shared data flow connections</div>';
   }
   html += '</div>';
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = document.getElementById('detailCloseBtn');
+  if (closeBtn) closeBtn.addEventListener('click', function () { panel.style.display = 'none'; });
+}
+
+function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {
+  var panel = document.getElementById('edgeDetailPanel');
+  if (!panel) return;
+  var df = window._dataFlow || {};
+  var nodes = df.dataNodes || [];
+  var implied = df.impliedDependencies || [];
+
+  // Determine which is the project and which is the data node
+  var projectName = fromIsProject ? fromName : toName;
+  var dataName = fromIsProject ? toName : fromName;
+
+  // Find matching data node (match by name since Mermaid shows display names)
+  var dataNode = nodes.find(function (n) { return n.name === dataName; });
+
+  var html = '<div class="detail-header"><h3>Data Flow Detail</h3>'
+    + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
+
+  // Edge direction
+  html += '<div class="detail-section"><div class="detail-flow">'
+    + '<span class="' + (fromIsProject ? 'from' : 'to') + '">' + escHtmlGlobal(fromName) + '</span>'
+    + '<span class="arrow">&#8594;</span>'
+    + '<span class="' + (toIsProject ? 'from' : 'to') + '">' + escHtmlGlobal(toName) + '</span>'
+    + '</div></div>';
+
+  if (dataNode) {
+    // Data node info
+    html += '<div class="detail-section"><h4>' + escHtmlGlobal(dataNode.type) + ': ' + escHtmlGlobal(dataNode.name) + '</h4>';
+    html += '<div style="font-size:0.78rem;color:#94a3b8;margin-bottom:0.4rem;">Infrastructure: ' + escHtmlGlobal(dataNode.infrastructure) + '</div>';
+
+    // Writers
+    var writers = dataNode.writers || [];
+    if (writers.length > 0) {
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#f59e0b;font-size:0.78rem;">&#9654; Writers:</strong> ';
+      html += writers.map(function (w) {
+        var style = w === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        return '<span style="' + style + '">' + escHtmlGlobal(w) + '</span>';
+      }).join(', ');
+      html += '</div>';
+    }
+
+    // Readers
+    var readers = dataNode.readers || [];
+    if (readers.length > 0) {
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#3b82f6;font-size:0.78rem;">&#9664; Readers:</strong> ';
+      html += readers.map(function (r) {
+        var style = r === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        return '<span style="' + style + '">' + escHtmlGlobal(r) + '</span>';
+      }).join(', ');
+      html += '</div>';
+    }
+
+    // Exposers
+    var exposers = dataNode.exposers || [];
+    if (exposers.length > 0) {
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#10b981;font-size:0.78rem;">&#9650; Exposes:</strong> ';
+      html += exposers.map(function (x) {
+        var style = x === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        return '<span style="' + style + '">' + escHtmlGlobal(x) + '</span>';
+      }).join(', ');
+      html += '</div>';
+    }
+
+    // Consumers
+    var consumers = dataNode.consumers || [];
+    if (consumers.length > 0) {
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#8b5cf6;font-size:0.78rem;">&#9660; Consumers:</strong> ';
+      html += consumers.map(function (c) {
+        var style = c === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        return '<span style="' + style + '">' + escHtmlGlobal(c) + '</span>';
+      }).join(', ');
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Implied dependencies through this node
+    var nodeImplied = implied.filter(function (d) { return d.via === dataNode.name; });
+    if (nodeImplied.length > 0) {
+      html += '<div class="detail-section"><h4>Implied Dependencies</h4>';
+      html += '<ul class="detail-list">';
+      nodeImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to)
+          + ' <span style="color:#94a3b8">(' + escHtmlGlobal(d.viaType) + ')</span></li>';
+      });
+      html += '</ul></div>';
+    }
+  } else {
+    html += '<div class="detail-section"><div class="detail-empty">Data node details not available</div></div>';
+  }
 
   panel.innerHTML = html;
   panel.style.display = 'block';

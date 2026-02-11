@@ -2666,11 +2666,11 @@ graph LR
         OrchardCore_Facebook["OrchardCore.Facebook"]
         OrchardCore_Liquid["OrchardCore.Liquid"]
         OrchardCore_Notifications["OrchardCore.Notifications"]
-        OrchardCore_OpenId_Core["OrchardCore.OpenId.Core"]
         OrchardCore_Queries["OrchardCore.Queries"]
         OrchardCore_Search["OrchardCore.Search"]
         OrchardCore_Search_Elasticsearch["OrchardCore.Search.Elasticsearch"]
         OrchardCore_Search_Lucene["OrchardCore.Search.Lucene"]
+        OrchardCore_Tenants["OrchardCore.Tenants"]
         OrchardCore_Tests["OrchardCore.Tests"]
         OrchardCore_Twitter["OrchardCore.Twitter"]
         OrchardCore_UrlRewriting["OrchardCore.UrlRewriting"]
@@ -2678,12 +2678,9 @@ graph LR
     end
     subgraph Database["Database / Storage"]
         table_ContentItemIndex[("ContentItemIndex")]
-        table_the[("the")]
         table_tp_t[("tp_t")]
-        table_t1[("t1")]
         table_tp_d[("tp_d")]
         table_tp_b[("tp_b")]
-        table_tp_a[("tp_a")]
     end
     subgraph APIs["API Routes"]
         route_content(["content"])
@@ -2708,15 +2705,16 @@ graph LR
         route_Demo_About(["Demo/About"])
         route_Demo_Contact(["Demo/Contact"])
         route_api_demo(["api/demo"])
+        route_api_tenants(["api/tenants"])
+        route_create(["create"])
+        route_edit(["edit"])
+        route_disable__tenantName_(["disable/{tenantName}"])
     end
     table_ContentItemIndex -.->|read| OrchardCore_Queries
     table_ContentItemIndex -.->|read| OrchardCore_Tests
-    OrchardCore_OpenId_Core ==>|write| table_the
     table_tp_t -.->|read| OrchardCore_Tests
-    table_t1 -.->|read| OrchardCore_Tests
     table_tp_d -.->|read| OrchardCore_Tests
     table_tp_b -.->|read| OrchardCore_Tests
-    table_tp_a -.->|read| OrchardCore_Tests
     OrchardCore_Search_Elasticsearch ==>|expose| route_content
     OrchardCore_Search_Lucene ==>|expose| route_content
     OrchardCore_Search_Elasticsearch ==>|expose| route_documents
@@ -2741,6 +2739,10 @@ graph LR
     OrchardCore_Demo ==>|expose| route_Demo_About
     OrchardCore_Demo ==>|expose| route_Demo_Contact
     OrchardCore_Demo ==>|expose| route_api_demo
+    OrchardCore_Tenants ==>|expose| route_api_tenants
+    OrchardCore_Tenants ==>|expose| route_create
+    OrchardCore_Tenants ==>|expose| route_edit
+    OrchardCore_Tenants ==>|expose| route_disable__tenantName_
 ```
 
 ## nuget groups

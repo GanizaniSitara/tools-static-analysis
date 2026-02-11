@@ -177,11 +177,7 @@ graph LR
 ```mermaid
 graph LR
     subgraph Projects["Services & Projects"]
-        Algo_Analytics["Algo.Analytics"]
         Tests["Tests"]
-    end
-    subgraph Database["Database / Storage"]
-        table_to[("to")]
     end
     subgraph APIs["API Routes"]
         url_delete(["delete"])
@@ -190,7 +186,6 @@ graph LR
         url_test_example_com(["test@example.com"])
         url_TEST_EXAMPLE_COM(["TEST@EXAMPLE.COM"])
     end
-    Algo_Analytics ==>|write| table_to
     url_delete -.->|consume| Tests
     url_nonexistent -.->|consume| Tests
     url_TestStorage -.->|consume| Tests

@@ -435,18 +435,11 @@ graph LR
 ```mermaid
 graph LR
     subgraph Projects["Services & Projects"]
-        NuGet_CommandLine["NuGet.CommandLine"]
-        NuGet_PackageManagement_UI_Test["NuGet.PackageManagement.UI.Test"]
         NuGet_Packaging_Test["NuGet.Packaging.Test"]
-    end
-    subgraph Database["Database / Storage"]
-        table_the[("the")]
     end
     subgraph APIs["API Routes"]
         url_Aa_nuspec(["Aa.nuspec"])
     end
-    NuGet_CommandLine ==>|write| table_the
-    table_the -.->|read| NuGet_PackageManagement_UI_Test
     url_Aa_nuspec -.->|consume| NuGet_Packaging_Test
 ```
 
