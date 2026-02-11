@@ -1,0 +1,8 @@
+graph TD
+    subgraph tool["Tool"]
+        StockSharp_Localization_Extractor["Localization.Extractor"]
+        StockSharp_Localization_Generator["Localization.Generator"]
+        StockSharp_Media_Generator["Media.Generator"]
+    end
+    ext_library[/"→ Library (1)"/]
+    ext_library -.-> StockSharp_Media_Generator

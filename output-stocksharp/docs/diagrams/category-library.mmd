@@ -1,0 +1,80 @@
+graph TD
+    subgraph library["Library"]
+        StockSharp_Media_Names["Media.Names"]
+        StockSharp_Configuration["Configuration"]
+        StockSharp_Charting_Interfaces["Charting.Interfaces"]
+        StockSharp_Algo_Indicators["Algo.Indicators"]
+        StockSharp_Diagram_Core["Diagram.Core"]
+        StockSharp_Reporting["Reporting"]
+        StockSharp_Algo_Import["Algo.Import"]
+        StockSharp_Algo_Analytics_CSharp["Algo.Analytics.CSharp"]
+        StockSharp_BusinessEntities["BusinessEntities"]
+        StockSharp_Messages["Messages"]
+        StockSharp_Algo_Strategies["Algo.Strategies"]
+        StockSharp_Algo_Export["Algo.Export"]
+        StockSharp_Alerts_Interfaces["Alerts.Interfaces"]
+        StockSharp_Algo_Analytics["Algo.Analytics"]
+        StockSharp_Algo_Compilation["Algo.Compilation"]
+        StockSharp_Algo_Gpu["Algo.Gpu"]
+        StockSharp_Algo["Algo"]
+    end
+    ext_test[/"→ Test (10)"/]
+    ext_tool[/"→ Tool (1)"/]
+    ext_connector[/"→ Connector (7)"/]
+    StockSharp_Configuration --> StockSharp_Messages
+    StockSharp_Charting_Interfaces --> StockSharp_BusinessEntities
+    StockSharp_Algo_Indicators --> StockSharp_Algo
+    StockSharp_Diagram_Core --> StockSharp_Alerts_Interfaces
+    StockSharp_Diagram_Core --> StockSharp_Algo_Strategies
+    StockSharp_Diagram_Core --> StockSharp_Algo_Indicators
+    StockSharp_Reporting --> StockSharp_Messages
+    StockSharp_Algo_Import --> StockSharp_Algo
+    StockSharp_Algo_Analytics_CSharp --> StockSharp_Algo_Analytics
+    StockSharp_BusinessEntities --> StockSharp_Messages
+    StockSharp_Algo_Strategies --> StockSharp_Alerts_Interfaces
+    StockSharp_Algo_Export --> StockSharp_Algo_Indicators
+    StockSharp_Alerts_Interfaces --> StockSharp_BusinessEntities
+    StockSharp_Algo_Analytics --> StockSharp_Algo_Indicators
+    StockSharp_Algo_Compilation --> StockSharp_Configuration
+    StockSharp_Algo_Gpu --> StockSharp_Algo_Indicators
+    StockSharp_Algo --> StockSharp_Reporting
+    StockSharp_Algo --> StockSharp_Charting_Interfaces
+    StockSharp_Algo --> StockSharp_Configuration
+    ext_test -.-> StockSharp_Algo
+    StockSharp_Media_Names -.-> ext_tool
+    ext_test -.-> StockSharp_Algo_Analytics
+    ext_test -.-> StockSharp_Algo_Compilation
+    ext_test -.-> StockSharp_Algo_Export
+    ext_test -.-> StockSharp_Algo_Import
+    ext_test -.-> StockSharp_Algo_Gpu
+    ext_test -.-> StockSharp_Algo_Indicators
+    ext_test -.-> StockSharp_Algo_Strategies
+    ext_test -.-> StockSharp_Diagram_Core
+    ext_test -.-> StockSharp_Alerts_Interfaces
+    StockSharp_Algo_Strategies -.-> ext_test
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo_Indicators
+    ext_test -.-> StockSharp_Algo_Strategies
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo_Indicators
+    ext_test -.-> StockSharp_Algo_Strategies
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo
+    ext_test -.-> StockSharp_Algo
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names
+    ext_connector -.-> StockSharp_Messages
+    ext_connector -.-> StockSharp_Media_Names

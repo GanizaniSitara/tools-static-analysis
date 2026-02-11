@@ -347,41 +347,37 @@ def generate_viewer_html() -> str:
     repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
     title = ", ".join(repo_list) if repo_list else "Project"
 
-    # ── Collect all .mmd diagram files ──
+    # ── Collect two-level diagram tabs: overview + per-category ──
     diagrams_dir = os.path.join(OUT_DIR, "diagrams")
     diagram_tabs: list[dict] = []
-    diagram_tab_order = [
-        ("landscape", "Full Landscape", "Full Solution Dependency Graph"),
-        ("core-libraries", "Core Libraries", "Core Library Dependencies"),
-        ("data-infrastructure", "Data Infrastructure", "Data Infrastructure &amp; External Sources"),
-        ("nuget-groups", "NuGet Packages", "NuGet Package Groups"),
-    ]
-    for filename_stem, tab_label, card_title in diagram_tab_order:
-        mmd_path = os.path.join(diagrams_dir, f"{filename_stem}.mmd")
+
+    # Overview tab (category-level diagram)
+    overview_path = os.path.join(diagrams_dir, "overview.mmd")
+    if os.path.isfile(overview_path):
+        content = Path(overview_path).read_text(encoding="utf-8")
+        diagram_tabs.append({
+            "id": "overview",
+            "label": "Overview",
+            "title": "Category Overview",
+            "mermaid": content,
+        })
+
+    # Per-category tabs ordered by project count descending
+    skip_cats = {"Localization", "Sample"}
+    cat_counts = sorted(categories.items(), key=lambda x: -x[1])
+    for cat_name, count in cat_counts:
+        if cat_name in skip_cats:
+            continue
+        cat_key = cat_name.lower()
+        mmd_path = os.path.join(diagrams_dir, f"category-{cat_key}.mmd")
         if os.path.isfile(mmd_path):
             content = Path(mmd_path).read_text(encoding="utf-8")
             diagram_tabs.append({
-                "id": filename_stem.replace("-", ""),
-                "label": tab_label,
-                "title": card_title,
+                "id": f"cat_{sanitize_id(cat_key)}",
+                "label": f"{cat_name} ({count})",
+                "title": f"{cat_name} Projects ({count})",
                 "mermaid": content,
             })
-
-    # Also pick up any extra .mmd files not in the predefined list
-    known_stems = {t[0] for t in diagram_tab_order}
-    if os.path.isdir(diagrams_dir):
-        for fname in sorted(os.listdir(diagrams_dir)):
-            if fname.endswith(".mmd"):
-                stem = fname[:-4]
-                if stem not in known_stems:
-                    content = Path(os.path.join(diagrams_dir, fname)).read_text(encoding="utf-8")
-                    label = stem.replace("-", " ").title()
-                    diagram_tabs.append({
-                        "id": sanitize_id(stem),
-                        "label": label,
-                        "title": label,
-                        "mermaid": content,
-                    })
 
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
@@ -567,7 +563,7 @@ def generate_viewer_html() -> str:
 <title>{_esc_html(title)} — Dependency Map</title>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose' }});
+  mermaid.initialize({{ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 100000 }});
   window.mermaidAPI = mermaid;
 </script>
 <style>

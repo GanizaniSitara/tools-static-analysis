@@ -1,0 +1,38 @@
+graph TD
+    subgraph test["Test"]
+        StockSharp_Algo_Testing["Algo.Testing"]
+        StockSharp_Tests["Tests"]
+        StockSharp_04_Testing_HistoryConsole["04_Testing.HistoryConsole"]
+        StockSharp_04_Testing_HistoryConsole_fromsrc["04_Testing.HistoryConsole_fromsrc"]
+        StockSharp_02_Testing_Optimization["02_Testing.Optimization"]
+        StockSharp_02_Testing_Optimization_fromsrc["02_Testing.Optimization_fromsrc"]
+        StockSharp_01_Testing_History["01_Testing.History"]
+        StockSharp_01_Testing_History_fromsrc["01_Testing.History_fromsrc"]
+        StockSharp_03_Testing_RealTime_fromsrc["03_Testing.RealTime_fromsrc"]
+        StockSharp_03_Testing_RealTime["03_Testing.RealTime"]
+    end
+    ext_library[/"→ Library (10)"/]
+    StockSharp_Tests --> StockSharp_Algo_Testing
+    StockSharp_Algo_Testing -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    StockSharp_Tests -.-> ext_library
+    ext_library -.-> StockSharp_Algo_Testing
+    StockSharp_04_Testing_HistoryConsole -.-> ext_library
+    StockSharp_04_Testing_HistoryConsole -.-> ext_library
+    StockSharp_04_Testing_HistoryConsole -.-> ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
+    StockSharp_02_Testing_Optimization -.-> ext_library
+    StockSharp_02_Testing_Optimization_fromsrc -.-> ext_library
+    StockSharp_01_Testing_History -.-> ext_library
+    StockSharp_01_Testing_History_fromsrc -.-> ext_library
+    StockSharp_03_Testing_RealTime_fromsrc -.-> ext_library
+    StockSharp_03_Testing_RealTime -.-> ext_library

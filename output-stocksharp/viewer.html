@@ -6,7 +6,7 @@
 <title>StockSharp — Dependency Map</title>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 100000 });
   window.mermaidAPI = mermaid;
 </script>
 <style>
@@ -131,36 +131,47 @@
 </header>
 
 <nav class="tabs" id="tabNav">
-  <button class="tab-btn active" data-tab="landscape">Full Landscape</button>
-  <button class="tab-btn" data-tab="corelibraries">Core Libraries</button>
-  <button class="tab-btn" data-tab="datainfrastructure">Data Infrastructure</button>
-  <button class="tab-btn" data-tab="nugetgroups">NuGet Packages</button>
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="cat_library">Library (17)</button>
+  <button class="tab-btn" data-tab="cat_test">Test (10)</button>
+  <button class="tab-btn" data-tab="cat_connector">Connector (7)</button>
+  <button class="tab-btn" data-tab="cat_tool">Tool (3)</button>
+  <button class="tab-btn" data-tab="cat_desktopapp">DesktopApp (1)</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
 
 <main class="content">
 
-  <section class="tab-panel active" id="panel-landscape">
+  <section class="tab-panel active" id="panel-overview">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Full Solution Dependency Graph</div>
-      <div class="mermaid-wrap" id="mermaid-landscape">
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview</div>
+      <div class="mermaid-wrap" id="mermaid-overview">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph LR
-    subgraph Tests
-        StockSharp_Algo_Testing[&quot;Algo.Testing&quot;]
-        StockSharp_Tests[&quot;Tests&quot;]
-        StockSharp_04_Testing_HistoryConsole[&quot;04_Testing.HistoryConsole&quot;]
-        StockSharp_04_Testing_HistoryConsole_fromsrc[&quot;04_Testing.HistoryConsole_fromsrc&quot;]
-        StockSharp_02_Testing_Optimization[&quot;02_Testing.Optimization&quot;]
-        StockSharp_02_Testing_Optimization_fromsrc[&quot;02_Testing.Optimization_fromsrc&quot;]
-        StockSharp_01_Testing_History[&quot;01_Testing.History&quot;]
-        StockSharp_01_Testing_History_fromsrc[&quot;01_Testing.History_fromsrc&quot;]
-        StockSharp_03_Testing_RealTime_fromsrc[&quot;03_Testing.RealTime_fromsrc&quot;]
-        StockSharp_03_Testing_RealTime[&quot;03_Testing.RealTime&quot;]
-    end
-    subgraph Librarys
+    library[&quot;Library (17)&quot;]
+    test[&quot;Test (10)&quot;]
+    connector[&quot;Connector (7)&quot;]
+    tool[&quot;Tool (3)&quot;]
+    desktopapp[&quot;Desktopapp (1)&quot;]
+    test --&gt;|22| library
+    connector --&gt;|14| library
+    library --&gt;|1| tool
+    library --&gt;|1| test
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_library">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (17)</div>
+      <div class="mermaid-wrap" id="mermaid-cat_library">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph library[&quot;Library&quot;]
         StockSharp_Media_Names[&quot;Media.Names&quot;]
         StockSharp_Configuration[&quot;Configuration&quot;]
         StockSharp_Charting_Interfaces[&quot;Charting.Interfaces&quot;]
@@ -179,15 +190,128 @@ graph LR
         StockSharp_Algo_Gpu[&quot;Algo.Gpu&quot;]
         StockSharp_Algo[&quot;Algo&quot;]
     end
-    subgraph Tools
-        StockSharp_Localization_Extractor[&quot;Localization.Extractor&quot;]
-        StockSharp_Localization_Generator[&quot;Localization.Generator&quot;]
-        StockSharp_Media_Generator[&quot;Media.Generator&quot;]
+    ext_test[/&quot;→ Test (10)&quot;/]
+    ext_tool[/&quot;→ Tool (1)&quot;/]
+    ext_connector[/&quot;→ Connector (7)&quot;/]
+    StockSharp_Configuration --&gt; StockSharp_Messages
+    StockSharp_Charting_Interfaces --&gt; StockSharp_BusinessEntities
+    StockSharp_Algo_Indicators --&gt; StockSharp_Algo
+    StockSharp_Diagram_Core --&gt; StockSharp_Alerts_Interfaces
+    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Strategies
+    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Indicators
+    StockSharp_Reporting --&gt; StockSharp_Messages
+    StockSharp_Algo_Import --&gt; StockSharp_Algo
+    StockSharp_Algo_Analytics_CSharp --&gt; StockSharp_Algo_Analytics
+    StockSharp_BusinessEntities --&gt; StockSharp_Messages
+    StockSharp_Algo_Strategies --&gt; StockSharp_Alerts_Interfaces
+    StockSharp_Algo_Export --&gt; StockSharp_Algo_Indicators
+    StockSharp_Alerts_Interfaces --&gt; StockSharp_BusinessEntities
+    StockSharp_Algo_Analytics --&gt; StockSharp_Algo_Indicators
+    StockSharp_Algo_Compilation --&gt; StockSharp_Configuration
+    StockSharp_Algo_Gpu --&gt; StockSharp_Algo_Indicators
+    StockSharp_Algo --&gt; StockSharp_Reporting
+    StockSharp_Algo --&gt; StockSharp_Charting_Interfaces
+    StockSharp_Algo --&gt; StockSharp_Configuration
+    ext_test -.-&gt; StockSharp_Algo
+    StockSharp_Media_Names -.-&gt; ext_tool
+    ext_test -.-&gt; StockSharp_Algo_Analytics
+    ext_test -.-&gt; StockSharp_Algo_Compilation
+    ext_test -.-&gt; StockSharp_Algo_Export
+    ext_test -.-&gt; StockSharp_Algo_Import
+    ext_test -.-&gt; StockSharp_Algo_Gpu
+    ext_test -.-&gt; StockSharp_Algo_Indicators
+    ext_test -.-&gt; StockSharp_Algo_Strategies
+    ext_test -.-&gt; StockSharp_Diagram_Core
+    ext_test -.-&gt; StockSharp_Alerts_Interfaces
+    StockSharp_Algo_Strategies -.-&gt; ext_test
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo_Indicators
+    ext_test -.-&gt; StockSharp_Algo_Strategies
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo_Indicators
+    ext_test -.-&gt; StockSharp_Algo_Strategies
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo
+    ext_test -.-&gt; StockSharp_Algo
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+    ext_connector -.-&gt; StockSharp_Messages
+    ext_connector -.-&gt; StockSharp_Media_Names
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_test">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (10)</div>
+      <div class="mermaid-wrap" id="mermaid-cat_test">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph test[&quot;Test&quot;]
+        StockSharp_Algo_Testing[&quot;Algo.Testing&quot;]
+        StockSharp_Tests[&quot;Tests&quot;]
+        StockSharp_04_Testing_HistoryConsole[&quot;04_Testing.HistoryConsole&quot;]
+        StockSharp_04_Testing_HistoryConsole_fromsrc[&quot;04_Testing.HistoryConsole_fromsrc&quot;]
+        StockSharp_02_Testing_Optimization[&quot;02_Testing.Optimization&quot;]
+        StockSharp_02_Testing_Optimization_fromsrc[&quot;02_Testing.Optimization_fromsrc&quot;]
+        StockSharp_01_Testing_History[&quot;01_Testing.History&quot;]
+        StockSharp_01_Testing_History_fromsrc[&quot;01_Testing.History_fromsrc&quot;]
+        StockSharp_03_Testing_RealTime_fromsrc[&quot;03_Testing.RealTime_fromsrc&quot;]
+        StockSharp_03_Testing_RealTime[&quot;03_Testing.RealTime&quot;]
     end
-    subgraph Desktopapps
-        StockSharp_Media[&quot;Media&quot;]
-    end
-    subgraph Connectors
+    ext_library[/&quot;→ Library (10)&quot;/]
+    StockSharp_Tests --&gt; StockSharp_Algo_Testing
+    StockSharp_Algo_Testing -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    StockSharp_Tests -.-&gt; ext_library
+    ext_library -.-&gt; StockSharp_Algo_Testing
+    StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
+    StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
+    StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
+    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
+    StockSharp_02_Testing_Optimization -.-&gt; ext_library
+    StockSharp_02_Testing_Optimization_fromsrc -.-&gt; ext_library
+    StockSharp_01_Testing_History -.-&gt; ext_library
+    StockSharp_01_Testing_History_fromsrc -.-&gt; ext_library
+    StockSharp_03_Testing_RealTime_fromsrc -.-&gt; ext_library
+    StockSharp_03_Testing_RealTime -.-&gt; ext_library
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_connector">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Connector Projects (7)</div>
+      <div class="mermaid-wrap" id="mermaid-cat_connector">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph connector[&quot;Connector&quot;]
         StockSharp_Coinbase[&quot;Coinbase&quot;]
         StockSharp_Bitexbook[&quot;Bitexbook&quot;]
         StockSharp_Tinkoff[&quot;Tinkoff&quot;]
@@ -196,209 +320,54 @@ graph LR
         StockSharp_Btce[&quot;Btce&quot;]
         StockSharp_FTX[&quot;FTX&quot;]
     end
-    StockSharp_Algo_Testing --&gt; StockSharp_Algo
-    StockSharp_Media_Names --&gt; StockSharp_Media_Generator
-    StockSharp_Configuration --&gt; StockSharp_Messages
-    StockSharp_Charting_Interfaces --&gt; StockSharp_BusinessEntities
-    StockSharp_Algo_Indicators --&gt; StockSharp_Algo
-    StockSharp_Diagram_Core --&gt; StockSharp_Alerts_Interfaces
-    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Strategies
-    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Indicators
-    StockSharp_Reporting --&gt; StockSharp_Messages
-    StockSharp_Algo_Import --&gt; StockSharp_Algo
-    StockSharp_Algo_Analytics_CSharp --&gt; StockSharp_Algo_Analytics
-    StockSharp_Tests --&gt; StockSharp_Algo_Analytics
-    StockSharp_Tests --&gt; StockSharp_Algo_Compilation
-    StockSharp_Tests --&gt; StockSharp_Algo_Export
-    StockSharp_Tests --&gt; StockSharp_Algo_Import
-    StockSharp_Tests --&gt; StockSharp_Algo_Gpu
-    StockSharp_Tests --&gt; StockSharp_Algo_Indicators
-    StockSharp_Tests --&gt; StockSharp_Algo_Strategies
-    StockSharp_Tests --&gt; StockSharp_Algo_Testing
-    StockSharp_Tests --&gt; StockSharp_Diagram_Core
-    StockSharp_Tests --&gt; StockSharp_Alerts_Interfaces
-    StockSharp_BusinessEntities --&gt; StockSharp_Messages
-    StockSharp_Algo_Strategies --&gt; StockSharp_Alerts_Interfaces
-    StockSharp_Algo_Strategies --&gt; StockSharp_Algo_Testing
-    StockSharp_Algo_Export --&gt; StockSharp_Algo_Indicators
-    StockSharp_Alerts_Interfaces --&gt; StockSharp_BusinessEntities
-    StockSharp_Algo_Analytics --&gt; StockSharp_Algo_Indicators
-    StockSharp_Algo_Compilation --&gt; StockSharp_Configuration
-    StockSharp_Algo_Gpu --&gt; StockSharp_Algo_Indicators
-    StockSharp_04_Testing_HistoryConsole -.-&gt; StockSharp_Algo
-    StockSharp_04_Testing_HistoryConsole --&gt; StockSharp_Algo_Indicators
-    StockSharp_04_Testing_HistoryConsole --&gt; StockSharp_Algo_Strategies
-    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; StockSharp_Algo
-    StockSharp_04_Testing_HistoryConsole_fromsrc --&gt; StockSharp_Algo_Indicators
-    StockSharp_04_Testing_HistoryConsole_fromsrc --&gt; StockSharp_Algo_Strategies
-    StockSharp_02_Testing_Optimization -.-&gt; StockSharp_Algo
-    StockSharp_02_Testing_Optimization_fromsrc -.-&gt; StockSharp_Algo
-    StockSharp_01_Testing_History -.-&gt; StockSharp_Algo
-    StockSharp_01_Testing_History_fromsrc -.-&gt; StockSharp_Algo
-    StockSharp_03_Testing_RealTime_fromsrc -.-&gt; StockSharp_Algo
-    StockSharp_03_Testing_RealTime -.-&gt; StockSharp_Algo
-    StockSharp_Coinbase --&gt; StockSharp_Messages
-    StockSharp_Coinbase --&gt; StockSharp_Media_Names
-    StockSharp_Bitexbook --&gt; StockSharp_Messages
-    StockSharp_Bitexbook --&gt; StockSharp_Media_Names
-    StockSharp_Tinkoff --&gt; StockSharp_Messages
-    StockSharp_Tinkoff --&gt; StockSharp_Media_Names
-    StockSharp_BitStamp --&gt; StockSharp_Messages
-    StockSharp_BitStamp --&gt; StockSharp_Media_Names
-    StockSharp_Bitalong --&gt; StockSharp_Messages
-    StockSharp_Bitalong --&gt; StockSharp_Media_Names
-    StockSharp_Btce --&gt; StockSharp_Messages
-    StockSharp_Btce --&gt; StockSharp_Media_Names
-    StockSharp_FTX --&gt; StockSharp_Messages
-    StockSharp_FTX --&gt; StockSharp_Media_Names
-    StockSharp_Algo --&gt; StockSharp_Reporting
-    StockSharp_Algo --&gt; StockSharp_Charting_Interfaces
-    StockSharp_Algo --&gt; StockSharp_Configuration
+    ext_library[/&quot;→ Library (2)&quot;/]
+    StockSharp_Coinbase -.-&gt; ext_library
+    StockSharp_Coinbase -.-&gt; ext_library
+    StockSharp_Bitexbook -.-&gt; ext_library
+    StockSharp_Bitexbook -.-&gt; ext_library
+    StockSharp_Tinkoff -.-&gt; ext_library
+    StockSharp_Tinkoff -.-&gt; ext_library
+    StockSharp_BitStamp -.-&gt; ext_library
+    StockSharp_BitStamp -.-&gt; ext_library
+    StockSharp_Bitalong -.-&gt; ext_library
+    StockSharp_Bitalong -.-&gt; ext_library
+    StockSharp_Btce -.-&gt; ext_library
+    StockSharp_Btce -.-&gt; ext_library
+    StockSharp_FTX -.-&gt; ext_library
+    StockSharp_FTX -.-&gt; ext_library
         </pre>
       </div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-corelibraries">
+  <section class="tab-panel" id="panel-cat_tool">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Core Library Dependencies</div>
-      <div class="mermaid-wrap" id="mermaid-corelibraries">
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (3)</div>
+      <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph TD
-    StockSharp_Media_Names[&quot;Media.Names&quot;]
-    StockSharp_Configuration[&quot;Configuration&quot;]
-    StockSharp_Charting_Interfaces[&quot;Charting.Interfaces&quot;]
-    StockSharp_Algo_Indicators[&quot;Algo.Indicators&quot;]
-    StockSharp_Diagram_Core[&quot;Diagram.Core&quot;]
-    StockSharp_Reporting[&quot;Reporting&quot;]
-    StockSharp_Algo_Import[&quot;Algo.Import&quot;]
-    StockSharp_Algo_Analytics_CSharp[&quot;Algo.Analytics.CSharp&quot;]
-    StockSharp_BusinessEntities[&quot;BusinessEntities&quot;]
-    StockSharp_Messages[&quot;Messages&quot;]
-    StockSharp_Algo_Strategies[&quot;Algo.Strategies&quot;]
-    StockSharp_Algo_Export[&quot;Algo.Export&quot;]
-    StockSharp_Alerts_Interfaces[&quot;Alerts.Interfaces&quot;]
-    StockSharp_Algo_Analytics[&quot;Algo.Analytics&quot;]
-    StockSharp_Algo_Compilation[&quot;Algo.Compilation&quot;]
-    StockSharp_Algo_Gpu[&quot;Algo.Gpu&quot;]
-    StockSharp_Algo[&quot;Algo&quot;]
-    StockSharp_Configuration --&gt; StockSharp_Messages
-    StockSharp_Charting_Interfaces --&gt; StockSharp_BusinessEntities
-    StockSharp_Algo_Indicators --&gt; StockSharp_Algo
-    StockSharp_Diagram_Core --&gt; StockSharp_Alerts_Interfaces
-    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Strategies
-    StockSharp_Diagram_Core --&gt; StockSharp_Algo_Indicators
-    StockSharp_Reporting --&gt; StockSharp_Messages
-    StockSharp_Algo_Import --&gt; StockSharp_Algo
-    StockSharp_Algo_Analytics_CSharp --&gt; StockSharp_Algo_Analytics
-    StockSharp_BusinessEntities --&gt; StockSharp_Messages
-    StockSharp_Algo_Strategies --&gt; StockSharp_Alerts_Interfaces
-    StockSharp_Algo_Export --&gt; StockSharp_Algo_Indicators
-    StockSharp_Alerts_Interfaces --&gt; StockSharp_BusinessEntities
-    StockSharp_Algo_Analytics --&gt; StockSharp_Algo_Indicators
-    StockSharp_Algo_Compilation --&gt; StockSharp_Configuration
-    StockSharp_Algo_Gpu --&gt; StockSharp_Algo_Indicators
-    StockSharp_Algo --&gt; StockSharp_Reporting
-    StockSharp_Algo --&gt; StockSharp_Charting_Interfaces
-    StockSharp_Algo --&gt; StockSharp_Configuration
+    subgraph tool[&quot;Tool&quot;]
+        StockSharp_Localization_Extractor[&quot;Localization.Extractor&quot;]
+        StockSharp_Localization_Generator[&quot;Localization.Generator&quot;]
+        StockSharp_Media_Generator[&quot;Media.Generator&quot;]
+    end
+    ext_library[/&quot;→ Library (1)&quot;/]
+    ext_library -.-&gt; StockSharp_Media_Generator
         </pre>
       </div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-datainfrastructure">
+  <section class="tab-panel" id="panel-cat_desktopapp">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Data Infrastructure &amp; External Sources</div>
-      <div class="mermaid-wrap" id="mermaid-datainfrastructure">
+      <div class="card-title"><span class="icon">&#9670;</span> DesktopApp Projects (1)</div>
+      <div class="mermaid-wrap" id="mermaid-cat_desktopapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph LR
-    subgraph Applications
+graph TD
+    subgraph desktopapp[&quot;Desktopapp&quot;]
         StockSharp_Media[&quot;Media&quot;]
-    end
-    subgraph DataSources
-        datasource_StockSharp_SqlClient[(&quot;SqlClient&quot;)]
-    end
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="tab-panel" id="panel-nugetgroups">
-    <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> NuGet Package Groups</div>
-      <div class="mermaid-wrap" id="mermaid-nugetgroups">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph LR
-    subgraph Ecng[&quot;Ecng&quot;]
-        nuget_Ecng_Configuration[&quot;Ecng.Configuration&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_Serialization[&quot;Ecng.Serialization&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_ComponentModel[&quot;Ecng.ComponentModel&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_Excel[&quot;Ecng.Excel&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_UnitTesting[&quot;Ecng.UnitTesting&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_Excel_OpenXml[&quot;Ecng.Excel.OpenXml&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_Data_Ado[&quot;Ecng.Data.Ado&lt;br/&gt;1.0.*&quot;]
-        nuget_Ecng_Drawing[&quot;Ecng.Drawing&lt;br/&gt;1.0.*&quot;]
-        Ecng_more[&quot;... +10 more&quot;]
-    end
-    subgraph StockSharp[&quot;StockSharp&quot;]
-        nuget_StockSharp_Samples_HistoryData[&quot;StockSharp.Samples.HistoryData&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Binance[&quot;StockSharp.Binance&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Okex[&quot;StockSharp.Okex&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_GateIO[&quot;StockSharp.GateIO&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Bitmex[&quot;StockSharp.Bitmex&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Fix[&quot;StockSharp.Fix&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Xaml_Charting[&quot;StockSharp.Xaml.Charting&lt;br/&gt;5.*&quot;]
-        nuget_StockSharp_Xaml[&quot;StockSharp.Xaml&lt;br/&gt;5.*&quot;]
-        StockSharp_more[&quot;... +3 more&quot;]
-    end
-    subgraph Microsoft[&quot;Microsoft&quot;]
-        nuget_Microsoft_NET_Test_Sdk[&quot;Microsoft.NET.Test.Sdk&lt;br/&gt;17.13.0&quot;]
-        nuget_Microsoft_Data_SqlClient[&quot;Microsoft.Data.SqlClient&lt;br/&gt;6.*&quot;]
-        nuget_Microsoft_CodeAnalysis_CSharp[&quot;Microsoft.CodeAnalysis.CSharp&lt;br/&gt;4.12.0&quot;]
-        nuget_Microsoft_CodeAnalysis_Analyzers[&quot;Microsoft.CodeAnalysis.Analyzers&lt;br/&gt;3.3.4&quot;]
-        nuget_Microsoft_Bcl_AsyncInterfaces[&quot;Microsoft.Bcl.AsyncInterfaces&lt;br/&gt;8.*&quot;]
-    end
-    subgraph MSTest[&quot;MSTest&quot;]
-        nuget_MSTest_TestAdapter[&quot;MSTest.TestAdapter&lt;br/&gt;3.11.1&quot;]
-        nuget_MSTest_TestFramework[&quot;MSTest.TestFramework&lt;br/&gt;3.11.1&quot;]
-    end
-    subgraph System[&quot;System&quot;]
-        nuget_System_Text_Json[&quot;System.Text.Json&lt;br/&gt;8.*&quot;]
-        nuget_System_Text_Encodings_Web[&quot;System.Text.Encodings.Web&lt;br/&gt;8.*&quot;]
-    end
-    subgraph MathNet[&quot;MathNet&quot;]
-        nuget_MathNet_Numerics_FSharp[&quot;MathNet.Numerics.FSharp&lt;br/&gt;6.0.0-beta2&quot;]
-        nuget_MathNet_Numerics[&quot;MathNet.Numerics&lt;br/&gt;6.0.0-beta2&quot;]
-    end
-    subgraph NuGet[&quot;NuGet&quot;]
-        nuget_NuGet_Configuration[&quot;NuGet.Configuration&lt;br/&gt;7.0.1&quot;]
-    end
-    subgraph Spectre[&quot;Spectre&quot;]
-        nuget_Spectre_Console_Cli[&quot;Spectre.Console.Cli&lt;br/&gt;0.48.0&quot;]
-    end
-    subgraph Moq[&quot;Moq&quot;]
-        nuget_Moq[&quot;Moq&lt;br/&gt;4.*&quot;]
-    end
-    subgraph IronPython[&quot;IronPython&quot;]
-        nuget_IronPython_StdLib[&quot;IronPython.StdLib&lt;br/&gt;3.4.2&quot;]
-    end
-    subgraph NumpyDotNet[&quot;NumpyDotNet&quot;]
-        nuget_NumpyDotNet[&quot;NumpyDotNet&lt;br/&gt;0.9.*&quot;]
-    end
-    subgraph FSharp[&quot;FSharp&quot;]
-        nuget_FSharp_Control_TaskSeq[&quot;FSharp.Control.TaskSeq&lt;br/&gt;0.*&quot;]
-    end
-    subgraph FSharpPlus[&quot;FSharpPlus&quot;]
-        nuget_FSharpPlus[&quot;FSharpPlus&lt;br/&gt;1.*&quot;]
-    end
-    subgraph ILGPU[&quot;ILGPU&quot;]
-        nuget_ILGPU_Algorithms[&quot;ILGPU.Algorithms&lt;br/&gt;1.*&quot;]
-    end
-    subgraph Grpc[&quot;Grpc&quot;]
-        nuget_Grpc_Net_Client[&quot;Grpc.Net.Client&lt;br/&gt;2.71.0&quot;]
     end
         </pre>
       </div>
@@ -544,7 +513,7 @@ graph LR
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'landscape': 'mermaid-landscape', 'corelibraries': 'mermaid-corelibraries', 'datainfrastructure': 'mermaid-datainfrastructure', 'nugetgroups': 'mermaid-nugetgroups' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool', 'cat_desktopapp': 'mermaid-cat_desktopapp' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];

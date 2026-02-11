@@ -1,0 +1,25 @@
+graph TD
+    subgraph connector["Connector"]
+        StockSharp_Coinbase["Coinbase"]
+        StockSharp_Bitexbook["Bitexbook"]
+        StockSharp_Tinkoff["Tinkoff"]
+        StockSharp_BitStamp["BitStamp"]
+        StockSharp_Bitalong["Bitalong"]
+        StockSharp_Btce["Btce"]
+        StockSharp_FTX["FTX"]
+    end
+    ext_library[/"→ Library (2)"/]
+    StockSharp_Coinbase -.-> ext_library
+    StockSharp_Coinbase -.-> ext_library
+    StockSharp_Bitexbook -.-> ext_library
+    StockSharp_Bitexbook -.-> ext_library
+    StockSharp_Tinkoff -.-> ext_library
+    StockSharp_Tinkoff -.-> ext_library
+    StockSharp_BitStamp -.-> ext_library
+    StockSharp_BitStamp -.-> ext_library
+    StockSharp_Bitalong -.-> ext_library
+    StockSharp_Bitalong -.-> ext_library
+    StockSharp_Btce -.-> ext_library
+    StockSharp_Btce -.-> ext_library
+    StockSharp_FTX -.-> ext_library
+    StockSharp_FTX -.-> ext_library

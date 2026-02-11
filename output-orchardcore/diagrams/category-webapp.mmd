@@ -1,0 +1,38 @@
+graph TD
+    subgraph webapp["Webapp"]
+        src_OrchardCore_Cms_Web["OrchardCore.Cms.Web"]
+        src_OrchardCore_Templates_Cms_Web["OrchardCore.Templates.Cms.Web"]
+        src_OrchardCore_Templates_Mvc_Web["OrchardCore.Templates.Mvc.Web"]
+        src_OrchardCore_Apis_GraphQL["OrchardCore.Apis.GraphQL"]
+        src_OrchardCore_Apis_GraphQL_Abstractions["OrchardCore.Apis.GraphQL.Abstractions"]
+        src_OrchardCore_Mvc_Web["OrchardCore.Mvc.Web"]
+    end
+    ext_library[/"→ Library (24)"/]
+    ext_test[/"→ Test (1)"/]
+    src_OrchardCore_Apis_GraphQL --> src_OrchardCore_Apis_GraphQL_Abstractions
+    src_OrchardCore_Cms_Web -.-> ext_library
+    src_OrchardCore_Cms_Web -.-> ext_library
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    src_OrchardCore_Apis_GraphQL -.-> ext_library
+    src_OrchardCore_Apis_GraphQL -.-> ext_library
+    src_OrchardCore_Apis_GraphQL -.-> ext_library
+    src_OrchardCore_Apis_GraphQL -.-> ext_library
+    src_OrchardCore_Apis_GraphQL -.-> ext_library
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    src_OrchardCore_Apis_GraphQL_Abstractions -.-> ext_library
+    src_OrchardCore_Apis_GraphQL_Abstractions -.-> ext_library
+    ext_library -.-> src_OrchardCore_Apis_GraphQL
+    ext_library -.-> src_OrchardCore_Apis_GraphQL_Abstractions
+    src_OrchardCore_Mvc_Web -.-> ext_library
+    src_OrchardCore_Mvc_Web -.-> ext_library
+    ext_test -.-> src_OrchardCore_Cms_Web
+    ext_test -.-> src_OrchardCore_Apis_GraphQL_Abstractions

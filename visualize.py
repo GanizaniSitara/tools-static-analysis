@@ -189,6 +189,216 @@ def generate_nuget_mermaid() -> str:
     return "\n".join(lines)
 
 
+# ─── Mermaid: Category overview ───────────────────────────────────────
+
+def generate_category_overview_mermaid() -> str:
+    """One node per category with count, edges between categories with aggregated counts."""
+    skip_types = {"localization", "sample"}
+    lines = ["graph LR"]
+
+    # Build node-id -> type lookup
+    node_type: dict[str, str] = {}
+    for n in project_nodes:
+        if n["type"] not in skip_types:
+            node_type[n["id"]] = n["type"]
+
+    # Count projects per category
+    cat_counts: dict[str, int] = {}
+    for n in project_nodes:
+        if n["type"] in skip_types:
+            continue
+        cat_counts[n["type"]] = cat_counts.get(n["type"], 0) + 1
+
+    # Aggregate edges between categories
+    cat_edges: dict[tuple[str, str], int] = {}
+    for e in deduped_refs:
+        from_type = node_type.get(e["from"])
+        to_type = node_type.get(e["to"])
+        if from_type and to_type and from_type != to_type:
+            key = (from_type, to_type)
+            cat_edges[key] = cat_edges.get(key, 0) + 1
+
+    # Emit nodes
+    for cat, count in sorted(cat_counts.items(), key=lambda x: -x[1]):
+        label = cat[0].upper() + cat[1:]
+        lines.append(f'    {sanitize_id(cat)}["{label} ({count})"]')
+
+    # Emit edges
+    for (from_cat, to_cat), count in sorted(cat_edges.items(), key=lambda x: -x[1]):
+        lines.append(f'    {sanitize_id(from_cat)} -->|{count}| {sanitize_id(to_cat)}')
+
+    return "\n".join(lines)
+
+
+# ─── Mermaid: Category detail ────────────────────────────────────────
+
+MAX_NODES = 50
+
+
+def generate_category_detail_mermaid(category: str) -> str:
+    """Per-category detail diagram. Full nodes if ≤MAX_NODES, prefix-grouped otherwise."""
+    skip_types = {"localization", "sample"}
+
+    cat_nodes = [n for n in project_nodes if n["type"] == category]
+    cat_ids = {n["id"] for n in cat_nodes}
+
+    # Build lookup of all non-skipped node ids to their type
+    node_type: dict[str, str] = {}
+    for n in project_nodes:
+        if n["type"] not in skip_types:
+            node_type[n["id"]] = n["type"]
+
+    if len(cat_nodes) <= MAX_NODES:
+        return _category_detail_full(category, cat_nodes, cat_ids, node_type)
+    else:
+        return _category_detail_grouped(category, cat_nodes, cat_ids, node_type)
+
+
+def _category_detail_full(category: str, cat_nodes: list, cat_ids: set, node_type: dict) -> str:
+    """Render individual project nodes for small categories."""
+    lines = ["graph TD"]
+
+    # Category subgraph
+    cat_label = category[0].upper() + category[1:]
+    lines.append(f'    subgraph {sanitize_id(category)}["{cat_label}"]')
+    for n in cat_nodes:
+        lines.append(f'        {sanitize_id(n["id"])}["{short_name(n)}"]')
+    lines.append("    end")
+
+    # Collect external nodes (nodes in other categories referenced by or referencing this category)
+    external_cats: dict[str, set] = {}  # other_cat -> set of node ids
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] not in cat_ids:
+            to_type = node_type.get(e["to"])
+            if to_type:
+                external_cats.setdefault(to_type, set()).add(e["to"])
+        elif e["to"] in cat_ids and e["from"] not in cat_ids:
+            from_type = node_type.get(e["from"])
+            if from_type:
+                external_cats.setdefault(from_type, set()).add(e["from"])
+
+    # Add external category group nodes
+    for ext_cat, ext_ids in external_cats.items():
+        ext_label = ext_cat[0].upper() + ext_cat[1:]
+        ext_node_id = f"ext_{sanitize_id(ext_cat)}"
+        lines.append(f'    {ext_node_id}[/"→ {ext_label} ({len(ext_ids)})"/]')
+
+    # Intra-category edges
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] in cat_ids:
+            style = " -.->" if e["type"] == "cross-repo-reference" else " -->"
+            lines.append(f"    {sanitize_id(e['from'])}{style} {sanitize_id(e['to'])}")
+
+    # Edges to/from external category groups
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] not in cat_ids:
+            to_type = node_type.get(e["to"])
+            if to_type:
+                ext_node_id = f"ext_{sanitize_id(to_type)}"
+                edge_key = (sanitize_id(e["from"]), ext_node_id)
+                lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
+        elif e["to"] in cat_ids and e["from"] not in cat_ids:
+            from_type = node_type.get(e["from"])
+            if from_type:
+                ext_node_id = f"ext_{sanitize_id(from_type)}"
+                edge_key = (ext_node_id, sanitize_id(e["to"]))
+                lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
+
+    return "\n".join(lines)
+
+
+def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_type: dict) -> str:
+    """Group projects by name prefix (first 2 dot-segments) for large categories."""
+    lines = ["graph TD"]
+
+    # Group by prefix
+    groups: dict[str, list] = {}
+    for n in cat_nodes:
+        name = short_name(n)
+        parts = name.split(".")
+        prefix = ".".join(parts[:2]) if len(parts) >= 2 else name
+        groups.setdefault(prefix, []).append(n)
+
+    # Build group id -> group key, and node id -> group key
+    node_to_group: dict[str, str] = {}
+    for prefix, nodes in groups.items():
+        for n in nodes:
+            node_to_group[n["id"]] = prefix
+
+    # Emit group nodes
+    cat_label = category[0].upper() + category[1:]
+    lines.append(f'    subgraph {sanitize_id(category)}["{cat_label}"]')
+    for prefix, nodes in sorted(groups.items(), key=lambda x: -len(x[1])):
+        gid = sanitize_id(f"grp_{prefix}")
+        if len(nodes) == 1:
+            label = short_name(nodes[0])
+        else:
+            label = f"{prefix} ({len(nodes)})"
+        lines.append(f'        {gid}["{label}"]')
+    lines.append("    end")
+
+    # Collect external categories
+    external_cats: dict[str, set] = {}
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] not in cat_ids:
+            to_type = node_type.get(e["to"])
+            if to_type:
+                external_cats.setdefault(to_type, set()).add(e["to"])
+        elif e["to"] in cat_ids and e["from"] not in cat_ids:
+            from_type = node_type.get(e["from"])
+            if from_type:
+                external_cats.setdefault(from_type, set()).add(e["from"])
+
+    for ext_cat, ext_ids in external_cats.items():
+        ext_label = ext_cat[0].upper() + ext_cat[1:]
+        ext_node_id = f"ext_{sanitize_id(ext_cat)}"
+        lines.append(f'    {ext_node_id}[/"→ {ext_label} ({len(ext_ids)})"/]')
+
+    # Aggregate intra-category edges between groups
+    group_edges: dict[tuple[str, str], int] = {}
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] in cat_ids:
+            from_grp = node_to_group.get(e["from"])
+            to_grp = node_to_group.get(e["to"])
+            if from_grp and to_grp and from_grp != to_grp:
+                key = (from_grp, to_grp)
+                group_edges[key] = group_edges.get(key, 0) + 1
+
+    for (from_grp, to_grp), count in sorted(group_edges.items(), key=lambda x: -x[1]):
+        from_id = sanitize_id(f"grp_{from_grp}")
+        to_id = sanitize_id(f"grp_{to_grp}")
+        lines.append(f"    {from_id} -->|{count}| {to_id}")
+
+    # Aggregate edges to/from external category groups
+    ext_edges_out: dict[tuple[str, str], int] = {}
+    ext_edges_in: dict[tuple[str, str], int] = {}
+    for e in deduped_refs:
+        if e["from"] in cat_ids and e["to"] not in cat_ids:
+            to_type = node_type.get(e["to"])
+            from_grp = node_to_group.get(e["from"])
+            if to_type and from_grp:
+                key = (from_grp, to_type)
+                ext_edges_out[key] = ext_edges_out.get(key, 0) + 1
+        elif e["to"] in cat_ids and e["from"] not in cat_ids:
+            from_type = node_type.get(e["from"])
+            to_grp = node_to_group.get(e["to"])
+            if from_type and to_grp:
+                key = (from_type, to_grp)
+                ext_edges_in[key] = ext_edges_in.get(key, 0) + 1
+
+    for (from_grp, to_type), count in ext_edges_out.items():
+        from_id = sanitize_id(f"grp_{from_grp}")
+        to_id = f"ext_{sanitize_id(to_type)}"
+        lines.append(f"    {from_id} -.->|{count}| {to_id}")
+
+    for (from_type, to_grp), count in ext_edges_in.items():
+        from_id = f"ext_{sanitize_id(from_type)}"
+        to_id = sanitize_id(f"grp_{to_grp}")
+        lines.append(f"    {from_id} -.->|{count}| {to_id}")
+
+    return "\n".join(lines)
+
+
 # ─── GraphViz DOT: Full landscape ───────────────────────────────────
 
 def generate_landscape_dot() -> str:
@@ -271,6 +481,19 @@ def main():
 
     for filename, content in mermaid_files.items():
         Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(content, encoding="utf-8")
+        print(f"  Wrote {filename}")
+
+    # Category overview + per-category detail diagrams
+    overview = generate_category_overview_mermaid()
+    Path(os.path.join(DIAGRAMS_DIR, "overview.mmd")).write_text(overview, encoding="utf-8")
+    print("  Wrote overview.mmd")
+
+    skip_types = {"localization", "sample"}
+    category_types = sorted({n["type"] for n in project_nodes if n["type"] not in skip_types})
+    for cat in category_types:
+        detail = generate_category_detail_mermaid(cat)
+        filename = f"category-{cat}.mmd"
+        Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(detail, encoding="utf-8")
         print(f"  Wrote {filename}")
 
     dot_files = {

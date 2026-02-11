@@ -1,0 +1,20 @@
+graph TD
+    subgraph service["Service"]
+        src_OrderProcessor["OrderProcessor"]
+        src_eShop_ServiceDefaults["eShop.ServiceDefaults"]
+    end
+    ext_webapp[/"→ Webapp (7)"/]
+    ext_application[/"→ Application (1)"/]
+    ext_library[/"→ Library (1)"/]
+    ext_tool[/"→ Tool (1)"/]
+    src_OrderProcessor --> src_eShop_ServiceDefaults
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_application -.-> src_OrderProcessor
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    src_OrderProcessor -.-> ext_library
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_webapp -.-> src_eShop_ServiceDefaults
+    ext_tool -.-> src_eShop_ServiceDefaults

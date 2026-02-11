@@ -1,0 +1,873 @@
+graph TD
+    subgraph library["Library"]
+        grp_OrchardCore_Search["OrchardCore.Search (10)"]
+        grp_OrchardCore_Media["OrchardCore.Media (7)"]
+        grp_OrchardCore_Email["OrchardCore.Email (5)"]
+        grp_OrchardCore_Templates["OrchardCore.Templates (4)"]
+        grp_OrchardCore_Deployment["OrchardCore.Deployment (4)"]
+        grp_OrchardCore_Sms["OrchardCore.Sms (4)"]
+        grp_OrchardCore_FileStorage["OrchardCore.FileStorage (4)"]
+        grp_OrchardCore_Application["OrchardCore.Application (4)"]
+        grp_OrchardCore_Data["OrchardCore.Data (4)"]
+        grp_OrchardCore_ContentManagement["OrchardCore.ContentManagement (4)"]
+        grp_OrchardCore_Queries["OrchardCore.Queries (3)"]
+        grp_OrchardCore_Setup["OrchardCore.Setup (3)"]
+        grp_OrchardCore_Users["OrchardCore.Users (3)"]
+        grp_OrchardCore_Notifications["OrchardCore.Notifications (3)"]
+        grp_OrchardCore_Rules["OrchardCore.Rules (3)"]
+        grp_OrchardCore_Contents["OrchardCore.Contents (3)"]
+        grp_OrchardCore_Roles["OrchardCore.Roles (3)"]
+        grp_OrchardCore_Recipes["OrchardCore.Recipes (3)"]
+        grp_OrchardCore_UrlRewriting["OrchardCore.UrlRewriting (3)"]
+        grp_OrchardCore_Indexing["OrchardCore.Indexing (3)"]
+        grp_OrchardCore_Feeds["OrchardCore.Feeds (3)"]
+        grp_OrchardCore_DisplayManagement["OrchardCore.DisplayManagement (3)"]
+        grp_OrchardCore_ResourceManagement["OrchardCore.ResourceManagement (3)"]
+        grp_OrchardCore_AdminMenu["OrchardCore.AdminMenu (2)"]
+        grp_OrchardCore_Shortcodes["OrchardCore.Shortcodes (2)"]
+        grp_OrchardCore_AuditTrail["OrchardCore.AuditTrail (2)"]
+        grp_OrchardCore_ContentPreview["OrchardCore.ContentPreview (2)"]
+        grp_OrchardCore_Settings["OrchardCore.Settings (2)"]
+        grp_OrchardCore_Navigation["OrchardCore.Navigation (2)"]
+        grp_OrchardCore_Features["OrchardCore.Features (2)"]
+        grp_OrchardCore_Taxonomies["OrchardCore.Taxonomies (2)"]
+        grp_OrchardCore_Flows["OrchardCore.Flows (2)"]
+        grp_OrchardCore_XmlRpc["OrchardCore.XmlRpc (2)"]
+        grp_OrchardCore_Workflows["OrchardCore.Workflows (2)"]
+        grp_OrchardCore_DynamicCache["OrchardCore.DynamicCache (2)"]
+        grp_OrchardCore_Mvc["OrchardCore.Mvc (2)"]
+        grp_OrchardCore_OpenId["OrchardCore.OpenId (2)"]
+        grp_OrchardCore_Admin["OrchardCore.Admin (2)"]
+        grp_OrchardCore_HealthChecks["OrchardCore.HealthChecks (2)"]
+        grp_OrchardCore_Autoroute["OrchardCore.Autoroute (2)"]
+        grp_OrchardCore_Liquid["OrchardCore.Liquid (2)"]
+        grp_OrchardCore_Sitemaps["OrchardCore.Sitemaps (2)"]
+        grp_OrchardCore_Seo["OrchardCore.Seo (2)"]
+        grp_OrchardCore_Markdown["OrchardCore.Markdown (2)"]
+        grp_OrchardCore_Scripting["OrchardCore.Scripting (2)"]
+        grp_OrchardCore_Redis["OrchardCore.Redis (2)"]
+        grp_OrchardCore_ReCaptcha["OrchardCore.ReCaptcha (2)"]
+        grp_OrchardCore_ContentTypes["OrchardCore.ContentTypes (2)"]
+        grp_OrchardCore_Infrastructure["OrchardCore.Infrastructure (2)"]
+        grp_OrchardCore_Logging["OrchardCore.Logging (2)"]
+        grp_TheComingSoonTheme["TheComingSoonTheme"]
+        grp_TheTheme["TheTheme"]
+        grp_TheBlogTheme["TheBlogTheme"]
+        grp_TheAdmin["TheAdmin"]
+        grp_TheAgencyTheme["TheAgencyTheme"]
+        grp_SafeMode["SafeMode"]
+        grp_OrchardCore_Docs["OrchardCore.Docs"]
+        grp_OrchardCore_ProjectTemplates["OrchardCore.ProjectTemplates"]
+        grp_OrchardCore_Resources["OrchardCore.Resources"]
+        grp_OrchardCore_Twitter["OrchardCore.Twitter"]
+        grp_OrchardCore_BackgroundTasks["OrchardCore.BackgroundTasks"]
+        grp_OrchardCore_PublishLater["OrchardCore.PublishLater"]
+        grp_OrchardCore_Microsoft["OrchardCore.Microsoft.Authentication"]
+        grp_OrchardCore_ArchiveLater["OrchardCore.ArchiveLater"]
+        grp_OrchardCore_MiniProfiler["OrchardCore.MiniProfiler"]
+        grp_OrchardCore_ResponseCompression["OrchardCore.ResponseCompression"]
+        grp_OrchardCore_Google["OrchardCore.Google"]
+        grp_OrchardCore_Themes["OrchardCore.Themes"]
+        grp_OrchardCore_ContentFields["OrchardCore.ContentFields"]
+        grp_OrchardCore_AdminDashboard["OrchardCore.AdminDashboard"]
+        grp_OrchardCore_ReverseProxy["OrchardCore.ReverseProxy"]
+        grp_OrchardCore_GitHub["OrchardCore.GitHub"]
+        grp_OrchardCore_Menu["OrchardCore.Menu"]
+        grp_OrchardCore_Alias["OrchardCore.Alias"]
+        grp_OrchardCore_Security["OrchardCore.Security"]
+        grp_OrchardCore_Lists["OrchardCore.Lists"]
+        grp_OrchardCore_AutoSetup["OrchardCore.AutoSetup"]
+        grp_OrchardCore_Facebook["OrchardCore.Facebook"]
+        grp_OrchardCore_Layers["OrchardCore.Layers"]
+        grp_OrchardCore_DataProtection["OrchardCore.DataProtection.Azure"]
+        grp_OrchardCore_Html["OrchardCore.Html"]
+        grp_OrchardCore_Diagnostics["OrchardCore.Diagnostics"]
+        grp_OrchardCore_Https["OrchardCore.Https"]
+        grp_OrchardCore_Title["OrchardCore.Title"]
+        grp_OrchardCore_HomeRoute["OrchardCore.HomeRoute"]
+        grp_OrchardCore_CustomSettings["OrchardCore.CustomSettings"]
+        grp_OrchardCore_Widgets["OrchardCore.Widgets"]
+        grp_OrchardCore_Spatial["OrchardCore.Spatial"]
+        grp_OrchardCore_Cors["OrchardCore.Cors"]
+        grp_OrchardCore_Forms["OrchardCore.Forms"]
+        grp_OrchardCore_Tenants["OrchardCore.Tenants"]
+        grp_OrchardCore_Placements["OrchardCore.Placements"]
+        grp_OrchardCore_Module["OrchardCore.Module.Targets"]
+        grp_OrchardCore_MetaWeblog["OrchardCore.MetaWeblog.Abstractions"]
+        grp_OrchardCore_Shells["OrchardCore.Shells.Azure"]
+        grp_OrchardCore_Configuration["OrchardCore.Configuration.KeyVault"]
+        grp_OrchardCore_Theme["OrchardCore.Theme.Targets"]
+        grp_OrchardCore["OrchardCore"]
+        grp_OrchardCore_Abstractions["OrchardCore.Abstractions"]
+    end
+    ext_webapp[/"→ Webapp (4)"/]
+    ext_tool[/"→ Tool (1)"/]
+    ext_test[/"→ Test (21)"/]
+    grp_OrchardCore_Search -->|11| grp_OrchardCore_Indexing
+    grp_OrchardCore_Search -->|8| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Media -->|6| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Search -->|6| grp_OrchardCore_Queries
+    grp_OrchardCore_ContentTypes -->|6| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Media -->|5| grp_OrchardCore_FileStorage
+    grp_OrchardCore_Media -->|5| grp_OrchardCore_Module
+    grp_OrchardCore_Taxonomies -->|5| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Search -->|5| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Contents -->|5| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Application -->|5| grp_OrchardCore_Media
+    grp_OrchardCore_Flows -->|4| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Search -->|4| grp_OrchardCore_Module
+    grp_OrchardCore_Search -->|4| grp_OrchardCore_Navigation
+    grp_OrchardCore_Autoroute -->|4| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Contents -->|4| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Layers -->|4| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Search -->|4| grp_OrchardCore_Contents
+    grp_OrchardCore_Search -->|4| grp_OrchardCore_Deployment
+    grp_OrchardCore_Application -->|4| grp_OrchardCore_Search
+    grp_OrchardCore_Data -->|4| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Queries -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Deployment -->|3| grp_OrchardCore_Data
+    grp_OrchardCore_Deployment -->|3| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Email -->|3| grp_OrchardCore_Admin
+    grp_OrchardCore_Email -->|3| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Email -->|3| grp_OrchardCore_Navigation
+    grp_OrchardCore_Email -->|3| grp_OrchardCore_Module
+    grp_OrchardCore_Media -->|3| grp_OrchardCore_Admin
+    grp_OrchardCore_Media -->|3| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Media -->|3| grp_OrchardCore_Navigation
+    grp_OrchardCore_Setup -->|3| grp_OrchardCore_Recipes
+    grp_OrchardCore_Workflows -->|3| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Users -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Users -->|3| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Search -->|3| grp_OrchardCore_Admin
+    grp_OrchardCore_Media -->|3| grp_OrchardCore_Indexing
+    grp_OrchardCore_Media -->|3| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ContentFields -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Notifications -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Menu -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Lists -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Search -->|3| grp_OrchardCore_ContentPreview
+    grp_OrchardCore_Search -->|3| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Seo -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Html -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Title -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Recipes -->|3| grp_OrchardCore_Data
+    grp_OrchardCore_Spatial -->|3| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Application -->|3| grp_OrchardCore_Email
+    grp_TheTheme -->|2| grp_OrchardCore_Users
+    grp_OrchardCore_AdminMenu -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_AdminMenu -->|2| grp_OrchardCore_Navigation
+    grp_OrchardCore_Deployment -->|2| grp_OrchardCore_Admin
+    grp_OrchardCore_Deployment -->|2| grp_OrchardCore_Module
+    grp_OrchardCore_Deployment -->|2| grp_OrchardCore_Navigation
+    grp_OrchardCore_Deployment -->|2| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ContentPreview -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Settings -->|2| grp_OrchardCore_Deployment
+    grp_OrchardCore_Navigation -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Features -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Taxonomies -->|2| grp_OrchardCore_Navigation
+    grp_OrchardCore_Setup -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_PublishLater -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_PublishLater -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Sms -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Sms -->|2| grp_OrchardCore_Module
+    grp_OrchardCore_Sms -->|2| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ArchiveLater -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_ArchiveLater -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Workflows -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Workflows -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Workflows -->|2| grp_OrchardCore_Liquid
+    grp_OrchardCore_Workflows -->|2| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Users -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Users -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Users -->|2| grp_OrchardCore_Sms
+    grp_OrchardCore_Users -->|2| grp_OrchardCore_Roles
+    grp_OrchardCore_Search -->|2| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ContentFields -->|2| grp_OrchardCore_Contents
+    grp_OrchardCore_OpenId -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Notifications -->|2| grp_OrchardCore_Users
+    grp_OrchardCore_Rules -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_AdminDashboard -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_AdminDashboard -->|2| grp_OrchardCore_Contents
+    grp_OrchardCore_Alias -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Liquid -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Lists -->|2| grp_OrchardCore_Contents
+    grp_OrchardCore_Contents -->|2| grp_OrchardCore_Deployment
+    grp_OrchardCore_Facebook -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Search -->|2| grp_OrchardCore_Liquid
+    grp_OrchardCore_Sitemaps -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Email -->|2| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Markdown -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Widgets -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Widgets -->|2| grp_OrchardCore_Contents
+    grp_OrchardCore_Templates -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Indexing -->|2| grp_OrchardCore_ContentPreview
+    grp_OrchardCore_Indexing -->|2| grp_OrchardCore_Deployment
+    grp_OrchardCore_Feeds -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_ReCaptcha -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_ReCaptcha -->|2| grp_OrchardCore_Users
+    grp_OrchardCore_Forms -->|2| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Tenants -->|2| grp_OrchardCore_Setup
+    grp_OrchardCore_Setup -->|2| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Indexing -->|2| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Indexing -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_FileStorage -->|2| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Notifications -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_DisplayManagement -->|2| grp_OrchardCore_Liquid
+    grp_OrchardCore_Application -->|2| grp_OrchardCore_Deployment
+    grp_OrchardCore_Application -->|2| grp_OrchardCore_Sms
+    grp_OrchardCore_UrlRewriting -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Infrastructure -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_Logging -->|2| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Search -->|2| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Contents -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_ContentManagement -->|2| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Roles -->|2| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_ContentManagement -->|2| grp_OrchardCore_Data
+    grp_OrchardCore_AuditTrail -->|2| grp_OrchardCore_ContentManagement
+    grp_TheComingSoonTheme -->|1| grp_OrchardCore_ResourceManagement
+    grp_TheComingSoonTheme -->|1| grp_OrchardCore_Theme
+    grp_TheComingSoonTheme -->|1| grp_OrchardCore_DisplayManagement
+    grp_TheTheme -->|1| grp_OrchardCore_Flows
+    grp_TheTheme -->|1| grp_OrchardCore_Notifications
+    grp_TheTheme -->|1| grp_OrchardCore_Themes
+    grp_TheTheme -->|1| grp_OrchardCore_Theme
+    grp_TheTheme -->|1| grp_OrchardCore_Admin
+    grp_TheTheme -->|1| grp_OrchardCore_ContentManagement
+    grp_TheTheme -->|1| grp_OrchardCore_ResourceManagement
+    grp_TheTheme -->|1| grp_OrchardCore_DisplayManagement
+    grp_TheTheme -->|1| grp_OrchardCore_Menu
+    grp_TheBlogTheme -->|1| grp_OrchardCore_Queries
+    grp_TheBlogTheme -->|1| grp_OrchardCore_Theme
+    grp_TheBlogTheme -->|1| grp_OrchardCore_DisplayManagement
+    grp_TheBlogTheme -->|1| grp_OrchardCore_ResourceManagement
+    grp_TheAdmin -->|1| grp_OrchardCore_Theme
+    grp_TheAdmin -->|1| grp_OrchardCore_DisplayManagement
+    grp_TheAdmin -->|1| grp_OrchardCore_ResourceManagement
+    grp_TheAdmin -->|1| grp_OrchardCore_Admin
+    grp_TheAdmin -->|1| grp_OrchardCore_Themes
+    grp_TheAdmin -->|1| grp_OrchardCore_Users
+    grp_TheAgencyTheme -->|1| grp_OrchardCore_ResourceManagement
+    grp_TheAgencyTheme -->|1| grp_OrchardCore_Theme
+    grp_TheAgencyTheme -->|1| grp_OrchardCore_DisplayManagement
+    grp_SafeMode -->|1| grp_OrchardCore_Theme
+    grp_SafeMode -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Resources -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Resources -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Resources -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_AdminMenu -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_AdminMenu -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_AdminMenu -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_AdminMenu -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_AdminMenu -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_AuditTrail -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_ContentPreview -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_ContentPreview -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_ContentPreview -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ContentPreview -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Twitter -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_BackgroundTasks -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Roles
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Setup
+    grp_OrchardCore_Navigation -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Navigation -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Features -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Taxonomies -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Setup -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Setup -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Setup -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Flows -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_XmlRpc -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_PublishLater -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_PublishLater -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_PublishLater -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_PublishLater -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Microsoft -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_ArchiveLater -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_ArchiveLater -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_ArchiveLater -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ArchiveLater -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Workflows -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Workflows -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Workflows -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Workflows -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_MiniProfiler -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_MiniProfiler -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_ResponseCompression -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Google -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_AuditTrail
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Email
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Setup
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Themes -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_DynamicCache -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_DynamicCache -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Mvc -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ContentFields -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Roles
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Rules -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Rules -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Rules -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_AdminDashboard -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_ReverseProxy -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_ReverseProxy -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ReverseProxy -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_ReverseProxy -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_HealthChecks -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Sitemaps
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_GitHub -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Menu -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Alias -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Security -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Security -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Security -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_AdminMenu
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Feeds
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Media
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Lists -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_AdminMenu
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_AuditTrail
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Feeds
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Sitemaps
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Contents -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_AutoSetup -->|1| grp_OrchardCore_Setup
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Facebook -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Layers -->|1| grp_OrchardCore_Rules
+    grp_OrchardCore_Search -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Search -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_ContentPreview
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_XmlRpc
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Seo
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Media
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_DataProtection -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_DataProtection -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Html -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Roles -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Diagnostics -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Diagnostics -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Email -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Email -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Https -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Https -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Https -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Https -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Title -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_MetaWeblog
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Markdown -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_HomeRoute -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_HomeRoute -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_HomeRoute -->|1| grp_OrchardCore_Mvc
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_CustomSettings -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Widgets -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Widgets -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Widgets -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Widgets -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Widgets -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Email -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Autoroute
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_ContentPreview
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Templates -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Scripting -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Redis -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Redis -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Spatial -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_Roles
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Cors -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Feeds -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Forms -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Forms -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Forms -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Forms -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Forms -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Search -->|1| grp_OrchardCore_Flows
+    grp_OrchardCore_ContentTypes -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_ContentTypes -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_ContentTypes -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_ContentTypes -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_ContentTypes -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Tenants -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Deployment
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Placements -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Shortcodes -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Indexing -->|1| grp_OrchardCore_Search
+    grp_OrchardCore_Module -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_FileStorage -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Notifications -->|1| grp_OrchardCore_Email
+    grp_OrchardCore_DisplayManagement -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_DisplayManagement -->|1| grp_OrchardCore_Mvc
+    grp_OrchardCore_Recipes -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_AdminDashboard
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_AdminMenu
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Alias
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ArchiveLater
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_AuditTrail
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Autoroute
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_AutoSetup
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_BackgroundTasks
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ContentFields
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ContentPreview
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ContentTypes
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Cors
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_CustomSettings
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_DataProtection
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Diagnostics
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_DynamicCache
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Facebook
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Features
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Feeds
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Flows
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Forms
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_GitHub
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Google
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_HealthChecks
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_HomeRoute
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Html
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Https
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Indexing
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Layers
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Liquid
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Lists
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Markdown
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Microsoft
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_MiniProfiler
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Menu
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Navigation
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Notifications
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_OpenId
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Placements
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_PublishLater
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Queries
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ReCaptcha
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Redis
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Resources
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ResponseCompression
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_UrlRewriting
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_ReverseProxy
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Rules
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Roles
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Scripting
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Security
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Seo
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Settings
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Setup
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Sitemaps
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Shortcodes
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Spatial
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Taxonomies
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Templates
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Tenants
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Themes
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Title
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Twitter
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Widgets
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Workflows
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_XmlRpc
+    grp_OrchardCore_Application -->|1| grp_TheAdmin
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_UrlRewriting -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Sitemaps -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Queries -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Mvc -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Mvc -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Infrastructure -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Infrastructure -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_Email -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Liquid -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Deployment -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_ResourceManagement -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Redis -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_MetaWeblog -->|1| grp_OrchardCore_XmlRpc
+    grp_OrchardCore_MetaWeblog -->|1| grp_OrchardCore_ContentManagement
+    grp_OrchardCore_Shells -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Shells -->|1| grp_OrchardCore_FileStorage
+    grp_OrchardCore_Configuration -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Application -->|1| grp_OrchardCore_Mvc
+    grp_OrchardCore_Search -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_ContentManagement -->|1| grp_OrchardCore_Contents
+    grp_OrchardCore_Seo -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Users -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Media -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Rules -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Infrastructure -->|1| grp_OrchardCore
+    grp_OrchardCore_Application -->|1| grp_SafeMode
+    grp_OrchardCore_Application -->|1| grp_TheAgencyTheme
+    grp_OrchardCore_Application -->|1| grp_TheBlogTheme
+    grp_OrchardCore_Application -->|1| grp_TheComingSoonTheme
+    grp_OrchardCore_Application -->|1| grp_TheTheme
+    grp_OrchardCore_Navigation -->|1| grp_OrchardCore_Admin
+    grp_OrchardCore_Navigation -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Theme -->|1| grp_OrchardCore_Module
+    grp_OrchardCore_Scripting -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_DisplayManagement -->|1| grp_OrchardCore_DynamicCache
+    grp_OrchardCore_DisplayManagement -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Settings -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Data
+    grp_OrchardCore_Autoroute -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Rules -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_ContentManagement -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_Application -->|1| grp_OrchardCore
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_DisplayManagement
+    grp_OrchardCore_ReCaptcha -->|1| grp_OrchardCore_ResourceManagement
+    grp_OrchardCore_ContentManagement -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_ContentManagement -->|1| grp_OrchardCore_Recipes
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Notifications
+    grp_OrchardCore_Sms -->|1| grp_OrchardCore_Users
+    grp_OrchardCore_OpenId -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_DynamicCache -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Abstractions
+    grp_OrchardCore_Admin -->|1| grp_OrchardCore_Infrastructure
+    grp_OrchardCore_Taxonomies -.->|1| ext_webapp
+    grp_OrchardCore_Users -.->|1| ext_webapp
+    grp_OrchardCore_Autoroute -.->|1| ext_webapp
+    grp_OrchardCore_Alias -.->|1| ext_webapp
+    grp_OrchardCore_Lists -.->|1| ext_webapp
+    grp_OrchardCore_Layers -.->|1| ext_webapp
+    grp_OrchardCore_Media -.->|1| ext_webapp
+    grp_OrchardCore_Seo -.->|1| ext_webapp
+    grp_OrchardCore_Html -.->|1| ext_webapp
+    grp_OrchardCore_Markdown -.->|1| ext_webapp
+    grp_OrchardCore_Forms -.->|1| ext_webapp
+    grp_OrchardCore_Application -.->|1| ext_webapp
+    grp_OrchardCore_ContentManagement -.->|1| ext_webapp
+    ext_webapp -.->|2| grp_OrchardCore_Application
+    ext_webapp -.->|1| grp_OrchardCore_Logging
+    ext_webapp -.->|1| grp_OrchardCore_Admin
+    ext_webapp -.->|2| grp_OrchardCore_DisplayManagement
+    ext_webapp -.->|1| grp_OrchardCore_Module
+    ext_webapp -.->|1| grp_OrchardCore_Navigation
+    ext_webapp -.->|1| grp_OrchardCore_ResourceManagement
+    ext_webapp -.->|1| grp_OrchardCore_Infrastructure
+    ext_tool -.->|1| grp_OrchardCore_Abstractions
+    ext_webapp -.->|1| grp_OrchardCore_Mvc
+    ext_test -.->|1| grp_OrchardCore_DynamicCache
+    ext_test -.->|8| grp_OrchardCore_Module
+    ext_test -.->|11| grp_OrchardCore_Theme
+    ext_test -.->|12| grp_OrchardCore_DisplayManagement
+    ext_test -.->|4| grp_OrchardCore_Abstractions
+    ext_test -.->|1| grp_OrchardCore_Application

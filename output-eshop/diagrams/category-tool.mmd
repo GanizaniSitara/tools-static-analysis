@@ -1,0 +1,11 @@
+graph TD
+    subgraph tool["Tool"]
+        src_ClientApp["ClientApp"]
+        src_WebhookClient["WebhookClient"]
+    end
+    ext_application[/"→ Application (1)"/]
+    ext_service[/"→ Service (1)"/]
+    ext_test[/"→ Test (1)"/]
+    ext_application -.-> src_WebhookClient
+    src_WebhookClient -.-> ext_service
+    ext_test -.-> src_ClientApp
