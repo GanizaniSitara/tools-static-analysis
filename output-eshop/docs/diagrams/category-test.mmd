@@ -6,15 +6,12 @@ graph TD
         tests_Basket_UnitTests["Basket.UnitTests"]
         tests_ClientApp_UnitTests["ClientApp.UnitTests"]
     end
-    ext_webapp[/"→ Webapp (4)"/]
-    ext_library[/"→ Library (2)"/]
-    ext_tool[/"→ Tool (1)"/]
+    ext_webapp(["Webapp (4)"])
+    ext_library(["Library (2)"])
+    ext_tool(["Tool (1)"])
     tests_Ordering_UnitTests -.-> ext_webapp
     tests_Ordering_UnitTests -.-> ext_library
-    tests_Ordering_UnitTests -.-> ext_library
     tests_Ordering_FunctionalTests -.-> ext_webapp
-    tests_Ordering_FunctionalTests -.-> ext_webapp
-    tests_Ordering_FunctionalTests -.-> ext_library
     tests_Ordering_FunctionalTests -.-> ext_library
     tests_Catalog_FunctionalTests -.-> ext_webapp
     tests_Basket_UnitTests -.-> ext_webapp

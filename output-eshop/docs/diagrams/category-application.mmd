@@ -3,16 +3,10 @@ graph TD
         src_eShop_AppHost["eShop.AppHost"]
         src_HybridApp["HybridApp"]
     end
-    ext_webapp[/"→ Webapp (8)"/]
-    ext_service[/"→ Service (1)"/]
-    ext_tool[/"→ Tool (1)"/]
-    src_eShop_AppHost -.-> ext_webapp
-    src_eShop_AppHost -.-> ext_webapp
-    src_eShop_AppHost -.-> ext_webapp
+    ext_webapp(["Webapp (8)"])
+    ext_service(["Service (1)"])
+    ext_tool(["Tool (1)"])
     src_eShop_AppHost -.-> ext_webapp
     src_eShop_AppHost -.-> ext_service
-    src_eShop_AppHost -.-> ext_webapp
-    src_eShop_AppHost -.-> ext_webapp
-    src_eShop_AppHost -.-> ext_webapp
     src_eShop_AppHost -.-> ext_tool
     src_HybridApp -.-> ext_webapp

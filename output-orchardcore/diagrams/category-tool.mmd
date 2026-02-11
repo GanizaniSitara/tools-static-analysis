@@ -2,7 +2,7 @@ graph TD
     subgraph tool["Tool"]
         src_OrchardCore_Apis_GraphQL_Client["OrchardCore.Apis.GraphQL.Client"]
     end
-    ext_library[/"→ Library (1)"/]
-    ext_test[/"→ Test (1)"/]
+    ext_library(["Library (1)"])
+    ext_test(["Test (1)"])
     src_OrchardCore_Apis_GraphQL_Client -.-> ext_library
     ext_test -.-> src_OrchardCore_Apis_GraphQL_Client

@@ -18,9 +18,9 @@ graph TD
         StockSharp_Algo_Gpu["Algo.Gpu"]
         StockSharp_Algo["Algo"]
     end
-    ext_test[/"→ Test (10)"/]
-    ext_tool[/"→ Tool (1)"/]
-    ext_connector[/"→ Connector (7)"/]
+    ext_test(["Test (10)"])
+    ext_tool(["Tool (1)"])
+    ext_connector(["Connector (7)"])
     StockSharp_Configuration --> StockSharp_Messages
     StockSharp_Charting_Interfaces --> StockSharp_BusinessEntities
     StockSharp_Algo_Indicators --> StockSharp_Algo
@@ -52,29 +52,5 @@ graph TD
     ext_test -.-> StockSharp_Diagram_Core
     ext_test -.-> StockSharp_Alerts_Interfaces
     StockSharp_Algo_Strategies -.-> ext_test
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo_Indicators
-    ext_test -.-> StockSharp_Algo_Strategies
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo_Indicators
-    ext_test -.-> StockSharp_Algo_Strategies
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo
-    ext_test -.-> StockSharp_Algo
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
-    ext_connector -.-> StockSharp_Messages
-    ext_connector -.-> StockSharp_Media_Names
     ext_connector -.-> StockSharp_Messages
     ext_connector -.-> StockSharp_Media_Names

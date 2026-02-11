@@ -9,15 +9,14 @@ graph TD
         src_Ordering_API["Ordering.API"]
         src_Webhooks_API["Webhooks.API"]
     end
-    ext_service[/"→ Service (1)"/]
-    ext_library[/"→ Library (4)"/]
-    ext_application[/"→ Application (2)"/]
-    ext_test[/"→ Test (4)"/]
+    ext_service(["Service (1)"])
+    ext_library(["Library (4)"])
+    ext_application(["Application (2)"])
+    ext_test(["Test (4)"])
     src_WebApp --> src_WebAppComponents
     src_WebApp -.-> ext_service
     src_WebApp -.-> ext_library
     src_Identity_API -.-> ext_service
-    src_Catalog_API -.-> ext_library
     src_Catalog_API -.-> ext_library
     src_Catalog_API -.-> ext_service
     ext_application -.-> src_Basket_API
@@ -33,14 +32,9 @@ graph TD
     src_Basket_API -.-> ext_service
     src_Basket_API -.-> ext_library
     src_Ordering_API -.-> ext_library
-    src_Ordering_API -.-> ext_library
     src_Ordering_API -.-> ext_service
-    src_Ordering_API -.-> ext_library
-    src_Ordering_API -.-> ext_library
-    src_Webhooks_API -.-> ext_library
     src_Webhooks_API -.-> ext_library
     src_Webhooks_API -.-> ext_service
-    ext_test -.-> src_Ordering_API
     ext_test -.-> src_Ordering_API
     ext_test -.-> src_Identity_API
     ext_test -.-> src_Catalog_API

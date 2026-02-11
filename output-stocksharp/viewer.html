@@ -66,12 +66,19 @@
     display: flex; align-items: center; gap: 0.5rem;
   }
   .card-title .icon { color: #3b82f6; }
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
   .mermaid-wrap {
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
     min-height: 120px;
   }
   .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
-  .mermaid-wrap svg { width: 100%; height: auto; }
+  .mermaid-wrap svg { max-width: none; height: auto; transform-origin: top left; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -145,7 +152,13 @@
 
   <section class="tab-panel active" id="panel-overview">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Category Overview</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-overview">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -166,7 +179,13 @@ graph LR
 
   <section class="tab-panel" id="panel-cat_library">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (17)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (17)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -190,9 +209,9 @@ graph TD
         StockSharp_Algo_Gpu[&quot;Algo.Gpu&quot;]
         StockSharp_Algo[&quot;Algo&quot;]
     end
-    ext_test[/&quot;→ Test (10)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
-    ext_connector[/&quot;→ Connector (7)&quot;/]
+    ext_test([&quot;Test (10)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_connector([&quot;Connector (7)&quot;])
     StockSharp_Configuration --&gt; StockSharp_Messages
     StockSharp_Charting_Interfaces --&gt; StockSharp_BusinessEntities
     StockSharp_Algo_Indicators --&gt; StockSharp_Algo
@@ -224,30 +243,6 @@ graph TD
     ext_test -.-&gt; StockSharp_Diagram_Core
     ext_test -.-&gt; StockSharp_Alerts_Interfaces
     StockSharp_Algo_Strategies -.-&gt; ext_test
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo_Indicators
-    ext_test -.-&gt; StockSharp_Algo_Strategies
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo_Indicators
-    ext_test -.-&gt; StockSharp_Algo_Strategies
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo
-    ext_test -.-&gt; StockSharp_Algo
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
-    ext_connector -.-&gt; StockSharp_Messages
-    ext_connector -.-&gt; StockSharp_Media_Names
     ext_connector -.-&gt; StockSharp_Messages
     ext_connector -.-&gt; StockSharp_Media_Names
         </pre>
@@ -257,7 +252,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_test">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (10)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (10)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_test">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -274,24 +275,12 @@ graph TD
         StockSharp_03_Testing_RealTime_fromsrc[&quot;03_Testing.RealTime_fromsrc&quot;]
         StockSharp_03_Testing_RealTime[&quot;03_Testing.RealTime&quot;]
     end
-    ext_library[/&quot;→ Library (10)&quot;/]
+    ext_library([&quot;Library (10)&quot;])
     StockSharp_Tests --&gt; StockSharp_Algo_Testing
     StockSharp_Algo_Testing -.-&gt; ext_library
     StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
-    StockSharp_Tests -.-&gt; ext_library
     ext_library -.-&gt; StockSharp_Algo_Testing
     StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
-    StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
-    StockSharp_04_Testing_HistoryConsole -.-&gt; ext_library
-    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
-    StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
     StockSharp_04_Testing_HistoryConsole_fromsrc -.-&gt; ext_library
     StockSharp_02_Testing_Optimization -.-&gt; ext_library
     StockSharp_02_Testing_Optimization_fromsrc -.-&gt; ext_library
@@ -306,7 +295,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_connector">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Connector Projects (7)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Connector Projects (7)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_connector">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -320,20 +315,13 @@ graph TD
         StockSharp_Btce[&quot;Btce&quot;]
         StockSharp_FTX[&quot;FTX&quot;]
     end
-    ext_library[/&quot;→ Library (2)&quot;/]
-    StockSharp_Coinbase -.-&gt; ext_library
+    ext_library([&quot;Library (2)&quot;])
     StockSharp_Coinbase -.-&gt; ext_library
     StockSharp_Bitexbook -.-&gt; ext_library
-    StockSharp_Bitexbook -.-&gt; ext_library
-    StockSharp_Tinkoff -.-&gt; ext_library
     StockSharp_Tinkoff -.-&gt; ext_library
     StockSharp_BitStamp -.-&gt; ext_library
-    StockSharp_BitStamp -.-&gt; ext_library
-    StockSharp_Bitalong -.-&gt; ext_library
     StockSharp_Bitalong -.-&gt; ext_library
     StockSharp_Btce -.-&gt; ext_library
-    StockSharp_Btce -.-&gt; ext_library
-    StockSharp_FTX -.-&gt; ext_library
     StockSharp_FTX -.-&gt; ext_library
         </pre>
       </div>
@@ -342,7 +330,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_tool">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (3)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (3)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -352,7 +346,7 @@ graph TD
         StockSharp_Localization_Generator[&quot;Localization.Generator&quot;]
         StockSharp_Media_Generator[&quot;Media.Generator&quot;]
     end
-    ext_library[/&quot;→ Library (1)&quot;/]
+    ext_library([&quot;Library (1)&quot;])
     ext_library -.-&gt; StockSharp_Media_Generator
         </pre>
       </div>
@@ -361,7 +355,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_desktopapp">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> DesktopApp Projects (1)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> DesktopApp Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_desktopapp', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_desktopapp', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_desktopapp', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_desktopapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -460,10 +460,22 @@ graph TD
 </main>
 
 <footer class="footer">
-  Generated by Dependency Mapper (Python) &mdash; 2026-02-10
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
 </footer>
 
 <script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
 (function () {
   'use strict';
 

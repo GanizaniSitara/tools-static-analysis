@@ -11,24 +11,12 @@ graph TD
         StockSharp_03_Testing_RealTime_fromsrc["03_Testing.RealTime_fromsrc"]
         StockSharp_03_Testing_RealTime["03_Testing.RealTime"]
     end
-    ext_library[/"→ Library (10)"/]
+    ext_library(["Library (10)"])
     StockSharp_Tests --> StockSharp_Algo_Testing
     StockSharp_Algo_Testing -.-> ext_library
     StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
-    StockSharp_Tests -.-> ext_library
     ext_library -.-> StockSharp_Algo_Testing
     StockSharp_04_Testing_HistoryConsole -.-> ext_library
-    StockSharp_04_Testing_HistoryConsole -.-> ext_library
-    StockSharp_04_Testing_HistoryConsole -.-> ext_library
-    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
-    StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
     StockSharp_04_Testing_HistoryConsole_fromsrc -.-> ext_library
     StockSharp_02_Testing_Optimization -.-> ext_library
     StockSharp_02_Testing_Optimization_fromsrc -.-> ext_library

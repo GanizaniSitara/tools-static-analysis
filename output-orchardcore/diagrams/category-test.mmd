@@ -24,10 +24,10 @@ graph TD
         test_OrchardCore_Tests_Functional["OrchardCore.Tests.Functional"]
         test_OrchardCore_Abstractions_Tests["OrchardCore.Abstractions.Tests"]
     end
-    ext_webapp[/"→ Webapp (2)"/]
-    ext_library[/"→ Library (6)"/]
-    ext_tool[/"→ Tool (1)"/]
-    ext_application[/"→ Application (1)"/]
+    ext_webapp(["Webapp (2)"])
+    ext_library(["Library (6)"])
+    ext_tool(["Tool (1)"])
+    ext_application(["Application (1)"])
     test_OrchardCore_Tests --> test_BaseThemeSample
     test_OrchardCore_Tests --> test_BaseThemeSample2
     test_OrchardCore_Tests --> test_DerivedThemeSample
@@ -46,42 +46,25 @@ graph TD
     test_OrchardCore_Abstractions_Tests --> test_Examples_OrchardCoreThemes_Alpha
     test_OrchardCore_Tests -.-> ext_webapp
     test_OrchardCore_Tests -.-> ext_library
-    test_OrchardCore_Tests -.-> ext_webapp
     test_OrchardCore_Tests -.-> ext_tool
     ext_application -.-> test_OrchardCore_Tests
     test_ModuleSample -.-> ext_library
     test_DerivedThemeSample -.-> ext_library
-    test_DerivedThemeSample -.-> ext_library
-    test_Errors_OrchardCoreModules_TwoPlus -.-> ext_library
     test_Errors_OrchardCoreModules_TwoPlus -.-> ext_library
     test_BaseThemeSample2 -.-> ext_library
-    test_BaseThemeSample2 -.-> ext_library
-    test_Examples_Modules_AssyAttrib_Charlie -.-> ext_library
     test_Examples_Modules_AssyAttrib_Charlie -.-> ext_library
     test_Examples_Modules_AssyAttrib_Bravo -.-> ext_library
-    test_Examples_Modules_AssyAttrib_Bravo -.-> ext_library
-    test_DerivedThemeSample2 -.-> ext_library
     test_DerivedThemeSample2 -.-> ext_library
     test_Examples_Modules_AssyAttrib_Alpha -.-> ext_library
     test_BaseThemeSample -.-> ext_library
-    test_BaseThemeSample -.-> ext_library
-    test_Examples_OrchardCoreModules_Alpha -.-> ext_library
     test_Examples_OrchardCoreModules_Alpha -.-> ext_library
     test_Examples_Features_AssyAttrib -.-> ext_library
     test_OrchardCore_Application_Pages -.-> ext_library
     test_Theme_Pages -.-> ext_library
-    test_Theme_Pages -.-> ext_library
-    test_Module_Pages -.-> ext_library
     test_Module_Pages -.-> ext_library
     test_Examples_Themes_AssyAttrib_Charlie -.-> ext_library
-    test_Examples_Themes_AssyAttrib_Charlie -.-> ext_library
-    test_Examples_Themes_AssyAttrib_Bravo -.-> ext_library
     test_Examples_Themes_AssyAttrib_Bravo -.-> ext_library
     test_Errors_OrchardCoreThemes_ThemeAndModule -.-> ext_library
-    test_Errors_OrchardCoreThemes_ThemeAndModule -.-> ext_library
-    test_Examples_Themes_AssyAttrib_Alpha -.-> ext_library
     test_Examples_Themes_AssyAttrib_Alpha -.-> ext_library
     test_Examples_OrchardCoreThemes_Alpha -.-> ext_library
-    test_Examples_OrchardCoreThemes_Alpha -.-> ext_library
-    test_Errors_OrchardCoreThemes_TwoPlus -.-> ext_library
     test_Errors_OrchardCoreThemes_TwoPlus -.-> ext_library

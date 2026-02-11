@@ -281,7 +281,7 @@ def _category_detail_full(category: str, cat_nodes: list, cat_ids: set, node_typ
     for ext_cat, ext_ids in external_cats.items():
         ext_label = ext_cat[0].upper() + ext_cat[1:]
         ext_node_id = f"ext_{sanitize_id(ext_cat)}"
-        lines.append(f'    {ext_node_id}[/"→ {ext_label} ({len(ext_ids)})"/]')
+        lines.append(f'    {ext_node_id}(["{ext_label} ({len(ext_ids)})"])')
 
     # Intra-category edges
     for e in deduped_refs:
@@ -289,20 +289,23 @@ def _category_detail_full(category: str, cat_nodes: list, cat_ids: set, node_typ
             style = " -.->" if e["type"] == "cross-repo-reference" else " -->"
             lines.append(f"    {sanitize_id(e['from'])}{style} {sanitize_id(e['to'])}")
 
-    # Edges to/from external category groups
+    # Edges to/from external category groups (deduplicated)
+    seen_ext_edges: set[tuple[str, str]] = set()
     for e in deduped_refs:
         if e["from"] in cat_ids and e["to"] not in cat_ids:
             to_type = node_type.get(e["to"])
             if to_type:
-                ext_node_id = f"ext_{sanitize_id(to_type)}"
-                edge_key = (sanitize_id(e["from"]), ext_node_id)
-                lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
+                edge_key = (sanitize_id(e["from"]), f"ext_{sanitize_id(to_type)}")
+                if edge_key not in seen_ext_edges:
+                    seen_ext_edges.add(edge_key)
+                    lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
         elif e["to"] in cat_ids and e["from"] not in cat_ids:
             from_type = node_type.get(e["from"])
             if from_type:
-                ext_node_id = f"ext_{sanitize_id(from_type)}"
-                edge_key = (ext_node_id, sanitize_id(e["to"]))
-                lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
+                edge_key = (f"ext_{sanitize_id(from_type)}", sanitize_id(e["to"]))
+                if edge_key not in seen_ext_edges:
+                    seen_ext_edges.add(edge_key)
+                    lines.append(f"    {edge_key[0]} -.-> {edge_key[1]}")
 
     return "\n".join(lines)
 
@@ -352,7 +355,7 @@ def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_
     for ext_cat, ext_ids in external_cats.items():
         ext_label = ext_cat[0].upper() + ext_cat[1:]
         ext_node_id = f"ext_{sanitize_id(ext_cat)}"
-        lines.append(f'    {ext_node_id}[/"→ {ext_label} ({len(ext_ids)})"/]')
+        lines.append(f'    {ext_node_id}(["{ext_label} ({len(ext_ids)})"])')
 
     # Aggregate intra-category edges between groups
     group_edges: dict[tuple[str, str], int] = {}

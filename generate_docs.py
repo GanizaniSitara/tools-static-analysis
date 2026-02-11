@@ -441,7 +441,13 @@ def generate_viewer_html() -> str:
         diagram_panels += f"""
   <section class="tab-panel{active}" id="panel-{dt['id']}">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}</div>
+      <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-{dt['id']}">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -623,12 +629,19 @@ def generate_viewer_html() -> str:
     display: flex; align-items: center; gap: 0.5rem;
   }}
   .card-title .icon {{ color: #3b82f6; }}
+  .card-title {{ justify-content: flex-start; }}
+  .zoom-controls {{ margin-left: auto; display: flex; gap: 0.25rem; }}
+  .zoom-btn {{
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }}
+  .zoom-btn:hover {{ color: #e2e8f0; border-color: #3b82f6; }}
   .mermaid-wrap {{
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
     min-height: 120px;
   }}
   .mermaid-wrap .loading {{ color: #64748b; font-size: 0.9rem; text-align: center; }}
-  .mermaid-wrap svg {{ width: 100%; height: auto; }}
+  .mermaid-wrap svg {{ max-width: none; height: auto; transform-origin: top left; }}
   .table-wrap {{ overflow-x: auto; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
   thead th {{
@@ -699,6 +712,18 @@ def generate_viewer_html() -> str:
 </footer>
 
 <script>
+var diagramZoomLevels = {{}};
+function zoomDiagram(containerId, delta) {{
+  if (delta === 0) {{ diagramZoomLevels[containerId] = 1; }}
+  else {{ diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }}
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}}
+
 (function () {{
   'use strict';
 

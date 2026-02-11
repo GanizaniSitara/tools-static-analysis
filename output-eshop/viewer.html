@@ -66,12 +66,19 @@
     display: flex; align-items: center; gap: 0.5rem;
   }
   .card-title .icon { color: #3b82f6; }
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
   .mermaid-wrap {
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
     min-height: 120px;
   }
   .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
-  .mermaid-wrap svg { width: 100%; height: auto; }
+  .mermaid-wrap svg { max-width: none; height: auto; transform-origin: top left; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -148,7 +155,13 @@
 
   <section class="tab-panel active" id="panel-overview">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Category Overview</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-overview">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -176,7 +189,13 @@ graph LR
 
   <section class="tab-panel" id="panel-cat_webapp">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (8)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (8)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_webapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -191,15 +210,14 @@ graph TD
         src_Ordering_API[&quot;Ordering.API&quot;]
         src_Webhooks_API[&quot;Webhooks.API&quot;]
     end
-    ext_service[/&quot;→ Service (1)&quot;/]
-    ext_library[/&quot;→ Library (4)&quot;/]
-    ext_application[/&quot;→ Application (2)&quot;/]
-    ext_test[/&quot;→ Test (4)&quot;/]
+    ext_service([&quot;Service (1)&quot;])
+    ext_library([&quot;Library (4)&quot;])
+    ext_application([&quot;Application (2)&quot;])
+    ext_test([&quot;Test (4)&quot;])
     src_WebApp --&gt; src_WebAppComponents
     src_WebApp -.-&gt; ext_service
     src_WebApp -.-&gt; ext_library
     src_Identity_API -.-&gt; ext_service
-    src_Catalog_API -.-&gt; ext_library
     src_Catalog_API -.-&gt; ext_library
     src_Catalog_API -.-&gt; ext_service
     ext_application -.-&gt; src_Basket_API
@@ -215,14 +233,9 @@ graph TD
     src_Basket_API -.-&gt; ext_service
     src_Basket_API -.-&gt; ext_library
     src_Ordering_API -.-&gt; ext_library
-    src_Ordering_API -.-&gt; ext_library
     src_Ordering_API -.-&gt; ext_service
-    src_Ordering_API -.-&gt; ext_library
-    src_Ordering_API -.-&gt; ext_library
-    src_Webhooks_API -.-&gt; ext_library
     src_Webhooks_API -.-&gt; ext_library
     src_Webhooks_API -.-&gt; ext_service
-    ext_test -.-&gt; src_Ordering_API
     ext_test -.-&gt; src_Ordering_API
     ext_test -.-&gt; src_Identity_API
     ext_test -.-&gt; src_Catalog_API
@@ -234,7 +247,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_library">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (5)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (5)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -246,27 +265,18 @@ graph TD
         src_EventBus[&quot;EventBus&quot;]
         src_EventBusRabbitMQ[&quot;EventBusRabbitMQ&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (6)&quot;/]
-    ext_service[/&quot;→ Service (1)&quot;/]
-    ext_test[/&quot;→ Test (2)&quot;/]
+    ext_webapp([&quot;Webapp (6)&quot;])
+    ext_service([&quot;Service (1)&quot;])
+    ext_test([&quot;Test (2)&quot;])
     src_Ordering_Infrastructure --&gt; src_IntegrationEventLogEF
     src_Ordering_Infrastructure --&gt; src_Ordering_Domain
     src_IntegrationEventLogEF --&gt; src_EventBus
     src_EventBusRabbitMQ --&gt; src_EventBus
     ext_webapp -.-&gt; src_EventBusRabbitMQ
-    ext_webapp -.-&gt; src_EventBusRabbitMQ
     ext_webapp -.-&gt; src_IntegrationEventLogEF
-    ext_webapp -.-&gt; src_EventBusRabbitMQ
     ext_service -.-&gt; src_EventBusRabbitMQ
-    ext_webapp -.-&gt; src_EventBusRabbitMQ
-    ext_webapp -.-&gt; src_EventBusRabbitMQ
-    ext_webapp -.-&gt; src_IntegrationEventLogEF
     ext_webapp -.-&gt; src_Ordering_Domain
     ext_webapp -.-&gt; src_Ordering_Infrastructure
-    ext_webapp -.-&gt; src_EventBusRabbitMQ
-    ext_webapp -.-&gt; src_IntegrationEventLogEF
-    ext_test -.-&gt; src_Ordering_Domain
-    ext_test -.-&gt; src_Ordering_Infrastructure
     ext_test -.-&gt; src_Ordering_Domain
     ext_test -.-&gt; src_Ordering_Infrastructure
         </pre>
@@ -276,7 +286,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_test">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (5)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (5)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_test">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -288,15 +304,12 @@ graph TD
         tests_Basket_UnitTests[&quot;Basket.UnitTests&quot;]
         tests_ClientApp_UnitTests[&quot;ClientApp.UnitTests&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (4)&quot;/]
-    ext_library[/&quot;→ Library (2)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
+    ext_webapp([&quot;Webapp (4)&quot;])
+    ext_library([&quot;Library (2)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
     tests_Ordering_UnitTests -.-&gt; ext_webapp
     tests_Ordering_UnitTests -.-&gt; ext_library
-    tests_Ordering_UnitTests -.-&gt; ext_library
     tests_Ordering_FunctionalTests -.-&gt; ext_webapp
-    tests_Ordering_FunctionalTests -.-&gt; ext_webapp
-    tests_Ordering_FunctionalTests -.-&gt; ext_library
     tests_Ordering_FunctionalTests -.-&gt; ext_library
     tests_Catalog_FunctionalTests -.-&gt; ext_webapp
     tests_Basket_UnitTests -.-&gt; ext_webapp
@@ -308,7 +321,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_application">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (2)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (2)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_application">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -317,17 +336,11 @@ graph TD
         src_eShop_AppHost[&quot;eShop.AppHost&quot;]
         src_HybridApp[&quot;HybridApp&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (8)&quot;/]
-    ext_service[/&quot;→ Service (1)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
-    src_eShop_AppHost -.-&gt; ext_webapp
-    src_eShop_AppHost -.-&gt; ext_webapp
-    src_eShop_AppHost -.-&gt; ext_webapp
+    ext_webapp([&quot;Webapp (8)&quot;])
+    ext_service([&quot;Service (1)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
     src_eShop_AppHost -.-&gt; ext_webapp
     src_eShop_AppHost -.-&gt; ext_service
-    src_eShop_AppHost -.-&gt; ext_webapp
-    src_eShop_AppHost -.-&gt; ext_webapp
-    src_eShop_AppHost -.-&gt; ext_webapp
     src_eShop_AppHost -.-&gt; ext_tool
     src_HybridApp -.-&gt; ext_webapp
         </pre>
@@ -337,7 +350,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_service">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Service Projects (2)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Service Projects (2)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_service', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_service', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_service', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_service">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -346,20 +365,14 @@ graph TD
         src_OrderProcessor[&quot;OrderProcessor&quot;]
         src_eShop_ServiceDefaults[&quot;eShop.ServiceDefaults&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (7)&quot;/]
-    ext_application[/&quot;→ Application (1)&quot;/]
-    ext_library[/&quot;→ Library (1)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
+    ext_webapp([&quot;Webapp (7)&quot;])
+    ext_application([&quot;Application (1)&quot;])
+    ext_library([&quot;Library (1)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
     src_OrderProcessor --&gt; src_eShop_ServiceDefaults
     ext_webapp -.-&gt; src_eShop_ServiceDefaults
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
     ext_application -.-&gt; src_OrderProcessor
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
     src_OrderProcessor -.-&gt; ext_library
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
-    ext_webapp -.-&gt; src_eShop_ServiceDefaults
     ext_tool -.-&gt; src_eShop_ServiceDefaults
         </pre>
       </div>
@@ -368,7 +381,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_tool">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (2)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (2)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -377,9 +396,9 @@ graph TD
         src_ClientApp[&quot;ClientApp&quot;]
         src_WebhookClient[&quot;WebhookClient&quot;]
     end
-    ext_application[/&quot;→ Application (1)&quot;/]
-    ext_service[/&quot;→ Service (1)&quot;/]
-    ext_test[/&quot;→ Test (1)&quot;/]
+    ext_application([&quot;Application (1)&quot;])
+    ext_service([&quot;Service (1)&quot;])
+    ext_test([&quot;Test (1)&quot;])
     ext_application -.-&gt; src_WebhookClient
     src_WebhookClient -.-&gt; ext_service
     ext_test -.-&gt; src_ClientApp
@@ -561,10 +580,22 @@ graph TD
 </main>
 
 <footer class="footer">
-  Generated by Dependency Mapper (Python) &mdash; 2026-02-10
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
 </footer>
 
 <script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
 (function () {
   'use strict';
 

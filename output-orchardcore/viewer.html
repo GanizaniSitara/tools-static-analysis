@@ -66,12 +66,19 @@
     display: flex; align-items: center; gap: 0.5rem;
   }
   .card-title .icon { color: #3b82f6; }
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
   .mermaid-wrap {
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
     min-height: 120px;
   }
   .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
-  .mermaid-wrap svg { width: 100%; height: auto; }
+  .mermaid-wrap svg { max-width: none; height: auto; transform-origin: top left; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -146,7 +153,13 @@
 
   <section class="tab-panel active" id="panel-overview">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Category Overview</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-overview">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -170,7 +183,13 @@ graph LR
 
   <section class="tab-panel" id="panel-cat_library">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (192)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (192)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -276,9 +295,9 @@ graph TD
         grp_OrchardCore[&quot;OrchardCore&quot;]
         grp_OrchardCore_Abstractions[&quot;OrchardCore.Abstractions&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (4)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
-    ext_test[/&quot;→ Test (21)&quot;/]
+    ext_webapp([&quot;Webapp (4)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_test([&quot;Test (21)&quot;])
     grp_OrchardCore_Search --&gt;|11| grp_OrchardCore_Indexing
     grp_OrchardCore_Search --&gt;|8| grp_OrchardCore_ContentManagement
     grp_OrchardCore_Media --&gt;|6| grp_OrchardCore_ContentManagement
@@ -1054,7 +1073,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_test">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (23)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (23)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_test">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -1084,10 +1109,10 @@ graph TD
         test_OrchardCore_Tests_Functional[&quot;OrchardCore.Tests.Functional&quot;]
         test_OrchardCore_Abstractions_Tests[&quot;OrchardCore.Abstractions.Tests&quot;]
     end
-    ext_webapp[/&quot;→ Webapp (2)&quot;/]
-    ext_library[/&quot;→ Library (6)&quot;/]
-    ext_tool[/&quot;→ Tool (1)&quot;/]
-    ext_application[/&quot;→ Application (1)&quot;/]
+    ext_webapp([&quot;Webapp (2)&quot;])
+    ext_library([&quot;Library (6)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_application([&quot;Application (1)&quot;])
     test_OrchardCore_Tests --&gt; test_BaseThemeSample
     test_OrchardCore_Tests --&gt; test_BaseThemeSample2
     test_OrchardCore_Tests --&gt; test_DerivedThemeSample
@@ -1106,44 +1131,27 @@ graph TD
     test_OrchardCore_Abstractions_Tests --&gt; test_Examples_OrchardCoreThemes_Alpha
     test_OrchardCore_Tests -.-&gt; ext_webapp
     test_OrchardCore_Tests -.-&gt; ext_library
-    test_OrchardCore_Tests -.-&gt; ext_webapp
     test_OrchardCore_Tests -.-&gt; ext_tool
     ext_application -.-&gt; test_OrchardCore_Tests
     test_ModuleSample -.-&gt; ext_library
     test_DerivedThemeSample -.-&gt; ext_library
-    test_DerivedThemeSample -.-&gt; ext_library
-    test_Errors_OrchardCoreModules_TwoPlus -.-&gt; ext_library
     test_Errors_OrchardCoreModules_TwoPlus -.-&gt; ext_library
     test_BaseThemeSample2 -.-&gt; ext_library
-    test_BaseThemeSample2 -.-&gt; ext_library
-    test_Examples_Modules_AssyAttrib_Charlie -.-&gt; ext_library
     test_Examples_Modules_AssyAttrib_Charlie -.-&gt; ext_library
     test_Examples_Modules_AssyAttrib_Bravo -.-&gt; ext_library
-    test_Examples_Modules_AssyAttrib_Bravo -.-&gt; ext_library
-    test_DerivedThemeSample2 -.-&gt; ext_library
     test_DerivedThemeSample2 -.-&gt; ext_library
     test_Examples_Modules_AssyAttrib_Alpha -.-&gt; ext_library
     test_BaseThemeSample -.-&gt; ext_library
-    test_BaseThemeSample -.-&gt; ext_library
-    test_Examples_OrchardCoreModules_Alpha -.-&gt; ext_library
     test_Examples_OrchardCoreModules_Alpha -.-&gt; ext_library
     test_Examples_Features_AssyAttrib -.-&gt; ext_library
     test_OrchardCore_Application_Pages -.-&gt; ext_library
     test_Theme_Pages -.-&gt; ext_library
-    test_Theme_Pages -.-&gt; ext_library
-    test_Module_Pages -.-&gt; ext_library
     test_Module_Pages -.-&gt; ext_library
     test_Examples_Themes_AssyAttrib_Charlie -.-&gt; ext_library
-    test_Examples_Themes_AssyAttrib_Charlie -.-&gt; ext_library
-    test_Examples_Themes_AssyAttrib_Bravo -.-&gt; ext_library
     test_Examples_Themes_AssyAttrib_Bravo -.-&gt; ext_library
     test_Errors_OrchardCoreThemes_ThemeAndModule -.-&gt; ext_library
-    test_Errors_OrchardCoreThemes_ThemeAndModule -.-&gt; ext_library
-    test_Examples_Themes_AssyAttrib_Alpha -.-&gt; ext_library
     test_Examples_Themes_AssyAttrib_Alpha -.-&gt; ext_library
     test_Examples_OrchardCoreThemes_Alpha -.-&gt; ext_library
-    test_Examples_OrchardCoreThemes_Alpha -.-&gt; ext_library
-    test_Errors_OrchardCoreThemes_TwoPlus -.-&gt; ext_library
     test_Errors_OrchardCoreThemes_TwoPlus -.-&gt; ext_library
         </pre>
       </div>
@@ -1152,7 +1160,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_webapp">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (6)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (6)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_webapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -1165,32 +1179,14 @@ graph TD
         src_OrchardCore_Apis_GraphQL_Abstractions[&quot;OrchardCore.Apis.GraphQL.Abstractions&quot;]
         src_OrchardCore_Mvc_Web[&quot;OrchardCore.Mvc.Web&quot;]
     end
-    ext_library[/&quot;→ Library (24)&quot;/]
-    ext_test[/&quot;→ Test (1)&quot;/]
+    ext_library([&quot;Library (24)&quot;])
+    ext_test([&quot;Test (1)&quot;])
     src_OrchardCore_Apis_GraphQL --&gt; src_OrchardCore_Apis_GraphQL_Abstractions
     src_OrchardCore_Cms_Web -.-&gt; ext_library
-    src_OrchardCore_Cms_Web -.-&gt; ext_library
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
     ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
     src_OrchardCore_Apis_GraphQL -.-&gt; ext_library
-    src_OrchardCore_Apis_GraphQL -.-&gt; ext_library
-    src_OrchardCore_Apis_GraphQL -.-&gt; ext_library
-    src_OrchardCore_Apis_GraphQL -.-&gt; ext_library
-    src_OrchardCore_Apis_GraphQL -.-&gt; ext_library
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    src_OrchardCore_Apis_GraphQL_Abstractions -.-&gt; ext_library
     src_OrchardCore_Apis_GraphQL_Abstractions -.-&gt; ext_library
     ext_library -.-&gt; src_OrchardCore_Apis_GraphQL
-    ext_library -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
-    src_OrchardCore_Mvc_Web -.-&gt; ext_library
     src_OrchardCore_Mvc_Web -.-&gt; ext_library
     ext_test -.-&gt; src_OrchardCore_Cms_Web
     ext_test -.-&gt; src_OrchardCore_Apis_GraphQL_Abstractions
@@ -1201,7 +1197,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_tool">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (1)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -1209,8 +1211,8 @@ graph TD
     subgraph tool[&quot;Tool&quot;]
         src_OrchardCore_Apis_GraphQL_Client[&quot;OrchardCore.Apis.GraphQL.Client&quot;]
     end
-    ext_library[/&quot;→ Library (1)&quot;/]
-    ext_test[/&quot;→ Test (1)&quot;/]
+    ext_library([&quot;Library (1)&quot;])
+    ext_test([&quot;Test (1)&quot;])
     src_OrchardCore_Apis_GraphQL_Client -.-&gt; ext_library
     ext_test -.-&gt; src_OrchardCore_Apis_GraphQL_Client
         </pre>
@@ -1220,7 +1222,13 @@ graph TD
 
   <section class="tab-panel" id="panel-cat_application">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (1)</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
       <div class="mermaid-wrap" id="mermaid-cat_application">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -1228,7 +1236,7 @@ graph TD
     subgraph application[&quot;Application&quot;]
         test_OrchardCore_Benchmarks[&quot;OrchardCore.Benchmarks&quot;]
     end
-    ext_test[/&quot;→ Test (1)&quot;/]
+    ext_test([&quot;Test (1)&quot;])
     test_OrchardCore_Benchmarks -.-&gt; ext_test
         </pre>
       </div>
@@ -1339,10 +1347,22 @@ graph TD
 </main>
 
 <footer class="footer">
-  Generated by Dependency Mapper (Python) &mdash; 2026-02-10
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
 </footer>
 
 <script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
 (function () {
   'use strict';
 

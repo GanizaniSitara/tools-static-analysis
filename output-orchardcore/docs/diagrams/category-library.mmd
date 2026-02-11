@@ -100,9 +100,9 @@ graph TD
         grp_OrchardCore["OrchardCore"]
         grp_OrchardCore_Abstractions["OrchardCore.Abstractions"]
     end
-    ext_webapp[/"→ Webapp (4)"/]
-    ext_tool[/"→ Tool (1)"/]
-    ext_test[/"→ Test (21)"/]
+    ext_webapp(["Webapp (4)"])
+    ext_tool(["Tool (1)"])
+    ext_test(["Test (21)"])
     grp_OrchardCore_Search -->|11| grp_OrchardCore_Indexing
     grp_OrchardCore_Search -->|8| grp_OrchardCore_ContentManagement
     grp_OrchardCore_Media -->|6| grp_OrchardCore_ContentManagement

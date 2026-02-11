@@ -6,26 +6,17 @@ graph TD
         src_EventBus["EventBus"]
         src_EventBusRabbitMQ["EventBusRabbitMQ"]
     end
-    ext_webapp[/"→ Webapp (6)"/]
-    ext_service[/"→ Service (1)"/]
-    ext_test[/"→ Test (2)"/]
+    ext_webapp(["Webapp (6)"])
+    ext_service(["Service (1)"])
+    ext_test(["Test (2)"])
     src_Ordering_Infrastructure --> src_IntegrationEventLogEF
     src_Ordering_Infrastructure --> src_Ordering_Domain
     src_IntegrationEventLogEF --> src_EventBus
     src_EventBusRabbitMQ --> src_EventBus
     ext_webapp -.-> src_EventBusRabbitMQ
-    ext_webapp -.-> src_EventBusRabbitMQ
     ext_webapp -.-> src_IntegrationEventLogEF
-    ext_webapp -.-> src_EventBusRabbitMQ
     ext_service -.-> src_EventBusRabbitMQ
-    ext_webapp -.-> src_EventBusRabbitMQ
-    ext_webapp -.-> src_EventBusRabbitMQ
-    ext_webapp -.-> src_IntegrationEventLogEF
     ext_webapp -.-> src_Ordering_Domain
     ext_webapp -.-> src_Ordering_Infrastructure
-    ext_webapp -.-> src_EventBusRabbitMQ
-    ext_webapp -.-> src_IntegrationEventLogEF
-    ext_test -.-> src_Ordering_Domain
-    ext_test -.-> src_Ordering_Infrastructure
     ext_test -.-> src_Ordering_Domain
     ext_test -.-> src_Ordering_Infrastructure
