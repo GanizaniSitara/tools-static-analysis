@@ -575,6 +575,211 @@ def generate_data_flow_mermaid() -> str:
     return "\n".join(lines)
 
 
+# ─── Mermaid: Business Layers ──────────────────────────────────────
+
+def generate_business_layer_mermaid() -> str:
+    """Generate a Mermaid diagram showing business layer summary with aggregated cross-layer edges."""
+    flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
+    if not os.path.isfile(flow_paths_path):
+        return "graph TD\n    no_data[No business layer data available]"
+
+    flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+    layers_data = flow_data.get("businessLayers", {})
+    layer_summary = flow_data.get("layerSummary", {})
+
+    if not layers_data:
+        return "graph TD\n    no_data[No business layer classifications found]"
+
+    lines = ["graph TD"]
+
+    # Define layer order for top-down display
+    layer_order = ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]
+
+    # Emit layer nodes
+    for layer in layer_order:
+        info = layer_summary.get(layer, {})
+        count = info.get("count", 0)
+        if count == 0:
+            continue
+        nid = sanitize_id(f"layer_{layer}")
+        lines.append(f'    {nid}["{layer} ({count})"]')
+
+    # Build node-to-layer lookup
+    node_layer: dict[str, str] = {}
+    for name, info in layers_data.items():
+        node_layer[name] = info.get("layer", "Unclassified")
+
+    # Aggregate cross-layer edges from project references
+    layer_edges: dict[tuple[str, str], int] = {}
+    for e in deduped_refs:
+        from_id = e["from"]
+        to_id = e["to"]
+        # Extract project name from "repo/project" format
+        from_name = from_id.split("/")[-1] if "/" in from_id else from_id
+        to_name = to_id.split("/")[-1] if "/" in to_id else to_id
+        from_layer = node_layer.get(from_name)
+        to_layer = node_layer.get(to_name)
+        if from_layer and to_layer and from_layer != to_layer:
+            key = (from_layer, to_layer)
+            layer_edges[key] = layer_edges.get(key, 0) + 1
+
+    # Emit edges
+    for (from_layer, to_layer), count in sorted(layer_edges.items(), key=lambda x: -x[1]):
+        from_id = sanitize_id(f"layer_{from_layer}")
+        to_id = sanitize_id(f"layer_{to_layer}")
+        lines.append(f"    {from_id} -->|{count} refs| {to_id}")
+
+    return "\n".join(lines)
+
+
+def generate_e2e_flows_mermaid() -> str:
+    """Generate aggregated E2E flows diagram showing projects grouped by business layer."""
+    flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
+    if not os.path.isfile(flow_paths_path):
+        return "graph TD\n    no_data[No flow path data available]"
+
+    flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+    flow_paths = flow_data.get("flowPaths", [])
+    layers_data = flow_data.get("businessLayers", {})
+
+    if not flow_paths:
+        return "graph TD\n    no_data[No end-to-end flow paths found]"
+
+    MAX_PROJECTS = 40
+
+    # Collect all projects on flow paths
+    projects_on_paths: set[str] = set()
+    endpoints_on_paths: set[str] = set()
+    for fp in flow_paths:
+        for step in fp.get("path", []):
+            if "project" in step:
+                projects_on_paths.add(step["project"])
+            elif "endpoint" in step:
+                endpoints_on_paths.add(step["endpoint"])
+
+    # Limit if too many
+    if len(projects_on_paths) > MAX_PROJECTS:
+        # Keep those that appear most frequently
+        proj_freq: dict[str, int] = {}
+        for fp in flow_paths:
+            for step in fp["path"]:
+                if "project" in step:
+                    proj_freq[step["project"]] = proj_freq.get(step["project"], 0) + 1
+        projects_on_paths = set(sorted(proj_freq, key=lambda p: -proj_freq[p])[:MAX_PROJECTS])
+
+    # Group projects by layer
+    layer_projects: dict[str, list[str]] = {}
+    for proj in projects_on_paths:
+        layer = layers_data.get(proj, {}).get("layer", "Unclassified")
+        layer_projects.setdefault(layer, []).append(proj)
+
+    lines = ["graph TD"]
+
+    # Emit layer subgraphs
+    layer_order = ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]
+    for layer in layer_order:
+        projs = layer_projects.get(layer, [])
+        if not projs:
+            continue
+        lid = sanitize_id(f"sg_{layer}")
+        lines.append(f'    subgraph {lid}["{layer}"]')
+        for proj in sorted(projs):
+            pid = sanitize_id(proj)
+            lines.append(f'        {pid}["{proj}"]')
+        lines.append("    end")
+
+    # Emit data endpoint nodes
+    if endpoints_on_paths:
+        lines.append('    subgraph sg_Data["Data Endpoints"]')
+        for ep in sorted(list(endpoints_on_paths)[:15]):
+            eid = sanitize_id(ep)
+            ep_name = ep.split(":", 1)[-1] if ":" in ep else ep
+            # Use cylinder for database, hexagon for messaging
+            if ep.startswith("entity:") or ep.startswith("table:") or ep.startswith("collection:"):
+                lines.append(f'        {eid}[("{ep_name}")]')
+            elif ep.startswith("topic:") or ep.startswith("queue:") or ep.startswith("exchange:"):
+                lines.append(f'        {eid}{{{{"{ep_name}"}}}}')
+            elif ep.startswith("route:") or ep.startswith("url:"):
+                lines.append(f'        {eid}(["{ep_name}"])')
+            else:
+                lines.append(f'        {eid}["{ep_name}"]')
+        lines.append("    end")
+
+    # Collect edges from flow paths (deduplicated)
+    edge_set: set[str] = set()
+    for fp in flow_paths:
+        path = fp.get("path", [])
+        for i in range(len(path) - 1):
+            step = path[i]
+            next_step = path[i + 1]
+
+            from_id = None
+            to_id = None
+
+            if "project" in step:
+                from_id = sanitize_id(step["project"])
+            elif "endpoint" in step:
+                from_id = sanitize_id(step["endpoint"])
+
+            if "project" in next_step:
+                to_id = sanitize_id(next_step["project"])
+            elif "endpoint" in next_step:
+                to_id = sanitize_id(next_step["endpoint"])
+
+            if from_id and to_id and from_id != to_id:
+                edge_key = f"{from_id}-->{to_id}"
+                if edge_key not in edge_set:
+                    edge_set.add(edge_key)
+                    lines.append(f"    {from_id} --> {to_id}")
+
+    return "\n".join(lines)
+
+
+def generate_flow_path_mermaid(flow_path: dict) -> str:
+    """Generate a Mermaid diagram for a single flow path."""
+    path = flow_path.get("path", [])
+    if not path:
+        return "graph LR\n    empty[Empty path]"
+
+    lines = ["graph LR"]
+
+    prev_id = None
+    for step in path:
+        if "project" in step:
+            nid = sanitize_id(step["project"])
+            layer = step.get("layer", "")
+            label = f"{step['project']}\\n({layer})"
+            # Use rectangle for screens
+            if layer == "Presentation":
+                lines.append(f'    {nid}["{label}"]')
+            else:
+                lines.append(f'    {nid}["{label}"]')
+        elif "endpoint" in step:
+            nid = sanitize_id(step["endpoint"])
+            ep_name = step["endpoint"].split(":", 1)[-1] if ":" in step["endpoint"] else step["endpoint"]
+            ep_type = step.get("type", "")
+            if ep_type == "database":
+                lines.append(f'    {nid}[("{ep_name}")]')
+            elif ep_type == "messaging":
+                lines.append(f'    {nid}{{{{"{ep_name}"}}}}')
+            elif ep_type == "api":
+                lines.append(f'    {nid}(["{ep_name}"])')
+            else:
+                lines.append(f'    {nid}["{ep_name}"]')
+        else:
+            continue
+
+        if prev_id:
+            edge_type = step.get("edgeType", "")
+            if "data-flow" in edge_type:
+                lines.append(f"    {prev_id} ==> {nid}")
+            else:
+                lines.append(f"    {prev_id} --> {nid}")
+        prev_id = nid
+
+    return "\n".join(lines)
+
+
 # ─── GraphViz DOT: Full landscape ───────────────────────────────────
 
 def generate_landscape_dot() -> str:
@@ -654,6 +859,8 @@ def main():
         "data-infrastructure.mmd": generate_data_infra_mermaid(),
         "data-flow.mmd": generate_data_flow_mermaid(),
         "nuget-groups.mmd": generate_nuget_mermaid(),
+        "business-layers.mmd": generate_business_layer_mermaid(),
+        "e2e-flows.mmd": generate_e2e_flows_mermaid(),
     }
 
     for filename, content in mermaid_files.items():
@@ -672,6 +879,18 @@ def main():
         filename = f"category-{cat}.mmd"
         Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(detail, encoding="utf-8")
         print(f"  Wrote {filename}")
+
+    # Individual flow path diagrams (top 10)
+    flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
+    if os.path.isfile(flow_paths_path):
+        flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+        flow_paths = flow_data.get("flowPaths", [])
+        for i, fp in enumerate(flow_paths[:10]):
+            content = generate_flow_path_mermaid(fp)
+            filename = f"flow-path-{i}.mmd"
+            Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(content, encoding="utf-8")
+        if flow_paths:
+            print(f"  Wrote {min(10, len(flow_paths))} flow-path-*.mmd files")
 
     dot_files = {
         "landscape.dot": generate_landscape_dot(),

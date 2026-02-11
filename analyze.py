@@ -531,6 +531,11 @@ ENHANCED_DATA_PATTERNS = [
     {"name": "DataAccess",       "regex": re.compile(r"class\s+\w*DataAccess\w*\b"),                         "type": "pattern",   "direction": "both", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
     {"name": "FTP",              "regex": re.compile(r"FtpClient|FluentFTP"),                                 "type": "datasource", "direction": "both", "endpoint_group": 0, "endpoint_type": None,   "confidence": "medium"},
     {"name": "IMessageAdapter",  "regex": re.compile(r":\s*IMessageAdapter\b|class\s+\w+Adapter\b"),         "type": "connector", "direction": "both", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
+
+    # ── WPF / UI ──
+    {"name": "WPF.Window",      "regex": re.compile(r":\s*(Window|UserControl)\b"),                         "type": "ui", "direction": "expose",  "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "WPF.Binding",     "regex": re.compile(r"\{Binding\s|DataContext\s*="),                        "type": "ui", "direction": "consume", "endpoint_group": 0, "endpoint_type": None, "confidence": "medium"},
+    {"name": "WPF.ViewModel",   "regex": re.compile(r":\s*(ViewModelBase|ObservableObject)\b|:\s*INotifyPropertyChanged\b|ObservableCollection<"), "type": "ui", "direction": "both", "endpoint_group": 0, "endpoint_type": None, "confidence": "medium"},
 ]
 
 
@@ -546,6 +551,196 @@ _SQL_KEYWORDS = {
     "THE", "TO", "IT", "AN", "AT", "OF", "CTE", "CTE1", "CTE2",
     "T1", "T2", "T3", "TP", "COLLECTION", "TEST", "RESULT",
 }
+
+
+# ─── Business layer classification ────────────────────────────────────
+
+BUSINESS_LAYERS = ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]
+
+# Name-based signals (weight 3)
+_LAYER_NAME_PATTERNS: dict[str, list[re.Pattern]] = {
+    "Presentation": [re.compile(r"screen|view|window|wpf|desktop|shell|ui\b|forms|display", re.IGNORECASE)],
+    "Engine":       [re.compile(r"pricer|pricing|calc|engine|compute|math|algo|valuation|model|solver|analytics", re.IGNORECASE)],
+    "Service":      [re.compile(r"service|server|host|worker|gateway|api\b|web\b|grpc|handler|middleware", re.IGNORECASE)],
+    "DataAccess":   [re.compile(r"data|repo|repository|storage|persist|dal\b|context|migration|store\b", re.IGNORECASE)],
+    "Infrastructure": [re.compile(r"infra|common|shared|util|helper|logging|config|core|framework|base|extension|diagnostic", re.IGNORECASE)],
+}
+
+# NuGet package signals (weight 2)
+_LAYER_NUGET_PATTERNS: dict[str, list[re.Pattern]] = {
+    "Presentation": [re.compile(r"WPF|Wpf|MAUI|Maui|Xamarin\.Forms|Avalonia|MaterialDesign|MahApps|Prism\.Wpf|Caliburn", re.IGNORECASE)],
+    "Engine":       [re.compile(r"MathNet|Accord|QLNet|MathJS|NumSharp", re.IGNORECASE)],
+    "DataAccess":   [re.compile(r"EntityFramework|Dapper|Npgsql|MySql|MongoDB\.Driver|StackExchange\.Redis|NHibernate|Marten", re.IGNORECASE)],
+    "Service":      [re.compile(r"Grpc|Swashbuckle|MediatR|MassTransit|NServiceBus|Rebus", re.IGNORECASE)],
+}
+
+# Category boost signals (weight 1)
+_CATEGORY_TO_LAYER: dict[str, str] = {
+    "DesktopApp": "Presentation",
+    "WebApp": "Service",
+    "Service": "Service",
+    "Connector": "Infrastructure",
+    "Tool": "Infrastructure",
+}
+
+_CONFIDENCE_THRESHOLD = 0.15
+
+
+def classify_business_layer(
+    proj_name: str,
+    category: str,
+    xml: str,
+    packages: list[str],
+    data_roles: dict[str, int],
+    project_dir: str,
+) -> dict:
+    """Score a project across all business layers and return the winning layer with confidence.
+
+    Returns: {"layer": str, "confidence": float, "signals": list[str]}
+    """
+    scores: dict[str, float] = {layer: 0.0 for layer in BUSINESS_LAYERS if layer != "Unclassified"}
+    signals: list[str] = []
+
+    # Signal 1: Name patterns (weight 3)
+    for layer, patterns in _LAYER_NAME_PATTERNS.items():
+        for pat in patterns:
+            if pat.search(proj_name):
+                scores[layer] += 3
+                signals.append(f"name:{layer}")
+                break
+
+    # Signal 2: WPF content in .csproj XML (weight 4)
+    if "<UseWPF>true</UseWPF>" in xml or "<UseWPF>True</UseWPF>" in xml:
+        scores["Presentation"] += 4
+        signals.append("wpf:csproj")
+    if "<UseWindowsForms>" in xml:
+        scores["Presentation"] += 3
+        signals.append("winforms:csproj")
+
+    # Check for .xaml files in project directory
+    if project_dir and os.path.isdir(project_dir):
+        try:
+            has_xaml = any(
+                entry.name.endswith(".xaml")
+                for entry in os.scandir(project_dir)
+                if entry.is_file()
+            )
+            if has_xaml:
+                scores["Presentation"] += 4
+                signals.append("wpf:xaml")
+        except OSError:
+            pass
+
+    # Signal 3: NuGet packages (weight 2)
+    pkg_str = " ".join(packages)
+    for layer, patterns in _LAYER_NUGET_PATTERNS.items():
+        for pat in patterns:
+            if pat.search(pkg_str):
+                scores[layer] += 2
+                signals.append(f"nuget:{layer}")
+                break
+
+    # Signal 4: Technical category boost (weight 1)
+    mapped = _CATEGORY_TO_LAYER.get(category)
+    if mapped:
+        scores[mapped] += 1
+        signals.append(f"category:{mapped}")
+
+    # Signal 5: Data pattern roles (weight 1)
+    if data_roles:
+        write_count = data_roles.get("write", 0) + data_roles.get("both", 0)
+        read_count = data_roles.get("read", 0) + data_roles.get("both", 0)
+        expose_count = data_roles.get("expose", 0)
+        consume_count = data_roles.get("consume", 0)
+        ui_count = data_roles.get("ui", 0)
+
+        if write_count > 0 or read_count > 0:
+            scores["DataAccess"] += 1
+            signals.append("data:DataAccess")
+        if expose_count > 0:
+            scores["Service"] += 1
+            signals.append("data:Service")
+        if ui_count > 0:
+            scores["Presentation"] += 1
+            signals.append("data:Presentation")
+
+    # Pick winner
+    sorted_layers = sorted(scores.items(), key=lambda x: -x[1])
+    winner_score = sorted_layers[0][1]
+    runner_up_score = sorted_layers[1][1] if len(sorted_layers) > 1 else 0
+
+    if winner_score == 0:
+        return {"layer": "Unclassified", "confidence": 0.0, "signals": signals}
+
+    confidence = (winner_score - runner_up_score) / winner_score
+    if confidence < _CONFIDENCE_THRESHOLD:
+        return {"layer": "Unclassified", "confidence": confidence, "signals": signals}
+
+    return {"layer": sorted_layers[0][0], "confidence": round(confidence, 2), "signals": signals}
+
+
+def classify_all_projects(
+    all_project_meta: list[dict],
+    all_package_deps: list[dict],
+    data_findings: list[dict],
+    overrides: dict[str, str],
+) -> dict[str, dict]:
+    """Classify all projects into business layers.
+
+    Returns: {project_name: {"layer": ..., "confidence": ..., "signals": [...]}}
+    """
+    # Build per-project package lists
+    pkgs_by_project: dict[str, list[str]] = {}
+    for pd in all_package_deps:
+        pkgs_by_project.setdefault(pd["project"], []).append(pd["package"])
+
+    # Build per-project data roles from findings
+    roles_by_project: dict[str, dict[str, int]] = {}
+    for f in data_findings:
+        proj = f.get("project")
+        if not proj:
+            continue
+        if proj not in roles_by_project:
+            roles_by_project[proj] = {}
+        direction = f.get("direction") or "unknown"
+        ftype = f.get("type", "")
+        # Count UI-type patterns separately
+        if ftype == "ui":
+            roles_by_project[proj]["ui"] = roles_by_project[proj].get("ui", 0) + 1
+        else:
+            roles_by_project[proj][direction] = roles_by_project[proj].get(direction, 0) + 1
+
+    # Read csproj XML for each project (needed for WPF detection)
+    result: dict[str, dict] = {}
+    for pm in all_project_meta:
+        proj_name = pm["project"]
+
+        # Check overrides first
+        if proj_name in overrides:
+            override_layer = overrides[proj_name]
+            if override_layer in BUSINESS_LAYERS:
+                result[proj_name] = {"layer": override_layer, "confidence": 1.0, "signals": ["override"]}
+                continue
+            else:
+                print(f"  Warning: Unknown layer '{override_layer}' for override '{proj_name}', using auto-detection")
+
+        # Read .csproj XML for WPF detection
+        csproj_path = os.path.join(SCAN_ROOT, pm.get("globalPath", pm["path"]))
+        try:
+            xml = Path(csproj_path).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            xml = ""
+
+        project_dir = os.path.dirname(csproj_path)
+        packages = pkgs_by_project.get(proj_name, [])
+        data_roles = roles_by_project.get(proj_name, {})
+
+        classification = classify_business_layer(
+            proj_name, pm["category"], xml, packages, data_roles, project_dir
+        )
+        result[proj_name] = classification
+
+    return result
 
 
 def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
@@ -753,6 +948,174 @@ def build_data_flow_graph(findings: list[dict], project_meta: list[dict]) -> dic
         "impliedDependencies": implied_deps,
         "infrastructureGroups": list(infra_groups.values()),
     }
+
+
+# ─── E2E path computation ────────────────────────────────────────────
+
+def build_unified_graph(
+    all_project_refs: list[dict],
+    implied_deps: list[dict],
+) -> dict[str, set[tuple[str, str]]]:
+    """Build adjacency list combining project references and implied data dependencies.
+
+    Returns: {project_name: set of (target_project, edge_type)}
+    """
+    adj: dict[str, set[tuple[str, str]]] = {}
+
+    for ref in all_project_refs:
+        src = ref["project"]
+        dst = ref["references"]
+        adj.setdefault(src, set()).add((dst, "project-reference"))
+
+    for dep in implied_deps:
+        src = dep["from"]
+        dst = dep["to"]
+        adj.setdefault(src, set()).add((dst, f"data-flow-{dep.get('viaType', 'unknown')}"))
+
+    return adj
+
+
+def find_data_endpoints_for_project(
+    project_name: str,
+    data_nodes: list[dict],
+) -> list[dict]:
+    """Find data endpoints (DB tables, entities, topics, etc.) that a project reads or writes."""
+    endpoints = []
+    for node in data_nodes:
+        roles = []
+        if project_name in node.get("writers", []):
+            roles.append("write")
+        if project_name in node.get("readers", []):
+            roles.append("read")
+        if project_name in node.get("exposers", []):
+            roles.append("expose")
+        if project_name in node.get("consumers", []):
+            roles.append("consume")
+        if roles:
+            endpoints.append({
+                "endpoint": node["id"],
+                "name": node["name"],
+                "type": node.get("infrastructure", node.get("type", "unknown")),
+                "endpointType": node.get("type", "unknown"),
+                "roles": roles,
+            })
+    return endpoints
+
+
+def find_e2e_paths(
+    business_layers: dict[str, dict],
+    unified_graph: dict[str, set[tuple[str, str]]],
+    data_nodes: list[dict],
+    named_flows: list[dict],
+    data_findings: list[dict] | None = None,
+    max_depth: int = 8,
+) -> list[dict]:
+    """BFS from each Presentation project to find end-to-end flow paths.
+
+    Terminal conditions (path is recorded when current project has):
+    1. Named data endpoints from data_nodes (e.g., entity:Trades), OR
+    2. DataAccess layer + data access patterns (e.g., DbContext, SQL) but no extracted endpoints
+
+    Returns list of flow path dicts with source, path, data endpoints, etc.
+    """
+    presentation_projects = [
+        name for name, info in business_layers.items()
+        if info["layer"] == "Presentation"
+    ]
+
+    # Build named flow lookup (source -> flow info)
+    named_flow_lookup: dict[str, dict] = {}
+    for nf in named_flows:
+        src = nf.get("source", "")
+        if src:
+            named_flow_lookup[src] = nf
+
+    # Build set of projects that have data access patterns (for fallback terminal)
+    data_access_projects: set[str] = set()
+    if data_findings:
+        data_types = {"database", "messaging", "cache", "storage"}
+        for f in data_findings:
+            proj = f.get("project")
+            if proj and f.get("type") in data_types:
+                data_access_projects.add(proj)
+
+    all_paths: list[dict] = []
+
+    for source in presentation_projects:
+        # BFS
+        queue: list[list[tuple[str, str]]] = [[(source, "start")]]
+        visited: set[str] = {source}
+
+        while queue:
+            path = queue.pop(0)
+            current_project = path[-1][0]
+
+            if len(path) > max_depth:
+                continue
+
+            # Check if current project has data endpoints
+            endpoints = find_data_endpoints_for_project(current_project, data_nodes)
+
+            # Fallback: treat DataAccess-layer projects with data patterns as terminals
+            is_data_terminal = False
+            if not endpoints and len(path) >= 2:
+                cur_layer = business_layers.get(current_project, {}).get("layer")
+                if cur_layer == "DataAccess" and current_project in data_access_projects:
+                    is_data_terminal = True
+
+            # Record path if it reaches a data endpoint/terminal and has at least 2 steps
+            if (endpoints or is_data_terminal) and len(path) >= 2:
+                path_entries = []
+                layers_crossed = []
+                for proj, edge_type in path:
+                    layer_info = business_layers.get(proj, {"layer": "Unclassified"})
+                    entry = {
+                        "project": proj,
+                        "layer": layer_info["layer"],
+                        "edgeType": edge_type,
+                    }
+                    path_entries.append(entry)
+                    if layer_info["layer"] not in layers_crossed:
+                        layers_crossed.append(layer_info["layer"])
+
+                # Add data endpoint entries (or marker for DataAccess terminal)
+                data_ep_ids = []
+                if endpoints:
+                    for ep in endpoints:
+                        path_entries.append({
+                            "endpoint": ep["endpoint"],
+                            "type": ep["type"],
+                            "edgeType": f"data-flow-{ep['roles'][0]}",
+                        })
+                        data_ep_ids.append(ep["endpoint"])
+                elif is_data_terminal:
+                    data_ep_ids.append(f"project:{current_project}")
+
+                named = named_flow_lookup.get(source)
+                flow_path = {
+                    "source": {"project": source, "layer": "Presentation"},
+                    "path": path_entries,
+                    "pathLength": len(path),
+                    "crossesLayers": layers_crossed,
+                    "dataEndpoints": data_ep_ids,
+                }
+                if named:
+                    flow_path["namedFlow"] = named.get("name", "")
+                    flow_path["description"] = named.get("description", "")
+
+                all_paths.append(flow_path)
+
+            # Expand neighbors
+            neighbors = unified_graph.get(current_project, set())
+            for neighbor, edge_type in neighbors:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(path + [(neighbor, edge_type)])
+
+    # Deduplicate and rank: shorter paths first, then by layer diversity
+    all_paths.sort(key=lambda p: (p["pathLength"], -len(p["crossesLayers"])))
+
+    return all_paths
 
 
 # ─── Configuration extraction ───────────────────────────────────────
@@ -999,6 +1362,19 @@ def main():
     print(f"Scan root: {SCAN_ROOT}")
     print(f"Output:    {OUT_DIR}\n")
 
+    # Load business-map.json overrides (optional)
+    business_map_path = os.path.join(SCAN_ROOT, "business-map.json")
+    business_overrides: dict[str, str] = {}
+    named_flows: list[dict] = []
+    if os.path.isfile(business_map_path):
+        try:
+            bm = json.loads(Path(business_map_path).read_text(encoding="utf-8"))
+            business_overrides = bm.get("overrides", {})
+            named_flows = bm.get("namedFlows", [])
+            print(f"  Loaded business-map.json: {len(business_overrides)} overrides, {len(named_flows)} named flows")
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"  Warning: Could not parse business-map.json: {e}")
+
     # Step 0: Discover repos
     print("Step 0: Discovering repositories...")
     repos = discover_repos(SCAN_ROOT)
@@ -1081,6 +1457,49 @@ def main():
     print(f"  Data edges: {len(data_flow['dataEdges'])}")
     print(f"  Implied dependencies: {len(data_flow['impliedDependencies'])}")
     print(f"  Infrastructure groups: {len(data_flow['infrastructureGroups'])}")
+
+    # Step 2c: Business layer classification
+    print("\nStep 2c: Classifying business layers...")
+    business_layers = classify_all_projects(
+        all_project_meta, all_package_deps, data_findings, business_overrides
+    )
+
+    layer_counts: dict[str, int] = {}
+    for info in business_layers.values():
+        layer_counts[info["layer"]] = layer_counts.get(info["layer"], 0) + 1
+    for layer, count in sorted(layer_counts.items(), key=lambda x: -x[1]):
+        print(f"    {layer}: {count}")
+
+    # Step 2d: E2E path computation
+    print("\nStep 2d: Computing end-to-end flow paths...")
+    unified_graph = build_unified_graph(all_project_refs, data_flow.get("impliedDependencies", []))
+    flow_paths = find_e2e_paths(
+        business_layers, unified_graph, data_flow.get("dataNodes", []), named_flows,
+        data_findings=data_findings,
+    )
+    print(f"  Found {len(flow_paths)} end-to-end flow paths")
+
+    # Build layer summary
+    layer_summary: dict[str, dict] = {}
+    for proj_name, info in business_layers.items():
+        layer = info["layer"]
+        if layer not in layer_summary:
+            layer_summary[layer] = {"count": 0, "projects": []}
+        layer_summary[layer]["count"] += 1
+        layer_summary[layer]["projects"].append(proj_name)
+
+    flow_paths_output = {
+        "businessLayers": {
+            name: {"layer": info["layer"], "confidence": info["confidence"], "signals": info["signals"]}
+            for name, info in business_layers.items()
+        },
+        "flowPaths": flow_paths,
+        "layerSummary": layer_summary,
+    }
+    Path(os.path.join(OUT_DIR, "flow-paths.json")).write_text(
+        json.dumps(flow_paths_output, indent=2), encoding="utf-8"
+    )
+    print(f"  Wrote flow-paths.json")
 
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")

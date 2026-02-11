@@ -29,6 +29,12 @@ data_flow: dict = {}
 if os.path.isfile(data_flow_path):
     data_flow = json.loads(Path(data_flow_path).read_text(encoding="utf-8"))
 
+# Load flow paths / business layers (optional)
+flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
+flow_paths_data: dict = {}
+if os.path.isfile(flow_paths_path):
+    flow_paths_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
 
@@ -346,6 +352,12 @@ def _esc_html(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
+def _hex_to_rgb(hex_color: str) -> str:
+    """Convert #RRGGBB to 'R,G,B' for use in rgba()."""
+    h = hex_color.lstrip("#")
+    return f"{int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)}"
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -413,6 +425,30 @@ def generate_viewer_html() -> str:
                 "mermaid": content,
             })
 
+    # ── Business Layers diagram tab ──
+    bl_mmd_path = os.path.join(diagrams_dir, "business-layers.mmd")
+    if os.path.isfile(bl_mmd_path):
+        content = Path(bl_mmd_path).read_text(encoding="utf-8")
+        if "no_data" not in content:
+            diagram_tabs.append({
+                "id": "businesslayers",
+                "label": "Business Layers",
+                "title": "Business Layer Classification — Presentation / Engine / Service / DataAccess",
+                "mermaid": content,
+            })
+
+    # ── E2E Flows diagram tab ──
+    e2e_mmd_path = os.path.join(diagrams_dir, "e2e-flows.mmd")
+    if os.path.isfile(e2e_mmd_path):
+        content = Path(e2e_mmd_path).read_text(encoding="utf-8")
+        if "no_data" not in content:
+            diagram_tabs.append({
+                "id": "e2eflowsdiagram",
+                "label": "E2E Flows Diagram",
+                "title": "End-to-End Flow Paths — Screen to Pricer to Data",
+                "mermaid": content,
+            })
+
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
     for f in data_findings:
@@ -468,6 +504,8 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("implieddeps", "Implied Dependencies"))
     if conn_strings:
         all_tab_ids.append(("connstrings", "Connection Strings"))
+    if flow_paths_data.get("flowPaths"):
+        all_tab_ids.append(("e2eflows", "E2E Flows"))
     all_tab_ids.append(("allprojects", "All Projects"))
 
     tab_buttons = "\n".join(
@@ -613,6 +651,94 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # E2E Flows panel
+    e2eflows_panel = ""
+    if flow_paths_data.get("flowPaths"):
+        bl = flow_paths_data.get("businessLayers", {})
+        fps = flow_paths_data.get("flowPaths", [])
+        layer_sum = flow_paths_data.get("layerSummary", {})
+
+        # Layer badges
+        layer_colors = {
+            "Presentation": "#E91E63", "Engine": "#FF9800", "Service": "#3498DB",
+            "DataAccess": "#4A90D9", "Infrastructure": "#9B59B6", "Unclassified": "#64748b",
+        }
+        badges_html = ""
+        for layer in ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]:
+            info = layer_sum.get(layer, {})
+            count = info.get("count", 0)
+            if count == 0:
+                continue
+            color = layer_colors.get(layer, "#64748b")
+            badges_html += (
+                f'<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;'
+                f'background:rgba({_hex_to_rgb(color)},0.15);color:{color};font-size:0.78rem;'
+                f'font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;">'
+                f'{_esc_html(layer)}: {count}</span>'
+            )
+
+        # Flow paths table rows
+        flow_rows = ""
+        for i, fp in enumerate(fps[:100]):
+            source = fp.get("source", {}).get("project", "?")
+            layers_crossed = ", ".join(fp.get("crossesLayers", []))
+            depth = fp.get("pathLength", 0)
+            # Build short path chain
+            chain_parts = []
+            for step in fp.get("path", []):
+                if "project" in step:
+                    chain_parts.append(_esc_html(step["project"]))
+                elif "endpoint" in step:
+                    ep = step["endpoint"]
+                    chain_parts.append(f'<em>{_esc_html(ep)}</em>')
+            chain = " &rarr; ".join(chain_parts)
+            named = _esc_html(fp.get("namedFlow", ""))
+
+            flow_rows += f"""            <tr class="flow-row" data-flow-idx="{i}" data-search="{_esc_html(source.lower() + ' ' + layers_crossed.lower() + ' ' + named.lower())}">
+              <td><strong>{_esc_html(source)}</strong></td>
+              <td>{_esc_html(layers_crossed)}</td>
+              <td style="text-align:center">{depth}</td>
+              <td style="font-size:0.78rem">{chain}</td>
+              <td>{named}</td>
+            </tr>
+"""
+
+        e2eflows_panel = f"""
+  <section class="tab-panel" id="panel-e2eflows">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> End-to-End Flow Paths ({len(fps)})</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Traces from UI screens through engines/services down to data endpoints.
+        Click a row to see the full path detail with inline diagram.
+      </p>
+      <div style="margin-bottom:0.75rem;">{badges_html}</div>
+      <input type="text" id="flowSearchInput" placeholder="Search flows..." style="
+        width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
+        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        font-size:0.85rem;margin-bottom:0.75rem;outline:none;
+      ">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Source Screen</th><th>Layers Crossed</th><th>Depth</th><th>Path Chain</th><th>Named Flow</th></tr>
+          </thead>
+          <tbody id="flowPathsBody">
+{flow_rows}          </tbody>
+        </table>
+      </div>
+      <div id="flowDetailContainer" style="margin-top:1rem;display:none;">
+        <div class="card" style="border-color:#3b82f6;">
+          <div class="card-title"><span class="icon">&#9670;</span> Flow Detail
+            <button onclick="document.getElementById('flowDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+          </div>
+          <div id="flowDetailContent"></div>
+          <div class="mermaid-wrap" id="flowDetailMermaid" style="margin-top:0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+"""
+
     # Category distribution panel (pie chart via Mermaid)
     cat_chart_mermaid = "pie title Project Categories\n"
     for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
@@ -630,13 +756,14 @@ def generate_viewer_html() -> str:
               <th>Project</th>
               <th>Repo</th>
               <th>Category</th>
+              <th>Business Layer</th>
               <th>Project Refs</th>
               <th>NuGet Deps</th>
               <th>Path</th>
             </tr>
           </thead>
           <tbody id="projectsBody">
-            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+            <tr><td colspan="7" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -802,6 +929,15 @@ def generate_viewer_html() -> str:
   .tag-api      {{ background: rgba(52,152,219,.15);  color: #3498DB; }}
   .tag-cache    {{ background: rgba(243,156,18,.15);  color: #F39C12; }}
   .tag-config   {{ background: rgba(155,89,182,.15);  color: #9B59B6; }}
+  .tag-presentation  {{ background: rgba(233,30,99,.15);  color: #E91E63; }}
+  .tag-engine        {{ background: rgba(255,152,0,.15);  color: #FF9800; }}
+  .tag-dataaccess    {{ background: rgba(74,144,217,.15); color: #4A90D9; }}
+  .tag-infrastructure {{ background: rgba(155,89,182,.15); color: #9B59B6; }}
+  .tag-unclassified  {{ background: rgba(100,116,139,.15); color: #64748b; }}
+  .flow-row {{ cursor: pointer; }}
+  .flow-row:hover {{ background: rgba(59,130,246,0.12) !important; }}
+  .flow-step {{ display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }}
+  .flow-arrow {{ color: #64748b; margin: 0 0.2rem; }}
   .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }}
   .footer {{
     text-align: center; padding: 1.5rem 2rem; color: #475569;
@@ -841,6 +977,7 @@ def generate_viewer_html() -> str:
 {datasources_panel}
 {implieddeps_panel}
 {connstrings_panel}
+{e2eflows_panel}
 {all_projects_panel}
 </main>
 
@@ -1244,6 +1381,21 @@ function zoomDiagram(containerId, delta) {{
     return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
   }}
 
+  var layerClass = {{
+    'presentation': 'tag-presentation', 'engine': 'tag-connector',
+    'service': 'tag-service', 'dataaccess': 'tag-dataaccess',
+    'infrastructure': 'tag-infrastructure', 'unclassified': 'tag-unclassified'
+  }};
+
+  function layerTagHTML(layer, confidence) {{
+    if (!layer) return '';
+    var lower = layer.toLowerCase();
+    var cls = layerClass[lower] || 'tag-unclassified';
+    var confColor = confidence >= 0.7 ? '#22c55e' : confidence >= 0.4 ? '#eab308' : '#ef4444';
+    var confDot = '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + confColor + ';margin-left:4px;" title="Confidence: ' + (confidence * 100).toFixed(0) + '%"></span>';
+    return '<span class="tag ' + cls + '">' + escHtml(layer) + confDot + '</span>';
+  }}
+
   function escHtml(s) {{
     var d = document.createElement('div');
     d.textContent = s;
@@ -1336,7 +1488,13 @@ function zoomDiagram(containerId, delta) {{
     window._dataFlow = df;
   }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
 
-  // Load All Projects data
+  // Load flow-paths.json for E2E flows tab, then load All Projects data
+  window._flowData = {{ businessLayers: {{}}, flowPaths: [], layerSummary: {{}} }};
+  fetch('flow-paths.json').then(function (r) {{ return r.json(); }}).then(function (fd) {{
+    window._flowData = fd;
+  }}).catch(function () {{ /* flow-paths.json may not exist */ }}).finally(function () {{
+
+  // Load All Projects data (after flow-paths.json)
   Promise.all([
     fetch('project-meta.json').then(function (r) {{ return r.json(); }}),
     fetch('project-refs.csv').then(function (r) {{ return r.text(); }}),
@@ -1350,13 +1508,18 @@ function zoomDiagram(containerId, delta) {{
     deps.forEach(function (d) {{ depCounts[d.project] = (depCounts[d.project] || 0) + 1; }});
     var tbody = document.getElementById('projectsBody');
     tbody.innerHTML = '';
+    var bl = (window._flowData || {{}}).businessLayers || {{}};
     meta.forEach(function (p) {{
       var tr = document.createElement('tr');
-      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      var layerInfo = bl[p.project] || {{}};
+      var layerName = layerInfo.layer || '';
+      var layerConf = layerInfo.confidence || 0;
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + layerName + ' ' + (p.globalPath||p.path||'')).toLowerCase());
       tr.innerHTML =
         '<td><strong>' + escHtml(p.project) + '</strong></td>' +
         '<td>' + escHtml(p.repo || '') + '</td>' +
         '<td>' + tagHTML(p.category) + '</td>' +
+        '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
         '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
@@ -1365,8 +1528,10 @@ function zoomDiagram(containerId, delta) {{
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
   }});
+
+  }}); // end finally for flow-paths.json
 
   // Search
   var searchInput = document.getElementById('searchInput');
@@ -1379,6 +1544,128 @@ function zoomDiagram(containerId, delta) {{
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
     }});
   }});
+
+  // Flow paths search
+  var flowSearchInput = document.getElementById('flowSearchInput');
+  if (flowSearchInput) {{
+    flowSearchInput.addEventListener('input', function () {{
+      var query = flowSearchInput.value.trim().toLowerCase();
+      var rows = document.querySelectorAll('#flowPathsBody .flow-row');
+      rows.forEach(function (row) {{
+        var text = row.getAttribute('data-search') || '';
+        row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+      }});
+    }});
+  }}
+
+  // Flow path click-to-expand
+  var flowBody = document.getElementById('flowPathsBody');
+  if (flowBody) {{
+    flowBody.addEventListener('click', function (e) {{
+      var row = e.target.closest('.flow-row');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-flow-idx'), 10);
+      showFlowDetail(idx);
+    }});
+  }}
+
+  function showFlowDetail(idx) {{
+    var fd = window._flowData || {{}};
+    var paths = fd.flowPaths || [];
+    if (idx < 0 || idx >= paths.length) return;
+    var fp = paths[idx];
+    var container = document.getElementById('flowDetailContainer');
+    var content = document.getElementById('flowDetailContent');
+    var mermaidDiv = document.getElementById('flowDetailMermaid');
+    if (!container || !content) return;
+
+    // Build step-by-step detail
+    var html = '<div style="margin-bottom:0.5rem;">';
+    if (fp.namedFlow) {{
+      html += '<strong style="color:#3b82f6;">' + escHtml(fp.namedFlow) + '</strong><br/>';
+    }}
+    if (fp.description) {{
+      html += '<span style="color:#94a3b8;font-size:0.85rem;">' + escHtml(fp.description) + '</span><br/>';
+    }}
+    html += '<span style="color:#94a3b8;font-size:0.8rem;">Depth: ' + fp.pathLength + ' | Layers: ' + (fp.crossesLayers || []).join(' &rarr; ') + '</span>';
+    html += '</div>';
+
+    // Step-by-step chain with layer badges
+    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;">';
+    var bl = fd.businessLayers || {{}};
+    (fp.path || []).forEach(function (step, i) {{
+      if (i > 0) html += '<span class="flow-arrow">&rarr;</span>';
+      if (step.project) {{
+        var li = bl[step.project] || {{}};
+        html += '<span class="flow-step">' + layerTagHTML(li.layer || step.layer || '', li.confidence || 0) + ' <strong>' + escHtml(step.project) + '</strong></span>';
+      }} else if (step.endpoint) {{
+        var epName = step.endpoint.indexOf(':') !== -1 ? step.endpoint.split(':').slice(1).join(':') : step.endpoint;
+        var epType = step.type || '';
+        html += '<span class="flow-step"><span class="tag tag-db">' + escHtml(epType) + '</span> <em>' + escHtml(epName) + '</em></span>';
+      }}
+    }});
+    html += '</div>';
+    content.innerHTML = html;
+
+    // Render inline Mermaid diagram for this path
+    if (mermaidDiv && window.mermaidAPI) {{
+      var mermaidSrc = buildFlowPathMermaid(fp, bl);
+      mermaidDiv.innerHTML = '<pre class="mermaid">' + escHtml(mermaidSrc) + '</pre>';
+      var pre = mermaidDiv.querySelector('pre.mermaid');
+      if (pre) {{
+        window.mermaidAPI.run({{ nodes: [pre] }}).then(function () {{
+          var svg = mermaidDiv.querySelector('svg');
+          if (svg) {{
+            var vb = svg.getAttribute('viewBox');
+            if (vb) {{
+              var parts = vb.split(' ');
+              svg.style.width = parseFloat(parts[2]) + 'px';
+              svg.style.height = parseFloat(parts[3]) + 'px';
+              svg.style.maxWidth = 'none';
+              svg.removeAttribute('width');
+            }}
+          }}
+        }}).catch(function (err) {{ console.error('Flow mermaid error:', err); }});
+      }}
+    }}
+
+    container.style.display = 'block';
+  }}
+
+  function buildFlowPathMermaid(fp, bl) {{
+    var lines = ['graph LR'];
+    var prevId = null;
+    (fp.path || []).forEach(function (step) {{
+      var nid, label;
+      if (step.project) {{
+        nid = step.project.replace(/[^a-zA-Z0-9_]/g, '_');
+        var layer = (bl[step.project] || {{}}).layer || step.layer || '';
+        label = step.project + '\\n(' + layer + ')';
+        lines.push('    ' + nid + '["' + label + '"]');
+      }} else if (step.endpoint) {{
+        nid = step.endpoint.replace(/[^a-zA-Z0-9_]/g, '_');
+        var epName = step.endpoint.indexOf(':') !== -1 ? step.endpoint.split(':').slice(1).join(':') : step.endpoint;
+        var etype = step.type || '';
+        if (etype === 'database') {{
+          lines.push('    ' + nid + '[("' + epName + '")]');
+        }} else if (etype === 'messaging') {{
+          lines.push('    ' + nid + '{{{"' + epName + '"}}}');
+        }} else {{
+          lines.push('    ' + nid + '(["' + epName + '"])');
+        }}
+      }} else {{ return; }}
+      if (prevId) {{
+        var edgeType = step.edgeType || '';
+        if (edgeType.indexOf('data-flow') !== -1) {{
+          lines.push('    ' + prevId + ' ==> ' + nid);
+        }} else {{
+          lines.push('    ' + prevId + ' --> ' + nid);
+        }}
+      }}
+      prevId = nid;
+    }});
+    return lines.join('\\n');
+  }}
 }})();
 </script>
 </body>
