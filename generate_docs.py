@@ -677,6 +677,40 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-from {{ color: #60a5fa; }}
   .edge-tooltip .edge-to {{ color: #34d399; }}
   .edge-tooltip .edge-arrow {{ color: #94a3b8; margin: 0 0.3rem; }}
+  .edge-detail-panel {{
+    position: fixed; right: 1rem; top: 50%; transform: translateY(-50%);
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.2rem; width: 380px; max-height: 70vh; overflow-y: auto;
+    z-index: 999; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: none;
+    font-size: 0.85rem; color: #e2e8f0;
+  }}
+  .edge-detail-panel .detail-header {{
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid #334155;
+  }}
+  .edge-detail-panel .detail-header h3 {{ font-size: 0.95rem; font-weight: 600; margin: 0; }}
+  .edge-detail-panel .detail-close {{
+    background: none; border: 1px solid #475569; color: #94a3b8; border-radius: 4px;
+    cursor: pointer; padding: 0.1rem 0.5rem; font-size: 0.8rem;
+  }}
+  .edge-detail-panel .detail-close:hover {{ color: #e2e8f0; border-color: #64748b; }}
+  .edge-detail-panel .detail-section {{ margin-bottom: 0.8rem; }}
+  .edge-detail-panel .detail-section h4 {{
+    font-size: 0.75rem; text-transform: uppercase; color: #64748b; letter-spacing: 0.04em;
+    margin-bottom: 0.3rem;
+  }}
+  .edge-detail-panel .detail-flow {{
+    display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-bottom: 0.3rem;
+  }}
+  .edge-detail-panel .detail-flow .from {{ color: #60a5fa; font-weight: 600; }}
+  .edge-detail-panel .detail-flow .to {{ color: #34d399; font-weight: 600; }}
+  .edge-detail-panel .detail-flow .arrow {{ color: #94a3b8; }}
+  .edge-detail-panel .detail-list {{ list-style: none; padding: 0; }}
+  .edge-detail-panel .detail-list li {{
+    padding: 0.25rem 0; border-bottom: 1px solid #1e293b; color: #cbd5e1; font-size: 0.8rem;
+  }}
+  .edge-detail-panel .detail-list li:last-child {{ border-bottom: none; }}
+  .edge-detail-panel .detail-empty {{ color: #64748b; font-style: italic; font-size: 0.8rem; }}
   .table-wrap {{ overflow-x: auto; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
   thead th {{
@@ -718,6 +752,7 @@ def generate_viewer_html() -> str:
 </head>
 <body>
 <div class="edge-tooltip" id="edgeTooltip"></div>
+<div class="edge-detail-panel" id="edgeDetailPanel"></div>
 
 <header class="header">
   <div class="header-top">
@@ -824,14 +859,140 @@ function attachEdgeTooltips(svg) {{
       }});
     }}
 
+    function onClick(e) {{
+      e.stopPropagation();
+      var ep = resolveEdgeEndpoints(edge.id);
+      if (ep) showEdgeDetail(ep.from, ep.to);
+    }}
+
     hitArea.addEventListener('mouseenter', showTip);
     hitArea.addEventListener('mousemove', moveTip);
     hitArea.addEventListener('mouseleave', hideTip);
-    // Also attach to the edge itself for direct hover
+    hitArea.addEventListener('click', onClick);
     edge.addEventListener('mouseenter', showTip);
     edge.addEventListener('mousemove', moveTip);
     edge.addEventListener('mouseleave', hideTip);
+    edge.addEventListener('click', onClick);
   }});
+}}
+
+function showEdgeDetail(fromName, toName) {{
+  var panel = document.getElementById('edgeDetailPanel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var refs = d.refs || [], deps = d.deps || [], meta = d.meta || [], dataSrc = d.dataSources || [];
+
+  // Find meta for both projects (match by short name — the display name)
+  var fromMeta = meta.find(function (m) {{ return m.project === fromName; }});
+  var toMeta = meta.find(function (m) {{ return m.project === toName; }});
+
+  // Find direct references between these projects
+  var directRefs = refs.filter(function (r) {{
+    return (r.project === fromName && r.references === toName) ||
+           (r.project === toName && r.references === fromName);
+  }});
+
+  // Find NuGet packages used by the source project
+  var fromDeps = deps.filter(function (d) {{ return d.project === fromName; }});
+  var toDeps = deps.filter(function (d) {{ return d.project === toName; }});
+  // Find shared NuGet packages
+  var toPackages = {{}};
+  toDeps.forEach(function (d) {{ toPackages[d.package] = d.version; }});
+  var sharedPkgs = fromDeps.filter(function (d) {{ return toPackages[d.package]; }});
+
+  // Find data patterns for both projects
+  // Project path is like "src/Foo/Foo.csproj" — directory is everything up to the last "/"
+  var fromPath = fromMeta ? (fromMeta.globalPath || fromMeta.path || '') : '';
+  var toPath = toMeta ? (toMeta.globalPath || toMeta.path || '') : '';
+  var fromDir = fromPath.substring(0, fromPath.lastIndexOf('/'));
+  var toDir = toPath.substring(0, toPath.lastIndexOf('/'));
+  var fromDataPatterns = fromDir ? dataSrc.filter(function (ds) {{ return ds.file && ds.file.indexOf(fromDir + '/') === 0; }}) : [];
+  var toDataPatterns = toDir ? dataSrc.filter(function (ds) {{ return ds.file && ds.file.indexOf(toDir + '/') === 0; }}) : [];
+
+  // Find shared data pattern types
+  var fromPatternTypes = {{}};
+  fromDataPatterns.forEach(function (p) {{ fromPatternTypes[p.pattern] = true; }});
+  var sharedPatterns = toDataPatterns.filter(function (p) {{ return fromPatternTypes[p.pattern]; }});
+  // Unique shared pattern names
+  var sharedPatternNames = {{}};
+  sharedPatterns.forEach(function (p) {{ sharedPatternNames[p.pattern] = (sharedPatternNames[p.pattern] || 0) + 1; }});
+
+  // Build HTML
+  var html = '<div class="detail-header"><h3>Dependency Detail</h3>'
+    + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
+
+  // Flow
+  html += '<div class="detail-section"><div class="detail-flow">'
+    + '<span class="from">' + escHtmlGlobal(fromName) + '</span>'
+    + '<span class="arrow">&#8594;</span>'
+    + '<span class="to">' + escHtmlGlobal(toName) + '</span>'
+    + '</div>';
+  if (fromMeta || toMeta) {{
+    html += '<div style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem;">';
+    if (fromMeta) html += escHtmlGlobal(fromMeta.category);
+    html += ' &#8594; ';
+    if (toMeta) html += escHtmlGlobal(toMeta.category);
+    html += '</div>';
+  }}
+  html += '</div>';
+
+  // Project references
+  html += '<div class="detail-section"><h4>Project References</h4>';
+  if (directRefs.length > 0) {{
+    html += '<ul class="detail-list">';
+    directRefs.forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#f59e0b;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.project) + ' &#8594; ' + escHtmlGlobal(r.references) + cross + '</li>';
+    }});
+    html += '</ul>';
+  }} else {{
+    html += '<div class="detail-empty">No direct project references found</div>';
+  }}
+  html += '</div>';
+
+  // Shared NuGet packages
+  html += '<div class="detail-section"><h4>Shared NuGet Packages (' + sharedPkgs.length + ')</h4>';
+  if (sharedPkgs.length > 0) {{
+    html += '<ul class="detail-list">';
+    sharedPkgs.slice(0, 15).forEach(function (d) {{
+      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#94a3b8">' + escHtmlGlobal(d.version) + '</span></li>';
+    }});
+    if (sharedPkgs.length > 15) html += '<li style="color:#64748b">... and ' + (sharedPkgs.length - 15) + ' more</li>';
+    html += '</ul>';
+  }} else {{
+    html += '<div class="detail-empty">No shared NuGet packages</div>';
+  }}
+  html += '</div>';
+
+  // Data patterns
+  var totalFromPatterns = fromDataPatterns.length;
+  var totalToPatterns = toDataPatterns.length;
+  html += '<div class="detail-section"><h4>Data Patterns</h4>';
+  html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">'
+    + '<span class="from" style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + totalFromPatterns + ' patterns, '
+    + '<span class="to" style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
+  var sharedKeys = Object.keys(sharedPatternNames);
+  if (sharedKeys.length > 0) {{
+    html += '<ul class="detail-list">';
+    sharedKeys.forEach(function (p) {{
+      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#94a3b8">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
+    }});
+    html += '</ul>';
+  }} else {{
+    html += '<div class="detail-empty">No shared data patterns</div>';
+  }}
+  html += '</div>';
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = document.getElementById('detailCloseBtn');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+}}
+
+function escHtmlGlobal(s) {{
+  var d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
 }}
 
 function zoomDiagram(containerId, delta) {{
@@ -943,13 +1104,18 @@ function zoomDiagram(containerId, delta) {{
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
+  // Global project data for edge detail lookups
+  window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
+
   // Load All Projects data
   Promise.all([
     fetch('project-meta.json').then(function (r) {{ return r.json(); }}),
     fetch('project-refs.csv').then(function (r) {{ return r.text(); }}),
-    fetch('dependencies.csv').then(function (r) {{ return r.text(); }})
+    fetch('dependencies.csv').then(function (r) {{ return r.text(); }}),
+    fetch('data-sources.json').then(function (r) {{ return r.json(); }}).catch(function () {{ return []; }})
   ]).then(function (results) {{
-    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
+    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]), dataSrc = results[3];
+    window._projData = {{ meta: meta, refs: refs, deps: deps, dataSources: dataSrc }};
     var refCounts = {{}}, depCounts = {{}};
     refs.forEach(function (r) {{ refCounts[r.project] = (refCounts[r.project] || 0) + 1; }});
     deps.forEach(function (d) {{ depCounts[d.project] = (depCounts[d.project] || 0) + 1; }});
