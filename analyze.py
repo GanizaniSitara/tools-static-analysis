@@ -804,6 +804,714 @@ def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list
     return findings
 
 
+# ─── Field-level traceability: XAML → ViewModel → Entity → DB column ──
+
+# XAML regex patterns
+_XAML_CLASS_RE        = re.compile(r'x:Class="(?:[\w.]+\.)?(\w+)"')
+_XAML_BINDING_PATH_RE = re.compile(r'\{Binding\s+(?:Path=)?(\w[\w.]*)')
+_XAML_BINDING_FULL_RE = re.compile(r'\{Binding\s+([^}]+)\}')
+_XAML_DATA_CONTEXT_RE = re.compile(r'DataContext\s*=\s*"\{[^}]*?(?:Type|local:|vm:)(\w+)')
+_XAML_DESIGN_CTX_RE   = re.compile(r'd:DataContext\s*=\s*"\{[^}]*?(?:Type|local:|vm:)(\w+)')
+
+# ViewModel regex patterns
+_VIEWMODEL_CLASS_RE   = re.compile(r'class\s+(\w+)\s*(?:<[^>]+>)?\s*:\s*[^{]*?(?:ViewModelBase|ObservableObject|INotifyPropertyChanged|BindableBase|ReactiveObject)')
+_CS_AUTO_PROPERTY_RE  = re.compile(r'public\s+(?:virtual\s+|override\s+|new\s+)?([\w<>,\s?]+?)\s+(\w+)\s*\{\s*get\s*;')
+_CS_PROP_CHANGED_RE   = re.compile(r'(?:OnPropertyChanged|SetProperty|RaisePropertyChanged|RaiseAndSetIfChanged)\s*\(')
+
+# Entity / column mapping regex patterns
+_TABLE_ATTR_RE   = re.compile(r'\[Table\s*\(\s*"([^"]+)"\s*\)\]')
+_COLUMN_ATTR_RE  = re.compile(r'\[Column\s*\(\s*"([^"]+)"\s*\)\]')
+_KEY_ATTR_RE     = re.compile(r'\[Key\]')
+_ENTITY_CLASS_RE = re.compile(r'class\s+(\w+)')
+
+# Fluent API regex patterns
+_FLUENT_ENTITY_RE     = re.compile(r'\.Entity<(\w+)>\s*\(')
+_FLUENT_TO_TABLE_RE   = re.compile(r'\.ToTable\s*\(\s*"([^"]+)"')
+_FLUENT_PROPERTY_RE   = re.compile(r'\.Property\s*\(\s*\w+\s*=>\s*\w+\.(\w+)\s*\)')
+_FLUENT_HAS_COLUMN_RE = re.compile(r'\.HasColumnName\s*\(\s*"([^"]+)"')
+
+# SQL field extraction regex patterns
+_SQL_SELECT_FIELDS_RE = re.compile(r'\bSELECT\s+(.*?)\bFROM\b', re.IGNORECASE | re.DOTALL)
+_SQL_INSERT_FIELDS_RE = re.compile(r'\bINSERT\s+INTO\s+\[?\w+\]?\s*\(([^)]+)\)', re.IGNORECASE)
+_SQL_UPDATE_SET_RE    = re.compile(r'\bSET\s+(.*?)(?:\bWHERE\b|$)', re.IGNORECASE | re.DOTALL)
+_DAPPER_QUERY_TYPE_RE = re.compile(r'\.(Query|QueryAsync|QueryFirst|QuerySingle)<(\w+)>')
+
+
+def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
+    """Scan .xaml files for bindings, view types, and DataContext references."""
+    views: list[dict] = []
+    abs_root = os.path.abspath(scan_root)
+
+    for repo in repos:
+        repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+        xaml_files = find_files(repo["root"], re.compile(r"\.xaml$"))
+
+        for xaml_file in xaml_files:
+            try:
+                content = Path(xaml_file).read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+
+            rel_path = os.path.relpath(xaml_file, abs_root)
+            project_name = resolve_project_for_file(xaml_file, dir_to_project)
+
+            # Extract x:Class
+            view_type = None
+            m = _XAML_CLASS_RE.search(content)
+            if m:
+                view_type = m.group(1)
+
+            # Extract DataContext type
+            data_context_type = None
+            m = _XAML_DATA_CONTEXT_RE.search(content)
+            if m:
+                data_context_type = m.group(1)
+            if not data_context_type:
+                m = _XAML_DESIGN_CTX_RE.search(content)
+                if m:
+                    data_context_type = m.group(1)
+
+            # Extract all binding paths
+            bindings: list[dict] = []
+            lines = content.split("\n")
+            for i, line in enumerate(lines):
+                for bm in _XAML_BINDING_PATH_RE.finditer(line):
+                    binding_path = bm.group(1)
+                    # Skip mode/converter/source keywords
+                    if binding_path.lower() in ("mode", "converter", "source", "updatesourcetrigger",
+                                                 "fallbackvalue", "stringformat", "elementname",
+                                                 "relativesource", "targettype", "validationrules"):
+                        continue
+                    bindings.append({
+                        "path": binding_path,
+                        "line": i + 1,
+                    })
+
+            if view_type or bindings:
+                views.append({
+                    "file": rel_path,
+                    "repo": repo["name"],
+                    "project": project_name,
+                    "viewType": view_type,
+                    "dataContextType": data_context_type,
+                    "bindings": bindings,
+                })
+
+    return views
+
+
+def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
+    """Extract public properties from ViewModel classes."""
+    viewmodels: list[dict] = []
+    abs_root = os.path.abspath(scan_root)
+
+    for repo in repos:
+        repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+        cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
+
+        for cs_file in cs_files:
+            try:
+                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+
+            # Quick check: does this file contain a ViewModel class?
+            if not _VIEWMODEL_CLASS_RE.search(content):
+                continue
+
+            rel_path = os.path.relpath(cs_file, abs_root)
+            project_name = resolve_project_for_file(cs_file, dir_to_project)
+            lines = content.split("\n")
+
+            current_class: str | None = None
+            properties: list[dict] = []
+
+            for i, line in enumerate(lines):
+                # Check for ViewModel class declaration
+                cm = _VIEWMODEL_CLASS_RE.search(line)
+                if cm:
+                    # Save previous class if any
+                    if current_class and properties:
+                        viewmodels.append({
+                            "file": rel_path,
+                            "repo": repo["name"],
+                            "project": project_name,
+                            "className": current_class,
+                            "properties": properties,
+                        })
+                    current_class = cm.group(1)
+                    properties = []
+                    continue
+
+                # Extract auto-properties if inside a ViewModel class
+                if current_class:
+                    pm_match = _CS_AUTO_PROPERTY_RE.search(line)
+                    if pm_match:
+                        prop_type = pm_match.group(1).strip()
+                        prop_name = pm_match.group(2)
+                        properties.append({
+                            "propertyName": prop_name,
+                            "propertyType": prop_type,
+                            "line": i + 1,
+                        })
+
+            # Save last class
+            if current_class and properties:
+                viewmodels.append({
+                    "file": rel_path,
+                    "repo": repo["name"],
+                    "project": project_name,
+                    "className": current_class,
+                    "properties": properties,
+                })
+
+    return viewmodels
+
+
+def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: list[dict],
+                               project_meta: list[dict] | None = None) -> list[dict]:
+    """Extract entity class properties with column/table annotations."""
+    # Build set of known entity names from DbSet findings
+    known_entities: set[str] = set()
+    for f in data_findings:
+        if f.get("pattern") == "DbSet" and f.get("endpoint"):
+            known_entities.add(f["endpoint"])
+
+    if not known_entities:
+        return []
+
+    entities: list[dict] = []
+    abs_root = os.path.abspath(scan_root)
+
+    for repo in repos:
+        repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+        cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
+
+        for cs_file in cs_files:
+            try:
+                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+
+            # Quick check: does any known entity name appear?
+            if not any(ename in content for ename in known_entities):
+                continue
+
+            rel_path = os.path.relpath(cs_file, abs_root)
+            project_name = resolve_project_for_file(cs_file, dir_to_project)
+            lines = content.split("\n")
+
+            current_entity: str | None = None
+            table_name: str | None = None
+            properties: list[dict] = []
+            pending_column: str | None = None
+            pending_key: bool = False
+
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+
+                # Check for [Table("...")] attribute
+                tm = _TABLE_ATTR_RE.search(stripped)
+                if tm:
+                    table_name = tm.group(1)
+                    continue
+
+                # Check for [Column("...")] attribute (applies to next property)
+                cm = _COLUMN_ATTR_RE.search(stripped)
+                if cm:
+                    pending_column = cm.group(1)
+                    continue
+
+                # Check for [Key] attribute
+                if _KEY_ATTR_RE.search(stripped):
+                    pending_key = True
+                    continue
+
+                # Check for entity class declaration
+                class_m = _ENTITY_CLASS_RE.search(stripped)
+                if class_m and ("class " in stripped):
+                    class_name = class_m.group(1)
+                    if class_name in known_entities:
+                        # Save previous entity if any
+                        if current_entity and properties:
+                            entities.append({
+                                "file": rel_path,
+                                "repo": repo["name"],
+                                "project": project_name,
+                                "className": current_entity,
+                                "tableName": table_name,
+                                "properties": properties,
+                            })
+                        current_entity = class_name
+                        table_name = table_name  # carry over [Table] if declared just above
+                        properties = []
+                        pending_column = None
+                        pending_key = False
+                        continue
+
+                # Extract properties if inside an entity class
+                if current_entity:
+                    pm_match = _CS_AUTO_PROPERTY_RE.search(stripped)
+                    if pm_match:
+                        prop_type = pm_match.group(1).strip()
+                        prop_name = pm_match.group(2)
+                        prop = {
+                            "propertyName": prop_name,
+                            "propertyType": prop_type,
+                            "line": i + 1,
+                            "columnName": pending_column or prop_name,  # convention fallback
+                            "columnSource": "attribute" if pending_column else "convention",
+                        }
+                        if pending_key:
+                            prop["isKey"] = True
+                        properties.append(prop)
+                        pending_column = None
+                        pending_key = False
+
+            # Save last entity
+            if current_entity and properties:
+                entities.append({
+                    "file": rel_path,
+                    "repo": repo["name"],
+                    "project": project_name,
+                    "className": current_entity,
+                    "tableName": table_name,
+                    "properties": properties,
+                })
+
+    return entities
+
+
+def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
+                                 project_meta: list[dict] | None = None) -> list[dict]:
+    """Extract EF Fluent API table/column mappings from DbContext configurations."""
+    mappings: list[dict] = []
+    abs_root = os.path.abspath(scan_root)
+
+    for repo in repos:
+        repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+        cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
+
+        for cs_file in cs_files:
+            try:
+                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+
+            # Quick check: file must contain OnModelCreating or ModelBuilder
+            if "OnModelCreating" not in content and "ModelBuilder" not in content:
+                continue
+
+            rel_path = os.path.relpath(cs_file, abs_root)
+            project_name = resolve_project_for_file(cs_file, dir_to_project)
+            lines = content.split("\n")
+
+            current_entity: str | None = None
+            entity_table: str | None = None
+            column_maps: list[dict] = []
+
+            for i, line in enumerate(lines):
+                # Check for .Entity<TypeName>()
+                em = _FLUENT_ENTITY_RE.search(line)
+                if em:
+                    # Save previous entity mappings
+                    if current_entity and (entity_table or column_maps):
+                        mappings.append({
+                            "file": rel_path,
+                            "repo": repo["name"],
+                            "project": project_name,
+                            "entityName": current_entity,
+                            "tableName": entity_table,
+                            "columnMappings": column_maps,
+                        })
+                    current_entity = em.group(1)
+                    entity_table = None
+                    column_maps = []
+
+                # Check for .ToTable("TableName")
+                tt = _FLUENT_TO_TABLE_RE.search(line)
+                if tt and current_entity:
+                    entity_table = tt.group(1)
+
+                # Check for .Property(x => x.Prop).HasColumnName("col")
+                prop_m = _FLUENT_PROPERTY_RE.search(line)
+                if prop_m and current_entity:
+                    prop_name = prop_m.group(1)
+                    col_m = _FLUENT_HAS_COLUMN_RE.search(line)
+                    if col_m:
+                        column_maps.append({
+                            "propertyName": prop_name,
+                            "columnName": col_m.group(1),
+                            "line": i + 1,
+                        })
+                    else:
+                        # Check next line for split pattern
+                        if i + 1 < len(lines):
+                            next_line = lines[i + 1]
+                            col_m2 = _FLUENT_HAS_COLUMN_RE.search(next_line)
+                            if col_m2:
+                                column_maps.append({
+                                    "propertyName": prop_name,
+                                    "columnName": col_m2.group(1),
+                                    "line": i + 1,
+                                })
+
+            # Save last entity mappings
+            if current_entity and (entity_table or column_maps):
+                mappings.append({
+                    "file": rel_path,
+                    "repo": repo["name"],
+                    "project": project_name,
+                    "entityName": current_entity,
+                    "tableName": entity_table,
+                    "columnMappings": column_maps,
+                })
+
+    return mappings
+
+
+def extract_sql_field_names(data_findings: list[dict]) -> list[dict]:
+    """Extract column names from SQL strings in existing data findings context."""
+    sql_fields: list[dict] = []
+
+    for f in data_findings:
+        context = f.get("context", "")
+        if not context:
+            continue
+
+        # SELECT fields
+        sel_m = _SQL_SELECT_FIELDS_RE.search(context)
+        if sel_m:
+            fields_str = sel_m.group(1).strip()
+            if fields_str != "*":
+                cols = [c.strip().split(".")[-1].strip("[] ") for c in fields_str.split(",")]
+                cols = [c.split(" AS ")[-1].split(" as ")[-1].strip() for c in cols if c and c != "*"]
+                cols = [c for c in cols if c and len(c) > 1 and c.upper() not in _SQL_KEYWORDS]
+                if cols:
+                    sql_fields.append({
+                        "file": f.get("file", ""),
+                        "line": f.get("line", 0),
+                        "project": f.get("project"),
+                        "type": "select",
+                        "columns": cols,
+                    })
+
+        # INSERT fields
+        ins_m = _SQL_INSERT_FIELDS_RE.search(context)
+        if ins_m:
+            cols = [c.strip().strip("[] ") for c in ins_m.group(1).split(",")]
+            cols = [c for c in cols if c and len(c) > 1 and c.upper() not in _SQL_KEYWORDS]
+            if cols:
+                sql_fields.append({
+                    "file": f.get("file", ""),
+                    "line": f.get("line", 0),
+                    "project": f.get("project"),
+                    "type": "insert",
+                    "columns": cols,
+                })
+
+        # Dapper Query<T> type parameter
+        dq_m = _DAPPER_QUERY_TYPE_RE.search(context)
+        if dq_m:
+            sql_fields.append({
+                "file": f.get("file", ""),
+                "line": f.get("line", 0),
+                "project": f.get("project"),
+                "type": "dapper-query",
+                "targetType": dq_m.group(2),
+            })
+
+    return sql_fields
+
+
+def build_field_traceability(
+    xaml_views: list[dict],
+    viewmodels: list[dict],
+    entities: list[dict],
+    fluent_mappings: list[dict],
+    sql_fields: list[dict],
+    project_refs: list[dict],
+    business_layers: dict[str, dict],
+) -> dict:
+    """Link XAML bindings → ViewModel properties → Entity properties → DB columns."""
+    # Build lookup maps
+    vm_by_class: dict[str, dict] = {}
+    for vm in viewmodels:
+        vm_by_class[vm["className"]] = vm
+
+    entity_by_class: dict[str, dict] = {}
+    for ent in entities:
+        entity_by_class[ent["className"]] = ent
+
+    # Build fluent API overrides: entity_name -> {prop_name: col_name, __table__: table_name}
+    fluent_overrides: dict[str, dict] = {}
+    for fm in fluent_mappings:
+        ename = fm["entityName"]
+        if ename not in fluent_overrides:
+            fluent_overrides[ename] = {}
+        if fm.get("tableName"):
+            fluent_overrides[ename]["__table__"] = fm["tableName"]
+        for cm in fm.get("columnMappings", []):
+            fluent_overrides[ename][cm["propertyName"]] = cm["columnName"]
+
+    # Build set of known entity type names for type matching
+    known_entity_names: set[str] = set(entity_by_class.keys())
+
+    # Generic type unwrapper
+    _generic_re = re.compile(r'(?:ObservableCollection|List|IEnumerable|ICollection|IList|IReadOnlyList|IReadOnlyCollection)<(\w+)>')
+
+    def unwrap_generic(type_str: str) -> str | None:
+        m = _generic_re.search(type_str)
+        return m.group(1) if m else None
+
+    # Resolve table name for an entity
+    def resolve_table(entity_name: str) -> str | None:
+        # Priority: Fluent > [Table] attribute > DbSet property name (entity_name + "s" convention)
+        fo = fluent_overrides.get(entity_name, {})
+        if "__table__" in fo:
+            return fo["__table__"]
+        ent = entity_by_class.get(entity_name)
+        if ent and ent.get("tableName"):
+            return ent["tableName"]
+        return entity_name + "s"  # EF convention
+
+    # Resolve column name for entity property
+    def resolve_column(entity_name: str, prop_name: str) -> tuple[str, str]:
+        """Returns (column_name, source) where source is 'fluent-api', 'attribute', or 'convention'."""
+        fo = fluent_overrides.get(entity_name, {})
+        if prop_name in fo:
+            return fo[prop_name], "fluent-api"
+        ent = entity_by_class.get(entity_name)
+        if ent:
+            for prop in ent.get("properties", []):
+                if prop["propertyName"] == prop_name:
+                    return prop["columnName"], prop["columnSource"]
+        return prop_name, "convention"
+
+    field_chains: list[dict] = []
+    chain_id = 0
+
+    for view in xaml_views:
+        view_type = view.get("viewType")
+        dc_type = view.get("dataContextType")
+
+        # Infer ViewModel name if not explicit
+        vm_class_name = dc_type
+        if not vm_class_name and view_type:
+            # Convention: OrderWindow → OrderViewModel, OrderView → OrderViewModel
+            for suffix in ("Window", "View", "Page", "Control", "UserControl"):
+                if view_type.endswith(suffix):
+                    vm_class_name = view_type[:-len(suffix)] + "ViewModel"
+                    break
+            if not vm_class_name:
+                vm_class_name = view_type + "ViewModel"
+
+        vm = vm_by_class.get(vm_class_name) if vm_class_name else None
+
+        for binding in view.get("bindings", []):
+            chain_id += 1
+            binding_path = binding["path"]
+
+            chain: dict = {
+                "id": f"fc-{chain_id:03d}",
+                "xamlBinding": {
+                    "file": view["file"],
+                    "project": view.get("project"),
+                    "viewType": view_type,
+                    "bindingPath": binding_path,
+                    "dataContextType": dc_type,
+                    "line": binding["line"],
+                },
+                "viewModelProperty": None,
+                "entityProperty": None,
+                "dbColumn": None,
+                "chainCompleteness": "xaml-only",
+                "confidence": "low",
+            }
+
+            # Link 1: XAML binding → ViewModel property
+            vm_prop = None
+            if vm:
+                # Handle dotted paths (e.g., "Order.OrderId" — match first segment)
+                match_name = binding_path.split(".")[0]
+                for prop in vm.get("properties", []):
+                    if prop["propertyName"] == match_name:
+                        vm_prop = prop
+                        break
+
+            if vm_prop and vm:
+                chain["viewModelProperty"] = {
+                    "file": vm["file"],
+                    "className": vm["className"],
+                    "propertyName": vm_prop["propertyName"],
+                    "propertyType": vm_prop["propertyType"],
+                    "line": vm_prop["line"],
+                }
+                chain["chainCompleteness"] = "xaml-to-viewmodel"
+                chain["confidence"] = "medium"
+
+                # Link 2: ViewModel property → Entity
+                prop_type = vm_prop["propertyType"]
+                matched_entity_name: str | None = None
+
+                # Direct type match
+                if prop_type in known_entity_names:
+                    matched_entity_name = prop_type
+                else:
+                    # Unwrap generics
+                    inner = unwrap_generic(prop_type)
+                    if inner and inner in known_entity_names:
+                        matched_entity_name = inner
+
+                # Find matching entity property by name
+                entity_prop = None
+                if matched_entity_name:
+                    ent = entity_by_class.get(matched_entity_name)
+                    if ent:
+                        # Property name on dotted path (e.g., "Order.OrderId" → look for "OrderId" in Order entity)
+                        if "." in binding_path:
+                            sub_prop_name = binding_path.split(".", 1)[1].split(".")[0]
+                        else:
+                            sub_prop_name = binding_path
+                        for ep in ent.get("properties", []):
+                            if ep["propertyName"] == sub_prop_name:
+                                entity_prop = ep
+                                break
+                else:
+                    # No type match — try name match across all entities
+                    prop_name = binding_path.split(".")[-1] if "." in binding_path else binding_path
+                    for ename, ent in entity_by_class.items():
+                        for ep in ent.get("properties", []):
+                            if ep["propertyName"] == prop_name:
+                                entity_prop = ep
+                                matched_entity_name = ename
+                                break
+                        if entity_prop:
+                            break
+
+                if entity_prop and matched_entity_name:
+                    chain["entityProperty"] = {
+                        "file": entity_by_class[matched_entity_name]["file"],
+                        "className": matched_entity_name,
+                        "propertyName": entity_prop["propertyName"],
+                        "propertyType": entity_prop["propertyType"],
+                        "line": entity_prop["line"],
+                    }
+                    chain["chainCompleteness"] = "xaml-to-entity"
+                    chain["confidence"] = "medium"
+
+                    # Link 3: Entity property → DB column
+                    col_name, col_source = resolve_column(matched_entity_name, entity_prop["propertyName"])
+                    table = resolve_table(matched_entity_name)
+                    fluent_file = None
+                    fluent_line = None
+                    for fm in fluent_mappings:
+                        if fm["entityName"] == matched_entity_name:
+                            fluent_file = fm["file"]
+                            for cm in fm.get("columnMappings", []):
+                                if cm["propertyName"] == entity_prop["propertyName"]:
+                                    fluent_line = cm.get("line")
+                                    break
+                            break
+
+                    chain["dbColumn"] = {
+                        "table": table,
+                        "column": col_name,
+                        "source": col_source,
+                        "file": fluent_file or entity_by_class[matched_entity_name]["file"],
+                        "line": fluent_line or entity_prop["line"],
+                    }
+                    chain["chainCompleteness"] = "full"
+                    chain["confidence"] = "high" if col_source != "convention" else "medium"
+
+            elif not vm and vm_class_name:
+                # No ViewModel found — try direct entity property name match
+                prop_name = binding_path.split(".")[-1] if "." in binding_path else binding_path
+                for ename, ent in entity_by_class.items():
+                    for ep in ent.get("properties", []):
+                        if ep["propertyName"] == prop_name:
+                            chain["entityProperty"] = {
+                                "file": ent["file"],
+                                "className": ename,
+                                "propertyName": ep["propertyName"],
+                                "propertyType": ep["propertyType"],
+                                "line": ep["line"],
+                            }
+                            col_name, col_source = resolve_column(ename, ep["propertyName"])
+                            table = resolve_table(ename)
+                            chain["dbColumn"] = {
+                                "table": table,
+                                "column": col_name,
+                                "source": col_source,
+                            }
+                            chain["chainCompleteness"] = "xaml-to-entity"
+                            chain["confidence"] = "low"
+                            break
+                    if chain["entityProperty"]:
+                        break
+
+            field_chains.append(chain)
+
+    # Also add entity-to-column chains for entities not covered by XAML
+    xaml_entity_names: set[str] = set()
+    for ch in field_chains:
+        if ch.get("entityProperty"):
+            xaml_entity_names.add(ch["entityProperty"]["className"])
+
+    for ename, ent in entity_by_class.items():
+        for prop in ent.get("properties", []):
+            chain_id += 1
+            col_name, col_source = resolve_column(ename, prop["propertyName"])
+            table = resolve_table(ename)
+            field_chains.append({
+                "id": f"fc-{chain_id:03d}",
+                "xamlBinding": None,
+                "viewModelProperty": None,
+                "entityProperty": {
+                    "file": ent["file"],
+                    "className": ename,
+                    "propertyName": prop["propertyName"],
+                    "propertyType": prop["propertyType"],
+                    "line": prop["line"],
+                },
+                "dbColumn": {
+                    "table": table,
+                    "column": col_name,
+                    "source": col_source,
+                },
+                "chainCompleteness": "entity-to-column",
+                "confidence": "high" if col_source != "convention" else "medium",
+            })
+
+    # Build summary
+    completeness_counts: dict[str, int] = {}
+    for ch in field_chains:
+        comp = ch["chainCompleteness"]
+        completeness_counts[comp] = completeness_counts.get(comp, 0) + 1
+
+    full_count = completeness_counts.get("full", 0)
+    partial_count = sum(v for k, v in completeness_counts.items() if k != "full")
+
+    return {
+        "fieldChains": field_chains,
+        "summary": {
+            "totalChains": len(field_chains),
+            "fullChains": full_count,
+            "partialChains": partial_count,
+            "completenessBreakdown": completeness_counts,
+        },
+        "viewModels": viewmodels,
+        "entities": entities,
+        "xamlViews": xaml_views,
+        "columnMappings": fluent_mappings,
+        "sqlFields": sql_fields,
+    }
+
+
 # ─── Data flow graph builder ─────────────────────────────────────────
 
 def build_data_flow_graph(findings: list[dict], project_meta: list[dict]) -> dict:
@@ -1500,6 +2208,37 @@ def main():
         json.dumps(flow_paths_output, indent=2), encoding="utf-8"
     )
     print(f"  Wrote flow-paths.json")
+
+    # Step 2e: Field-level traceability
+    print("\nStep 2e: Building field-level traceability...")
+    xaml_views = discover_xaml_bindings(SCAN_ROOT, repos, all_project_meta)
+    print(f"  XAML views: {len(xaml_views)}, bindings: {sum(len(v.get('bindings', [])) for v in xaml_views)}")
+
+    vm_data = extract_viewmodel_properties(SCAN_ROOT, repos, all_project_meta)
+    print(f"  ViewModels: {len(vm_data)}, properties: {sum(len(v.get('properties', [])) for v in vm_data)}")
+
+    entity_data = extract_entity_properties(SCAN_ROOT, repos, data_findings, all_project_meta)
+    print(f"  Entities: {len(entity_data)}, properties: {sum(len(e.get('properties', [])) for e in entity_data)}")
+
+    fluent_data = extract_fluent_api_mappings(SCAN_ROOT, repos, all_project_meta)
+    print(f"  Fluent API mappings: {len(fluent_data)}")
+
+    sql_field_data = extract_sql_field_names(data_findings)
+    print(f"  SQL field extractions: {len(sql_field_data)}")
+
+    field_trace = build_field_traceability(
+        xaml_views, vm_data, entity_data, fluent_data, sql_field_data,
+        all_project_refs, business_layers,
+    )
+    Path(os.path.join(OUT_DIR, "field-traceability.json")).write_text(
+        json.dumps(field_trace, indent=2), encoding="utf-8"
+    )
+    ft_summary = field_trace.get("summary", {})
+    print(f"  Field chains: {ft_summary.get('totalChains', 0)} (full: {ft_summary.get('fullChains', 0)}, partial: {ft_summary.get('partialChains', 0)})")
+    if ft_summary.get("completenessBreakdown"):
+        for level, count in sorted(ft_summary["completenessBreakdown"].items(), key=lambda x: -x[1]):
+            print(f"    {level}: {count}")
+    print(f"  Wrote field-traceability.json")
 
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")

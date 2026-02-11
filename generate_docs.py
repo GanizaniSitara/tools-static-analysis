@@ -35,6 +35,12 @@ flow_paths_data: dict = {}
 if os.path.isfile(flow_paths_path):
     flow_paths_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
 
+# Load field traceability (optional)
+field_trace_path = os.path.join(OUT_DIR, "field-traceability.json")
+field_trace_data: dict = {}
+if os.path.isfile(field_trace_path):
+    field_trace_data = json.loads(Path(field_trace_path).read_text(encoding="utf-8"))
+
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
 
@@ -449,6 +455,18 @@ def generate_viewer_html() -> str:
                 "mermaid": content,
             })
 
+    # ── Field Traceability diagram tab ──
+    ft_mmd_path = os.path.join(diagrams_dir, "field-traceability.mmd")
+    if os.path.isfile(ft_mmd_path):
+        content = Path(ft_mmd_path).read_text(encoding="utf-8")
+        if "no_data" not in content:
+            diagram_tabs.append({
+                "id": "fieldtracediagram",
+                "label": "Field Trace Diagram",
+                "title": "Field Traceability — XAML Binding to Database Column",
+                "mermaid": content,
+            })
+
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
     for f in data_findings:
@@ -506,6 +524,8 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("connstrings", "Connection Strings"))
     if flow_paths_data.get("flowPaths"):
         all_tab_ids.append(("e2eflows", "E2E Flows"))
+    if field_trace_data.get("fieldChains"):
+        all_tab_ids.append(("fieldtrace", "Field Traceability"))
     all_tab_ids.append(("allprojects", "All Projects"))
 
     tab_buttons = "\n".join(
@@ -739,6 +759,108 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # Field Traceability panel
+    fieldtrace_panel = ""
+    if field_trace_data.get("fieldChains"):
+        ft_chains = field_trace_data["fieldChains"]
+        ft_summary = field_trace_data.get("summary", {})
+        ft_breakdown = ft_summary.get("completenessBreakdown", {})
+
+        # Summary badges
+        badge_colors = {
+            "full": ("#22c55e", "Full"),
+            "xaml-to-entity": ("#eab308", "XAML→Entity"),
+            "xaml-to-viewmodel": ("#f59e0b", "XAML→VM"),
+            "entity-to-column": ("#3b82f6", "Entity→DB"),
+            "viewmodel-to-column": ("#8b5cf6", "VM→DB"),
+            "xaml-only": ("#64748b", "XAML Only"),
+        }
+        ft_badges_html = ""
+        for level, (color, label) in badge_colors.items():
+            count = ft_breakdown.get(level, 0)
+            if count == 0:
+                continue
+            ft_badges_html += (
+                f'<span class="ft-badge" data-filter="{level}" style="display:inline-block;padding:0.2rem 0.6rem;'
+                f'border-radius:12px;background:rgba({_hex_to_rgb(color)},0.15);color:{color};'
+                f'font-size:0.78rem;font-weight:600;margin-right:0.4rem;margin-bottom:0.3rem;cursor:pointer;">'
+                f'{_esc_html(label)}: {count}</span>'
+            )
+
+        # Table rows
+        ft_rows = ""
+        for i, ch in enumerate(ft_chains[:500]):
+            xaml = ch.get("xamlBinding") or {}
+            vm = ch.get("viewModelProperty") or {}
+            ent = ch.get("entityProperty") or {}
+            db = ch.get("dbColumn") or {}
+            comp = ch.get("chainCompleteness", "")
+            conf = ch.get("confidence", "low")
+
+            view_type = _esc_html(xaml.get("viewType", ""))
+            binding_path = _esc_html(xaml.get("bindingPath", ""))
+            vm_class = _esc_html(vm.get("className", ""))
+            vm_prop = _esc_html(vm.get("propertyName", ""))
+            ent_class = _esc_html(ent.get("className", ""))
+            db_col = ""
+            if db:
+                table = _esc_html(db.get("table", ""))
+                col = _esc_html(db.get("column", ""))
+                db_col = f"{table}.{col}" if table and col else ""
+
+            comp_color = {"full": "#22c55e", "xaml-to-entity": "#eab308", "xaml-to-viewmodel": "#f59e0b",
+                         "entity-to-column": "#3b82f6", "viewmodel-to-column": "#8b5cf6", "xaml-only": "#64748b"}.get(comp, "#64748b")
+            comp_label = badge_colors.get(comp, ("#64748b", comp))[1]
+
+            search_text = f"{view_type} {binding_path} {vm_class} {vm_prop} {ent_class} {db_col} {comp}".lower()
+
+            ft_rows += f"""            <tr class="ft-row" data-ft-idx="{i}" data-completeness="{comp}" data-search="{_esc_html(search_text)}">
+              <td>{view_type}</td>
+              <td><strong>{binding_path}</strong></td>
+              <td>{vm_class}</td>
+              <td>{vm_prop}</td>
+              <td>{ent_class}</td>
+              <td class="mono">{db_col}</td>
+              <td><span style="color:{comp_color};font-size:0.75rem;font-weight:600;">{_esc_html(comp_label)}</span></td>
+            </tr>
+"""
+
+        fieldtrace_panel = f"""
+  <section class="tab-panel" id="panel-fieldtrace">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Field-Level Traceability ({ft_summary.get('totalChains', 0)} chains)</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Traces XAML bindings through ViewModel properties and entity classes to database columns.
+        Click a row to see the full chain detail. Click a badge to filter by completeness level.
+      </p>
+      <div style="margin-bottom:0.75rem;">{ft_badges_html}</div>
+      <input type="text" id="ftSearchInput" placeholder="Search fields..." style="
+        width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
+        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        font-size:0.85rem;margin-bottom:0.75rem;outline:none;
+      ">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>XAML View</th><th>Binding Path</th><th>ViewModel</th><th>VM Property</th><th>Entity</th><th>DB Table.Column</th><th>Completeness</th></tr>
+          </thead>
+          <tbody id="ftBody">
+{ft_rows}          </tbody>
+        </table>
+      </div>
+      <div id="ftDetailContainer" style="margin-top:1rem;display:none;">
+        <div class="card" style="border-color:#22c55e;">
+          <div class="card-title"><span class="icon">&#9670;</span> Field Chain Detail
+            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+          </div>
+          <div id="ftDetailContent"></div>
+          <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+"""
+
     # Category distribution panel (pie chart via Mermaid)
     cat_chart_mermaid = "pie title Project Categories\n"
     for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
@@ -936,6 +1058,8 @@ def generate_viewer_html() -> str:
   .tag-unclassified  {{ background: rgba(100,116,139,.15); color: #64748b; }}
   .flow-row {{ cursor: pointer; }}
   .flow-row:hover {{ background: rgba(59,130,246,0.12) !important; }}
+  .ft-row {{ cursor: pointer; }}
+  .ft-row:hover {{ background: rgba(34,197,94,0.08) !important; }}
   .flow-step {{ display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }}
   .flow-arrow {{ color: #64748b; margin: 0 0.2rem; }}
   .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }}
@@ -978,6 +1102,7 @@ def generate_viewer_html() -> str:
 {implieddeps_panel}
 {connstrings_panel}
 {e2eflows_panel}
+{fieldtrace_panel}
 {all_projects_panel}
 </main>
 
@@ -1488,6 +1613,12 @@ function zoomDiagram(containerId, delta) {{
     window._dataFlow = df;
   }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
 
+  // Load field-traceability.json
+  window._fieldTrace = {{ fieldChains: [], summary: {{}} }};
+  fetch('field-traceability.json').then(function (r) {{ return r.json(); }}).then(function (ft) {{
+    window._fieldTrace = ft;
+  }}).catch(function () {{ /* field-traceability.json may not exist */ }});
+
   // Load flow-paths.json for E2E flows tab, then load All Projects data
   window._flowData = {{ businessLayers: {{}}, flowPaths: [], layerSummary: {{}} }};
   fetch('flow-paths.json').then(function (r) {{ return r.json(); }}).then(function (fd) {{
@@ -1664,6 +1795,176 @@ function zoomDiagram(containerId, delta) {{
       }}
       prevId = nid;
     }});
+    return lines.join('\\n');
+  }}
+
+  // Field traceability search
+  var ftSearchInput = document.getElementById('ftSearchInput');
+  if (ftSearchInput) {{
+    ftSearchInput.addEventListener('input', function () {{
+      var query = ftSearchInput.value.trim().toLowerCase();
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      rows.forEach(function (row) {{
+        var text = row.getAttribute('data-search') || '';
+        row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+      }});
+    }});
+  }}
+
+  // Field traceability badge click-to-filter
+  document.querySelectorAll('.ft-badge').forEach(function (badge) {{
+    badge.addEventListener('click', function () {{
+      var filter = badge.getAttribute('data-filter');
+      var rows = document.querySelectorAll('#ftBody .ft-row');
+      var allVisible = true;
+      rows.forEach(function (row) {{
+        if (row.getAttribute('data-completeness') !== filter && row.style.display === 'none') {{
+          allVisible = false;
+        }}
+      }});
+      // Toggle: if already filtered to this level, show all; otherwise filter
+      var isFiltered = badge.classList.contains('ft-badge-active');
+      document.querySelectorAll('.ft-badge').forEach(function (b) {{ b.classList.remove('ft-badge-active'); b.style.outline = ''; }});
+      if (isFiltered) {{
+        rows.forEach(function (row) {{ row.style.display = ''; }});
+      }} else {{
+        badge.classList.add('ft-badge-active');
+        badge.style.outline = '2px solid ' + badge.style.color;
+        rows.forEach(function (row) {{
+          row.style.display = row.getAttribute('data-completeness') === filter ? '' : 'none';
+        }});
+      }}
+    }});
+  }});
+
+  // Field traceability click-to-expand
+  var ftBody = document.getElementById('ftBody');
+  if (ftBody) {{
+    ftBody.addEventListener('click', function (e) {{
+      var row = e.target.closest('.ft-row');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-ft-idx'), 10);
+      showFieldChainDetail(idx);
+    }});
+  }}
+
+  function showFieldChainDetail(idx) {{
+    var ft = window._fieldTrace || {{}};
+    var chains = ft.fieldChains || [];
+    if (idx < 0 || idx >= chains.length) return;
+    var ch = chains[idx];
+    var container = document.getElementById('ftDetailContainer');
+    var content = document.getElementById('ftDetailContent');
+    var mermaidDiv = document.getElementById('ftDetailMermaid');
+    if (!container || !content) return;
+
+    var xaml = ch.xamlBinding || {{}};
+    var vm = ch.viewModelProperty || {{}};
+    var ent = ch.entityProperty || {{}};
+    var db = ch.dbColumn || {{}};
+
+    var html = '<div style="margin-bottom:0.5rem;">';
+    html += '<span style="color:#94a3b8;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#22c55e;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
+    html += '</div>';
+
+    // Step-by-step chain
+    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">';
+    if (xaml.viewType) {{
+      html += '<div style="background:#1e293b;border:1px solid #E91E63;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#E91E63;text-transform:uppercase;">XAML View</div>';
+      html += '<strong>' + escHtml(xaml.viewType) + '</strong>';
+      html += '<div class="mono" style="font-size:0.75rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }}
+    if (vm.className) {{
+      html += '<div style="background:#1e293b;border:1px solid #FF9800;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#FF9800;text-transform:uppercase;">ViewModel</div>';
+      html += '<strong>' + escHtml(vm.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }}
+    if (ent.className) {{
+      html += '<div style="background:#1e293b;border:1px solid #3b82f6;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#3b82f6;text-transform:uppercase;">Entity</div>';
+      html += '<strong>' + escHtml(ent.className) + '</strong>';
+      html += '<div style="font-size:0.8rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
+      html += '</div>';
+      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+    }}
+    if (db.table) {{
+      html += '<div style="background:#1e293b;border:1px solid #22c55e;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#22c55e;text-transform:uppercase;">DB Column</div>';
+      html += '<strong>' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
+      html += '<div style="font-size:0.8rem;">Source: ' + escHtml(db.source || '') + '</div>';
+      if (db.file) html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
+      html += '</div>';
+    }}
+    html += '</div>';
+
+    content.innerHTML = html;
+
+    // Render inline Mermaid for this chain
+    if (mermaidDiv && window.mermaidAPI) {{
+      var mSrc = buildFieldChainMermaid(ch);
+      mermaidDiv.innerHTML = '<pre class="mermaid">' + escHtml(mSrc) + '</pre>';
+      var pre = mermaidDiv.querySelector('pre.mermaid');
+      if (pre) {{
+        window.mermaidAPI.run({{ nodes: [pre] }}).then(function () {{
+          var svg = mermaidDiv.querySelector('svg');
+          if (svg) {{
+            var vb = svg.getAttribute('viewBox');
+            if (vb) {{
+              var parts = vb.split(' ');
+              svg.style.width = parseFloat(parts[2]) + 'px';
+              svg.style.height = parseFloat(parts[3]) + 'px';
+              svg.style.maxWidth = 'none';
+              svg.removeAttribute('width');
+            }}
+          }}
+        }}).catch(function (err) {{ console.error('Field chain mermaid error:', err); }});
+      }}
+    }}
+
+    container.style.display = 'block';
+  }}
+
+  function buildFieldChainMermaid(ch) {{
+    var lines = ['graph LR'];
+    var prevId = null;
+
+    var xaml = ch.xamlBinding || {{}};
+    var vm = ch.viewModelProperty || {{}};
+    var ent = ch.entityProperty || {{}};
+    var db = ch.dbColumn || {{}};
+
+    if (xaml.viewType) {{
+      var xid = (xaml.viewType + '_' + (xaml.bindingPath || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + xid + '["' + xaml.viewType + '\\n' + (xaml.bindingPath || '') + '"]');
+      prevId = xid;
+    }}
+    if (vm.className) {{
+      var vid = (vm.className + '_' + (vm.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + vid + '["' + vm.className + '\\n' + (vm.propertyName || '') + ': ' + (vm.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + vid);
+      prevId = vid;
+    }}
+    if (ent.className) {{
+      var eid = (ent.className + '_' + (ent.propertyName || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + eid + '["' + ent.className + '\\n' + (ent.propertyName || '') + ': ' + (ent.propertyType || '') + '"]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + eid);
+      prevId = eid;
+    }}
+    if (db.table) {{
+      var did = (db.table + '_' + (db.column || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+      lines.push('    ' + did + '[("' + db.table + '\\n' + (db.column || '') + '")]');
+      if (prevId) lines.push('    ' + prevId + ' --> ' + did);
+    }}
+
     return lines.join('\\n');
   }}
 }})();

@@ -1,0 +1,1345 @@
+{
+  "fieldChains": [
+    {
+      "id": "fc-001",
+      "xamlBinding": {
+        "file": "Samples/05_Chart/01_Chart/MainWindow.xaml",
+        "project": "01_Chart",
+        "viewType": "MainWindow",
+        "bindingPath": "TimeZone",
+        "dataContextType": null,
+        "line": 46
+      },
+      "viewModelProperty": null,
+      "entityProperty": null,
+      "dbColumn": null,
+      "chainCompleteness": "xaml-only",
+      "confidence": "low"
+    },
+    {
+      "id": "fc-002",
+      "xamlBinding": {
+        "file": "Samples/05_Chart/03_Performance/MainWindow.xaml",
+        "project": "03_Chart.Performance",
+        "viewType": "MainWindow",
+        "bindingPath": "Title",
+        "dataContextType": null,
+        "line": 21
+      },
+      "viewModelProperty": null,
+      "entityProperty": null,
+      "dbColumn": null,
+      "chainCompleteness": "xaml-only",
+      "confidence": "low"
+    }
+  ],
+  "summary": {
+    "totalChains": 2,
+    "fullChains": 0,
+    "partialChains": 2,
+    "completenessBreakdown": {
+      "xaml-only": 2
+    }
+  },
+  "viewModels": [
+    {
+      "file": "Charting.Interfaces/DummyChartBuilder.cs",
+      "repo": "StockSharp",
+      "project": "Charting.Interfaces",
+      "className": "DummyPersistable",
+      "properties": [
+        {
+          "propertyName": "Id",
+          "propertyType": "Guid",
+          "line": 29
+        },
+        {
+          "propertyName": "FullTitle",
+          "propertyType": "string",
+          "line": 41
+        },
+        {
+          "propertyName": "IsVisible",
+          "propertyType": "bool",
+          "line": 42
+        },
+        {
+          "propertyName": "IsLegend",
+          "propertyType": "bool",
+          "line": 43
+        },
+        {
+          "propertyName": "XAxisId",
+          "propertyType": "string",
+          "line": 44
+        },
+        {
+          "propertyName": "YAxisId",
+          "propertyType": "string",
+          "line": 45
+        },
+        {
+          "propertyName": "ChartArea",
+          "propertyType": "IChartArea",
+          "line": 48
+        },
+        {
+          "propertyName": "BuyPendingColor",
+          "propertyType": "Color",
+          "line": 65
+        },
+        {
+          "propertyName": "BuyColor",
+          "propertyType": "Color",
+          "line": 66
+        },
+        {
+          "propertyName": "BuyBlinkColor",
+          "propertyType": "Color",
+          "line": 67
+        },
+        {
+          "propertyName": "SellPendingColor",
+          "propertyType": "Color",
+          "line": 68
+        },
+        {
+          "propertyName": "SellColor",
+          "propertyType": "Color",
+          "line": 69
+        },
+        {
+          "propertyName": "SellBlinkColor",
+          "propertyType": "Color",
+          "line": 70
+        },
+        {
+          "propertyName": "CancelButtonColor",
+          "propertyType": "Color",
+          "line": 71
+        },
+        {
+          "propertyName": "CancelButtonBackground",
+          "propertyType": "Color",
+          "line": 72
+        },
+        {
+          "propertyName": "ForegroundColor",
+          "propertyType": "Color",
+          "line": 73
+        },
+        {
+          "propertyName": "IsAnimationEnabled",
+          "propertyType": "bool",
+          "line": 74
+        },
+        {
+          "propertyName": "Type",
+          "propertyType": "ChartAnnotationTypes",
+          "line": 95
+        },
+        {
+          "propertyName": "XAxisType",
+          "propertyType": "ChartAxisType",
+          "line": 124
+        },
+        {
+          "propertyName": "Title",
+          "propertyType": "string",
+          "line": 125
+        },
+        {
+          "propertyName": "Height",
+          "propertyType": "double",
+          "line": 126
+        },
+        {
+          "propertyName": "GroupId",
+          "propertyType": "string",
+          "line": 127
+        },
+        {
+          "propertyName": "Id",
+          "propertyType": "string",
+          "line": 145
+        },
+        {
+          "propertyName": "IsVisible",
+          "propertyType": "bool",
+          "line": 146
+        },
+        {
+          "propertyName": "Title",
+          "propertyType": "string",
+          "line": 147
+        },
+        {
+          "propertyName": "Group",
+          "propertyType": "string",
+          "line": 148
+        },
+        {
+          "propertyName": "SwitchAxisLocation",
+          "propertyType": "bool",
+          "line": 149
+        },
+        {
+          "propertyName": "AxisType",
+          "propertyType": "ChartAxisType",
+          "line": 150
+        },
+        {
+          "propertyName": "AutoRange",
+          "propertyType": "bool",
+          "line": 151
+        },
+        {
+          "propertyName": "FlipCoordinates",
+          "propertyType": "bool",
+          "line": 152
+        },
+        {
+          "propertyName": "DrawMajorTicks",
+          "propertyType": "bool",
+          "line": 153
+        },
+        {
+          "propertyName": "DrawMajorGridLines",
+          "propertyType": "bool",
+          "line": 154
+        },
+        {
+          "propertyName": "DrawMinorTicks",
+          "propertyType": "bool",
+          "line": 155
+        },
+        {
+          "propertyName": "DrawMinorGridLines",
+          "propertyType": "bool",
+          "line": 156
+        },
+        {
+          "propertyName": "DrawLabels",
+          "propertyType": "bool",
+          "line": 157
+        },
+        {
+          "propertyName": "TextFormatting",
+          "propertyType": "string",
+          "line": 158
+        },
+        {
+          "propertyName": "CursorTextFormatting",
+          "propertyType": "string",
+          "line": 159
+        },
+        {
+          "propertyName": "SubDayTextFormatting",
+          "propertyType": "string",
+          "line": 160
+        },
+        {
+          "propertyName": "TimeZone",
+          "propertyType": "TimeZoneInfo",
+          "line": 161
+        },
+        {
+          "propertyName": "Color",
+          "propertyType": "Color",
+          "line": 202
+        },
+        {
+          "propertyName": "AdditionalColor",
+          "propertyType": "Color",
+          "line": 203
+        },
+        {
+          "propertyName": "StrokeThickness",
+          "propertyType": "int",
+          "line": 204
+        },
+        {
+          "propertyName": "AntiAliasing",
+          "propertyType": "bool",
+          "line": 205
+        },
+        {
+          "propertyName": "Style",
+          "propertyType": "DrawStyles",
+          "line": 206
+        },
+        {
+          "propertyName": "ShowAxisMarker",
+          "propertyType": "bool",
+          "line": 207
+        },
+        {
+          "propertyName": "DrawStyle",
+          "propertyType": "ChartCandleDrawStyles",
+          "line": 224
+        },
+        {
+          "propertyName": "DownFillColor",
+          "propertyType": "Color",
+          "line": 225
+        },
+        {
+          "propertyName": "UpFillColor",
+          "propertyType": "Color",
+          "line": 226
+        },
+        {
+          "propertyName": "DownBorderColor",
+          "propertyType": "Color",
+          "line": 227
+        },
+        {
+          "propertyName": "UpBorderColor",
+          "propertyType": "Color",
+          "line": 228
+        },
+        {
+          "propertyName": "StrokeThickness",
+          "propertyType": "int",
+          "line": 229
+        },
+        {
+          "propertyName": "AntiAliasing",
+          "propertyType": "bool",
+          "line": 230
+        },
+        {
+          "propertyName": "LineColor",
+          "propertyType": "Color?",
+          "line": 231
+        },
+        {
+          "propertyName": "AreaColor",
+          "propertyType": "Color?",
+          "line": 232
+        },
+        {
+          "propertyName": "ShowAxisMarker",
+          "propertyType": "bool",
+          "line": 233
+        },
+        {
+          "propertyName": "Timeframe2Multiplier",
+          "propertyType": "int?",
+          "line": 235
+        },
+        {
+          "propertyName": "Timeframe3Multiplier",
+          "propertyType": "int?",
+          "line": 236
+        },
+        {
+          "propertyName": "FontColor",
+          "propertyType": "Color?",
+          "line": 237
+        },
+        {
+          "propertyName": "Timeframe2Color",
+          "propertyType": "Color?",
+          "line": 238
+        },
+        {
+          "propertyName": "Timeframe2FrameColor",
+          "propertyType": "Color?",
+          "line": 239
+        },
+        {
+          "propertyName": "Timeframe3Color",
+          "propertyType": "Color?",
+          "line": 240
+        },
+        {
+          "propertyName": "MaxVolumeColor",
+          "propertyType": "Color?",
+          "line": 241
+        },
+        {
+          "propertyName": "ClusterLineColor",
+          "propertyType": "Color?",
+          "line": 242
+        },
+        {
+          "propertyName": "ClusterSeparatorLineColor",
+          "propertyType": "Color?",
+          "line": 243
+        },
+        {
+          "propertyName": "ClusterTextColor",
+          "propertyType": "Color?",
+          "line": 244
+        },
+        {
+          "propertyName": "ClusterColor",
+          "propertyType": "Color?",
+          "line": 245
+        },
+        {
+          "propertyName": "ClusterMaxColor",
+          "propertyType": "Color?",
+          "line": 246
+        },
+        {
+          "propertyName": "ShowHorizontalVolumes",
+          "propertyType": "bool",
+          "line": 247
+        },
+        {
+          "propertyName": "LocalHorizontalVolumes",
+          "propertyType": "bool",
+          "line": 248
+        },
+        {
+          "propertyName": "HorizontalVolumeWidthFraction",
+          "propertyType": "double",
+          "line": 249
+        },
+        {
+          "propertyName": "HorizontalVolumeColor",
+          "propertyType": "Color?",
+          "line": 250
+        },
+        {
+          "propertyName": "HorizontalVolumeFontColor",
+          "propertyType": "Color?",
+          "line": 251
+        },
+        {
+          "propertyName": "PriceStep",
+          "propertyType": "decimal?",
+          "line": 252
+        },
+        {
+          "propertyName": "DrawSeparateVolumes",
+          "propertyType": "bool",
+          "line": 253
+        },
+        {
+          "propertyName": "BuyColor",
+          "propertyType": "Color?",
+          "line": 254
+        },
+        {
+          "propertyName": "SellColor",
+          "propertyType": "Color?",
+          "line": 255
+        },
+        {
+          "propertyName": "BuyColor",
+          "propertyType": "Color",
+          "line": 300
+        },
+        {
+          "propertyName": "BuyStrokeColor",
+          "propertyType": "Color",
+          "line": 301
+        },
+        {
+          "propertyName": "SellColor",
+          "propertyType": "Color",
+          "line": 302
+        },
+        {
+          "propertyName": "SellStrokeColor",
+          "propertyType": "Color",
+          "line": 303
+        },
+        {
+          "propertyName": "UseAltIcon",
+          "propertyType": "bool",
+          "line": 304
+        },
+        {
+          "propertyName": "DrawSize",
+          "propertyType": "double",
+          "line": 305
+        }
+      ]
+    },
+    {
+      "file": "Diagram.Core/DiagramElement.cs",
+      "repo": "StockSharp",
+      "project": "Diagram.Core",
+      "className": "DiagramElement",
+      "properties": [
+        {
+          "propertyName": "TypeId",
+          "propertyType": "abstract Guid",
+          "line": 38
+        },
+        {
+          "propertyName": "IsExternalCode",
+          "propertyType": "bool",
+          "line": 43
+        },
+        {
+          "propertyName": "ParentComposition",
+          "propertyType": "CompositionDiagramElement",
+          "line": 60
+        },
+        {
+          "propertyName": "Category",
+          "propertyType": "string",
+          "line": 90
+        },
+        {
+          "propertyName": "CanAutoName",
+          "propertyType": "bool",
+          "line": 95
+        },
+        {
+          "propertyName": "Description",
+          "propertyType": "string",
+          "line": 117
+        },
+        {
+          "propertyName": "IconName",
+          "propertyType": "abstract string",
+          "line": 159
+        },
+        {
+          "propertyName": "State",
+          "propertyType": "object",
+          "line": 1326
+        }
+      ]
+    },
+    {
+      "file": "Diagram.Core/DiagramSocket.cs",
+      "repo": "StockSharp",
+      "project": "Diagram.Core",
+      "className": "DiagramSocket",
+      "properties": [
+        {
+          "propertyName": "GuiWrapper",
+          "propertyType": "INotifyPropertyChanged",
+          "line": 15
+        },
+        {
+          "propertyName": "Direction",
+          "propertyType": "DiagramSocketDirection",
+          "line": 74
+        },
+        {
+          "propertyName": "IsDynamic",
+          "propertyType": "bool",
+          "line": 79
+        },
+        {
+          "propertyName": "AvailableTypes",
+          "propertyType": "IList<DiagramSocketType>",
+          "line": 189
+        },
+        {
+          "propertyName": "Action",
+          "propertyType": "Action<DiagramSocketValue>",
+          "line": 194
+        }
+      ]
+    },
+    {
+      "file": "Diagram.Core/DebuggerSyncObject.cs",
+      "repo": "StockSharp",
+      "project": "Diagram.Core",
+      "className": "DebuggerSyncObject",
+      "properties": [
+        {
+          "propertyName": "GuiWrapper",
+          "propertyType": "INotifyPropertyChanged",
+          "line": 30
+        },
+        {
+          "propertyName": "IsWaitingOnInput",
+          "propertyType": "bool",
+          "line": 89
+        },
+        {
+          "propertyName": "IsWaitingOnOutput",
+          "propertyType": "bool",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "file": "BusinessEntities/Security.cs",
+      "repo": "StockSharp",
+      "project": "BusinessEntities",
+      "className": "Security",
+      "properties": [
+        {
+          "propertyName": "BasketCode",
+          "propertyType": "string",
+          "line": 864
+        },
+        {
+          "propertyName": "BasketExpression",
+          "propertyType": "string",
+          "line": 876
+        }
+      ]
+    },
+    {
+      "file": "BusinessEntities/ExchangeBoard.cs",
+      "repo": "StockSharp",
+      "project": "BusinessEntities",
+      "className": "ExchangeBoard",
+      "properties": [
+        {
+          "propertyName": "Exchange",
+          "propertyType": "Exchange",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "file": "Messages/MessageAdapter.cs",
+      "repo": "StockSharp",
+      "project": "Messages",
+      "className": "MessageAdapter",
+      "properties": [
+        {
+          "propertyName": "Categories",
+          "propertyType": "MessageAdapterCategories",
+          "line": 168
+        },
+        {
+          "propertyName": "StorageName",
+          "propertyType": "string",
+          "line": 172
+        },
+        {
+          "propertyName": "Platform",
+          "propertyType": "Platforms",
+          "line": 178
+        },
+        {
+          "propertyName": "EnqueueSubscriptions",
+          "propertyType": "bool",
+          "line": 231
+        },
+        {
+          "propertyName": "ReConnectionSettings",
+          "propertyType": "ReConnectionSettings",
+          "line": 247
+        },
+        {
+          "propertyName": "DisconnectTimeout",
+          "propertyType": "TimeSpan",
+          "line": 286
+        },
+        {
+          "propertyName": "IterationInterval",
+          "propertyType": "TimeSpan",
+          "line": 760
+        }
+      ]
+    },
+    {
+      "file": "Algo.Strategies/Strategy.cs",
+      "repo": "StockSharp",
+      "project": "Algo.Strategies",
+      "className": "Strategy",
+      "properties": [
+        {
+          "propertyName": "Strategy",
+          "propertyType": "Strategy",
+          "line": 107
+        },
+        {
+          "propertyName": "State",
+          "propertyType": "ProcessStates",
+          "line": 108
+        },
+        {
+          "propertyName": "IsCanceled",
+          "propertyType": "bool",
+          "line": 129
+        },
+        {
+          "propertyName": "ReceivedVolume",
+          "propertyType": "decimal",
+          "line": 130
+        },
+        {
+          "propertyName": "PrevState",
+          "propertyType": "OrderStates",
+          "line": 131
+        },
+        {
+          "propertyName": "NameGenerator",
+          "propertyType": "StrategyNameGenerator",
+          "line": 338
+        },
+        {
+          "propertyName": "HideSecurityAndPortfolioParameters",
+          "propertyType": "static bool",
+          "line": 474
+        },
+        {
+          "propertyName": "Slippage",
+          "propertyType": "decimal?",
+          "line": 521
+        },
+        {
+          "propertyName": "Commission",
+          "propertyType": "decimal?",
+          "line": 574
+        },
+        {
+          "propertyName": "Latency",
+          "propertyType": "TimeSpan?",
+          "line": 592
+        },
+        {
+          "propertyName": "Parameters",
+          "propertyType": "StrategyParameterDictionary",
+          "line": 832
+        },
+        {
+          "propertyName": "Environment",
+          "propertyType": "SettingsStorage",
+          "line": 874
+        },
+        {
+          "propertyName": "Rules",
+          "propertyType": "IMarketRuleList",
+          "line": 1309
+        },
+        {
+          "propertyName": "LastError",
+          "propertyType": "Exception",
+          "line": 1358
+        },
+        {
+          "propertyName": "KeepStatistics",
+          "propertyType": "bool",
+          "line": 1974
+        },
+        {
+          "propertyName": "PortfolioProvider",
+          "propertyType": "IPortfolioProvider",
+          "line": 2857
+        }
+      ]
+    }
+  ],
+  "entities": [],
+  "xamlViews": [
+    {
+      "file": "Samples/02_Candles/01_Realtime/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Candles.Realtime",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/02_Candles/01_Realtime/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Candles.Realtime",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/02_Candles/02_CombineHistoryRealtime/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/02_Candles/02_CombineHistoryRealtime/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/02_Optimization/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Testing.Optimization_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/02_Optimization/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Testing.Optimization_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/01_History/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Testing.History_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/01_History/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Testing.History_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/03_RealTime/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "03_Testing.RealTime",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/07_Testing/03_RealTime/App.xaml",
+      "repo": "StockSharp",
+      "project": "03_Testing.RealTime",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/06_HistoryQuoting/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "06_Strategies.HistoryQuoting",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/06_HistoryQuoting/App.xaml",
+      "repo": "StockSharp",
+      "project": "06_Strategies.HistoryQuoting",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/04_HistoryMarketRule/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "04_Strategies.HistoryMarketRule_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/04_HistoryMarketRule/App.xaml",
+      "repo": "StockSharp",
+      "project": "04_Strategies.HistoryMarketRule_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/08_LiveArbitrage/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "08_Strategies.LiveArbitrage",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/08_LiveArbitrage/App.xaml",
+      "repo": "StockSharp",
+      "project": "08_Strategies.LiveArbitrage",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/03_HistoryTrend/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "03_Strategies.HistoryTrend",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/03_HistoryTrend/App.xaml",
+      "repo": "StockSharp",
+      "project": "03_Strategies.HistoryTrend",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/05_HistoryIndex/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "05_Strategies.HistoryIndex",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/05_HistoryIndex/App.xaml",
+      "repo": "StockSharp",
+      "project": "05_Strategies.HistoryIndex",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/OrdersWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "OrdersWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/TradesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "TradesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/SecuritiesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "SecuritiesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/StrategiesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "StrategiesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/StrategyEditWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "StrategyEditWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/QuotesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "QuotesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/PortfoliosWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "PortfoliosWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/App.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/10_LiveTerminal/MyTradesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "10_Strategies.LiveTerminal_fromsrc",
+      "viewType": "MyTradesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/07_LiveSpread/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "07_Strategies.LiveSpread_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/07_LiveSpread/App.xaml",
+      "repo": "StockSharp",
+      "project": "07_Strategies.LiveSpread_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/02_HistoryBollingerBands/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/02_HistoryBollingerBands/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/01_HistorySMA/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Strategies.HistorySMA",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/01_HistorySMA/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Strategies.HistorySMA",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "09_Strategies.LiveOptionsQuoting",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/09_LiveOptionsQuoting/QuotesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "09_Strategies.LiveOptionsQuoting",
+      "viewType": "QuotesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/06_Strategies/09_LiveOptionsQuoting/App.xaml",
+      "repo": "StockSharp",
+      "project": "09_Strategies.LiveOptionsQuoting",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/03_Storage/04_HydraServerConnect/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "04_Storage.HydraServerConnect",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/03_Storage/04_HydraServerConnect/App.xaml",
+      "repo": "StockSharp",
+      "project": "04_Storage.HydraServerConnect",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/08_Misc/01_Logging/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Misc.Logging",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/08_Misc/01_Logging/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Misc.Logging",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/OrdersWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "OrdersWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/TradesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "TradesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/SecuritiesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "SecuritiesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/NewsWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "NewsWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/OrdersLogWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "OrdersLogWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/QuotesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "QuotesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/Level1Window.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "Level1Window",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/PortfoliosWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "PortfoliosWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/MainPanel.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "MainPanel",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/MyTradesWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "MyTradesWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/01_MultiConnect/ChartWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Advanced.MultiConnect",
+      "viewType": "ChartWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/09_Advanced/02_StoreDataLocal/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Advanced.SaveDataLocal",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/03_CreateOwn/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "03_Indicators.CreateOwn_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/03_CreateOwn/App.xaml",
+      "repo": "StockSharp",
+      "project": "03_Indicators.CreateOwn_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/01_SimpleSMA/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Indicators.SimpleSMA_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/01_SimpleSMA/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Indicators.SimpleSMA_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/02_ComplexBollinger/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Indicators.ComplexBollinger_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/04_Indicators/02_ComplexBollinger/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Indicators.ComplexBollinger_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/02_MarketDepths/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Basic.MarketDepths",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/02_MarketDepths/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Basic.MarketDepths",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/03_Orders/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "03_Basic.Orders",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/03_Orders/App.xaml",
+      "repo": "StockSharp",
+      "project": "03_Basic.Orders",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/01_ConnectAndDownloadInstruments/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/01_Basic/01_ConnectAndDownloadInstruments/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/05_Chart/02_ActiveOrders/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "02_Chart.ActiveOrders_fromsrc",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/05_Chart/02_ActiveOrders/App.xaml",
+      "repo": "StockSharp",
+      "project": "02_Chart.ActiveOrders_fromsrc",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/05_Chart/01_Chart/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "01_Chart",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": [
+        {
+          "path": "TimeZone",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "file": "Samples/05_Chart/01_Chart/App.xaml",
+      "repo": "StockSharp",
+      "project": "01_Chart",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    },
+    {
+      "file": "Samples/05_Chart/03_Performance/MainWindow.xaml",
+      "repo": "StockSharp",
+      "project": "03_Chart.Performance",
+      "viewType": "MainWindow",
+      "dataContextType": null,
+      "bindings": [
+        {
+          "path": "Title",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "file": "Samples/05_Chart/03_Performance/App.xaml",
+      "repo": "StockSharp",
+      "project": "03_Chart.Performance",
+      "viewType": "App",
+      "dataContextType": null,
+      "bindings": []
+    }
+  ],
+  "columnMappings": [],
+  "sqlFields": []
+}

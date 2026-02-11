@@ -782,6 +782,127 @@ def generate_e2e_flows_mermaid() -> str:
     return "\n".join(lines)
 
 
+def generate_field_traceability_mermaid() -> str:
+    """Generate a Mermaid diagram showing field-level traceability chains.
+
+    Top-down layered diagram: XAML View → ViewModel → Entity → DB Column.
+    Limited to top 20 most-complete chains for readability.
+    """
+    ft_path = os.path.join(OUT_DIR, "field-traceability.json")
+    if not os.path.isfile(ft_path):
+        return "graph TD\n    no_data[No field traceability data available]"
+
+    ft_data = json.loads(Path(ft_path).read_text(encoding="utf-8"))
+    chains = ft_data.get("fieldChains", [])
+
+    if not chains:
+        return "graph TD\n    no_data[No field traceability chains found]"
+
+    # Prioritize: full > xaml-to-entity > xaml-to-viewmodel > entity-to-column > xaml-only
+    completeness_rank = {
+        "full": 0, "xaml-to-entity": 1, "xaml-to-viewmodel": 2,
+        "viewmodel-to-column": 3, "entity-to-column": 4, "xaml-only": 5,
+    }
+    sorted_chains = sorted(chains, key=lambda c: completeness_rank.get(c.get("chainCompleteness", ""), 9))
+    top_chains = sorted_chains[:20]
+
+    lines = ["graph TD"]
+
+    # Collect unique nodes per layer
+    xaml_nodes: dict[str, str] = {}  # node_id -> label
+    vm_nodes: dict[str, str] = {}
+    entity_nodes: dict[str, str] = {}
+    db_nodes: dict[str, str] = {}
+    edges: list[tuple[str, str, bool]] = []  # (from, to, is_partial)
+
+    for ch in top_chains:
+        comp = ch.get("chainCompleteness", "")
+        conf = ch.get("confidence", "low")
+        is_partial = conf == "low"
+
+        xaml = ch.get("xamlBinding")
+        vm_prop = ch.get("viewModelProperty")
+        entity = ch.get("entityProperty")
+        db = ch.get("dbColumn")
+
+        xaml_id = None
+        vm_id = None
+        ent_id = None
+        db_id = None
+
+        if xaml:
+            vt = xaml.get("viewType") or "UnknownView"
+            bp = xaml.get("bindingPath", "?")
+            xaml_id = sanitize_id(f"xaml_{vt}_{bp}")
+            xaml_nodes[xaml_id] = f"{vt}\\n{bp}"
+
+        if vm_prop:
+            cn = vm_prop.get("className", "?")
+            pn = vm_prop.get("propertyName", "?")
+            pt = vm_prop.get("propertyType", "")
+            vm_id = sanitize_id(f"vm_{cn}_{pn}")
+            vm_nodes[vm_id] = f"{cn}\\n{pn}: {pt}"
+
+        if entity:
+            cn = entity.get("className", "?")
+            pn = entity.get("propertyName", "?")
+            pt = entity.get("propertyType", "")
+            ent_id = sanitize_id(f"ent_{cn}_{pn}")
+            entity_nodes[ent_id] = f"{cn}\\n{pn}: {pt}"
+
+        if db:
+            tbl = db.get("table", "?")
+            col = db.get("column", "?")
+            db_id = sanitize_id(f"db_{tbl}_{col}")
+            db_nodes[db_id] = f"{tbl}\\n{col}"
+
+        # Build edges for the chain
+        if xaml_id and vm_id:
+            edges.append((xaml_id, vm_id, is_partial))
+        if vm_id and ent_id:
+            edges.append((vm_id, ent_id, is_partial))
+        elif xaml_id and ent_id and not vm_id:
+            edges.append((xaml_id, ent_id, True))
+        if ent_id and db_id:
+            edges.append((ent_id, db_id, is_partial))
+
+    # Emit subgraphs
+    if xaml_nodes:
+        lines.append('    subgraph XAML["XAML Views"]')
+        for nid, label in xaml_nodes.items():
+            lines.append(f'        {nid}["{label}"]')
+        lines.append("    end")
+
+    if vm_nodes:
+        lines.append('    subgraph VM["ViewModels"]')
+        for nid, label in vm_nodes.items():
+            lines.append(f'        {nid}["{label}"]')
+        lines.append("    end")
+
+    if entity_nodes:
+        lines.append('    subgraph Entity["Entities"]')
+        for nid, label in entity_nodes.items():
+            lines.append(f'        {nid}["{label}"]')
+        lines.append("    end")
+
+    if db_nodes:
+        lines.append('    subgraph DB["Database Columns"]')
+        for nid, label in db_nodes.items():
+            lines.append(f'        {nid}[("{label}")]')
+        lines.append("    end")
+
+    # Emit edges (deduplicated)
+    seen_edges: set[tuple[str, str]] = set()
+    for from_id, to_id, partial in edges:
+        key = (from_id, to_id)
+        if key not in seen_edges:
+            seen_edges.add(key)
+            arrow = " -.->" if partial else " -->"
+            lines.append(f"    {from_id}{arrow} {to_id}")
+
+    return "\n".join(lines)
+
+
 def generate_flow_path_mermaid(flow_path: dict) -> str:
     """Generate a Mermaid diagram for a single flow path."""
     path = flow_path.get("path", [])
@@ -908,6 +1029,7 @@ def main():
         "nuget-groups.mmd": generate_nuget_mermaid(),
         "business-layers.mmd": generate_business_layer_mermaid(),
         "e2e-flows.mmd": generate_e2e_flows_mermaid(),
+        "field-traceability.mmd": generate_field_traceability_mermaid(),
     }
 
     for filename, content in mermaid_files.items():
