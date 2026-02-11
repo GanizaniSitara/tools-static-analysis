@@ -1542,7 +1542,7 @@ function zoomDiagram(containerId, delta) {
   }
 
   function buildFlowPathMermaid(fp, bl) {
-    var lines = ['graph LR'];
+    var lines = ['graph TD'];
     var prevId = null;
     (fp.path || []).forEach(function (step) {
       var nid, label;

@@ -298,111 +298,37 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph sg_Presentation["Presentation"]
-        01_Advanced_MultiConnect["01_Advanced.MultiConnect"]
-        01_Advanced_MultiConnect_fromsrc["01_Advanced.MultiConnect_fromsrc"]
-        01_Candles_Realtime["01_Candles.Realtime"]
-        01_Candles_Realtime_fromsrc["01_Candles.Realtime_fromsrc"]
-        01_Misc_Logging["01_Misc.Logging"]
-        01_Misc_Logging_fromsrc["01_Misc.Logging_fromsrc"]
-        01_Strategies_HistorySMA["01_Strategies.HistorySMA"]
-        01_Strategies_HistorySMA_fromsrc["01_Strategies.HistorySMA_fromsrc"]
-        01_Testing_History["01_Testing.History"]
-        01_Testing_History_fromsrc["01_Testing.History_fromsrc"]
-        02_Candles_CombineHistoryRealtime["02_Candles.CombineHistoryRealtime"]
-        02_Candles_CombineHistoryRealtime_fromsrc["02_Candles.CombineHistoryRealtime_fromsrc"]
-        02_Strategies_HistoryBollingerBands["02_Strategies.HistoryBollingerBands"]
-        02_Strategies_HistoryBollingerBands_fromsrc["02_Strategies.HistoryBollingerBands_fromsrc"]
-        02_Testing_Optimization["02_Testing.Optimization"]
-        02_Testing_Optimization_fromsrc["02_Testing.Optimization_fromsrc"]
-        03_Strategies_HistoryTrend["03_Strategies.HistoryTrend"]
-        03_Strategies_HistoryTrend_fromsrc["03_Strategies.HistoryTrend_fromsrc"]
-        03_Testing_RealTime["03_Testing.RealTime"]
-        03_Testing_RealTime_fromsrc["03_Testing.RealTime_fromsrc"]
-        04_Storage_HydraServerConnect_fromsrc["04_Storage.HydraServerConnect_fromsrc"]
-        04_Strategies_HistoryMarketRule["04_Strategies.HistoryMarketRule"]
-        04_Strategies_HistoryMarketRule_fromsrc["04_Strategies.HistoryMarketRule_fromsrc"]
-        05_Strategies_HistoryIndex["05_Strategies.HistoryIndex"]
-        05_Strategies_HistoryIndex_fromsrc["05_Strategies.HistoryIndex_fromsrc"]
-        06_Strategies_HistoryQuoting["06_Strategies.HistoryQuoting"]
-        06_Strategies_HistoryQuoting_fromsrc["06_Strategies.HistoryQuoting_fromsrc"]
-        07_Strategies_LiveSpread["07_Strategies.LiveSpread"]
-        07_Strategies_LiveSpread_fromsrc["07_Strategies.LiveSpread_fromsrc"]
-        08_Strategies_LiveArbitrage["08_Strategies.LiveArbitrage"]
-        08_Strategies_LiveArbitrage_fromsrc["08_Strategies.LiveArbitrage_fromsrc"]
-        09_Strategies_LiveOptionsQuoting["09_Strategies.LiveOptionsQuoting"]
-        09_Strategies_LiveOptionsQuoting_fromsrc["09_Strategies.LiveOptionsQuoting_fromsrc"]
-        10_Strategies_LiveTerminal["10_Strategies.LiveTerminal"]
-        10_Strategies_LiveTerminal_fromsrc["10_Strategies.LiveTerminal_fromsrc"]
+    subgraph sg_Presentation["Presentation (55)"]
+        grp_Strategies["Strategies (20)"]
+        grp_Testing["Testing (6)"]
+        grp_Chart["Chart (6)"]
+        grp_Indicators["Indicators (6)"]
+        grp_Basic["Basic (6)"]
+        grp_Candles["Candles (4)"]
+        grp_Advanced["Advanced (4)"]
+        grp_Other["Other (3)"]
     end
-    subgraph sg_Engine["Engine"]
+    subgraph sg_Engine["Engine (1)"]
         Algo["Algo"]
     end
-    subgraph sg_DataAccess["DataAccess"]
+    subgraph sg_DataAccess["DataAccess (3)"]
         BusinessEntities["BusinessEntities"]
         Messages["Messages"]
         Reporting["Reporting"]
     end
-    subgraph sg_Unclassified["Unclassified"]
+    subgraph sg_Unclassified["Unclassified (1)"]
         Charting_Interfaces["Charting.Interfaces"]
     end
-    01_Candles_Realtime_fromsrc --> Algo
+    grp_Candles --> Algo
     Algo --> Charting_Interfaces
     Charting_Interfaces --> BusinessEntities
-    01_Candles_Realtime --> Algo
-    02_Candles_CombineHistoryRealtime --> Algo
-    02_Candles_CombineHistoryRealtime_fromsrc --> Algo
-    02_Testing_Optimization --> Algo
-    02_Testing_Optimization_fromsrc --> Algo
-    01_Testing_History --> Algo
-    01_Testing_History_fromsrc --> Algo
-    03_Testing_RealTime_fromsrc --> Algo
-    03_Testing_RealTime --> Algo
-    06_Strategies_HistoryQuoting_fromsrc --> Algo
-    06_Strategies_HistoryQuoting --> Algo
-    04_Strategies_HistoryMarketRule --> Algo
-    04_Strategies_HistoryMarketRule_fromsrc --> Algo
-    08_Strategies_LiveArbitrage_fromsrc --> Algo
-    08_Strategies_LiveArbitrage --> Algo
-    03_Strategies_HistoryTrend_fromsrc --> Algo
-    03_Strategies_HistoryTrend --> Algo
-    05_Strategies_HistoryIndex_fromsrc --> Algo
-    05_Strategies_HistoryIndex --> Algo
-    10_Strategies_LiveTerminal --> Algo
-    10_Strategies_LiveTerminal_fromsrc --> Algo
-    07_Strategies_LiveSpread --> Algo
-    07_Strategies_LiveSpread_fromsrc --> Algo
-    02_Strategies_HistoryBollingerBands --> Algo
-    02_Strategies_HistoryBollingerBands_fromsrc --> Algo
-    01_Strategies_HistorySMA_fromsrc --> Algo
-    01_Strategies_HistorySMA --> Algo
-    09_Strategies_LiveOptionsQuoting_fromsrc --> Algo
-    09_Strategies_LiveOptionsQuoting --> Algo
-    04_Storage_HydraServerConnect_fromsrc --> Algo
-    01_Misc_Logging_fromsrc --> Algo
-    01_Misc_Logging --> Algo
-    01_Advanced_MultiConnect_fromsrc --> Algo
-    01_Advanced_MultiConnect --> Algo
-    02_Advanced_SaveDataLocal_fromsrc --> Algo
-    02_Advanced_SaveDataLocal --> Algo
-    03_Indicators_CreateOwn --> Algo
-    03_Indicators_CreateOwn_fromsrc --> Algo
-    01_Indicators_SimpleSMA --> Algo
-    01_Indicators_SimpleSMA_fromsrc --> Algo
-    02_Indicators_ComplexBollinger --> Algo
-    02_Indicators_ComplexBollinger_fromsrc --> Algo
-    02_Basic_MarketDepths_fromsrc --> Algo
-    02_Basic_MarketDepths --> Algo
-    03_Basic_Orders_fromsrc --> Algo
-    03_Basic_Orders --> Algo
-    01_Basic_ConnectAndDownloadInstruments --> Algo
-    01_Basic_ConnectAndDownloadInstruments_fromsrc --> Algo
-    02_Chart_ActiveOrders --> Algo
-    02_Chart_ActiveOrders_fromsrc --> Algo
-    01_Chart_fromsrc --> Algo
-    01_Chart --> Algo
-    03_Chart_Performance_fromsrc --> Algo
-    03_Chart_Performance --> Algo
+    grp_Testing --> Algo
+    grp_Strategies --> Algo
+    grp_Other --> Algo
+    grp_Advanced --> Algo
+    grp_Indicators --> Algo
+    grp_Basic --> Algo
+    grp_Chart --> Algo
     Algo --> Reporting
     Reporting --> Messages
 ```

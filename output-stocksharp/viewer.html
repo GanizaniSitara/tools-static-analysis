@@ -525,111 +525,37 @@ graph TD
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph TD
-    subgraph sg_Presentation[&quot;Presentation&quot;]
-        01_Advanced_MultiConnect[&quot;01_Advanced.MultiConnect&quot;]
-        01_Advanced_MultiConnect_fromsrc[&quot;01_Advanced.MultiConnect_fromsrc&quot;]
-        01_Candles_Realtime[&quot;01_Candles.Realtime&quot;]
-        01_Candles_Realtime_fromsrc[&quot;01_Candles.Realtime_fromsrc&quot;]
-        01_Misc_Logging[&quot;01_Misc.Logging&quot;]
-        01_Misc_Logging_fromsrc[&quot;01_Misc.Logging_fromsrc&quot;]
-        01_Strategies_HistorySMA[&quot;01_Strategies.HistorySMA&quot;]
-        01_Strategies_HistorySMA_fromsrc[&quot;01_Strategies.HistorySMA_fromsrc&quot;]
-        01_Testing_History[&quot;01_Testing.History&quot;]
-        01_Testing_History_fromsrc[&quot;01_Testing.History_fromsrc&quot;]
-        02_Candles_CombineHistoryRealtime[&quot;02_Candles.CombineHistoryRealtime&quot;]
-        02_Candles_CombineHistoryRealtime_fromsrc[&quot;02_Candles.CombineHistoryRealtime_fromsrc&quot;]
-        02_Strategies_HistoryBollingerBands[&quot;02_Strategies.HistoryBollingerBands&quot;]
-        02_Strategies_HistoryBollingerBands_fromsrc[&quot;02_Strategies.HistoryBollingerBands_fromsrc&quot;]
-        02_Testing_Optimization[&quot;02_Testing.Optimization&quot;]
-        02_Testing_Optimization_fromsrc[&quot;02_Testing.Optimization_fromsrc&quot;]
-        03_Strategies_HistoryTrend[&quot;03_Strategies.HistoryTrend&quot;]
-        03_Strategies_HistoryTrend_fromsrc[&quot;03_Strategies.HistoryTrend_fromsrc&quot;]
-        03_Testing_RealTime[&quot;03_Testing.RealTime&quot;]
-        03_Testing_RealTime_fromsrc[&quot;03_Testing.RealTime_fromsrc&quot;]
-        04_Storage_HydraServerConnect_fromsrc[&quot;04_Storage.HydraServerConnect_fromsrc&quot;]
-        04_Strategies_HistoryMarketRule[&quot;04_Strategies.HistoryMarketRule&quot;]
-        04_Strategies_HistoryMarketRule_fromsrc[&quot;04_Strategies.HistoryMarketRule_fromsrc&quot;]
-        05_Strategies_HistoryIndex[&quot;05_Strategies.HistoryIndex&quot;]
-        05_Strategies_HistoryIndex_fromsrc[&quot;05_Strategies.HistoryIndex_fromsrc&quot;]
-        06_Strategies_HistoryQuoting[&quot;06_Strategies.HistoryQuoting&quot;]
-        06_Strategies_HistoryQuoting_fromsrc[&quot;06_Strategies.HistoryQuoting_fromsrc&quot;]
-        07_Strategies_LiveSpread[&quot;07_Strategies.LiveSpread&quot;]
-        07_Strategies_LiveSpread_fromsrc[&quot;07_Strategies.LiveSpread_fromsrc&quot;]
-        08_Strategies_LiveArbitrage[&quot;08_Strategies.LiveArbitrage&quot;]
-        08_Strategies_LiveArbitrage_fromsrc[&quot;08_Strategies.LiveArbitrage_fromsrc&quot;]
-        09_Strategies_LiveOptionsQuoting[&quot;09_Strategies.LiveOptionsQuoting&quot;]
-        09_Strategies_LiveOptionsQuoting_fromsrc[&quot;09_Strategies.LiveOptionsQuoting_fromsrc&quot;]
-        10_Strategies_LiveTerminal[&quot;10_Strategies.LiveTerminal&quot;]
-        10_Strategies_LiveTerminal_fromsrc[&quot;10_Strategies.LiveTerminal_fromsrc&quot;]
+    subgraph sg_Presentation[&quot;Presentation (55)&quot;]
+        grp_Strategies[&quot;Strategies (20)&quot;]
+        grp_Testing[&quot;Testing (6)&quot;]
+        grp_Chart[&quot;Chart (6)&quot;]
+        grp_Indicators[&quot;Indicators (6)&quot;]
+        grp_Basic[&quot;Basic (6)&quot;]
+        grp_Candles[&quot;Candles (4)&quot;]
+        grp_Advanced[&quot;Advanced (4)&quot;]
+        grp_Other[&quot;Other (3)&quot;]
     end
-    subgraph sg_Engine[&quot;Engine&quot;]
+    subgraph sg_Engine[&quot;Engine (1)&quot;]
         Algo[&quot;Algo&quot;]
     end
-    subgraph sg_DataAccess[&quot;DataAccess&quot;]
+    subgraph sg_DataAccess[&quot;DataAccess (3)&quot;]
         BusinessEntities[&quot;BusinessEntities&quot;]
         Messages[&quot;Messages&quot;]
         Reporting[&quot;Reporting&quot;]
     end
-    subgraph sg_Unclassified[&quot;Unclassified&quot;]
+    subgraph sg_Unclassified[&quot;Unclassified (1)&quot;]
         Charting_Interfaces[&quot;Charting.Interfaces&quot;]
     end
-    01_Candles_Realtime_fromsrc --&gt; Algo
+    grp_Candles --&gt; Algo
     Algo --&gt; Charting_Interfaces
     Charting_Interfaces --&gt; BusinessEntities
-    01_Candles_Realtime --&gt; Algo
-    02_Candles_CombineHistoryRealtime --&gt; Algo
-    02_Candles_CombineHistoryRealtime_fromsrc --&gt; Algo
-    02_Testing_Optimization --&gt; Algo
-    02_Testing_Optimization_fromsrc --&gt; Algo
-    01_Testing_History --&gt; Algo
-    01_Testing_History_fromsrc --&gt; Algo
-    03_Testing_RealTime_fromsrc --&gt; Algo
-    03_Testing_RealTime --&gt; Algo
-    06_Strategies_HistoryQuoting_fromsrc --&gt; Algo
-    06_Strategies_HistoryQuoting --&gt; Algo
-    04_Strategies_HistoryMarketRule --&gt; Algo
-    04_Strategies_HistoryMarketRule_fromsrc --&gt; Algo
-    08_Strategies_LiveArbitrage_fromsrc --&gt; Algo
-    08_Strategies_LiveArbitrage --&gt; Algo
-    03_Strategies_HistoryTrend_fromsrc --&gt; Algo
-    03_Strategies_HistoryTrend --&gt; Algo
-    05_Strategies_HistoryIndex_fromsrc --&gt; Algo
-    05_Strategies_HistoryIndex --&gt; Algo
-    10_Strategies_LiveTerminal --&gt; Algo
-    10_Strategies_LiveTerminal_fromsrc --&gt; Algo
-    07_Strategies_LiveSpread --&gt; Algo
-    07_Strategies_LiveSpread_fromsrc --&gt; Algo
-    02_Strategies_HistoryBollingerBands --&gt; Algo
-    02_Strategies_HistoryBollingerBands_fromsrc --&gt; Algo
-    01_Strategies_HistorySMA_fromsrc --&gt; Algo
-    01_Strategies_HistorySMA --&gt; Algo
-    09_Strategies_LiveOptionsQuoting_fromsrc --&gt; Algo
-    09_Strategies_LiveOptionsQuoting --&gt; Algo
-    04_Storage_HydraServerConnect_fromsrc --&gt; Algo
-    01_Misc_Logging_fromsrc --&gt; Algo
-    01_Misc_Logging --&gt; Algo
-    01_Advanced_MultiConnect_fromsrc --&gt; Algo
-    01_Advanced_MultiConnect --&gt; Algo
-    02_Advanced_SaveDataLocal_fromsrc --&gt; Algo
-    02_Advanced_SaveDataLocal --&gt; Algo
-    03_Indicators_CreateOwn --&gt; Algo
-    03_Indicators_CreateOwn_fromsrc --&gt; Algo
-    01_Indicators_SimpleSMA --&gt; Algo
-    01_Indicators_SimpleSMA_fromsrc --&gt; Algo
-    02_Indicators_ComplexBollinger --&gt; Algo
-    02_Indicators_ComplexBollinger_fromsrc --&gt; Algo
-    02_Basic_MarketDepths_fromsrc --&gt; Algo
-    02_Basic_MarketDepths --&gt; Algo
-    03_Basic_Orders_fromsrc --&gt; Algo
-    03_Basic_Orders --&gt; Algo
-    01_Basic_ConnectAndDownloadInstruments --&gt; Algo
-    01_Basic_ConnectAndDownloadInstruments_fromsrc --&gt; Algo
-    02_Chart_ActiveOrders --&gt; Algo
-    02_Chart_ActiveOrders_fromsrc --&gt; Algo
-    01_Chart_fromsrc --&gt; Algo
-    01_Chart --&gt; Algo
-    03_Chart_Performance_fromsrc --&gt; Algo
-    03_Chart_Performance --&gt; Algo
+    grp_Testing --&gt; Algo
+    grp_Strategies --&gt; Algo
+    grp_Other --&gt; Algo
+    grp_Advanced --&gt; Algo
+    grp_Indicators --&gt; Algo
+    grp_Basic --&gt; Algo
+    grp_Chart --&gt; Algo
     Algo --&gt; Reporting
     Reporting --&gt; Messages
         </pre>
@@ -2189,7 +2115,7 @@ function zoomDiagram(containerId, delta) {
   }
 
   function buildFlowPathMermaid(fp, bl) {
-    var lines = ['graph LR'];
+    var lines = ['graph TD'];
     var prevId = null;
     (fp.path || []).forEach(function (step) {
       var nid, label;

@@ -796,10 +796,10 @@ graph TD
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph TD
-    subgraph sg_Presentation[&quot;Presentation&quot;]
+    subgraph sg_Presentation[&quot;Presentation (1)&quot;]
         SymbolLookup[&quot;SymbolLookup&quot;]
     end
-    subgraph sg_DataAccess[&quot;DataAccess&quot;]
+    subgraph sg_DataAccess[&quot;DataAccess (1)&quot;]
         Akka[&quot;Akka&quot;]
     end
     SymbolLookup --&gt; Akka
@@ -1730,7 +1730,7 @@ function zoomDiagram(containerId, delta) {
   }
 
   function buildFlowPathMermaid(fp, bl) {
-    var lines = ['graph LR'];
+    var lines = ['graph TD'];
     var prevId = null;
     (fp.path || []).forEach(function (step) {
       var nid, label;

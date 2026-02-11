@@ -548,45 +548,32 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph sg_Presentation["Presentation"]
+    subgraph sg_Presentation["Presentation (4)"]
         NuGet_PackageManagement_PowerShellCmdlets["NuGet.PackageManagement.PowerShellCmdlets"]
         NuGet_PackageManagement_UI["NuGet.PackageManagement.UI"]
         NuGet_PackageManagement_UI_Test["NuGet.PackageManagement.UI.Test"]
         NuGet_PackageManagement_UI_TestContract["NuGet.PackageManagement.UI.TestContract"]
     end
-    subgraph sg_DataAccess["DataAccess"]
+    subgraph sg_DataAccess["DataAccess (9)"]
+        grp_NuGet["NuGet (8)"]
         Microsoft_Internal_NuGet_Testing_SignedPackages["Microsoft.Internal.NuGet.Testing.SignedPackages"]
-        NuGet_Commands["NuGet.Commands"]
-        NuGet_Credentials["NuGet.Credentials"]
-        NuGet_Indexing["NuGet.Indexing"]
-        NuGet_PackageManagement["NuGet.PackageManagement"]
-        NuGet_PackageManagement_VisualStudio["NuGet.PackageManagement.VisualStudio"]
-        NuGet_Packaging["NuGet.Packaging"]
-        NuGet_Protocol["NuGet.Protocol"]
-        NuGet_Versioning["NuGet.Versioning"]
     end
-    subgraph sg_Infrastructure["Infrastructure"]
+    subgraph sg_Infrastructure["Infrastructure (2)"]
         NuGet_VisualStudio_Common["NuGet.VisualStudio.Common"]
         VisualStudio_Test_Utility["VisualStudio.Test.Utility"]
     end
-    subgraph sg_Unclassified["Unclassified"]
+    subgraph sg_Unclassified["Unclassified (1)"]
         NuGet_Console["NuGet.Console"]
     end
-    NuGet_PackageManagement_UI_Test --> NuGet_PackageManagement_VisualStudio
-    NuGet_PackageManagement_UI --> NuGet_PackageManagement_VisualStudio
+    NuGet_PackageManagement_UI_Test --> grp_NuGet
+    NuGet_PackageManagement_UI --> grp_NuGet
     NuGet_PackageManagement_UI_Test --> VisualStudio_Test_Utility
     VisualStudio_Test_Utility --> Microsoft_Internal_NuGet_Testing_SignedPackages
-    VisualStudio_Test_Utility --> NuGet_PackageManagement
-    NuGet_PackageManagement_VisualStudio --> NuGet_Indexing
+    VisualStudio_Test_Utility --> grp_NuGet
     NuGet_PackageManagement_UI_TestContract --> NuGet_PackageManagement_UI
-    Microsoft_Internal_NuGet_Testing_SignedPackages --> NuGet_Packaging
-    NuGet_PackageManagement --> NuGet_Commands
-    NuGet_PackageManagement_VisualStudio --> NuGet_VisualStudio_Common
-    NuGet_VisualStudio_Common --> NuGet_PackageManagement
+    Microsoft_Internal_NuGet_Testing_SignedPackages --> grp_NuGet
+    grp_NuGet --> NuGet_VisualStudio_Common
+    NuGet_VisualStudio_Common --> grp_NuGet
     NuGet_PackageManagement_PowerShellCmdlets --> NuGet_Console
     NuGet_Console --> NuGet_PackageManagement_UI
-    NuGet_Indexing --> NuGet_Protocol
-    NuGet_Packaging --> NuGet_Versioning
-    NuGet_Commands --> NuGet_Credentials
-    NuGet_Protocol --> NuGet_Packaging
 ```

@@ -558,10 +558,10 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph sg_Presentation["Presentation"]
+    subgraph sg_Presentation["Presentation (1)"]
         SymbolLookup["SymbolLookup"]
     end
-    subgraph sg_DataAccess["DataAccess"]
+    subgraph sg_DataAccess["DataAccess (1)"]
         Akka["Akka"]
     end
     SymbolLookup --> Akka

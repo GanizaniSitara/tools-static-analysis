@@ -711,47 +711,34 @@ graph TD
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph TD
-    subgraph sg_Presentation[&quot;Presentation&quot;]
+    subgraph sg_Presentation[&quot;Presentation (4)&quot;]
         NuGet_PackageManagement_PowerShellCmdlets[&quot;NuGet.PackageManagement.PowerShellCmdlets&quot;]
         NuGet_PackageManagement_UI[&quot;NuGet.PackageManagement.UI&quot;]
         NuGet_PackageManagement_UI_Test[&quot;NuGet.PackageManagement.UI.Test&quot;]
         NuGet_PackageManagement_UI_TestContract[&quot;NuGet.PackageManagement.UI.TestContract&quot;]
     end
-    subgraph sg_DataAccess[&quot;DataAccess&quot;]
+    subgraph sg_DataAccess[&quot;DataAccess (9)&quot;]
+        grp_NuGet[&quot;NuGet (8)&quot;]
         Microsoft_Internal_NuGet_Testing_SignedPackages[&quot;Microsoft.Internal.NuGet.Testing.SignedPackages&quot;]
-        NuGet_Commands[&quot;NuGet.Commands&quot;]
-        NuGet_Credentials[&quot;NuGet.Credentials&quot;]
-        NuGet_Indexing[&quot;NuGet.Indexing&quot;]
-        NuGet_PackageManagement[&quot;NuGet.PackageManagement&quot;]
-        NuGet_PackageManagement_VisualStudio[&quot;NuGet.PackageManagement.VisualStudio&quot;]
-        NuGet_Packaging[&quot;NuGet.Packaging&quot;]
-        NuGet_Protocol[&quot;NuGet.Protocol&quot;]
-        NuGet_Versioning[&quot;NuGet.Versioning&quot;]
     end
-    subgraph sg_Infrastructure[&quot;Infrastructure&quot;]
+    subgraph sg_Infrastructure[&quot;Infrastructure (2)&quot;]
         NuGet_VisualStudio_Common[&quot;NuGet.VisualStudio.Common&quot;]
         VisualStudio_Test_Utility[&quot;VisualStudio.Test.Utility&quot;]
     end
-    subgraph sg_Unclassified[&quot;Unclassified&quot;]
+    subgraph sg_Unclassified[&quot;Unclassified (1)&quot;]
         NuGet_Console[&quot;NuGet.Console&quot;]
     end
-    NuGet_PackageManagement_UI_Test --&gt; NuGet_PackageManagement_VisualStudio
-    NuGet_PackageManagement_UI --&gt; NuGet_PackageManagement_VisualStudio
+    NuGet_PackageManagement_UI_Test --&gt; grp_NuGet
+    NuGet_PackageManagement_UI --&gt; grp_NuGet
     NuGet_PackageManagement_UI_Test --&gt; VisualStudio_Test_Utility
     VisualStudio_Test_Utility --&gt; Microsoft_Internal_NuGet_Testing_SignedPackages
-    VisualStudio_Test_Utility --&gt; NuGet_PackageManagement
-    NuGet_PackageManagement_VisualStudio --&gt; NuGet_Indexing
+    VisualStudio_Test_Utility --&gt; grp_NuGet
     NuGet_PackageManagement_UI_TestContract --&gt; NuGet_PackageManagement_UI
-    Microsoft_Internal_NuGet_Testing_SignedPackages --&gt; NuGet_Packaging
-    NuGet_PackageManagement --&gt; NuGet_Commands
-    NuGet_PackageManagement_VisualStudio --&gt; NuGet_VisualStudio_Common
-    NuGet_VisualStudio_Common --&gt; NuGet_PackageManagement
+    Microsoft_Internal_NuGet_Testing_SignedPackages --&gt; grp_NuGet
+    grp_NuGet --&gt; NuGet_VisualStudio_Common
+    NuGet_VisualStudio_Common --&gt; grp_NuGet
     NuGet_PackageManagement_PowerShellCmdlets --&gt; NuGet_Console
     NuGet_Console --&gt; NuGet_PackageManagement_UI
-    NuGet_Indexing --&gt; NuGet_Protocol
-    NuGet_Packaging --&gt; NuGet_Versioning
-    NuGet_Commands --&gt; NuGet_Credentials
-    NuGet_Protocol --&gt; NuGet_Packaging
         </pre>
       </div>
     </div>
@@ -1849,7 +1836,7 @@ function zoomDiagram(containerId, delta) {
   }
 
   function buildFlowPathMermaid(fp, bl) {
-    var lines = ['graph LR'];
+    var lines = ['graph TD'];
     var prevId = null;
     (fp.path || []).forEach(function (step) {
       var nid, label;
