@@ -246,10 +246,36 @@ graph LR
         Lean_QuantConnect_Report["QuantConnect.Report"]
     end
     subgraph DataSources
-        datasource_Lean_Dapper[("Dapper")]
-        datasource_Lean_Kafka[("Kafka")]
-        datasource_Lean_RabbitMQ[("RabbitMQ")]
+        datasource_Lean_Dapper_Execute[("Dapper.Execute")]
+        datasource_Lean_MongoDB_Read[("MongoDB.Read")]
+        datasource_Lean_Redis_Read[("Redis.Read")]
+        datasource_Lean_Redis_Write[("Redis.Write")]
+        datasource_Lean_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_Lean_SQL_Select[("SQL.Select")]
     end
+```
+
+## data flow
+
+```mermaid
+graph LR
+    subgraph Projects["Services & Projects"]
+        QuantConnect["QuantConnect"]
+        QuantConnect_Algorithm["QuantConnect.Algorithm"]
+        QuantConnect_ToolBox["QuantConnect.ToolBox"]
+    end
+    subgraph Database["Database / Storage"]
+        table_the[("the")]
+        table_collection[("collection")]
+    end
+    subgraph APIs["API Routes"]
+        url_https___api_tournament_crunchdao_com_v2_rounds__current(["https://api.tournament.crunchdao.com/v2/rounds/@current"])
+    end
+    table_the -.->|read| QuantConnect
+    table_the -.->|read| QuantConnect_Algorithm
+    table_the -.->|read| QuantConnect_ToolBox
+    table_collection -.->|read| QuantConnect
+    url_https___api_tournament_crunchdao_com_v2_rounds__current -.->|consume| QuantConnect
 ```
 
 ## nuget groups

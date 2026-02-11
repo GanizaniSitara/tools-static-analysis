@@ -1017,8 +1017,8 @@
       "subtype": "api",
       "pattern": "gRPC",
       "repo": "src",
-      "occurrences": 5,
-      "description": "gRPC in src (5 occurrences)"
+      "occurrences": 16,
+      "description": "gRPC in src (16 occurrences)"
     },
     {
       "id": "datasource:src:HttpClient.Injection",
@@ -1030,6 +1030,51 @@
       "description": "HttpClient.Injection in src (4 occurrences)"
     },
     {
+      "id": "datasource:src:API.HttpGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpGet",
+      "repo": "src",
+      "occurrences": 8,
+      "description": "API.HttpGet in src (8 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.Controller",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Controller",
+      "repo": "src",
+      "occurrences": 7,
+      "description": "API.Controller in src (7 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.HttpPost",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpPost",
+      "repo": "src",
+      "occurrences": 6,
+      "description": "API.HttpPost in src (6 occurrences)"
+    },
+    {
+      "id": "datasource:src:MongoDB.Read",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Read",
+      "repo": "src",
+      "occurrences": 6,
+      "description": "MongoDB.Read in src (6 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "src",
+      "occurrences": 8,
+      "description": "Dapper.Execute in src (8 occurrences)"
+    },
+    {
       "id": "datasource:src:DbContext",
       "type": "datasource",
       "subtype": "database",
@@ -1037,6 +1082,15 @@
       "repo": "src",
       "occurrences": 11,
       "description": "DbContext in src (11 occurrences)"
+    },
+    {
+      "id": "datasource:src:DbSet",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "DbSet",
+      "repo": "src",
+      "occurrences": 9,
+      "description": "DbSet in src (9 occurrences)"
     },
     {
       "id": "datasource:src:EntityFramework",
@@ -1048,13 +1102,67 @@
       "description": "EntityFramework in src (2 occurrences)"
     },
     {
-      "id": "datasource:src:RabbitMQ",
+      "id": "datasource:src:API.MapGet",
       "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "RabbitMQ",
+      "subtype": "api",
+      "pattern": "API.MapGet",
       "repo": "src",
-      "occurrences": 29,
-      "description": "RabbitMQ in src (29 occurrences)"
+      "occurrences": 18,
+      "description": "API.MapGet in src (18 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapPost",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapPost",
+      "repo": "src",
+      "occurrences": 6,
+      "description": "API.MapPost in src (6 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapPut",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapPut",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "API.MapPut in src (4 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapDelete",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapDelete",
+      "repo": "src",
+      "occurrences": 2,
+      "description": "API.MapDelete in src (2 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapGroup",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapGroup",
+      "repo": "src",
+      "occurrences": 5,
+      "description": "API.MapGroup in src (5 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Insert",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Insert",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "SQL.Insert in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:src:gRPC.Server",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Server",
+      "repo": "src",
+      "occurrences": 7,
+      "description": "gRPC.Server in src (7 occurrences)"
     },
     {
       "id": "datasource:src:Redis",
@@ -1066,13 +1174,22 @@
       "description": "Redis in src (2 occurrences)"
     },
     {
-      "id": "datasource:src:Dapper",
+      "id": "datasource:src:Redis.Read",
       "type": "datasource",
-      "subtype": "database",
-      "pattern": "Dapper",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
       "repo": "src",
-      "occurrences": 3,
-      "description": "Dapper in src (3 occurrences)"
+      "occurrences": 31,
+      "description": "Redis.Read in src (31 occurrences)"
+    },
+    {
+      "id": "datasource:src:RabbitMQ",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "RabbitMQ",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "RabbitMQ in src (4 occurrences)"
     },
     {
       "id": "datasource:src:HttpClient.New",
@@ -1084,6 +1201,78 @@
       "description": "HttpClient.New in src (1 occurrences)"
     },
     {
+      "id": "datasource:src:gRPC.Client",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Client",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "gRPC.Client in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:src:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "src",
+      "occurrences": 18,
+      "description": "Redis.Write in src (18 occurrences)"
+    },
+    {
+      "id": "datasource:src:HttpClient.PostAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.PostAsync",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "HttpClient.PostAsync in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:tests:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "tests",
+      "occurrences": 26,
+      "description": "Redis.Read in tests (26 occurrences)"
+    },
+    {
+      "id": "datasource:tests:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
+      "repo": "tests",
+      "occurrences": 23,
+      "description": "HttpClient.GetAsync in tests (23 occurrences)"
+    },
+    {
+      "id": "datasource:tests:HttpClient.PostAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.PostAsync",
+      "repo": "tests",
+      "occurrences": 5,
+      "description": "HttpClient.PostAsync in tests (5 occurrences)"
+    },
+    {
+      "id": "datasource:tests:HttpClient.PutAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.PutAsync",
+      "repo": "tests",
+      "occurrences": 6,
+      "description": "HttpClient.PutAsync in tests (6 occurrences)"
+    },
+    {
+      "id": "datasource:tests:gRPC.Server",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Server",
+      "repo": "tests",
+      "occurrences": 7,
+      "description": "gRPC.Server in tests (7 occurrences)"
+    },
+    {
       "id": "datasource:tests:gRPC",
       "type": "datasource",
       "subtype": "api",
@@ -1093,13 +1282,13 @@
       "description": "gRPC in tests (1 occurrences)"
     },
     {
-      "id": "datasource:tests:Dapper",
+      "id": "datasource:tests:Dapper.Execute",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "Dapper.Execute",
       "repo": "tests",
-      "occurrences": 1,
-      "description": "Dapper in tests (1 occurrences)"
+      "occurrences": 2,
+      "description": "Dapper.Execute in tests (2 occurrences)"
     }
   ],
   "edges": [
@@ -1840,7 +2029,7 @@
     "totalNuGetPackages": 69,
     "totalProjectRefs": 46,
     "totalCrossRepoRefs": 10,
-    "totalDataFindings": 77,
+    "totalDataFindings": 267,
     "totalConfigFiles": 31,
     "repos": {
       "src": {

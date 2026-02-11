@@ -3028,13 +3028,67 @@
       "description": "NuGet: Lorem.Universal.NET ()"
     },
     {
-      "id": "datasource:src:Dapper",
+      "id": "datasource:src:API.Controller",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Controller",
+      "repo": "src",
+      "occurrences": 105,
+      "description": "API.Controller in src (105 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.HttpPost",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpPost",
+      "repo": "src",
+      "occurrences": 206,
+      "description": "API.HttpPost in src (206 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.Route",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Route",
+      "repo": "src",
+      "occurrences": 25,
+      "description": "API.Route in src (25 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper.Query",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "Dapper.Query",
       "repo": "src",
-      "occurrences": 208,
-      "description": "Dapper in src (208 occurrences)"
+      "occurrences": 217,
+      "description": "Dapper.Query in src (217 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Select",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "SQL.Select in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "src",
+      "occurrences": 36,
+      "description": "Dapper.Execute in src (36 occurrences)"
+    },
+    {
+      "id": "datasource:src:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "src",
+      "occurrences": 119,
+      "description": "Redis.Write in src (119 occurrences)"
     },
     {
       "id": "datasource:src:HttpClient.Injection",
@@ -3055,13 +3109,58 @@
       "description": "HttpClient.BaseAddress in src (2 occurrences)"
     },
     {
-      "id": "datasource:src:RabbitMQ",
+      "id": "datasource:src:Redis.Read",
       "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "RabbitMQ",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
       "repo": "src",
-      "occurrences": 15,
-      "description": "RabbitMQ in src (15 occurrences)"
+      "occurrences": 200,
+      "description": "Redis.Read in src (200 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.HttpGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpGet",
+      "repo": "src",
+      "occurrences": 18,
+      "description": "API.HttpGet in src (18 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapPost",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapPost",
+      "repo": "src",
+      "occurrences": 5,
+      "description": "API.MapPost in src (5 occurrences)"
+    },
+    {
+      "id": "datasource:src:MongoDB.Read",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Read",
+      "repo": "src",
+      "occurrences": 7,
+      "description": "MongoDB.Read in src (7 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapGet",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "API.MapGet in src (4 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapDelete",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapDelete",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "API.MapDelete in src (1 occurrences)"
     },
     {
       "id": "datasource:src:Redis",
@@ -3100,6 +3199,42 @@
       "description": "HttpClient.New in src (1 occurrences)"
     },
     {
+      "id": "datasource:src:Kafka.Topic",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Topic",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "Kafka.Topic in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Delete",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Delete",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "SQL.Delete in src (4 occurrences)"
+    },
+    {
+      "id": "datasource:test:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "test",
+      "occurrences": 34,
+      "description": "Redis.Read in test (34 occurrences)"
+    },
+    {
+      "id": "datasource:test:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "test",
+      "occurrences": 82,
+      "description": "Dapper.Execute in test (82 occurrences)"
+    },
+    {
       "id": "datasource:test:HttpClient.New",
       "type": "datasource",
       "subtype": "api",
@@ -3109,13 +3244,49 @@
       "description": "HttpClient.New in test (2 occurrences)"
     },
     {
-      "id": "datasource:test:Dapper",
+      "id": "datasource:test:Dapper.Query",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "Dapper.Query",
       "repo": "test",
       "occurrences": 44,
-      "description": "Dapper in test (44 occurrences)"
+      "description": "Dapper.Query in test (44 occurrences)"
+    },
+    {
+      "id": "datasource:test:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
+      "repo": "test",
+      "occurrences": 13,
+      "description": "HttpClient.GetAsync in test (13 occurrences)"
+    },
+    {
+      "id": "datasource:test:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "test",
+      "occurrences": 2,
+      "description": "Redis.Write in test (2 occurrences)"
+    },
+    {
+      "id": "datasource:test:SQL.Select",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "test",
+      "occurrences": 41,
+      "description": "SQL.Select in test (41 occurrences)"
+    },
+    {
+      "id": "datasource:test:HttpClient.PostAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.PostAsync",
+      "repo": "test",
+      "occurrences": 15,
+      "description": "HttpClient.PostAsync in test (15 occurrences)"
     },
     {
       "id": "datasource:test:EntityFramework",
@@ -3125,6 +3296,15 @@
       "repo": "test",
       "occurrences": 3,
       "description": "EntityFramework in test (3 occurrences)"
+    },
+    {
+      "id": "datasource:test:HttpClient.DeleteAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.DeleteAsync",
+      "repo": "test",
+      "occurrences": 1,
+      "description": "HttpClient.DeleteAsync in test (1 occurrences)"
     }
   ],
   "edges": [
@@ -9760,7 +9940,7 @@
     "totalNuGetPackages": 84,
     "totalProjectRefs": 1208,
     "totalCrossRepoRefs": 40,
-    "totalDataFindings": 462,
+    "totalDataFindings": 1394,
     "totalConfigFiles": 11,
     "repos": {
       "src": {

@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">230</span> Projects</div>
     <div class="stat"><span class="stat-value">84</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">1208</span> Project References</div>
-    <div class="stat"><span class="stat-value">462</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">1394</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">11</span> Config Files</div>
     <div class="stat"><span class="stat-value">2</span> Repos (src, test)</div>
   </div>
@@ -198,6 +198,7 @@
   <button class="tab-btn" data-tab="cat_webapp">WebApp (6)</button>
   <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
   <button class="tab-btn" data-tab="cat_application">Application (1)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
@@ -657,6 +658,105 @@ graph LR
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        OrchardCore_Contents[&quot;OrchardCore.Contents&quot;]
+        OrchardCore_Demo[&quot;OrchardCore.Demo&quot;]
+        OrchardCore_Facebook[&quot;OrchardCore.Facebook&quot;]
+        OrchardCore_Liquid[&quot;OrchardCore.Liquid&quot;]
+        OrchardCore_Notifications[&quot;OrchardCore.Notifications&quot;]
+        OrchardCore_OpenId_Core[&quot;OrchardCore.OpenId.Core&quot;]
+        OrchardCore_Queries[&quot;OrchardCore.Queries&quot;]
+        OrchardCore_Search[&quot;OrchardCore.Search&quot;]
+        OrchardCore_Search_Elasticsearch[&quot;OrchardCore.Search.Elasticsearch&quot;]
+        OrchardCore_Search_Lucene[&quot;OrchardCore.Search.Lucene&quot;]
+        OrchardCore_Tests[&quot;OrchardCore.Tests&quot;]
+        OrchardCore_Twitter[&quot;OrchardCore.Twitter&quot;]
+        OrchardCore_UrlRewriting[&quot;OrchardCore.UrlRewriting&quot;]
+        OrchardCore_Users[&quot;OrchardCore.Users&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        table_ContentItemIndex[(&quot;ContentItemIndex&quot;)]
+        table_the[(&quot;the&quot;)]
+        table_tp_t[(&quot;tp_t&quot;)]
+        table_t1[(&quot;t1&quot;)]
+        table_tp_d[(&quot;tp_d&quot;)]
+        table_tp_b[(&quot;tp_b&quot;)]
+        table_tp_a[(&quot;tp_a&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        route_content([&quot;content&quot;])
+        route_documents([&quot;documents&quot;])
+        route_api_queries([&quot;api/queries&quot;])
+        route__name_([&quot;{name}&quot;])
+        url_https___api_twitter_com([&quot;https://api.twitter.com&quot;])
+        route_TwoFactor_Authenticator_SmsSendCode([&quot;TwoFactor-Authenticator/SmsSendCode&quot;])
+        route_TwoFactor_Authenticator_EmailSendCode([&quot;TwoFactor-Authenticator/EmailSendCode&quot;])
+        route_api_elasticsearch([&quot;api/elasticsearch&quot;])
+        route_Notifications_MarkAsRead([&quot;Notifications/MarkAsRead&quot;])
+        route_OrchardCore_Liquid_Scripts_liquid_intellisense_js([&quot;OrchardCore.Liquid/Scripts/liquid-intellisense.js&quot;])
+        route_api_content([&quot;api/content&quot;])
+        route_api_content__contentItemId_([&quot;api/content/{contentItemId}&quot;])
+        route__OrchardCore_Facebook_sdk_init_js([&quot;/OrchardCore.Facebook/sdk/init.js&quot;])
+        route__OrchardCore_Facebook_sdk_sdk__culture_length_2_6___js([&quot;/OrchardCore.Facebook/sdk/sdk.{culture:length(2,6)}.js&quot;])
+        route_api_lucene([&quot;api/lucene&quot;])
+        route_url_rewriting_resort([&quot;url-rewriting/resort&quot;])
+        route_search__index__([&quot;search/{index?}&quot;])
+        route_Demo([&quot;Demo&quot;])
+        route_Demo_Index([&quot;Demo/Index&quot;])
+        route_Demo_About([&quot;Demo/About&quot;])
+        route_Demo_Contact([&quot;Demo/Contact&quot;])
+        route_api_demo([&quot;api/demo&quot;])
+    end
+    table_ContentItemIndex -.-&gt;|read| OrchardCore_Queries
+    table_ContentItemIndex -.-&gt;|read| OrchardCore_Tests
+    OrchardCore_OpenId_Core ==&gt;|write| table_the
+    table_tp_t -.-&gt;|read| OrchardCore_Tests
+    table_t1 -.-&gt;|read| OrchardCore_Tests
+    table_tp_d -.-&gt;|read| OrchardCore_Tests
+    table_tp_b -.-&gt;|read| OrchardCore_Tests
+    table_tp_a -.-&gt;|read| OrchardCore_Tests
+    OrchardCore_Search_Elasticsearch ==&gt;|expose| route_content
+    OrchardCore_Search_Lucene ==&gt;|expose| route_content
+    OrchardCore_Search_Elasticsearch ==&gt;|expose| route_documents
+    OrchardCore_Search_Lucene ==&gt;|expose| route_documents
+    OrchardCore_Queries ==&gt;|expose| route_api_queries
+    OrchardCore_Queries ==&gt;|expose| route__name_
+    url_https___api_twitter_com -.-&gt;|consume| OrchardCore_Twitter
+    OrchardCore_Users ==&gt;|expose| route_TwoFactor_Authenticator_SmsSendCode
+    OrchardCore_Users ==&gt;|expose| route_TwoFactor_Authenticator_EmailSendCode
+    OrchardCore_Search_Elasticsearch ==&gt;|expose| route_api_elasticsearch
+    OrchardCore_Notifications ==&gt;|expose| route_Notifications_MarkAsRead
+    OrchardCore_Liquid ==&gt;|expose| route_OrchardCore_Liquid_Scripts_liquid_intellisense_js
+    OrchardCore_Contents ==&gt;|expose| route_api_content
+    OrchardCore_Contents ==&gt;|expose| route_api_content__contentItemId_
+    OrchardCore_Facebook ==&gt;|expose| route__OrchardCore_Facebook_sdk_init_js
+    OrchardCore_Facebook ==&gt;|expose| route__OrchardCore_Facebook_sdk_sdk__culture_length_2_6___js
+    OrchardCore_Search_Lucene ==&gt;|expose| route_api_lucene
+    OrchardCore_UrlRewriting ==&gt;|expose| route_url_rewriting_resort
+    OrchardCore_Search ==&gt;|expose| route_search__index__
+    OrchardCore_Demo ==&gt;|expose| route_Demo
+    OrchardCore_Demo ==&gt;|expose| route_Demo_Index
+    OrchardCore_Demo ==&gt;|expose| route_Demo_About
+    OrchardCore_Demo ==&gt;|expose| route_Demo_Contact
+    OrchardCore_Demo ==&gt;|expose| route_api_demo
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -668,46 +768,130 @@ graph LR
           </thead>
           <tbody>
             <tr>
-              <td><strong>Dapper</strong></td>
+              <td><strong>Dapper.Query</strong></td>
               <td><span class="tag tag-db">Database</span></td>
-              <td>252</td>
-              <td>OrchardCore, OrchardCore.Modules, OrchardCore.Tests</td>
+              <td>261</td>
+              <td>OrchardCore.AdminDashboard, OrchardCore.Alias, OrchardCore.AuditTrail, OrchardCore.ContentFields, OrchardCore.ContentLocalization, ... +28 more</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>234</td>
+              <td>OrchardCore, OrchardCore.AdminDashboard, OrchardCore.Alias, OrchardCore.ArchiveLater, OrchardCore.Autoroute, ... +33 more</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpPost</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>206</td>
+              <td>OrchardCore.AdminDashboard, OrchardCore.AdminMenu, OrchardCore.BackgroundTasks, OrchardCore.ContentLocalization, OrchardCore.ContentPreview, ... +32 more</td>
             </tr>
             <tr>
               <td><strong>ConnectionString</strong></td>
               <td><span class="tag tag-config">Config</span></td>
               <td>154</td>
-              <td>OrchardCore, OrchardCore.Modules, OrchardCore.Tests</td>
+              <td>OrchardCore.Abstractions, OrchardCore.AutoSetup, OrchardCore.Data.Abstractions, OrchardCore.Data.YesSql, OrchardCore.DataProtection.Azure, ... +9 more</td>
             </tr>
             <tr>
-              <td><strong>RabbitMQ</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>121</td>
+              <td>OrchardCore, OrchardCore.Abstractions, OrchardCore.AdminDashboard, OrchardCore.Alias, OrchardCore.Autoroute, ... +32 more</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper.Execute</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>118</td>
+              <td>OrchardCore.AdminDashboard, OrchardCore.Apis.GraphQL, OrchardCore.AuditTrail, OrchardCore.Contents, OrchardCore.Data.YesSql, ... +16 more</td>
+            </tr>
+            <tr>
+              <td><strong>API.Controller</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>105</td>
+              <td>OrchardCore.Admin, OrchardCore.AdminDashboard, OrchardCore.AdminMenu, OrchardCore.Apis.GraphQL, OrchardCore.AuditTrail, ... +50 more</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Select</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>42</td>
+              <td>OrchardCore.Queries, OrchardCore.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.Route</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>25</td>
+              <td>OrchardCore.Demo, OrchardCore.Queries, OrchardCore.Search, OrchardCore.Search.Elasticsearch, OrchardCore.Search.Lucene, ... +1 more</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>18</td>
+              <td>OrchardCore.Apis.GraphQL, OrchardCore.ContentFields, OrchardCore.ContentLocalization, OrchardCore.Contents, OrchardCore.Cors, ... +6 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Write</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
               <td>15</td>
-              <td>OrchardCore, OrchardCore.Modules</td>
+              <td>OrchardCore, OrchardCore.Data, OrchardCore.Deployment, OrchardCore.Deployment.Core, OrchardCore.Deployment.Remote, ... +6 more</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.PostAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>15</td>
+              <td>OrchardCore.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>14</td>
+              <td>OrchardCore, OrchardCore.Data, OrchardCore.FileStorage.FileSystem, OrchardCore.Infrastructure, OrchardCore.Media, ... +3 more</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>13</td>
+              <td>OrchardCore.Tests</td>
             </tr>
             <tr>
               <td><strong>Redis</strong></td>
               <td><span class="tag tag-cache">Cache</span></td>
               <td>12</td>
-              <td>OrchardCore, OrchardCore.Modules</td>
-            </tr>
-            <tr>
-              <td><strong>FileStorage</strong></td>
-              <td><span class="tag tag-config">Storage</span></td>
-              <td>11</td>
-              <td>OrchardCore, OrchardCore.Modules</td>
+              <td>OrchardCore.Redis, OrchardCore.Redis.Abstractions</td>
             </tr>
             <tr>
               <td><strong>HttpClient.Injection</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>7</td>
-              <td>OrchardCore, OrchardCore.Modules</td>
+              <td>OrchardCore, OrchardCore.Deployment.Remote, OrchardCore.Media, OrchardCore.ReCaptcha.Core, OrchardCore.Sms.Core, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>7</td>
+              <td>OrchardCore.DisplayManagement, OrchardCore.OpenId, OrchardCore.Placements</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapPost</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>5</td>
+              <td>OrchardCore.Contents, OrchardCore.Notifications, OrchardCore.UrlRewriting, OrchardCore.Users</td>
             </tr>
             <tr>
               <td><strong>EntityFramework</strong></td>
               <td><span class="tag tag-db">Database</span></td>
               <td>5</td>
-              <td>OrchardCore, OrchardCore.Tests</td>
+              <td>OrchardCore.Data.YesSql, OrchardCore.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>4</td>
+              <td>OrchardCore.Contents, OrchardCore.Facebook, OrchardCore.Liquid</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Delete</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>4</td>
+              <td>OrchardCore.OpenId.Core</td>
             </tr>
             <tr>
               <td><strong>HttpClient.New</strong></td>
@@ -719,19 +903,38 @@ graph LR
               <td><strong>HttpClient.BaseAddress</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>2</td>
-              <td>OrchardCore, OrchardCore.Modules</td>
+              <td>OrchardCore.Sms.Core, OrchardCore.Twitter</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapDelete</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>OrchardCore.Contents</td>
             </tr>
             <tr>
               <td><strong>SqlClient</strong></td>
               <td><span class="tag tag-db">Database</span></td>
               <td>1</td>
+              <td>OrchardCore.Data.YesSql</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Topic</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>1</td>
               <td>OrchardCore</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.DeleteAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>OrchardCore.Tests</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
+
 
 
 
@@ -965,6 +1168,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -1037,7 +1297,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_application': 'mermaid-cat_application' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_application': 'mermaid-cat_application', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1088,6 +1348,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

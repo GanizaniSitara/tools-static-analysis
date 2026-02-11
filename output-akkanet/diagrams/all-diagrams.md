@@ -404,10 +404,55 @@ graph LR
         akka_net_FaultTolerance["FaultTolerance"]
     end
     subgraph DataSources
-        datasource_akka_net_RabbitMQ[("RabbitMQ")]
-        datasource_akka_net_Dapper[("Dapper")]
-        datasource_akka_net_Kafka[("Kafka")]
+        datasource_akka_net_MongoDB_Read[("MongoDB.Read")]
+        datasource_akka_net_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_akka_net_Redis_Read[("Redis.Read")]
+        datasource_akka_net_Kafka_Topic[("Kafka.Topic")]
+        datasource_akka_net_SQL_Delete[("SQL.Delete")]
+        datasource_akka_net_SQL_CreateTable[("SQL.CreateTable")]
+        datasource_akka_net_SQL_Select[("SQL.Select")]
+        datasource_akka_net_SQL_Insert[("SQL.Insert")]
+        datasource_akka_net_Dapper_Execute[("Dapper.Execute")]
+        datasource_akka_net_Redis_Write[("Redis.Write")]
+        datasource_akka_net_MongoDB_Write[("MongoDB.Write")]
+        datasource_akka_net_Dapper_Query[("Dapper.Query")]
+        datasource_akka_net_Kafka_Producer[("Kafka.Producer")]
+        datasource_akka_net_SQL_Update[("SQL.Update")]
     end
+```
+
+## data flow
+
+```mermaid
+graph LR
+    subgraph Projects["Services & Projects"]
+        Akka["Akka"]
+        Akka_AspNetCore["Akka.AspNetCore"]
+        Akka_Docs_Tests["Akka.Docs.Tests"]
+        Akka_Persistence_Custom["Akka.Persistence.Custom"]
+        Samples_Akka_AspNetCore["Samples.Akka.AspNetCore"]
+    end
+    subgraph Database["Database / Storage"]
+        table_snapshot[("snapshot")]
+        table_event_journal[("event_journal")]
+        table_journal_metadata[("journal_metadata")]
+        table_the[("the")]
+    end
+    subgraph APIs["API Routes"]
+        route_api__controller_(["api/[controller]"])
+        route__(["/"])
+        url_http___example_com_eventstream(["http://example.com/eventstream"])
+    end
+    Akka_Persistence_Custom ==>|write| table_snapshot
+    Akka_Persistence_Custom ==>|write| table_event_journal
+    table_event_journal -.->|read| Akka_Persistence_Custom
+    Akka_Persistence_Custom ==>|write| table_journal_metadata
+    table_journal_metadata -.->|read| Akka_Persistence_Custom
+    Akka ==>|write| table_the
+    table_the -.->|read| Akka
+    Akka_AspNetCore ==>|expose| route_api__controller_
+    Samples_Akka_AspNetCore ==>|expose| route__
+    url_http___example_com_eventstream -.->|consume| Akka_Docs_Tests
 ```
 
 ## nuget groups

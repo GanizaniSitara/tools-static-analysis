@@ -32,6 +32,17 @@ graph TD
 | NSubstitute.Analyzers.CSharp |  |
 
 ## Data Access Patterns
+### gRPC.Server
+| File | Line | Context |
+|------|------|---------||
+| `tests/Basket.UnitTests/BasketServiceTests.cs` | 21 | `var serverCallContext = TestServerCallContext.Create(cancellationToken` |
+| `tests/Basket.UnitTests/BasketServiceTests.cs` | 37 | `var serverCallContext = TestServerCallContext.Create(cancellationToken` |
+| `tests/Basket.UnitTests/BasketServiceTests.cs` | 55 | `var serverCallContext = TestServerCallContext.Create(cancellationToken` |
+| `tests/Basket.UnitTests/Helpers/TestServerCallContext.cs` | 5 | `public class TestServerCallContext : ServerCallContext` |
+| `tests/Basket.UnitTests/Helpers/TestServerCallContext.cs` | 16 | `private TestServerCallContext(Metadata requestHeaders, CancellationTok` |
+| `tests/Basket.UnitTests/Helpers/TestServerCallContext.cs` | 57 | `public static TestServerCallContext Create(Metadata requestHeaders = n` |
+| `tests/Basket.UnitTests/Helpers/TestServerCallContext.cs` | 59 | `return new TestServerCallContext(requestHeaders: new Metadata(), cance` |
+
 ### gRPC
 | File | Line | Context |
 |------|------|---------||

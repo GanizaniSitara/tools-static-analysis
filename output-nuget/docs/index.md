@@ -8,7 +8,7 @@
 | Total Projects | 115 |
 | NuGet Packages | 76 |
 | Project References | 213 |
-| Data Access Findings | 453 |
+| Data Access Findings | 3013 |
 | Config Files | 13 |
 
 ## Project Categories
@@ -440,8 +440,14 @@ graph LR
         NuGet_Client_ship_public_apis["ship-public-apis"]
     end
     subgraph DataSources
-        datasource_NuGet_Client_Dapper[("Dapper")]
+        datasource_NuGet_Client_Redis_Read[("Redis.Read")]
+        datasource_NuGet_Client_Dapper_Execute[("Dapper.Execute")]
+        datasource_NuGet_Client_Redis_Write[("Redis.Write")]
+        datasource_NuGet_Client_MongoDB_Read[("MongoDB.Read")]
         datasource_NuGet_Client_SqlClient[("SqlClient")]
+        datasource_NuGet_Client_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_NuGet_Client_SQL_Select[("SQL.Select")]
+        datasource_NuGet_Client_SQL_Delete[("SQL.Delete")]
     end
 ```
 

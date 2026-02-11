@@ -9,7 +9,7 @@
 | NuGet Packages | 69 |
 | Project References | 46 |
 | Cross-Repo References | 10 |
-| Data Access Findings | 77 |
+| Data Access Findings | 267 |
 | Config Files | 31 |
 
 ## Repositories
@@ -158,12 +158,18 @@ graph LR
         src_Webhooks_API["Webhooks.API"]
     end
     subgraph DataSources
+        datasource_src_MongoDB_Read[("MongoDB.Read")]
+        datasource_src_Dapper_Execute[("Dapper.Execute")]
         datasource_src_DbContext[("DbContext")]
+        datasource_src_DbSet[("DbSet")]
         datasource_src_EntityFramework[("EntityFramework")]
-        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_SQL_Insert[("SQL.Insert")]
         datasource_src_Redis[("Redis")]
-        datasource_src_Dapper[("Dapper")]
-        datasource_tests_Dapper[("Dapper")]
+        datasource_src_Redis_Read[("Redis.Read")]
+        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_Redis_Write[("Redis.Write")]
+        datasource_tests_Redis_Read[("Redis.Read")]
+        datasource_tests_Dapper_Execute[("Dapper.Execute")]
     end
 ```
 

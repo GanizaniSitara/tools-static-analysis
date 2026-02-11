@@ -1,0 +1,336 @@
+{
+  "dataNodes": [
+    {
+      "id": "table:the",
+      "name": "the",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "QuantConnect",
+        "QuantConnect.Algorithm",
+        "QuantConnect.ToolBox"
+      ]
+    },
+    {
+      "id": "url:https://api.tournament.crunchdao.com/v2/rounds/@current",
+      "name": "https://api.tournament.crunchdao.com/v2/rounds/@current",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "QuantConnect"
+      ]
+    },
+    {
+      "id": "table:collection",
+      "name": "collection",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "QuantConnect"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "table:the",
+      "to": "QuantConnect.Algorithm",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:the",
+      "to": "QuantConnect",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:the",
+      "to": "QuantConnect.ToolBox",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:https://api.tournament.crunchdao.com/v2/rounds/@current",
+      "to": "QuantConnect",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "table:collection",
+      "to": "QuantConnect",
+      "direction": "read",
+      "endpointType": "table"
+    }
+  ],
+  "impliedDependencies": [],
+  "infrastructureGroups": [
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "QuantConnect.Api": {
+          "write": 1
+        },
+        "QuantConnect.Configuration": {
+          "write": 1
+        },
+        "QuantConnect.Algorithm.CSharp": {
+          "write": 1
+        },
+        "QuantConnect.Lean.Engine": {
+          "write": 3
+        },
+        "QuantConnect": {
+          "write": 4
+        },
+        "QuantConnect.Tests": {
+          "write": 18
+        },
+        "QuantConnect.Algorithm": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "QuantConnect.Api": {
+          "consume": 1
+        },
+        "QuantConnect.Lean.Engine": {
+          "consume": 2
+        },
+        "QuantConnect": {
+          "consume": 2
+        },
+        "QuantConnect.Tests": {
+          "consume": 3
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "QuantConnect.Configuration": {
+          "read": 1
+        },
+        "QuantConnect.Brokerages": {
+          "read": 1
+        },
+        "QuantConnect.Algorithm.CSharp": {
+          "read": 3
+        },
+        "QuantConnect.Algorithm.Framework": {
+          "read": 1
+        },
+        "QuantConnect.Lean.Engine": {
+          "read": 2
+        },
+        "QuantConnect": {
+          "read": 11
+        },
+        "QuantConnect.Tests": {
+          "read": 2
+        },
+        "QuantConnect.Algorithm": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "QuantConnect.Configuration": {
+          "read": 1
+        },
+        "QuantConnect.Optimizer.Launcher": {
+          "read": 16
+        },
+        "QuantConnect.Messaging": {
+          "read": 1
+        },
+        "QuantConnect.Brokerages": {
+          "read": 2
+        },
+        "QuantConnect.DownloaderDataProvider.Launcher": {
+          "read": 13
+        },
+        "QuantConnect.Algorithm.CSharp": {
+          "read": 56
+        },
+        "QuantConnect.Lean.Engine": {
+          "read": 42
+        },
+        "QuantConnect.Queues": {
+          "read": 16
+        },
+        "QuantConnect.AlgorithmFactory": {
+          "read": 1
+        },
+        "QuantConnect.ToolBox": {
+          "read": 14
+        },
+        "QuantConnect": {
+          "read": 46
+        },
+        "QuantConnect.Tests": {
+          "read": 163
+        },
+        "QuantConnect.Indicators": {
+          "read": 194
+        },
+        "QuantConnect.Report": {
+          "read": 11
+        },
+        "QuantConnect.Algorithm": {
+          "read": 4
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "QuantConnect.Configuration": {
+          "read": 1
+        },
+        "QuantConnect.Compression": {
+          "read": 7
+        },
+        "QuantConnect.Optimizer.Launcher": {
+          "read": 1
+        },
+        "QuantConnect.Lean.Engine": {
+          "read": 1
+        },
+        "QuantConnect.Queues": {
+          "read": 2
+        },
+        "QuantConnect.AlgorithmFactory": {
+          "read": 3
+        },
+        "QuantConnect.ToolBox": {
+          "read": 7
+        },
+        "QuantConnect": {
+          "read": 5
+        },
+        "QuantConnect.Tests": {
+          "read": 51
+        },
+        "QuantConnect.Report": {
+          "read": 6
+        }
+      }
+    },
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "QuantConnect.Configuration": {
+          "write": 1
+        },
+        "QuantConnect.Compression": {
+          "write": 8
+        },
+        "QuantConnect.Lean.Engine": {
+          "write": 9
+        },
+        "QuantConnect.ToolBox": {
+          "write": 1
+        },
+        "QuantConnect": {
+          "write": 4
+        },
+        "QuantConnect.Tests": {
+          "write": 31
+        },
+        "QuantConnect.Report": {
+          "write": 3
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "QuantConnect.Optimizer.Launcher": {
+          "write": 2
+        },
+        "QuantConnect.Brokerages": {
+          "write": 4
+        },
+        "QuantConnect.Lean.Engine": {
+          "write": 13
+        },
+        "QuantConnect": {
+          "write": 12
+        },
+        "QuantConnect.Tests": {
+          "write": 283
+        },
+        "QuantConnect.Algorithm": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Consumer",
+      "type": "messaging",
+      "projects": {
+        "QuantConnect.Brokerages": {
+          "read": 2
+        },
+        "QuantConnect.Lean.Engine": {
+          "read": 5
+        },
+        "QuantConnect": {
+          "read": 4
+        },
+        "QuantConnect.Tests": {
+          "read": 24
+        }
+      }
+    },
+    {
+      "pattern": "WebSocket",
+      "type": "api",
+      "projects": {
+        "QuantConnect.Brokerages": {
+          "consume": 18
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Select",
+      "type": "database",
+      "projects": {
+        "QuantConnect.ToolBox": {
+          "read": 1
+        },
+        "QuantConnect": {
+          "read": 5
+        },
+        "QuantConnect.Algorithm": {
+          "read": 4
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "QuantConnect": {
+          "consume": 1
+        }
+      }
+    }
+  ]
+}

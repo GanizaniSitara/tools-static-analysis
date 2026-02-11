@@ -31,9 +31,10 @@ graph TD
 | Microsoft.Maui.Controls.Maps | 9.0.40 |
 
 ## Data Access Patterns
-### Dapper
+### Dapper.Execute
 | File | Line | Context |
 |------|------|---------||
+| `tests/ClientApp.UnitTests/TestingExtensions.cs` | 12 | `await arc.ExecuteAsync(parameter);` |
 | `tests/ClientApp.UnitTests/TestingExtensions.cs` | 16 | `command.Execute(parameter);` |
 
 

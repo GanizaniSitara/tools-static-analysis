@@ -1,0 +1,1056 @@
+{
+  "dataNodes": [
+    {
+      "id": "topic:content",
+      "name": "content",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic1",
+      "name": "topic1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:sample-topic-14",
+      "name": "sample-topic-14",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic_a1",
+      "name": "topic_a1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic_a2",
+      "name": "topic_a2",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic_b1",
+      "name": "topic_b1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic2",
+      "name": "topic2",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:hello",
+      "name": "hello",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:pub-sub",
+      "name": "pub-sub",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:topic",
+      "name": "topic",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:p-1",
+      "name": "p-1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:p-2",
+      "name": "p-2",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "route:api/[controller]",
+      "name": "api/[controller]",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Akka.AspNetCore"
+      ]
+    },
+    {
+      "id": "route:/",
+      "name": "/",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Samples.Akka.AspNetCore"
+      ]
+    },
+    {
+      "id": "table:snapshot",
+      "name": "snapshot",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Akka.Persistence.Custom"
+      ],
+      "readers": []
+    },
+    {
+      "id": "table:event_journal",
+      "name": "event_journal",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Akka.Persistence.Custom"
+      ],
+      "readers": [
+        "Akka.Persistence.Custom"
+      ]
+    },
+    {
+      "id": "table:journal_metadata",
+      "name": "journal_metadata",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Akka.Persistence.Custom"
+      ],
+      "readers": [
+        "Akka.Persistence.Custom"
+      ]
+    },
+    {
+      "id": "topic:echo",
+      "name": "echo",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "url:http://example.com/eventstream",
+      "name": "http://example.com/eventstream",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Akka.Docs.Tests"
+      ]
+    },
+    {
+      "id": "topic:elem-1",
+      "name": "elem-1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:elem-2",
+      "name": "elem-2",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:elem-3",
+      "name": "elem-3",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "table:the",
+      "name": "the",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Akka"
+      ],
+      "readers": [
+        "Akka"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "Akka.AspNetCore",
+      "to": "route:api/[controller]",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Samples.Akka.AspNetCore",
+      "to": "route:/",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Akka.Persistence.Custom",
+      "to": "table:snapshot",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "Akka.Persistence.Custom",
+      "to": "table:event_journal",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:event_journal",
+      "to": "Akka.Persistence.Custom",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "Akka.Persistence.Custom",
+      "to": "table:journal_metadata",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:journal_metadata",
+      "to": "Akka.Persistence.Custom",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:http://example.com/eventstream",
+      "to": "Akka.Docs.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "Akka",
+      "to": "table:the",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:the",
+      "to": "Akka",
+      "direction": "read",
+      "endpointType": "table"
+    }
+  ],
+  "impliedDependencies": [],
+  "infrastructureGroups": [
+    {
+      "pattern": "gRPC",
+      "type": "api",
+      "projects": {
+        "Akka.Benchmarks": {
+          "unknown": 1
+        },
+        "Akka.Cluster.Sharding.Tests": {
+          "unknown": 1
+        },
+        "Akka.Cluster.Metrics": {
+          "unknown": 1
+        },
+        "Akka.DistributedData": {
+          "unknown": 6
+        },
+        "Akka.Cluster.Metrics.Tests": {
+          "unknown": 1
+        },
+        "Akka.DistributedData.Tests": {
+          "unknown": 1
+        },
+        "Akka.Cluster.Tools": {
+          "unknown": 3
+        },
+        "Akka.Cluster.Sharding": {
+          "unknown": 11
+        },
+        "Akka.Remote.TestKit": {
+          "unknown": 3
+        },
+        "Akka.Cluster.Tests.MultiNode": {
+          "unknown": 1
+        },
+        "Akka.Remote.Tests.Performance": {
+          "unknown": 1
+        },
+        "Akka.Cluster": {
+          "unknown": 3
+        },
+        "Akka.Remote.Tests": {
+          "unknown": 5
+        },
+        "Akka.Persistence": {
+          "unknown": 2
+        },
+        "Akka.Streams": {
+          "unknown": 2
+        },
+        "Akka.Remote": {
+          "unknown": 19
+        },
+        "Akka.Cluster.Tests": {
+          "unknown": 1
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "Akka.Benchmarks": {
+          "read": 6
+        },
+        "Akka.Cluster.Metrics": {
+          "read": 3
+        },
+        "Akka.DistributedData": {
+          "read": 20
+        },
+        "Akka.Cluster.Metrics.Tests": {
+          "read": 1
+        },
+        "Akka.DistributedData.Tests": {
+          "read": 3
+        },
+        "Akka.Cluster.Metrics.Tests.MultiNode": {
+          "read": 1
+        },
+        "Akka.Cluster.Sharding": {
+          "read": 2
+        },
+        "Akka.Persistence.Tests": {
+          "read": 2
+        },
+        "Akka.Remote.Tests.MultiNode": {
+          "read": 4
+        },
+        "Akka.Remote.TestKit": {
+          "read": 4
+        },
+        "Akka.Cluster.Tests.MultiNode": {
+          "read": 5
+        },
+        "Akka.Streams.Tests": {
+          "read": 74
+        },
+        "Akka.Cluster.TestKit": {
+          "read": 2
+        },
+        "Akka.Streams.TestKit": {
+          "read": 1
+        },
+        "Akka.Cluster": {
+          "read": 10
+        },
+        "Akka.Streams.Tests.TCK": {
+          "read": 2
+        },
+        "Akka.Remote.Tests": {
+          "read": 3
+        },
+        "Akka.Persistence.TCK": {
+          "read": 2
+        },
+        "Akka.Persistence": {
+          "read": 2
+        },
+        "Akka.Streams": {
+          "read": 17
+        },
+        "Akka.Remote": {
+          "read": 5
+        },
+        "Akka.Cluster.Tests": {
+          "read": 1
+        },
+        "Akka": {
+          "read": 6
+        },
+        "Akka.Streams.Tests.Performance": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Consumer",
+      "type": "messaging",
+      "projects": {
+        "Akka.Benchmarks": {
+          "read": 1
+        },
+        "Akka.DependencyInjection.Tests": {
+          "read": 4
+        },
+        "Akka.TestKit.Xunit2": {
+          "read": 1
+        },
+        "Akka.TestKit.Xunit": {
+          "read": 1
+        },
+        "Akka.Cluster.Tools.Tests.MultiNode": {
+          "read": 2
+        },
+        "Akka.Cluster.Sharding.Tests": {
+          "read": 6
+        },
+        "Akka.Cluster.Metrics": {
+          "read": 3
+        },
+        "Akka.DistributedData.Tests.MultiNode": {
+          "read": 9
+        },
+        "Akka.DistributedData": {
+          "read": 1
+        },
+        "Akka.Cluster.Metrics.Tests": {
+          "read": 2
+        },
+        "Akka.Cluster.Tools.Tests": {
+          "read": 1
+        },
+        "Akka.DistributedData.Tests": {
+          "read": 12
+        },
+        "Akka.Cluster.Metrics.Tests.MultiNode": {
+          "read": 2
+        },
+        "Akka.Cluster.Tools": {
+          "read": 6
+        },
+        "Akka.Cluster.Sharding": {
+          "read": 3
+        },
+        "Akka.Serialization.TestKit": {
+          "read": 1
+        },
+        "Samples.Cluster.Transformation": {
+          "read": 1
+        },
+        "Samples.Cluster.Metrics.Common": {
+          "read": 1
+        },
+        "Samples.Cluster.ConsistentHashRouting": {
+          "read": 1
+        },
+        "Samples.Cluster.Simple": {
+          "read": 1
+        },
+        "Akka.Persistence.Tests": {
+          "read": 12
+        },
+        "Akka.Tests.Performance": {
+          "read": 1
+        },
+        "Akka.Docs.Tests": {
+          "read": 1
+        },
+        "Akka.Remote.Tests.MultiNode": {
+          "read": 2
+        },
+        "Akka.Cluster.Tests.MultiNode": {
+          "read": 16
+        },
+        "Akka.Streams.Tests": {
+          "read": 141
+        },
+        "Akka.Streams.TestKit": {
+          "read": 1
+        },
+        "Akka.Cluster": {
+          "read": 17
+        },
+        "Akka.TestKit.Tests": {
+          "read": 1
+        },
+        "Akka.Streams.Tests.TCK": {
+          "read": 3
+        },
+        "Akka.Discovery.Tests": {
+          "read": 1
+        },
+        "Akka.Remote.Tests": {
+          "read": 19
+        },
+        "Akka.Persistence.TCK": {
+          "read": 1
+        },
+        "Akka.Streams": {
+          "read": 17
+        },
+        "Akka.Remote": {
+          "read": 1
+        },
+        "Akka.Streams.TestKit.Tests": {
+          "read": 1
+        },
+        "Akka.Tests": {
+          "read": 68
+        },
+        "Akka.Cluster.Tests": {
+          "read": 22
+        },
+        "Akka.TestKit": {
+          "read": 4
+        },
+        "Akka": {
+          "read": 6
+        }
+      }
+    },
+    {
+      "pattern": "IMessageAdapter",
+      "type": "connector",
+      "projects": {
+        "Akka.Benchmarks": {
+          "both": 2
+        },
+        "Akka.TestKit.Xunit2": {
+          "both": 1
+        },
+        "Akka.TestKit.Xunit": {
+          "both": 1
+        },
+        "Akka.Cluster.Sharding.Tests": {
+          "both": 2
+        },
+        "Akka.DistributedData.Tests": {
+          "both": 1
+        },
+        "Akka.Cluster.Sharding": {
+          "both": 4
+        },
+        "Akka.Persistence.Tests": {
+          "both": 14
+        },
+        "Akka.Persistence.TCK": {
+          "both": 1
+        },
+        "Akka.Persistence": {
+          "both": 5
+        },
+        "Akka.Streams": {
+          "both": 3
+        },
+        "Akka.Remote": {
+          "both": 4
+        },
+        "Akka": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "Akka.Cluster.Benchmarks": {
+          "read": 10
+        },
+        "Akka.Cluster.Cpu.Benchmark": {
+          "read": 1
+        },
+        "Akka.Cluster.Tools.Tests.MultiNode": {
+          "read": 56
+        },
+        "Akka.Cluster.Sharding.Tests": {
+          "read": 128
+        },
+        "Akka.DistributedData.LightningDB": {
+          "read": 1
+        },
+        "Akka.Cluster.Metrics": {
+          "read": 10
+        },
+        "Akka.DistributedData.Tests.MultiNode": {
+          "read": 154
+        },
+        "Akka.DistributedData": {
+          "read": 7
+        },
+        "Akka.Cluster.Metrics.Tests": {
+          "read": 3
+        },
+        "Akka.Cluster.Tools.Tests": {
+          "read": 43
+        },
+        "Akka.Cluster.Sharding.Tests.MultiNode": {
+          "read": 82
+        },
+        "Akka.DistributedData.Tests": {
+          "read": 85
+        },
+        "Akka.Cluster.Metrics.Tests.MultiNode": {
+          "read": 3
+        },
+        "Akka.Cluster.Tools": {
+          "read": 16
+        },
+        "Akka.Cluster.Sharding": {
+          "read": 32
+        },
+        "Akka.Persistence.Query.InMemory.Tests": {
+          "read": 8
+        },
+        "Akka.AspNetCore": {
+          "read": 1
+        },
+        "Samples.Akka.AspNetCore": {
+          "read": 1
+        },
+        "Akka.Persistence.Custom": {
+          "read": 2
+        },
+        "Akka.Persistence.Custom.Tests": {
+          "read": 2
+        },
+        "Samples.Cluster.Transformation": {
+          "read": 1
+        },
+        "Samples.Cluster.Metrics.Common": {
+          "read": 2
+        },
+        "Samples.Cluster.AdaptiveGroup": {
+          "read": 1
+        },
+        "Samples.Cluster.ConsistentHashRouting": {
+          "read": 2
+        },
+        "ClusterSharding.Node": {
+          "read": 2
+        },
+        "ShoppingCart": {
+          "read": 3
+        },
+        "ClusterToolsExample.Shared": {
+          "read": 2
+        },
+        "ClusterToolsExample.Seed": {
+          "read": 2
+        },
+        "Samples.Cluster.Simple": {
+          "read": 1
+        },
+        "SampleDestination": {
+          "read": 2
+        },
+        "SamplePublisher": {
+          "read": 3
+        },
+        "SampleSubscriber": {
+          "read": 2
+        },
+        "SampleSender": {
+          "read": 2
+        },
+        "AkkaHeadlesssService": {
+          "read": 1
+        },
+        "AppConfig": {
+          "read": 1
+        },
+        "Akka.Persistence.Tests": {
+          "read": 2
+        },
+        "Akka.Docs.Tests": {
+          "read": 9
+        },
+        "Akka.Remote.TestKit": {
+          "read": 5
+        },
+        "Akka.Cluster.Tests.MultiNode": {
+          "read": 72
+        },
+        "Akka.Discovery": {
+          "read": 1
+        },
+        "Akka.Cluster.TestKit": {
+          "read": 1
+        },
+        "Akka.Remote.Tests.Performance": {
+          "read": 1
+        },
+        "Akka.Cluster": {
+          "read": 15
+        },
+        "Akka.Discovery.Tests": {
+          "read": 14
+        },
+        "Akka.Coordination.Tests": {
+          "read": 14
+        },
+        "Akka.Persistence.Query.Tests": {
+          "read": 2
+        },
+        "Akka.Cluster.Tests.Performance": {
+          "read": 3
+        },
+        "Akka.Remote.Tests": {
+          "read": 4
+        },
+        "Akka.Persistence.Query": {
+          "read": 2
+        },
+        "Akka.Persistence": {
+          "read": 3
+        },
+        "Akka.Streams": {
+          "read": 3
+        },
+        "Akka.Remote": {
+          "read": 4
+        },
+        "Akka.Tests": {
+          "read": 11
+        },
+        "Akka.Cluster.Tests": {
+          "read": 57
+        },
+        "Akka": {
+          "read": 17
+        }
+      }
+    },
+    {
+      "pattern": "ConnectionString",
+      "type": "config",
+      "projects": {
+        "Akka.Cluster.Benchmarks": {
+          "unknown": 3
+        },
+        "Akka.Persistence.Custom": {
+          "unknown": 18
+        },
+        "Akka.Persistence.Custom.Tests": {
+          "unknown": 8
+        },
+        "AppConfig": {
+          "unknown": 2
+        },
+        "Akka.Streams": {
+          "unknown": 2
+        }
+      }
+    },
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "Akka.Cluster.Cpu.Benchmark": {
+          "write": 1
+        },
+        "Akka.Streams.Tests": {
+          "write": 3
+        },
+        "Akka.Remote.Tests": {
+          "write": 2
+        },
+        "Akka.Streams.Tests.Performance": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Topic",
+      "type": "messaging",
+      "projects": {
+        "Akka.Cluster.Tools.Tests.MultiNode": {
+          "unknown": 13
+        },
+        "Akka.Cluster.Tools.Tests": {
+          "unknown": 12
+        },
+        "Akka.Cluster.Sharding.Tests.MultiNode": {
+          "unknown": 2
+        },
+        "ClusterToolsExample.Shared": {
+          "unknown": 1
+        },
+        "SampleSubscriber": {
+          "unknown": 1
+        },
+        "Akka.Streams.Tests": {
+          "unknown": 10
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "Akka.Cluster.Tools": {
+          "consume": 1
+        },
+        "SymbolLookup": {
+          "consume": 1
+        },
+        "Akka.Docs.Tests": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpGet",
+      "type": "api",
+      "projects": {
+        "Akka.AspNetCore": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpPost",
+      "type": "api",
+      "projects": {
+        "Akka.AspNetCore": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.Route",
+      "type": "api",
+      "projects": {
+        "Akka.AspNetCore": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.Controller",
+      "type": "api",
+      "projects": {
+        "Akka.AspNetCore": {
+          "expose": 1
+        },
+        "Akka.Remote.TestKit.Tests": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGet",
+      "type": "api",
+      "projects": {
+        "Samples.Akka.AspNetCore": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "Samples.Akka.AspNetCore": {
+          "read": 1
+        },
+        "Samples.Cluster.Metrics": {
+          "read": 1
+        },
+        "Samples.Cluster.AdaptiveGroup": {
+          "read": 1
+        },
+        "ClusterSharding.Node": {
+          "read": 1
+        },
+        "ClusterToolsExample.Seed": {
+          "read": 1
+        },
+        "ClusterToolsExample.Node": {
+          "read": 1
+        },
+        "Akka.Streams.Tests": {
+          "read": 1
+        },
+        "Akka.API.Tests": {
+          "read": 3
+        },
+        "Akka.Remote.Tests": {
+          "read": 1
+        },
+        "Akka.Streams.Tests.Performance": {
+          "read": 3
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Delete",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Custom": {
+          "write": 4
+        }
+      }
+    },
+    {
+      "pattern": "SQL.CreateTable",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Custom": {
+          "write": 3
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Select",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Custom": {
+          "read": 2
+        },
+        "Akka": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Insert",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Custom": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Custom": {
+          "write": 3
+        },
+        "Akka.Streams.Tests": {
+          "write": 99
+        },
+        "Akka.Streams": {
+          "write": 2
+        },
+        "Akka.Streams.TestKit.Tests": {
+          "write": 13
+        },
+        "Akka": {
+          "write": 4
+        },
+        "Akka.Streams.Tests.Performance": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "ClusterSharding.Node": {
+          "write": 2
+        },
+        "ShoppingCart": {
+          "write": 2
+        },
+        "Akka.Tests.Performance": {
+          "write": 13
+        },
+        "Akka.Remote.Tests": {
+          "write": 1
+        },
+        "Akka.Streams": {
+          "write": 2
+        },
+        "Akka.Tests": {
+          "write": 8
+        },
+        "Akka.TestKit": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.Injection",
+      "type": "api",
+      "projects": {
+        "AkkaWindowsService": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "Akka.Docs.Tests": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Write",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.TestKit.Tests": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Query",
+      "type": "database",
+      "projects": {
+        "Akka.Persistence.Query": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Producer",
+      "type": "messaging",
+      "projects": {
+        "Akka": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Update",
+      "type": "database",
+      "projects": {
+        "Akka": {
+          "write": 3
+        }
+      }
+    }
+  ]
+}

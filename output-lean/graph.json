@@ -619,6 +619,15 @@
       "description": "NuGet: System.ComponentModel.Composition (6.0.0)"
     },
     {
+      "id": "datasource:Lean:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "Lean",
+      "occurrences": 29,
+      "description": "Dapper.Execute in Lean (29 occurrences)"
+    },
+    {
       "id": "datasource:Lean:HttpClient.New",
       "type": "datasource",
       "subtype": "api",
@@ -628,13 +637,40 @@
       "description": "HttpClient.New in Lean (8 occurrences)"
     },
     {
-      "id": "datasource:Lean:Dapper",
+      "id": "datasource:Lean:MongoDB.Read",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "MongoDB.Read",
       "repo": "Lean",
-      "occurrences": 28,
-      "description": "Dapper in Lean (28 occurrences)"
+      "occurrences": 22,
+      "description": "MongoDB.Read in Lean (22 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "Lean",
+      "occurrences": 580,
+      "description": "Redis.Read in Lean (580 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "Lean",
+      "occurrences": 316,
+      "description": "Redis.Write in Lean (316 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:Kafka.Consumer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Consumer",
+      "repo": "Lean",
+      "occurrences": 35,
+      "description": "Kafka.Consumer in Lean (35 occurrences)"
     },
     {
       "id": "datasource:Lean:WebSocket",
@@ -642,26 +678,26 @@
       "subtype": "api",
       "pattern": "WebSocket",
       "repo": "Lean",
-      "occurrences": 141,
-      "description": "WebSocket in Lean (141 occurrences)"
+      "occurrences": 18,
+      "description": "WebSocket in Lean (18 occurrences)"
     },
     {
-      "id": "datasource:Lean:Kafka",
+      "id": "datasource:Lean:SQL.Select",
       "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "Kafka",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "Lean",
+      "occurrences": 10,
+      "description": "SQL.Select in Lean (10 occurrences)"
+    },
+    {
+      "id": "datasource:Lean:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
       "repo": "Lean",
       "occurrences": 1,
-      "description": "Kafka in Lean (1 occurrences)"
-    },
-    {
-      "id": "datasource:Lean:RabbitMQ",
-      "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "RabbitMQ",
-      "repo": "Lean",
-      "occurrences": 4,
-      "description": "RabbitMQ in Lean (4 occurrences)"
+      "description": "HttpClient.GetAsync in Lean (1 occurrences)"
     }
   ],
   "edges": [
@@ -1662,7 +1698,7 @@
     "totalNuGetPackages": 33,
     "totalProjectRefs": 117,
     "totalCrossRepoRefs": 0,
-    "totalDataFindings": 195,
+    "totalDataFindings": 1160,
     "totalConfigFiles": 0,
     "repos": {
       "Lean": {

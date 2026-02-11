@@ -41,6 +41,17 @@ graph TD
 | Grpc.AspNetCore |  |
 
 ## Data Access Patterns
+### gRPC.Server
+| File | Line | Context |
+|------|------|---------||
+| `src/Basket.API/Program.cs` | 12 | `app.MapGrpcService<BasketService>();` |
+| `src/Basket.API/Grpc/BasketService.cs` | 13 | `public override async Task<CustomerBasketResponse> GetBasket(GetBasket` |
+| `src/Basket.API/Grpc/BasketService.cs` | 36 | `public override async Task<CustomerBasketResponse> UpdateBasket(Update` |
+| `src/Basket.API/Grpc/BasketService.cs` | 59 | `public override async Task<DeleteBasketResponse> DeleteBasket(DeleteBa` |
+| `src/Basket.API/Extensions/ServerCallContextIdentityExtensions.cs` | 5 | `internal static class ServerCallContextIdentityExtensions` |
+| `src/Basket.API/Extensions/ServerCallContextIdentityExtensions.cs` | 7 | `public static string? GetUserIdentity(this ServerCallContext context) ` |
+| `src/Basket.API/Extensions/ServerCallContextIdentityExtensions.cs` | 8 | `public static string? GetUserName(this ServerCallContext context) => c` |
+
 ### gRPC
 | File | Line | Context |
 |------|------|---------||

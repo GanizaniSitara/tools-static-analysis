@@ -58,11 +58,6 @@ graph TD
 | CommunityToolkit.Aspire.Hosting.Ollama |  |
 
 ## Data Access Patterns
-### RabbitMQ
-| File | Line | Context |
-|------|------|---------||
-| `src/eShop.AppHost/Program.cs` | 8 | `var rabbitMq = builder.AddRabbitMQ("eventbus")` |
-
 ### ConnectionString
 | File | Line | Context |
 |------|------|---------||

@@ -43,6 +43,11 @@ graph TD
 | Npgsql.EntityFrameworkCore.PostgreSQL |  |
 
 ## Data Access Patterns
+### Dapper.Execute
+| File | Line | Context |
+|------|------|---------||
+| `src/IntegrationEventLogEF/Utilities/ResilientTransaction.cs` | 16 | `await strategy.ExecuteAsync(async () =>` |
+
 ### DbContext
 | File | Line | Context |
 |------|------|---------||

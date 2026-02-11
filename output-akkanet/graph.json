@@ -1856,8 +1856,26 @@
       "subtype": "api",
       "pattern": "gRPC",
       "repo": "akka.net",
-      "occurrences": 124,
-      "description": "gRPC in akka.net (124 occurrences)"
+      "occurrences": 62,
+      "description": "gRPC in akka.net (62 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:MongoDB.Read",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Read",
+      "repo": "akka.net",
+      "occurrences": 178,
+      "description": "MongoDB.Read in akka.net (178 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Kafka.Consumer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Consumer",
+      "repo": "akka.net",
+      "occurrences": 394,
+      "description": "Kafka.Consumer in akka.net (394 occurrences)"
     },
     {
       "id": "datasource:akka.net:IMessageAdapter",
@@ -1869,6 +1887,24 @@
       "description": "IMessageAdapter in akka.net (39 occurrences)"
     },
     {
+      "id": "datasource:akka.net:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "akka.net",
+      "occurrences": 912,
+      "description": "Redis.Read in akka.net (912 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Kafka.Topic",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Topic",
+      "repo": "akka.net",
+      "occurrences": 39,
+      "description": "Kafka.Topic in akka.net (39 occurrences)"
+    },
+    {
       "id": "datasource:akka.net:HttpClient.New",
       "type": "datasource",
       "subtype": "api",
@@ -1876,6 +1912,105 @@
       "repo": "akka.net",
       "occurrences": 3,
       "description": "HttpClient.New in akka.net (3 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:API.HttpGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpGet",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "API.HttpGet in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:API.HttpPost",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpPost",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "API.HttpPost in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:API.Route",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Route",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "API.Route in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:API.Controller",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Controller",
+      "repo": "akka.net",
+      "occurrences": 2,
+      "description": "API.Controller in akka.net (2 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:API.MapGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapGet",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "API.MapGet in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:SQL.Delete",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Delete",
+      "repo": "akka.net",
+      "occurrences": 4,
+      "description": "SQL.Delete in akka.net (4 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:SQL.CreateTable",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.CreateTable",
+      "repo": "akka.net",
+      "occurrences": 3,
+      "description": "SQL.CreateTable in akka.net (3 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:SQL.Select",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "akka.net",
+      "occurrences": 3,
+      "description": "SQL.Select in akka.net (3 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:SQL.Insert",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Insert",
+      "repo": "akka.net",
+      "occurrences": 2,
+      "description": "SQL.Insert in akka.net (2 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "akka.net",
+      "occurrences": 122,
+      "description": "Dapper.Execute in akka.net (122 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "akka.net",
+      "occurrences": 29,
+      "description": "Redis.Write in akka.net (29 occurrences)"
     },
     {
       "id": "datasource:akka.net:HttpClient.Injection",
@@ -1887,31 +2022,49 @@
       "description": "HttpClient.Injection in akka.net (1 occurrences)"
     },
     {
-      "id": "datasource:akka.net:RabbitMQ",
+      "id": "datasource:akka.net:HttpClient.GetAsync",
       "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "RabbitMQ",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
       "repo": "akka.net",
       "occurrences": 1,
-      "description": "RabbitMQ in akka.net (1 occurrences)"
+      "description": "HttpClient.GetAsync in akka.net (1 occurrences)"
     },
     {
-      "id": "datasource:akka.net:Dapper",
+      "id": "datasource:akka.net:MongoDB.Write",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "MongoDB.Write",
       "repo": "akka.net",
-      "occurrences": 18,
-      "description": "Dapper in akka.net (18 occurrences)"
+      "occurrences": 2,
+      "description": "MongoDB.Write in akka.net (2 occurrences)"
     },
     {
-      "id": "datasource:akka.net:Kafka",
+      "id": "datasource:akka.net:Dapper.Query",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Query",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "Dapper.Query in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Kafka.Producer",
       "type": "datasource",
       "subtype": "messaging",
-      "pattern": "Kafka",
+      "pattern": "Kafka.Producer",
       "repo": "akka.net",
-      "occurrences": 5,
-      "description": "Kafka in akka.net (5 occurrences)"
+      "occurrences": 2,
+      "description": "Kafka.Producer in akka.net (2 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:SQL.Update",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Update",
+      "repo": "akka.net",
+      "occurrences": 3,
+      "description": "SQL.Update in akka.net (3 occurrences)"
     }
   ],
   "edges": [
@@ -4247,7 +4400,7 @@
     "totalNuGetPackages": 65,
     "totalProjectRefs": 248,
     "totalCrossRepoRefs": 0,
-    "totalDataFindings": 225,
+    "totalDataFindings": 1860,
     "totalConfigFiles": 29,
     "repos": {
       "akka.net": {

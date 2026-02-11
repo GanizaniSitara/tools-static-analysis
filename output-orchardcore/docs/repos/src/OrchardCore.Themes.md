@@ -52,6 +52,12 @@ graph TD
 - TheAdmin
 - OrchardCore.Application.Cms.Core.Targets
 
+## Data Access Patterns
+### API.Controller
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore.Themes/TheTheme/Controllers/HomeController.cs` | 5 | `public sealed class HomeController : Controller` |
+
 
 ---
 

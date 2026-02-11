@@ -40,6 +40,14 @@ graph TD
 | Ecng.Configuration | 1.0.* |
 | Ecng.Drawing | 1.0.* |
 
+## Data Access Patterns
+### Kafka.Consumer
+| File | Line | Context |
+|------|------|---------||
+| `BusinessEntities/EntitiesExtensions.cs` | 2347 | `provider.Subscribe(new(new MarketDataMessage` |
+| `BusinessEntities/ISubscriptionProviderAsyncExtensions.cs` | 75 | `provider.Subscribe(subscription);` |
+| `BusinessEntities/ISubscriptionProviderAsyncExtensions.cs` | 145 | `provider.Subscribe(subscription);` |
+
 
 ---
 

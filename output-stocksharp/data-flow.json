@@ -1,0 +1,456 @@
+{
+  "dataNodes": [
+    {
+      "id": "url:delete",
+      "name": "delete",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Tests"
+      ]
+    },
+    {
+      "id": "url:nonexistent",
+      "name": "nonexistent",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Tests"
+      ]
+    },
+    {
+      "id": "url:TestStorage",
+      "name": "TestStorage",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Tests"
+      ]
+    },
+    {
+      "id": "url:test@example.com",
+      "name": "test@example.com",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Tests"
+      ]
+    },
+    {
+      "id": "url:TEST@EXAMPLE.COM",
+      "name": "TEST@EXAMPLE.COM",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Tests"
+      ]
+    },
+    {
+      "id": "table:to",
+      "name": "to",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Algo.Analytics"
+      ],
+      "readers": []
+    },
+    {
+      "id": "topic:subscribe",
+      "name": "subscribe",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:unsubscribe",
+      "name": "unsubscribe",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "url:delete",
+      "to": "Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:nonexistent",
+      "to": "Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:TestStorage",
+      "to": "Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:test@example.com",
+      "to": "Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:TEST@EXAMPLE.COM",
+      "to": "Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "Algo.Analytics",
+      "to": "table:to",
+      "direction": "write",
+      "endpointType": "table"
+    }
+  ],
+  "impliedDependencies": [],
+  "infrastructureGroups": [
+    {
+      "pattern": "IMessageAdapter",
+      "type": "connector",
+      "projects": {
+        "Algo.Testing": {
+          "both": 3
+        },
+        "Tests": {
+          "both": 33
+        },
+        "Messages": {
+          "both": 6
+        },
+        "Coinbase": {
+          "both": 4
+        },
+        "Bitexbook": {
+          "both": 4
+        },
+        "Tinkoff": {
+          "both": 4
+        },
+        "BitStamp": {
+          "both": 4
+        },
+        "Bitalong": {
+          "both": 4
+        },
+        "Btce": {
+          "both": 4
+        },
+        "FTX": {
+          "both": 4
+        },
+        "Algo": {
+          "both": 34
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "Algo.Testing": {
+          "write": 22
+        },
+        "Configuration": {
+          "write": 19
+        },
+        "Algo.Indicators": {
+          "write": 20
+        },
+        "Diagram.Core": {
+          "write": 33
+        },
+        "Messages": {
+          "write": 15
+        },
+        "Algo.Strategies": {
+          "write": 26
+        },
+        "Alerts.Interfaces": {
+          "write": 15
+        },
+        "Algo.Gpu": {
+          "write": 2
+        },
+        "04_Testing.HistoryConsole_fromsrc": {
+          "write": 1
+        },
+        "Tinkoff": {
+          "write": 2
+        },
+        "Algo": {
+          "write": 55
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "Configuration": {
+          "read": 2
+        },
+        "Algo.Import": {
+          "read": 1
+        },
+        "Tests": {
+          "read": 70
+        },
+        "Algo.Gpu": {
+          "read": 6
+        },
+        "01_Chart": {
+          "read": 1
+        },
+        "Tinkoff": {
+          "read": 2
+        },
+        "Algo": {
+          "read": 22
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "Localization.Extractor": {
+          "read": 6
+        },
+        "Tests": {
+          "read": 9
+        }
+      }
+    },
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "Localization.Extractor": {
+          "write": 3
+        },
+        "Tests": {
+          "write": 1
+        },
+        "04_Testing.HistoryConsole_fromsrc": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Consumer",
+      "type": "messaging",
+      "projects": {
+        "Diagram.Core": {
+          "read": 2
+        },
+        "Tests": {
+          "read": 48
+        },
+        "BusinessEntities": {
+          "read": 3
+        },
+        "Algo.Strategies": {
+          "read": 6
+        },
+        "01_Candles.Realtime": {
+          "read": 1
+        },
+        "02_Candles.CombineHistoryRealtime_fromsrc": {
+          "read": 1
+        },
+        "01_Testing.History_fromsrc": {
+          "read": 4
+        },
+        "03_Testing.RealTime": {
+          "read": 6
+        },
+        "05_Strategies.HistoryIndex": {
+          "read": 2
+        },
+        "10_Strategies.LiveTerminal_fromsrc": {
+          "read": 3
+        },
+        "09_Strategies.LiveOptionsQuoting": {
+          "read": 1
+        },
+        "04_Storage.HydraServerConnect": {
+          "read": 1
+        },
+        "03_Storage.RemoteSource": {
+          "read": 2
+        },
+        "01_CrossPlatform.ConsoleApp": {
+          "read": 3
+        },
+        "01_Advanced.MultiConnect": {
+          "read": 10
+        },
+        "02_Basic.MarketDepths": {
+          "read": 1
+        },
+        "01_Basic.ConnectAndDownloadInstruments_fromsrc": {
+          "read": 2
+        },
+        "01_Chart": {
+          "read": 1
+        },
+        "Algo": {
+          "read": 5
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "Diagram.Core": {
+          "read": 1
+        },
+        "Tests": {
+          "read": 2
+        },
+        "Algo.Strategies": {
+          "read": 3
+        },
+        "Algo": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.DeleteAsync",
+      "type": "api",
+      "projects": {
+        "Tests": {
+          "consume": 5
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "Tests": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "SqlClient",
+      "type": "database",
+      "projects": {
+        "Tests": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "ConnectionString",
+      "type": "config",
+      "projects": {
+        "Tests": {
+          "unknown": 1
+        }
+      }
+    },
+    {
+      "pattern": "SQL.CreateTable",
+      "type": "database",
+      "projects": {
+        "Algo.Analytics": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Topic",
+      "type": "messaging",
+      "projects": {
+        "Coinbase": {
+          "unknown": 2
+        },
+        "Bitexbook": {
+          "unknown": 1
+        },
+        "BitStamp": {
+          "unknown": 2
+        }
+      }
+    },
+    {
+      "pattern": "WebSocket",
+      "type": "api",
+      "projects": {
+        "Coinbase": {
+          "consume": 1
+        },
+        "Bitexbook": {
+          "consume": 1
+        },
+        "BitStamp": {
+          "consume": 1
+        },
+        "Btce": {
+          "consume": 1
+        },
+        "FTX": {
+          "consume": 5
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Client",
+      "type": "api",
+      "projects": {
+        "Tinkoff": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "gRPC",
+      "type": "api",
+      "projects": {
+        "Tinkoff": {
+          "unknown": 984
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Server",
+      "type": "api",
+      "projects": {
+        "Tinkoff": {
+          "expose": 125
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "Bitalong": {
+          "consume": 1
+        }
+      }
+    }
+  ]
+}

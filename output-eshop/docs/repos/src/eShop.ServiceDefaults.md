@@ -64,6 +64,12 @@ graph TD
 | OpenTelemetry.Instrumentation.Http |  |
 | OpenTelemetry.Instrumentation.Runtime |  |
 
+## Data Access Patterns
+### API.MapGet
+| File | Line | Context |
+|------|------|---------||
+| `src/eShop.ServiceDefaults/OpenApi.Extensions.cs` | 33 | `app.MapGet("/", () => Results.Redirect("/scalar/v1")).ExcludeFromDescr` |
+
 
 ---
 

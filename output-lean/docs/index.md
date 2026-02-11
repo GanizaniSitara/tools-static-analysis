@@ -8,7 +8,7 @@
 | Total Projects | 23 |
 | NuGet Packages | 33 |
 | Project References | 117 |
-| Data Access Findings | 195 |
+| Data Access Findings | 1160 |
 | Config Files | 0 |
 
 ## Project Categories
@@ -267,9 +267,12 @@ graph LR
         Lean_QuantConnect_Report["QuantConnect.Report"]
     end
     subgraph DataSources
-        datasource_Lean_Dapper[("Dapper")]
-        datasource_Lean_Kafka[("Kafka")]
-        datasource_Lean_RabbitMQ[("RabbitMQ")]
+        datasource_Lean_Dapper_Execute[("Dapper.Execute")]
+        datasource_Lean_MongoDB_Read[("MongoDB.Read")]
+        datasource_Lean_Redis_Read[("Redis.Read")]
+        datasource_Lean_Redis_Write[("Redis.Write")]
+        datasource_Lean_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_Lean_SQL_Select[("SQL.Select")]
     end
 ```
 

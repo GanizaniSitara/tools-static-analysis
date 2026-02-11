@@ -414,38 +414,147 @@ def categorize_project(rel_path: str, proj_name: str, xml: str) -> str:
     return "Application"
 
 
-# ─── Data access pattern discovery ──────────────────────────────────
+# ─── Project resolution for .cs files ────────────────────────────────
 
-DATA_PATTERNS = [
-    {"name": "DbContext",            "regex": re.compile(r":\s*DbContext\b"),                                "type": "database"},
-    {"name": "SqlConnection",        "regex": re.compile(r"new\s+SqlConnection\s*\("),                      "type": "database"},
-    {"name": "SqlClient",            "regex": re.compile(r"Microsoft\.Data\.SqlClient|System\.Data\.SqlClient"), "type": "database"},
-    {"name": "HttpClient.Injection", "regex": re.compile(r"AddHttpClient[<(]"),                              "type": "api"},
-    {"name": "HttpClient.New",       "regex": re.compile(r"new\s+HttpClient\s*\("),                          "type": "api"},
-    {"name": "HttpClient.BaseAddress", "regex": re.compile(r'BaseAddress\s*=\s*new\s+Uri\s*\(\s*"([^"]+)"'), "type": "api"},
-    {"name": "WebSocket",            "regex": re.compile(r"WebSocket|ClientWebSocket"),                      "type": "api"},
-    {"name": "ConnectionString",     "regex": re.compile(r"[Cc]onnection[Ss]tring"),                         "type": "config"},
-    {"name": "Repository",           "regex": re.compile(r"class\s+\w*Repository\w*\b"),                     "type": "pattern"},
-    {"name": "DataAccess",           "regex": re.compile(r"class\s+\w*DataAccess\w*\b"),                     "type": "pattern"},
-    {"name": "gRPC",                 "regex": re.compile(r"Grpc\.Core|Grpc\.Net|\.Protos?\b"),               "type": "api"},
-    {"name": "RabbitMQ",             "regex": re.compile(r"RabbitMQ|IModel|IConnection.*RabbitMQ"),           "type": "messaging"},
-    {"name": "Kafka",                "regex": re.compile(r"Confluent\.Kafka|IProducer|IConsumer.*Kafka"),     "type": "messaging"},
-    {"name": "Redis",                "regex": re.compile(r"StackExchange\.Redis|IConnectionMultiplexer|RedisConnection"), "type": "cache"},
-    {"name": "MongoDB",              "regex": re.compile(r"MongoDB\.Driver|IMongoClient|MongoCollection"),   "type": "database"},
-    {"name": "EntityFramework",      "regex": re.compile(r"\.UseSqlServer\(|\.UseNpgsql\(|\.UseSqlite\(|\.UseMySql\("), "type": "database"},
-    {"name": "Dapper",               "regex": re.compile(r"\.Query[<(]|\.Execute\("),                        "type": "database"},
-    {"name": "FTP",                  "regex": re.compile(r"FtpClient|FluentFTP"),                            "type": "datasource"},
-    {"name": "FileStorage",          "regex": re.compile(r"File\.(ReadAll|WriteAll|Open|Create)\b"),         "type": "storage"},
-    {"name": "IMessageAdapter",      "regex": re.compile(r":\s*IMessageAdapter\b|class\s+\w+Adapter\b"),    "type": "connector"},
+def build_file_to_project_map(project_meta: list[dict], repo_root: str) -> dict[str, str]:
+    """Map csproj directory paths → project names for a repo."""
+    dir_to_project: dict[str, str] = {}
+    abs_root = os.path.abspath(repo_root)
+    for pm in project_meta:
+        csproj_path = os.path.join(abs_root, pm["path"])
+        csproj_dir = os.path.dirname(os.path.abspath(csproj_path))
+        dir_to_project[csproj_dir] = pm["project"]
+    return dir_to_project
+
+
+def resolve_project_for_file(filepath: str, dir_to_project: dict[str, str]) -> str | None:
+    """Walk up directory tree to find owning project for a source file."""
+    d = os.path.dirname(os.path.abspath(filepath))
+    for _ in range(20):  # safety limit
+        if d in dir_to_project:
+            return dir_to_project[d]
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    return None
+
+
+# ─── Enhanced data access pattern discovery ──────────────────────────
+
+# Direction values: "read", "write", "both", "expose", "consume", None
+# endpoint_group: index of regex capture group containing the endpoint name (0 = no endpoint)
+# endpoint_type: "table", "entity", "topic", "queue", "exchange", "route", "collection", "url", None
+
+ENHANCED_DATA_PATTERNS = [
+    # ── Database: SQL ──
+    {"name": "SQL.Select",       "regex": re.compile(r"\bSELECT\b.+?\bFROM\s+\[?(\w{2,})\]?", re.IGNORECASE), "type": "database", "direction": "read",  "endpoint_group": 1, "endpoint_type": "table", "confidence": "high"},
+    {"name": "SQL.Insert",       "regex": re.compile(r"\bINSERT\s+INTO\s+\[?(\w{2,})\]?", re.IGNORECASE),    "type": "database", "direction": "write", "endpoint_group": 1, "endpoint_type": "table", "confidence": "high"},
+    {"name": "SQL.Update",       "regex": re.compile(r"\bUPDATE\s+\[?(\w{2,})\]?\s+SET\b", re.IGNORECASE),   "type": "database", "direction": "write", "endpoint_group": 1, "endpoint_type": "table", "confidence": "high"},
+    {"name": "SQL.Delete",       "regex": re.compile(r"\bDELETE\s+FROM\s+\[?(\w{2,})\]?", re.IGNORECASE),    "type": "database", "direction": "write", "endpoint_group": 1, "endpoint_type": "table", "confidence": "high"},
+    {"name": "SQL.CreateTable",  "regex": re.compile(r"\bCREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?\[?(\w{2,})\]?", re.IGNORECASE), "type": "database", "direction": "write", "endpoint_group": 1, "endpoint_type": "table", "confidence": "high"},
+
+    # ── Database: EF / DbContext ──
+    {"name": "DbContext",        "regex": re.compile(r":\s*DbContext\b"),                                    "type": "database", "direction": "both",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "DbSet",            "regex": re.compile(r"DbSet<(\w+)>"),                                      "type": "database", "direction": "both",  "endpoint_group": 1, "endpoint_type": "entity", "confidence": "high"},
+    {"name": "EntityFramework",  "regex": re.compile(r"\.UseSqlServer\(|\.UseNpgsql\(|\.UseSqlite\(|\.UseMySql\("), "type": "database", "direction": "both", "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "SqlConnection",    "regex": re.compile(r"new\s+SqlConnection\s*\("),                           "type": "database", "direction": "both",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+    {"name": "SqlClient",        "regex": re.compile(r"Microsoft\.Data\.SqlClient|System\.Data\.SqlClient"), "type": "database", "direction": "both",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── Database: Dapper ──
+    {"name": "Dapper.Query",     "regex": re.compile(r"\.(Query|QueryAsync|QueryFirst|QuerySingle|QueryMultiple)\s*[<(]"), "type": "database", "direction": "read",  "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "Dapper.Execute",   "regex": re.compile(r"\.(Execute|ExecuteAsync|ExecuteScalar|ExecuteScalarAsync)\s*[<(]"), "type": "database", "direction": "write", "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+
+    # ── Database: MongoDB ──
+    {"name": "MongoDB.Read",     "regex": re.compile(r"\.(Find|FindAsync|Aggregate|AggregateAsync|CountDocuments)\s*[<(]"), "type": "database", "direction": "read",  "endpoint_group": 0, "endpoint_type": None, "confidence": "medium"},
+    {"name": "MongoDB.Write",    "regex": re.compile(r"\.(InsertOne|InsertMany|ReplaceOne|UpdateOne|UpdateMany|DeleteOne|DeleteMany)\s*[<(]"), "type": "database", "direction": "write", "endpoint_group": 0, "endpoint_type": None, "confidence": "medium"},
+    {"name": "MongoDB.Collection", "regex": re.compile(r'GetCollection<(\w+)>\s*\(\s*"([^"]+)"'),           "type": "database", "direction": "both",  "endpoint_group": 2, "endpoint_type": "collection", "confidence": "high"},
+    {"name": "MongoDB",          "regex": re.compile(r"MongoDB\.Driver|IMongoClient|IMongoDatabase"),       "type": "database", "direction": "both",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── Messaging: Kafka ──
+    {"name": "Kafka.Producer",   "regex": re.compile(r"IProducer\b|ProducerBuilder|\.Produce\s*\(|\.ProduceAsync\s*\("), "type": "messaging", "direction": "write", "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "Kafka.Consumer",   "regex": re.compile(r"IConsumer\b|ConsumerBuilder|\.Consume\s*\(|\.Subscribe\s*\("),    "type": "messaging", "direction": "read",  "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "Kafka.Topic",      "regex": re.compile(r'(?:Topic|topic|TopicName|topicName|Subscribe|Produce)\w*\s*[\(=:]\s*["\']([a-zA-Z][\w.-]+)["\']'), "type": "messaging", "direction": None, "endpoint_group": 1, "endpoint_type": "topic", "confidence": "medium"},
+    {"name": "Kafka",            "regex": re.compile(r"Confluent\.Kafka"),                                   "type": "messaging", "direction": None,   "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── Messaging: RabbitMQ ──
+    {"name": "RabbitMQ.Publish",  "regex": re.compile(r"BasicPublish\s*\(|\.Publish\s*\(.*IModel"),          "type": "messaging", "direction": "write", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "RabbitMQ.Consume",  "regex": re.compile(r"BasicConsume\s*\(|\.Consume\s*\(.*IModel"),          "type": "messaging", "direction": "read",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "RabbitMQ.Queue",    "regex": re.compile(r'QueueDeclare\s*\(\s*(?:queue:\s*)?"([^"]+)"'),       "type": "messaging", "direction": None,    "endpoint_group": 1, "endpoint_type": "queue",    "confidence": "high"},
+    {"name": "RabbitMQ.Exchange", "regex": re.compile(r'ExchangeDeclare\s*\(\s*(?:exchange:\s*)?"([^"]+)"'), "type": "messaging", "direction": None,    "endpoint_group": 1, "endpoint_type": "exchange", "confidence": "high"},
+    {"name": "RabbitMQ",         "regex": re.compile(r"RabbitMQ\.Client|IConnection.*RabbitMQ"),             "type": "messaging", "direction": None,    "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── API: ASP.NET attributes / Minimal API ──
+    {"name": "API.HttpGet",      "regex": re.compile(r'\[HttpGet\s*\(\s*"([^"]*)"\s*\)\]'),                  "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.HttpPost",     "regex": re.compile(r'\[HttpPost\s*\(\s*"([^"]*)"\s*\)\]'),                 "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.HttpPut",      "regex": re.compile(r'\[HttpPut\s*\(\s*"([^"]*)"\s*\)\]'),                  "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.HttpDelete",   "regex": re.compile(r'\[HttpDelete\s*\(\s*"([^"]*)"\s*\)\]'),               "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.HttpGet",      "regex": re.compile(r'\[HttpGet\]'),                                        "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "API.HttpPost",     "regex": re.compile(r'\[HttpPost\]'),                                       "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "API.HttpPut",      "regex": re.compile(r'\[HttpPut\]'),                                        "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "API.HttpDelete",   "regex": re.compile(r'\[HttpDelete\]'),                                     "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "API.Route",        "regex": re.compile(r'\[Route\s*\(\s*"([^"]*)"\s*\)\]'),                    "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.Controller",   "regex": re.compile(r":\s*(Controller|ControllerBase|ApiController)\b"),    "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None,    "confidence": "high"},
+    {"name": "API.MapGet",       "regex": re.compile(r'\.MapGet\s*\(\s*"([^"]*)"'),                          "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.MapPost",      "regex": re.compile(r'\.MapPost\s*\(\s*"([^"]*)"'),                         "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.MapPut",       "regex": re.compile(r'\.MapPut\s*\(\s*"([^"]*)"'),                          "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.MapDelete",    "regex": re.compile(r'\.MapDelete\s*\(\s*"([^"]*)"'),                       "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+    {"name": "API.MapGroup",     "regex": re.compile(r'\.MapGroup\s*\(\s*"([^"]*)"'),                        "type": "api", "direction": "expose", "endpoint_group": 1, "endpoint_type": "route", "confidence": "high"},
+
+    # ── API: gRPC ──
+    {"name": "gRPC.Server",      "regex": re.compile(r"\.MapGrpcService<|ServerServiceDefinition|:\s*\w+Base\b.*ServerCallContext|ServerCallContext"), "type": "api", "direction": "expose", "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "gRPC.Client",      "regex": re.compile(r"GrpcChannel\.ForAddress|new\s+\w+\.?\w*Client\s*\(.*GrpcChannel|\.CreateGrpcService<"), "type": "api", "direction": "consume", "endpoint_group": 0, "endpoint_type": None, "confidence": "high"},
+    {"name": "gRPC",             "regex": re.compile(r"Grpc\.Core|Grpc\.Net\.Client|Google\.Protobuf"),      "type": "api", "direction": None,      "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── API: HTTP client (consuming APIs) ──
+    {"name": "HttpClient.GetAsync",    "regex": re.compile(r'\.(GetAsync|GetStringAsync|GetStreamAsync)\s*\(\s*"([^"]*)"'), "type": "api", "direction": "consume", "endpoint_group": 2, "endpoint_type": "url", "confidence": "medium"},
+    {"name": "HttpClient.PostAsync",   "regex": re.compile(r'\.(PostAsync|PostAsJsonAsync)\s*\(\s*"([^"]*)"'),              "type": "api", "direction": "consume", "endpoint_group": 2, "endpoint_type": "url", "confidence": "medium"},
+    {"name": "HttpClient.PutAsync",    "regex": re.compile(r'\.(PutAsync|PutAsJsonAsync)\s*\(\s*"([^"]*)"'),                "type": "api", "direction": "consume", "endpoint_group": 2, "endpoint_type": "url", "confidence": "medium"},
+    {"name": "HttpClient.DeleteAsync", "regex": re.compile(r'\.DeleteAsync\s*\(\s*"([^"]*)"'),                              "type": "api", "direction": "consume", "endpoint_group": 1, "endpoint_type": "url", "confidence": "medium"},
+    {"name": "HttpClient.Injection",   "regex": re.compile(r"AddHttpClient[<(]"),                            "type": "api", "direction": "consume", "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+    {"name": "HttpClient.New",         "regex": re.compile(r"new\s+HttpClient\s*\("),                        "type": "api", "direction": "consume", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
+    {"name": "HttpClient.BaseAddress", "regex": re.compile(r'BaseAddress\s*=\s*new\s+Uri\s*\(\s*"([^"]+)"'), "type": "api", "direction": "consume", "endpoint_group": 1, "endpoint_type": "url",   "confidence": "medium"},
+    {"name": "WebSocket",             "regex": re.compile(r"ClientWebSocket|WebSocketClient"),               "type": "api", "direction": "consume", "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+
+    # ── Cache: Redis ──
+    {"name": "Redis.Read",       "regex": re.compile(r"\.(StringGet|HashGet|Get|GetAsync|KeyExists)\s*\("),  "type": "cache", "direction": "read",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+    {"name": "Redis.Write",      "regex": re.compile(r"\.(StringSet|HashSet|Set|SetAsync|KeyDelete)\s*\("),  "type": "cache", "direction": "write", "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+    {"name": "Redis",            "regex": re.compile(r"StackExchange\.Redis|IConnectionMultiplexer|RedisConnection"), "type": "cache", "direction": None, "endpoint_group": 0, "endpoint_type": None, "confidence": "medium"},
+
+    # ── Storage: File ──
+    {"name": "File.Read",        "regex": re.compile(r"File\.(ReadAll\w+|OpenRead|ReadLines)\b"),            "type": "storage", "direction": "read",  "endpoint_group": 0, "endpoint_type": None,    "confidence": "medium"},
+    {"name": "File.Write",       "regex": re.compile(r"File\.(WriteAll\w+|Create|OpenWrite|AppendAll\w+)\b"), "type": "storage", "direction": "write", "endpoint_group": 0, "endpoint_type": None,   "confidence": "medium"},
+
+    # ── Kept existing patterns with direction ──
+    {"name": "ConnectionString", "regex": re.compile(r"[Cc]onnection[Ss]tring"),                             "type": "config",    "direction": None,   "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
+    {"name": "Repository",       "regex": re.compile(r"class\s+\w*Repository\w*\b"),                         "type": "pattern",   "direction": "both", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
+    {"name": "DataAccess",       "regex": re.compile(r"class\s+\w*DataAccess\w*\b"),                         "type": "pattern",   "direction": "both", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
+    {"name": "FTP",              "regex": re.compile(r"FtpClient|FluentFTP"),                                 "type": "datasource", "direction": "both", "endpoint_group": 0, "endpoint_type": None,   "confidence": "medium"},
+    {"name": "IMessageAdapter",  "regex": re.compile(r":\s*IMessageAdapter\b|class\s+\w+Adapter\b"),         "type": "connector", "direction": "both", "endpoint_group": 0, "endpoint_type": None,    "confidence": "low"},
 ]
 
 
-def discover_data_patterns(scan_root: str, repos: list[dict]) -> list[dict]:
-    """Scan .cs files for data access patterns."""
+_SQL_KEYWORDS = {
+    "IF", "ELSE", "BEGIN", "END", "SET", "WHERE", "AND", "OR", "NOT", "NULL",
+    "AS", "ON", "IN", "IS", "BY", "GO", "USE", "ALL", "ANY", "TOP", "INTO",
+    "JOIN", "LEFT", "RIGHT", "INNER", "OUTER", "CROSS", "FULL", "CASE", "WHEN",
+    "THEN", "HAVING", "GROUP", "ORDER", "UNION", "WITH", "FROM", "SELECT",
+    "INSERT", "UPDATE", "DELETE", "CREATE", "ALTER", "DROP", "INDEX", "TABLE",
+    "VIEW", "EXEC", "DECLARE", "RETURN", "EXISTS", "BETWEEN", "LIKE", "LIMIT",
+    "OFFSET", "VALUES", "PRIMARY", "KEY", "FOREIGN", "REFERENCES", "CONSTRAINT",
+}
+
+
+def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
+    """Scan .cs files for data access patterns with direction and endpoint extraction."""
     findings = []
     abs_root = os.path.abspath(scan_root)
 
     for repo in repos:
+        # Build project resolution map for this repo
+        repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+
         cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
 
         for cs_file in cs_files:
@@ -456,12 +565,26 @@ def discover_data_patterns(scan_root: str, repos: list[dict]) -> list[dict]:
 
             lines = content.split("\n")
             rel_path = os.path.relpath(cs_file, abs_root)
+            project_name = resolve_project_for_file(cs_file, dir_to_project)
 
-            for pat in DATA_PATTERNS:
+            for pat in ENHANCED_DATA_PATTERNS:
                 for i, line in enumerate(lines):
                     match = pat["regex"].search(line)
                     if match:
-                        findings.append({
+                        # Extract endpoint name from capture group
+                        endpoint = None
+                        eg = pat["endpoint_group"]
+                        if eg and eg > 0:
+                            try:
+                                endpoint = match.group(eg)
+                            except IndexError:
+                                pass
+                            # Filter out SQL keywords captured as table names
+                            if endpoint and pat["endpoint_type"] == "table":
+                                if endpoint.upper() in _SQL_KEYWORDS:
+                                    endpoint = None
+
+                        finding = {
                             "file": rel_path,
                             "repo": repo["name"],
                             "line": i + 1,
@@ -469,9 +592,164 @@ def discover_data_patterns(scan_root: str, repos: list[dict]) -> list[dict]:
                             "type": pat["type"],
                             "match": match.group(0)[:120],
                             "context": line.strip()[:200],
-                        })
+                            # New fields (additive)
+                            "project": project_name,
+                            "direction": pat["direction"],
+                            "confidence": pat["confidence"],
+                        }
+                        if endpoint:
+                            finding["endpoint"] = endpoint
+                            finding["endpointType"] = pat["endpoint_type"]
+
+                        findings.append(finding)
 
     return findings
+
+
+# ─── Data flow graph builder ─────────────────────────────────────────
+
+def build_data_flow_graph(findings: list[dict], project_meta: list[dict]) -> dict:
+    """Build a data flow graph connecting projects through shared data infrastructure.
+
+    Returns a dict with dataNodes, dataEdges, impliedDependencies, infrastructureGroups.
+    """
+    # Group findings by endpoint (only those with an extracted endpoint name)
+    endpoint_findings: dict[str, list[dict]] = {}
+    for f in findings:
+        ep = f.get("endpoint")
+        ep_type = f.get("endpointType")
+        if ep and ep_type:
+            key = f"{ep_type}:{ep}"
+            endpoint_findings.setdefault(key, []).append(f)
+
+    # Build data nodes and directional edges
+    data_nodes: list[dict] = []
+    data_edges: list[dict] = []
+
+    # Map endpoint type to infrastructure category
+    type_to_infra = {
+        "table": "database", "entity": "database", "collection": "database",
+        "topic": "messaging", "queue": "messaging", "exchange": "messaging",
+        "route": "api", "url": "api",
+    }
+
+    for endpoint_key, ep_findings in endpoint_findings.items():
+        ep_type, ep_name = endpoint_key.split(":", 1)
+        infra = type_to_infra.get(ep_type, "other")
+
+        writers: set[str] = set()
+        readers: set[str] = set()
+        exposers: set[str] = set()
+        consumers: set[str] = set()
+        both: set[str] = set()
+
+        for f in ep_findings:
+            proj = f.get("project")
+            if not proj:
+                continue
+            direction = f.get("direction")
+            if direction == "write":
+                writers.add(proj)
+            elif direction == "read":
+                readers.add(proj)
+            elif direction == "expose":
+                exposers.add(proj)
+            elif direction == "consume":
+                consumers.add(proj)
+            elif direction == "both":
+                both.add(proj)
+
+        node = {
+            "id": endpoint_key,
+            "name": ep_name,
+            "type": ep_type,
+            "infrastructure": infra,
+            "writers": sorted(writers | both),
+            "readers": sorted(readers | both),
+        }
+        if exposers:
+            node["exposers"] = sorted(exposers)
+        if consumers:
+            node["consumers"] = sorted(consumers)
+        data_nodes.append(node)
+
+        # Build directional edges
+        for proj in writers | both:
+            data_edges.append({"from": proj, "to": endpoint_key, "direction": "write", "endpointType": ep_type})
+        for proj in readers | both:
+            data_edges.append({"from": endpoint_key, "to": proj, "direction": "read", "endpointType": ep_type})
+        for proj in exposers:
+            data_edges.append({"from": proj, "to": endpoint_key, "direction": "expose", "endpointType": ep_type})
+        for proj in consumers:
+            data_edges.append({"from": endpoint_key, "to": proj, "direction": "consume", "endpointType": ep_type})
+
+    # Derive implied dependencies: if A writes to X and B reads from X => A → B
+    implied_deps: list[dict] = []
+    seen_implied: set[tuple[str, str, str]] = set()
+    for node in data_nodes:
+        all_writers = set(node["writers"])
+        all_readers = set(node["readers"])
+        all_exposers = set(node.get("exposers", []))
+        all_consumers = set(node.get("consumers", []))
+
+        # write → read dependencies
+        for w in all_writers:
+            for r in all_readers:
+                if w != r:
+                    key = (w, r, node["id"])
+                    if key not in seen_implied:
+                        seen_implied.add(key)
+                        implied_deps.append({
+                            "from": w, "to": r,
+                            "via": node["name"], "viaType": node["infrastructure"],
+                            "viaId": node["id"],
+                        })
+
+        # expose → consume dependencies
+        for e in all_exposers:
+            for c in all_consumers:
+                if e != c:
+                    key = (e, c, node["id"])
+                    if key not in seen_implied:
+                        seen_implied.add(key)
+                        implied_deps.append({
+                            "from": e, "to": c,
+                            "via": node["name"], "viaType": node["infrastructure"],
+                            "viaId": node["id"],
+                        })
+
+    # Infrastructure groups: direction-aware pattern usage even without specific endpoints
+    infra_groups: dict[str, dict] = {}
+    for f in findings:
+        pattern = f["pattern"]
+        ftype = f["type"]
+        proj = f.get("project")
+        direction = f.get("direction")
+        if not proj:
+            continue
+
+        gkey = f"{pattern}:{ftype}"
+        if gkey not in infra_groups:
+            infra_groups[gkey] = {"pattern": pattern, "type": ftype, "projects": {}}
+
+        if proj not in infra_groups[gkey]["projects"]:
+            infra_groups[gkey]["projects"][proj] = {}
+
+        if direction:
+            infra_groups[gkey]["projects"][proj][direction] = (
+                infra_groups[gkey]["projects"][proj].get(direction, 0) + 1
+            )
+        else:
+            infra_groups[gkey]["projects"][proj]["unknown"] = (
+                infra_groups[gkey]["projects"][proj].get("unknown", 0) + 1
+            )
+
+    return {
+        "dataNodes": data_nodes,
+        "dataEdges": data_edges,
+        "impliedDependencies": implied_deps,
+        "infrastructureGroups": list(infra_groups.values()),
+    }
 
 
 # ─── Configuration extraction ───────────────────────────────────────
@@ -762,9 +1040,9 @@ def main():
         json.dumps(all_project_meta, indent=2), encoding="utf-8"
     )
 
-    # Step 3: Discover data access patterns
+    # Step 3: Discover data access patterns (enhanced with direction + endpoints)
     print("\nStep 2: Discovering data access patterns...")
-    data_findings = discover_data_patterns(SCAN_ROOT, repos)
+    data_findings = discover_data_patterns(SCAN_ROOT, repos, all_project_meta)
     print(f"  Found {len(data_findings)} data access pattern matches")
 
     type_summary: dict[str, int] = {}
@@ -776,9 +1054,30 @@ def main():
     if len(type_summary) > 15:
         print(f"    ... and {len(type_summary) - 15} more patterns")
 
+    # Direction summary
+    dir_counts: dict[str, int] = {}
+    for f in data_findings:
+        d = f.get("direction") or "unclassified"
+        dir_counts[d] = dir_counts.get(d, 0) + 1
+    print(f"  Directions: {json.dumps(dir_counts)}")
+
+    ep_count = sum(1 for f in data_findings if f.get("endpoint"))
+    print(f"  Endpoints extracted: {ep_count}")
+
     Path(os.path.join(OUT_DIR, "data-sources.json")).write_text(
         json.dumps(data_findings, indent=2), encoding="utf-8"
     )
+
+    # Step 3b: Build data flow graph
+    print("\nStep 2b: Building data flow graph...")
+    data_flow = build_data_flow_graph(data_findings, all_project_meta)
+    Path(os.path.join(OUT_DIR, "data-flow.json")).write_text(
+        json.dumps(data_flow, indent=2), encoding="utf-8"
+    )
+    print(f"  Data nodes: {len(data_flow['dataNodes'])}")
+    print(f"  Data edges: {len(data_flow['dataEdges'])}")
+    print(f"  Implied dependencies: {len(data_flow['impliedDependencies'])}")
+    print(f"  Infrastructure groups: {len(data_flow['infrastructureGroups'])}")
 
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")

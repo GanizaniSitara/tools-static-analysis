@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">109</span> Projects</div>
     <div class="stat"><span class="stat-value">65</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">248</span> Project References</div>
-    <div class="stat"><span class="stat-value">225</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">1860</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">29</span> Config Files</div>
   </div>
 </header>
@@ -199,6 +199,7 @@
   <button class="tab-btn" data-tab="cat_service">Service (3)</button>
   <button class="tab-btn" data-tab="cat_webapp">WebApp (1)</button>
   <button class="tab-btn" data-tab="cat_desktopapp">DesktopApp (1)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
@@ -692,6 +693,52 @@ graph LR
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        Akka[&quot;Akka&quot;]
+        Akka_AspNetCore[&quot;Akka.AspNetCore&quot;]
+        Akka_Docs_Tests[&quot;Akka.Docs.Tests&quot;]
+        Akka_Persistence_Custom[&quot;Akka.Persistence.Custom&quot;]
+        Samples_Akka_AspNetCore[&quot;Samples.Akka.AspNetCore&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        table_snapshot[(&quot;snapshot&quot;)]
+        table_event_journal[(&quot;event_journal&quot;)]
+        table_journal_metadata[(&quot;journal_metadata&quot;)]
+        table_the[(&quot;the&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        route_api__controller_([&quot;api/[controller]&quot;])
+        route__([&quot;/&quot;])
+        url_http___example_com_eventstream([&quot;http://example.com/eventstream&quot;])
+    end
+    Akka_Persistence_Custom ==&gt;|write| table_snapshot
+    Akka_Persistence_Custom ==&gt;|write| table_event_journal
+    table_event_journal -.-&gt;|read| Akka_Persistence_Custom
+    Akka_Persistence_Custom ==&gt;|write| table_journal_metadata
+    table_journal_metadata -.-&gt;|read| Akka_Persistence_Custom
+    Akka ==&gt;|write| table_the
+    table_the -.-&gt;|read| Akka
+    Akka_AspNetCore ==&gt;|expose| route_api__controller_
+    Samples_Akka_AspNetCore ==&gt;|expose| route__
+    url_http___example_com_eventstream -.-&gt;|consume| Akka_Docs_Tests
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -703,64 +750,173 @@ graph LR
           </thead>
           <tbody>
             <tr>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>912</td>
+              <td>Akka, Akka.AspNetCore, Akka.Cluster, Akka.Cluster.Benchmarks, Akka.Cluster.Cpu.Benchmark, ... +50 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Consumer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>394</td>
+              <td>Akka, Akka.Benchmarks, Akka.Cluster, Akka.Cluster.Metrics, Akka.Cluster.Metrics.Tests, ... +35 more</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>178</td>
+              <td>Akka, Akka.Benchmarks, Akka.Cluster, Akka.Cluster.Metrics, Akka.Cluster.Metrics.Tests, ... +19 more</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper.Execute</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>122</td>
+              <td>Akka, Akka.Persistence.Custom, Akka.Streams, Akka.Streams.TestKit.Tests, Akka.Streams.Tests, ... +1 more</td>
+            </tr>
+            <tr>
               <td><strong>gRPC</strong></td>
               <td><span class="tag tag-api">Api</span></td>
-              <td>124</td>
-              <td>src</td>
+              <td>62</td>
+              <td>Akka.Benchmarks, Akka.Cluster, Akka.Cluster.Metrics, Akka.Cluster.Metrics.Tests, Akka.Cluster.Sharding, ... +12 more</td>
             </tr>
             <tr>
               <td><strong>IMessageAdapter</strong></td>
               <td><span class="tag tag-config">Connector</span></td>
               <td>39</td>
-              <td>src</td>
+              <td>Akka, Akka.Benchmarks, Akka.Cluster.Sharding, Akka.Cluster.Sharding.Tests, Akka.DistributedData.Tests, ... +7 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Topic</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>39</td>
+              <td>Akka.Cluster.Sharding.Tests.MultiNode, Akka.Cluster.Tools.Tests, Akka.Cluster.Tools.Tests.MultiNode, Akka.Streams.Tests, ClusterToolsExample.Shared, ... +1 more</td>
             </tr>
             <tr>
               <td><strong>ConnectionString</strong></td>
               <td><span class="tag tag-config">Config</span></td>
               <td>33</td>
-              <td>src</td>
+              <td>Akka.Cluster.Benchmarks, Akka.Persistence.Custom, Akka.Persistence.Custom.Tests, Akka.Streams, AppConfig</td>
             </tr>
             <tr>
-              <td><strong>Dapper</strong></td>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>29</td>
+              <td>Akka.Remote.Tests, Akka.Streams, Akka.TestKit, Akka.Tests, Akka.Tests.Performance, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>14</td>
+              <td>Akka.API.Tests, Akka.Remote.Tests, Akka.Streams.Tests, Akka.Streams.Tests.Performance, ClusterSharding.Node, ... +5 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Write</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>7</td>
+              <td>Akka.Cluster.Cpu.Benchmark, Akka.Remote.Tests, Akka.Streams.Tests, Akka.Streams.Tests.Performance</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Delete</strong></td>
               <td><span class="tag tag-db">Database</span></td>
-              <td>18</td>
-              <td>src</td>
-            </tr>
-            <tr>
-              <td><strong>Kafka</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
-              <td>5</td>
-              <td>src</td>
+              <td>4</td>
+              <td>Akka.Persistence.Custom</td>
             </tr>
             <tr>
               <td><strong>HttpClient.New</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>3</td>
-              <td>src</td>
+              <td>Akka.Cluster.Tools, Akka.Docs.Tests, SymbolLookup</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.CreateTable</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>3</td>
+              <td>Akka.Persistence.Custom</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Select</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>3</td>
+              <td>Akka, Akka.Persistence.Custom</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Update</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>3</td>
+              <td>Akka</td>
+            </tr>
+            <tr>
+              <td><strong>API.Controller</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>2</td>
+              <td>Akka.AspNetCore, Akka.Remote.TestKit.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Insert</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>2</td>
+              <td>Akka.Persistence.Custom</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Write</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>2</td>
+              <td>Akka.Persistence.TestKit.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Producer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>2</td>
+              <td>Akka</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>Akka.AspNetCore</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpPost</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>Akka.AspNetCore</td>
+            </tr>
+            <tr>
+              <td><strong>API.Route</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>Akka.AspNetCore</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>Samples.Akka.AspNetCore</td>
             </tr>
             <tr>
               <td><strong>HttpClient.Injection</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>1</td>
-              <td>src</td>
+              <td>AkkaWindowsService</td>
             </tr>
             <tr>
-              <td><strong>RabbitMQ</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
               <td>1</td>
-              <td>src</td>
+              <td>Akka.Docs.Tests</td>
             </tr>
             <tr>
-              <td><strong>FileStorage</strong></td>
-              <td><span class="tag tag-config">Storage</span></td>
+              <td><strong>Dapper.Query</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
               <td>1</td>
-              <td>src</td>
+              <td>Akka.Persistence.Query</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
+
 
 
   <section class="tab-panel" id="panel-connstrings">
@@ -1015,6 +1171,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -1087,7 +1300,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_library': 'mermaid-cat_library', 'cat_tool': 'mermaid-cat_tool', 'cat_service': 'mermaid-cat_service', 'cat_webapp': 'mermaid-cat_webapp', 'cat_desktopapp': 'mermaid-cat_desktopapp' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_library': 'mermaid-cat_library', 'cat_tool': 'mermaid-cat_tool', 'cat_service': 'mermaid-cat_service', 'cat_webapp': 'mermaid-cat_webapp', 'cat_desktopapp': 'mermaid-cat_desktopapp', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1138,6 +1351,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

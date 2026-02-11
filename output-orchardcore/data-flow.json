@@ -1,0 +1,1970 @@
+{
+  "dataNodes": [
+    {
+      "id": "route:api/queries",
+      "name": "api/queries",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Queries"
+      ]
+    },
+    {
+      "id": "route:{name}",
+      "name": "{name}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Queries"
+      ]
+    },
+    {
+      "id": "table:ContentItemIndex",
+      "name": "ContentItemIndex",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Queries",
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:https://api.twitter.com",
+      "name": "https://api.twitter.com",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Twitter"
+      ]
+    },
+    {
+      "id": "route:TwoFactor-Authenticator/SmsSendCode",
+      "name": "TwoFactor-Authenticator/SmsSendCode",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Users"
+      ]
+    },
+    {
+      "id": "route:TwoFactor-Authenticator/EmailSendCode",
+      "name": "TwoFactor-Authenticator/EmailSendCode",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Users"
+      ]
+    },
+    {
+      "id": "route:api/elasticsearch",
+      "name": "api/elasticsearch",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Search.Elasticsearch"
+      ]
+    },
+    {
+      "id": "route:content",
+      "name": "content",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Search.Elasticsearch",
+        "OrchardCore.Search.Lucene"
+      ]
+    },
+    {
+      "id": "route:documents",
+      "name": "documents",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Search.Elasticsearch",
+        "OrchardCore.Search.Lucene"
+      ]
+    },
+    {
+      "id": "route:Notifications/MarkAsRead",
+      "name": "Notifications/MarkAsRead",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Notifications"
+      ]
+    },
+    {
+      "id": "route:OrchardCore.Liquid/Scripts/liquid-intellisense.js",
+      "name": "OrchardCore.Liquid/Scripts/liquid-intellisense.js",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Liquid"
+      ]
+    },
+    {
+      "id": "route:api/content",
+      "name": "api/content",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Contents"
+      ]
+    },
+    {
+      "id": "route:api/content/{contentItemId}",
+      "name": "api/content/{contentItemId}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Contents"
+      ]
+    },
+    {
+      "id": "route:/OrchardCore.Facebook/sdk/init.js",
+      "name": "/OrchardCore.Facebook/sdk/init.js",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Facebook"
+      ]
+    },
+    {
+      "id": "route:/OrchardCore.Facebook/sdk/sdk.{culture:length(2,6)}.js",
+      "name": "/OrchardCore.Facebook/sdk/sdk.{culture:length(2,6)}.js",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Facebook"
+      ]
+    },
+    {
+      "id": "route:api/lucene",
+      "name": "api/lucene",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Search.Lucene"
+      ]
+    },
+    {
+      "id": "route:url-rewriting/resort",
+      "name": "url-rewriting/resort",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.UrlRewriting"
+      ]
+    },
+    {
+      "id": "route:search/{index?}",
+      "name": "search/{index?}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Search"
+      ]
+    },
+    {
+      "id": "route:Demo",
+      "name": "Demo",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Demo"
+      ]
+    },
+    {
+      "id": "route:Demo/Index",
+      "name": "Demo/Index",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Demo"
+      ]
+    },
+    {
+      "id": "route:Demo/About",
+      "name": "Demo/About",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Demo"
+      ]
+    },
+    {
+      "id": "route:Demo/Contact",
+      "name": "Demo/Contact",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Demo"
+      ]
+    },
+    {
+      "id": "route:api/demo",
+      "name": "api/demo",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Demo"
+      ]
+    },
+    {
+      "id": "route:api/tenants",
+      "name": "api/tenants",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:create",
+      "name": "create",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:edit",
+      "name": "edit",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:disable/{tenantName}",
+      "name": "disable/{tenantName}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:enable/{tenantName}",
+      "name": "enable/{tenantName}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:remove/{tenantName}",
+      "name": "remove/{tenantName}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "route:setup",
+      "name": "setup",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "OrchardCore.Tenants"
+      ]
+    },
+    {
+      "id": "topic:Signal",
+      "name": "Signal",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "url:https://api.twilio.com/2010-04-01/Accounts/",
+      "name": "https://api.twilio.com/2010-04-01/Accounts/",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Sms.Core"
+      ]
+    },
+    {
+      "id": "table:the",
+      "name": "the",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "OrchardCore.OpenId.Core"
+      ],
+      "readers": []
+    },
+    {
+      "id": "url:Register",
+      "name": "Register",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:Login",
+      "name": "Login",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:tp_t",
+      "name": "tp_t",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:t1",
+      "name": "t1",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:tp_d",
+      "name": "tp_d",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:tp_b",
+      "name": "tp_b",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:tp_a",
+      "name": "tp_a",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:tp_c",
+      "name": "tp_c",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:cte",
+      "name": "cte",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:cte2",
+      "name": "cte2",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:cte1",
+      "name": "cte1",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "table:test",
+      "name": "test",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/content?draft=true",
+      "name": "api/content?draft=true",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/content",
+      "name": "api/content",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/graphql",
+      "name": "api/graphql",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:OrchardCore.Deployment.Remote/ImportRemoteInstance/Import",
+      "name": "OrchardCore.Deployment.Remote/ImportRemoteInstance/Import",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/tenants/create",
+      "name": "api/tenants/create",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/tenants/setup",
+      "name": "api/tenants/setup",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    },
+    {
+      "id": "url:api/content/",
+      "name": "api/content/",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "OrchardCore.Tests"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "OrchardCore.Queries",
+      "to": "route:api/queries",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Queries",
+      "to": "route:{name}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "table:ContentItemIndex",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:ContentItemIndex",
+      "to": "OrchardCore.Queries",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:https://api.twitter.com",
+      "to": "OrchardCore.Twitter",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "OrchardCore.Users",
+      "to": "route:TwoFactor-Authenticator/SmsSendCode",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Users",
+      "to": "route:TwoFactor-Authenticator/EmailSendCode",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Elasticsearch",
+      "to": "route:api/elasticsearch",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Elasticsearch",
+      "to": "route:content",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Lucene",
+      "to": "route:content",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Elasticsearch",
+      "to": "route:documents",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Lucene",
+      "to": "route:documents",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Notifications",
+      "to": "route:Notifications/MarkAsRead",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Liquid",
+      "to": "route:OrchardCore.Liquid/Scripts/liquid-intellisense.js",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Contents",
+      "to": "route:api/content",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Contents",
+      "to": "route:api/content/{contentItemId}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Facebook",
+      "to": "route:/OrchardCore.Facebook/sdk/init.js",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Facebook",
+      "to": "route:/OrchardCore.Facebook/sdk/sdk.{culture:length(2,6)}.js",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Lucene",
+      "to": "route:api/lucene",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.UrlRewriting",
+      "to": "route:url-rewriting/resort",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search",
+      "to": "route:search/{index?}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Demo",
+      "to": "route:Demo",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Demo",
+      "to": "route:Demo/Index",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Demo",
+      "to": "route:Demo/About",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Demo",
+      "to": "route:Demo/Contact",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Demo",
+      "to": "route:api/demo",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:api/tenants",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:create",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:edit",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:disable/{tenantName}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:enable/{tenantName}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:remove/{tenantName}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Tenants",
+      "to": "route:setup",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "url:https://api.twilio.com/2010-04-01/Accounts/",
+      "to": "OrchardCore.Sms.Core",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "OrchardCore.OpenId.Core",
+      "to": "table:the",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:Register",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:Login",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "table:tp_t",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:t1",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:tp_d",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:tp_b",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:tp_a",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:tp_c",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:cte",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:cte2",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:cte1",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:test",
+      "to": "OrchardCore.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:api/content?draft=true",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/content",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/graphql",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:OrchardCore.Deployment.Remote/ImportRemoteInstance/Import",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/tenants/create",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/tenants/setup",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/content/",
+      "to": "OrchardCore.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    }
+  ],
+  "impliedDependencies": [],
+  "infrastructureGroups": [
+    {
+      "pattern": "API.Controller",
+      "type": "api",
+      "projects": {
+        "TheTheme": {
+          "expose": 1
+        },
+        "OrchardCore.Templates.Mvc.Module": {
+          "expose": 1
+        },
+        "OrchardCore.Templates.Cms.Module": {
+          "expose": 1
+        },
+        "OrchardCore.Queries": {
+          "expose": 3
+        },
+        "OrchardCore.AdminMenu": {
+          "expose": 2
+        },
+        "OrchardCore.Deployment": {
+          "expose": 4
+        },
+        "OrchardCore.Shortcodes": {
+          "expose": 1
+        },
+        "OrchardCore.AuditTrail": {
+          "expose": 1
+        },
+        "OrchardCore.ContentPreview": {
+          "expose": 1
+        },
+        "OrchardCore.BackgroundTasks": {
+          "expose": 1
+        },
+        "OrchardCore.Settings": {
+          "expose": 1
+        },
+        "OrchardCore.Features": {
+          "expose": 1
+        },
+        "OrchardCore.Media.Azure": {
+          "expose": 1
+        },
+        "OrchardCore.Taxonomies": {
+          "expose": 2
+        },
+        "OrchardCore.Setup": {
+          "expose": 1
+        },
+        "OrchardCore.Flows": {
+          "expose": 1
+        },
+        "OrchardCore.XmlRpc": {
+          "expose": 2
+        },
+        "OrchardCore.Sms": {
+          "expose": 1
+        },
+        "OrchardCore.Workflows": {
+          "expose": 4
+        },
+        "OrchardCore.Users": {
+          "expose": 7
+        },
+        "OrchardCore.Search.Elasticsearch": {
+          "expose": 2
+        },
+        "OrchardCore.Themes": {
+          "expose": 1
+        },
+        "OrchardCore.Mvc.HelloWorld": {
+          "expose": 1
+        },
+        "OrchardCore.ContentFields": {
+          "expose": 3
+        },
+        "OrchardCore.OpenId": {
+          "expose": 6
+        },
+        "OrchardCore.Notifications": {
+          "expose": 1
+        },
+        "OrchardCore.AdminDashboard": {
+          "expose": 1
+        },
+        "OrchardCore.Admin": {
+          "expose": 1
+        },
+        "OrchardCore.DataLocalization": {
+          "expose": 1
+        },
+        "OrchardCore.Menu": {
+          "expose": 1
+        },
+        "OrchardCore.Lists": {
+          "expose": 2
+        },
+        "OrchardCore.Contents": {
+          "expose": 5
+        },
+        "OrchardCore.Media.AmazonS3": {
+          "expose": 1
+        },
+        "OrchardCore.Layers": {
+          "expose": 2
+        },
+        "OrchardCore.Search.Lucene": {
+          "expose": 2
+        },
+        "OrchardCore.Deployment.Remote": {
+          "expose": 4
+        },
+        "OrchardCore.Media": {
+          "expose": 3
+        },
+        "OrchardCore.Sitemaps": {
+          "expose": 5
+        },
+        "OrchardCore.Roles": {
+          "expose": 1
+        },
+        "OrchardCore.Diagnostics": {
+          "expose": 1
+        },
+        "OrchardCore.Email": {
+          "expose": 1
+        },
+        "OrchardCore.Recipes": {
+          "expose": 1
+        },
+        "OrchardCore.UrlRewriting": {
+          "expose": 1
+        },
+        "OrchardCore.Search": {
+          "expose": 1
+        },
+        "OrchardCore.Demo": {
+          "expose": 6
+        },
+        "OrchardCore.Apis.GraphQL": {
+          "expose": 1
+        },
+        "OrchardCore.Widgets": {
+          "expose": 1
+        },
+        "OrchardCore.Templates": {
+          "expose": 2
+        },
+        "OrchardCore.Cors": {
+          "expose": 1
+        },
+        "OrchardCore.Indexing": {
+          "expose": 1
+        },
+        "OrchardCore.ContentLocalization": {
+          "expose": 2
+        },
+        "OrchardCore.Feeds": {
+          "expose": 1
+        },
+        "OrchardCore.ContentTypes": {
+          "expose": 1
+        },
+        "OrchardCore.Tenants": {
+          "expose": 3
+        },
+        "OrchardCore.Placements": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpPost",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Queries": {
+          "expose": 6
+        },
+        "OrchardCore.AdminMenu": {
+          "expose": 9
+        },
+        "OrchardCore.Deployment": {
+          "expose": 10
+        },
+        "OrchardCore.Shortcodes": {
+          "expose": 2
+        },
+        "OrchardCore.ContentPreview": {
+          "expose": 1
+        },
+        "OrchardCore.BackgroundTasks": {
+          "expose": 3
+        },
+        "OrchardCore.Settings": {
+          "expose": 1
+        },
+        "OrchardCore.Features": {
+          "expose": 3
+        },
+        "OrchardCore.Taxonomies": {
+          "expose": 4
+        },
+        "OrchardCore.Sms": {
+          "expose": 1
+        },
+        "OrchardCore.Workflows": {
+          "expose": 12
+        },
+        "OrchardCore.Users": {
+          "expose": 32
+        },
+        "OrchardCore.Search.Elasticsearch": {
+          "expose": 3
+        },
+        "OrchardCore.Themes": {
+          "expose": 5
+        },
+        "OrchardCore.OpenId": {
+          "expose": 8
+        },
+        "OrchardCore.Notifications": {
+          "expose": 2
+        },
+        "OrchardCore.AdminDashboard": {
+          "expose": 1
+        },
+        "OrchardCore.DataLocalization": {
+          "expose": 1
+        },
+        "OrchardCore.Menu": {
+          "expose": 3
+        },
+        "OrchardCore.Lists": {
+          "expose": 1
+        },
+        "OrchardCore.Contents": {
+          "expose": 17
+        },
+        "OrchardCore.Layers": {
+          "expose": 5
+        },
+        "OrchardCore.Search.Lucene": {
+          "expose": 3
+        },
+        "OrchardCore.Deployment.Remote": {
+          "expose": 8
+        },
+        "OrchardCore.Media": {
+          "expose": 10
+        },
+        "OrchardCore.Sitemaps": {
+          "expose": 13
+        },
+        "OrchardCore.Roles": {
+          "expose": 3
+        },
+        "OrchardCore.Email": {
+          "expose": 1
+        },
+        "OrchardCore.Recipes": {
+          "expose": 1
+        },
+        "OrchardCore.UrlRewriting": {
+          "expose": 4
+        },
+        "OrchardCore.Demo": {
+          "expose": 4
+        },
+        "OrchardCore.Templates": {
+          "expose": 3
+        },
+        "OrchardCore.Cors": {
+          "expose": 1
+        },
+        "OrchardCore.Indexing": {
+          "expose": 8
+        },
+        "OrchardCore.ContentLocalization": {
+          "expose": 1
+        },
+        "OrchardCore.ContentTypes": {
+          "expose": 2
+        },
+        "OrchardCore.Tenants": {
+          "expose": 14
+        }
+      }
+    },
+    {
+      "pattern": "API.Route",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Queries": {
+          "expose": 2
+        },
+        "OrchardCore.Search.Elasticsearch": {
+          "expose": 5
+        },
+        "OrchardCore.Search.Lucene": {
+          "expose": 5
+        },
+        "OrchardCore.Search": {
+          "expose": 1
+        },
+        "OrchardCore.Demo": {
+          "expose": 5
+        },
+        "OrchardCore.Tenants": {
+          "expose": 7
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Query",
+      "type": "database",
+      "projects": {
+        "OrchardCore.Queries": {
+          "read": 3
+        },
+        "OrchardCore.Deployment": {
+          "read": 4
+        },
+        "OrchardCore.AuditTrail": {
+          "read": 6
+        },
+        "OrchardCore.Taxonomies": {
+          "read": 3
+        },
+        "OrchardCore.Workflows": {
+          "read": 22
+        },
+        "OrchardCore.Users": {
+          "read": 13
+        },
+        "OrchardCore.ContentFields": {
+          "read": 6
+        },
+        "OrchardCore.Notifications": {
+          "read": 9
+        },
+        "OrchardCore.AdminDashboard": {
+          "read": 1
+        },
+        "OrchardCore.Menu": {
+          "read": 1
+        },
+        "OrchardCore.Alias": {
+          "read": 2
+        },
+        "OrchardCore.Lists": {
+          "read": 15
+        },
+        "OrchardCore.Contents": {
+          "read": 15
+        },
+        "OrchardCore.Layers": {
+          "read": 1
+        },
+        "OrchardCore.Deployment.Remote": {
+          "read": 1
+        },
+        "OrchardCore.Html": {
+          "read": 1
+        },
+        "OrchardCore.Title": {
+          "read": 1
+        },
+        "OrchardCore.Search": {
+          "read": 2
+        },
+        "OrchardCore.Demo": {
+          "read": 5
+        },
+        "OrchardCore.ContentLocalization": {
+          "read": 8
+        },
+        "OrchardCore.Indexing.Core": {
+          "read": 11
+        },
+        "OrchardCore.Notifications.Core": {
+          "read": 1
+        },
+        "OrchardCore.Search.Elasticsearch.Core": {
+          "read": 5
+        },
+        "OrchardCore.Search.Lucene.Core": {
+          "read": 1
+        },
+        "OrchardCore.ContentManagement.GraphQL": {
+          "read": 2
+        },
+        "OrchardCore.Infrastructure": {
+          "read": 6
+        },
+        "OrchardCore.Data.YesSql": {
+          "read": 3
+        },
+        "OrchardCore.Contents.Core": {
+          "read": 1
+        },
+        "OrchardCore.Users.Core": {
+          "read": 9
+        },
+        "OrchardCore.Taxonomies.Core": {
+          "read": 1
+        },
+        "OrchardCore.ContentManagement": {
+          "read": 18
+        },
+        "OrchardCore.OpenId.Core": {
+          "read": 40
+        },
+        "OrchardCore.Tests": {
+          "read": 44
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Select",
+      "type": "database",
+      "projects": {
+        "OrchardCore.Queries": {
+          "read": 1
+        },
+        "OrchardCore.Tests": {
+          "read": 41
+        }
+      }
+    },
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "OrchardCore.Deployment": {
+          "write": 1
+        },
+        "OrchardCore.OpenId": {
+          "write": 2
+        },
+        "OrchardCore.Deployment.Remote": {
+          "write": 1
+        },
+        "OrchardCore.Media": {
+          "write": 1
+        },
+        "OrchardCore.Sitemaps": {
+          "write": 1
+        },
+        "OrchardCore.Tenants": {
+          "write": 1
+        },
+        "OrchardCore.Data": {
+          "write": 1
+        },
+        "OrchardCore.Search.Lucene.Core": {
+          "write": 2
+        },
+        "OrchardCore.Media.Core": {
+          "write": 1
+        },
+        "OrchardCore": {
+          "write": 3
+        },
+        "OrchardCore.Deployment.Core": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "OrchardCore.AuditTrail": {
+          "write": 1
+        },
+        "OrchardCore.Workflows": {
+          "write": 1
+        },
+        "OrchardCore.Users": {
+          "write": 2
+        },
+        "OrchardCore.AdminDashboard": {
+          "write": 2
+        },
+        "OrchardCore.Menu": {
+          "write": 3
+        },
+        "OrchardCore.Contents": {
+          "write": 2
+        },
+        "OrchardCore.Facebook": {
+          "write": 1
+        },
+        "OrchardCore.Search.Lucene": {
+          "write": 6
+        },
+        "OrchardCore.Seo": {
+          "write": 2
+        },
+        "OrchardCore.Recipes": {
+          "write": 3
+        },
+        "OrchardCore.Apis.GraphQL": {
+          "write": 1
+        },
+        "OrchardCore.Indexing": {
+          "write": 2
+        },
+        "OrchardCore.Feeds": {
+          "write": 1
+        },
+        "OrchardCore.Setup.Core": {
+          "write": 1
+        },
+        "OrchardCore.Indexing.Core": {
+          "write": 2
+        },
+        "OrchardCore.Notifications.Core": {
+          "write": 1
+        },
+        "OrchardCore.DisplayManagement": {
+          "write": 1
+        },
+        "OrchardCore.Recipes.Core": {
+          "write": 2
+        },
+        "OrchardCore.Infrastructure": {
+          "write": 1
+        },
+        "OrchardCore.Data.YesSql": {
+          "write": 1
+        },
+        "OrchardCore.Tests": {
+          "write": 82
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "OrchardCore.ContentPreview": {
+          "write": 1
+        },
+        "OrchardCore.Taxonomies": {
+          "write": 2
+        },
+        "OrchardCore.Flows": {
+          "write": 1
+        },
+        "OrchardCore.XmlRpc": {
+          "write": 2
+        },
+        "OrchardCore.Users": {
+          "write": 2
+        },
+        "OrchardCore.DynamicCache": {
+          "write": 4
+        },
+        "OrchardCore.ContentFields": {
+          "write": 20
+        },
+        "OrchardCore.AdminDashboard": {
+          "write": 1
+        },
+        "OrchardCore.Autoroute": {
+          "write": 2
+        },
+        "OrchardCore.Alias": {
+          "write": 1
+        },
+        "OrchardCore.Liquid": {
+          "write": 1
+        },
+        "OrchardCore.Lists": {
+          "write": 13
+        },
+        "OrchardCore.Contents": {
+          "write": 13
+        },
+        "OrchardCore.Facebook": {
+          "write": 2
+        },
+        "OrchardCore.Layers": {
+          "write": 1
+        },
+        "OrchardCore.Media": {
+          "write": 5
+        },
+        "OrchardCore.Seo": {
+          "write": 3
+        },
+        "OrchardCore.Html": {
+          "write": 2
+        },
+        "OrchardCore.Title": {
+          "write": 2
+        },
+        "OrchardCore.Markdown": {
+          "write": 3
+        },
+        "OrchardCore.Templates": {
+          "write": 1
+        },
+        "OrchardCore.Redis": {
+          "write": 2
+        },
+        "OrchardCore.Spatial": {
+          "write": 2
+        },
+        "OrchardCore.ContentLocalization": {
+          "write": 2
+        },
+        "OrchardCore.Setup.Core": {
+          "write": 1
+        },
+        "OrchardCore.DisplayManagement": {
+          "write": 1
+        },
+        "OrchardCore.Data": {
+          "write": 2
+        },
+        "OrchardCore.Search.Elasticsearch.Core": {
+          "write": 1
+        },
+        "OrchardCore.Mvc.Core": {
+          "write": 6
+        },
+        "OrchardCore.Search.AzureAI.Core": {
+          "write": 1
+        },
+        "OrchardCore.Localization.Core": {
+          "write": 1
+        },
+        "OrchardCore.Infrastructure": {
+          "write": 10
+        },
+        "OrchardCore.Users.Core": {
+          "write": 2
+        },
+        "OrchardCore": {
+          "write": 3
+        },
+        "OrchardCore.Abstractions": {
+          "write": 2
+        },
+        "OrchardCore.ContentManagement": {
+          "write": 1
+        },
+        "OrchardCore.Tests": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "ConnectionString",
+      "type": "config",
+      "projects": {
+        "OrchardCore.Email.Azure": {
+          "unknown": 16
+        },
+        "OrchardCore.Media.Azure": {
+          "unknown": 17
+        },
+        "OrchardCore.Setup": {
+          "unknown": 6
+        },
+        "OrchardCore.AutoSetup": {
+          "unknown": 5
+        },
+        "OrchardCore.DataProtection.Azure": {
+          "unknown": 9
+        },
+        "OrchardCore.Sms.Azure": {
+          "unknown": 15
+        },
+        "OrchardCore.Tenants": {
+          "unknown": 32
+        },
+        "OrchardCore.Setup.Core": {
+          "unknown": 1
+        },
+        "OrchardCore.FileStorage.AzureBlob": {
+          "unknown": 4
+        },
+        "OrchardCore.Infrastructure": {
+          "unknown": 2
+        },
+        "OrchardCore.Data.YesSql": {
+          "unknown": 28
+        },
+        "OrchardCore.Data.Abstractions": {
+          "unknown": 10
+        },
+        "OrchardCore.Abstractions": {
+          "unknown": 1
+        },
+        "OrchardCore.Tests": {
+          "unknown": 8
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.Injection",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Twitter": {
+          "consume": 1
+        },
+        "OrchardCore.Workflows": {
+          "consume": 1
+        },
+        "OrchardCore.Deployment.Remote": {
+          "consume": 1
+        },
+        "OrchardCore.Media": {
+          "consume": 1
+        },
+        "OrchardCore": {
+          "consume": 1
+        },
+        "OrchardCore.ReCaptcha.Core": {
+          "consume": 1
+        },
+        "OrchardCore.Sms.Core": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.BaseAddress",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Twitter": {
+          "consume": 1
+        },
+        "OrchardCore.Sms.Core": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "OrchardCore.Features": {
+          "read": 1
+        },
+        "OrchardCore.Taxonomies": {
+          "read": 20
+        },
+        "OrchardCore.XmlRpc": {
+          "read": 8
+        },
+        "OrchardCore.PublishLater": {
+          "read": 1
+        },
+        "OrchardCore.Sms": {
+          "read": 1
+        },
+        "OrchardCore.Microsoft.Authentication": {
+          "read": 1
+        },
+        "OrchardCore.ArchiveLater": {
+          "read": 1
+        },
+        "OrchardCore.Workflows": {
+          "read": 24
+        },
+        "OrchardCore.Users": {
+          "read": 3
+        },
+        "OrchardCore.DynamicCache": {
+          "read": 2
+        },
+        "OrchardCore.ContentFields": {
+          "read": 7
+        },
+        "OrchardCore.AdminDashboard": {
+          "read": 2
+        },
+        "OrchardCore.Autoroute": {
+          "read": 2
+        },
+        "OrchardCore.Menu": {
+          "read": 9
+        },
+        "OrchardCore.Alias": {
+          "read": 1
+        },
+        "OrchardCore.Lists": {
+          "read": 21
+        },
+        "OrchardCore.Contents": {
+          "read": 37
+        },
+        "OrchardCore.Facebook": {
+          "read": 2
+        },
+        "OrchardCore.Layers": {
+          "read": 2
+        },
+        "OrchardCore.Media": {
+          "read": 2
+        },
+        "OrchardCore.Email": {
+          "read": 2
+        },
+        "OrchardCore.Demo": {
+          "read": 10
+        },
+        "OrchardCore.Templates": {
+          "read": 1
+        },
+        "OrchardCore.Redis": {
+          "read": 3
+        },
+        "OrchardCore.ContentLocalization": {
+          "read": 3
+        },
+        "OrchardCore.Indexing.Core": {
+          "read": 1
+        },
+        "OrchardCore.Email.Core": {
+          "read": 1
+        },
+        "OrchardCore.Search.Lucene.Core": {
+          "read": 1
+        },
+        "OrchardCore.ContentManagement.GraphQL": {
+          "read": 4
+        },
+        "OrchardCore.Infrastructure": {
+          "read": 3
+        },
+        "OrchardCore.ContentManagement.Abstractions": {
+          "read": 4
+        },
+        "OrchardCore.Contents.Core": {
+          "read": 3
+        },
+        "OrchardCore.Users.Core": {
+          "read": 1
+        },
+        "OrchardCore": {
+          "read": 2
+        },
+        "OrchardCore.ContentManagement.Display": {
+          "read": 3
+        },
+        "OrchardCore.ContentManagement": {
+          "read": 10
+        },
+        "OrchardCore.Sms.Core": {
+          "read": 1
+        },
+        "OrchardCore.Tests": {
+          "read": 34
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpGet",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Workflows": {
+          "expose": 1
+        },
+        "OrchardCore.Users": {
+          "expose": 3
+        },
+        "OrchardCore.Search.Elasticsearch": {
+          "expose": 2
+        },
+        "OrchardCore.ContentFields": {
+          "expose": 1
+        },
+        "OrchardCore.OpenId": {
+          "expose": 2
+        },
+        "OrchardCore.DataLocalization": {
+          "expose": 3
+        },
+        "OrchardCore.Contents": {
+          "expose": 1
+        },
+        "OrchardCore.Search.Lucene": {
+          "expose": 2
+        },
+        "OrchardCore.Apis.GraphQL": {
+          "expose": 1
+        },
+        "OrchardCore.Cors": {
+          "expose": 1
+        },
+        "OrchardCore.ContentLocalization": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.MapPost",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Users": {
+          "expose": 2
+        },
+        "OrchardCore.Notifications": {
+          "expose": 1
+        },
+        "OrchardCore.Contents": {
+          "expose": 1
+        },
+        "OrchardCore.UrlRewriting": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "OrchardCore.OpenId": {
+          "read": 4
+        },
+        "OrchardCore.Placements": {
+          "read": 1
+        },
+        "OrchardCore.DisplayManagement": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGet",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Liquid": {
+          "expose": 1
+        },
+        "OrchardCore.Contents": {
+          "expose": 1
+        },
+        "OrchardCore.Facebook": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.MapDelete",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Contents": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "OrchardCore.Media": {
+          "read": 1
+        },
+        "OrchardCore.Data": {
+          "read": 1
+        },
+        "OrchardCore.FileStorage.FileSystem": {
+          "read": 2
+        },
+        "OrchardCore.Search.Lucene.Core": {
+          "read": 1
+        },
+        "OrchardCore.Shells.Azure": {
+          "read": 3
+        },
+        "OrchardCore.Infrastructure": {
+          "read": 2
+        },
+        "OrchardCore": {
+          "read": 3
+        },
+        "OrchardCore.Tests": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis",
+      "type": "cache",
+      "projects": {
+        "OrchardCore.Redis": {
+          "unknown": 8
+        },
+        "OrchardCore.Redis.Abstractions": {
+          "unknown": 4
+        }
+      }
+    },
+    {
+      "pattern": "EntityFramework",
+      "type": "database",
+      "projects": {
+        "OrchardCore.Data.YesSql": {
+          "both": 2
+        },
+        "OrchardCore.Tests": {
+          "both": 3
+        }
+      }
+    },
+    {
+      "pattern": "SqlClient",
+      "type": "database",
+      "projects": {
+        "OrchardCore.Data.YesSql": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "OrchardCore": {
+          "consume": 1
+        },
+        "OrchardCore.Tests": {
+          "consume": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Topic",
+      "type": "messaging",
+      "projects": {
+        "OrchardCore": {
+          "unknown": 1
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Delete",
+      "type": "database",
+      "projects": {
+        "OrchardCore.OpenId.Core": {
+          "write": 4
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Tests": {
+          "consume": 13
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.PostAsync",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Tests": {
+          "consume": 15
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.DeleteAsync",
+      "type": "api",
+      "projects": {
+        "OrchardCore.Tests": {
+          "consume": 1
+        }
+      }
+    }
+  ]
+}

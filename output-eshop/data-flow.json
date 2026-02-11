@@ -1,0 +1,1484 @@
+{
+  "dataNodes": [
+    {
+      "id": "entity:CatalogItem",
+      "name": "CatalogItem",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Catalog.API"
+      ],
+      "readers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "entity:CatalogBrand",
+      "name": "CatalogBrand",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Catalog.API"
+      ],
+      "readers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "entity:CatalogType",
+      "name": "CatalogType",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Catalog.API"
+      ],
+      "readers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items",
+      "name": "/items",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/by",
+      "name": "/items/by",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/{id:int}",
+      "name": "/items/{id:int}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/by/{name:minlength(1)}",
+      "name": "/items/by/{name:minlength(1)}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/{id:int}/pic",
+      "name": "/items/{id:int}/pic",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/withsemanticrelevance/{text:minlength(1)}",
+      "name": "/items/withsemanticrelevance/{text:minlength(1)}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/withsemanticrelevance",
+      "name": "/items/withsemanticrelevance",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/type/{typeId}/brand/{brandId?}",
+      "name": "/items/type/{typeId}/brand/{brandId?}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/items/type/all/brand/{brandId:int?}",
+      "name": "/items/type/all/brand/{brandId:int?}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/catalogtypes",
+      "name": "/catalogtypes",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:/catalogbrands",
+      "name": "/catalogbrands",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "route:api/catalog",
+      "name": "api/catalog",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Catalog.API"
+      ]
+    },
+    {
+      "id": "entity:Order",
+      "name": "Order",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": [
+        "Ordering.Infrastructure"
+      ]
+    },
+    {
+      "id": "entity:OrderItem",
+      "name": "OrderItem",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": [
+        "Ordering.Infrastructure"
+      ]
+    },
+    {
+      "id": "entity:PaymentMethod",
+      "name": "PaymentMethod",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": [
+        "Ordering.Infrastructure"
+      ]
+    },
+    {
+      "id": "entity:Buyer",
+      "name": "Buyer",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": [
+        "Ordering.Infrastructure"
+      ]
+    },
+    {
+      "id": "entity:CardType",
+      "name": "CardType",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": [
+        "Ordering.Infrastructure"
+      ]
+    },
+    {
+      "id": "table:ordering",
+      "name": "ordering",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "Ordering.Infrastructure"
+      ],
+      "readers": []
+    },
+    {
+      "id": "route:{orderId:int}",
+      "name": "{orderId:int}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "route:/",
+      "name": "/",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API",
+        "Webhooks.API",
+        "eShop.ServiceDefaults"
+      ]
+    },
+    {
+      "id": "route:/cardtypes",
+      "name": "/cardtypes",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "route:/draft",
+      "name": "/draft",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "route:/cancel",
+      "name": "/cancel",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "route:/ship",
+      "name": "/ship",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "route:api/orders",
+      "name": "api/orders",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Ordering.API"
+      ]
+    },
+    {
+      "id": "entity:WebhookSubscription",
+      "name": "WebhookSubscription",
+      "type": "entity",
+      "infrastructure": "database",
+      "writers": [
+        "Webhooks.API"
+      ],
+      "readers": [
+        "Webhooks.API"
+      ]
+    },
+    {
+      "id": "route:/{id:int}",
+      "name": "/{id:int}",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Webhooks.API"
+      ]
+    },
+    {
+      "id": "route:/api/webhooks",
+      "name": "/api/webhooks",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "Webhooks.API"
+      ]
+    },
+    {
+      "id": "route:/webhook-received",
+      "name": "/webhook-received",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "WebhookClient"
+      ]
+    },
+    {
+      "id": "route:/logout",
+      "name": "/logout",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "WebhookClient"
+      ]
+    },
+    {
+      "id": "url:/api/webhooks",
+      "name": "/api/webhooks",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "WebhookClient"
+      ]
+    },
+    {
+      "id": "url:api/orders",
+      "name": "api/orders",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/orders/cardtypes",
+      "name": "api/orders/cardtypes",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/orders/1",
+      "name": "api/orders/1",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/orders/draft",
+      "name": "api/orders/draft",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/orders/cancel",
+      "name": "/api/orders/cancel",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/orders/cancel",
+      "name": "api/orders/cancel",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/orders/ship",
+      "name": "api/orders/ship",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Ordering.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/catalog/items?pageIndex=0&pageSize=5",
+      "name": "/api/catalog/items?pageIndex=0&pageSize=5",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/catalog/items/1",
+      "name": "/api/catalog/items/1",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/catalog/items/by?ids=1&ids=2&ids=3",
+      "name": "/api/catalog/items/by?ids=1&ids=2&ids=3",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/catalog/items/2",
+      "name": "/api/catalog/items/2",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/by/Wanderer%20Black%20Hiking%20Boots?PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/by/Wanderer%20Black%20Hiking%20Boots?PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items?name=Wanderer%20Black%20Hiking%20Boots&PageSize=5&PageIndex=0",
+      "name": "api/catalog/items?name=Wanderer%20Black%20Hiking%20Boots&PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/by/Alpine?PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/by/Alpine?PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items?name=Alpine&PageSize=5&PageIndex=0",
+      "name": "api/catalog/items?name=Alpine&PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/1/pic",
+      "name": "api/catalog/items/1/pic",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/withsemanticrelevance/Wanderer?PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/withsemanticrelevance/Wanderer?PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/withsemanticrelevance?text=Wanderer&PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/withsemanticrelevance?text=Wanderer&PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/type/3/brand/3?PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/type/3/brand/3?PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items?type=3&brand=3&PageSize=5&PageIndex=0",
+      "name": "api/catalog/items?type=3&brand=3&PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items/type/all/brand/3?PageSize=5&PageIndex=0",
+      "name": "api/catalog/items/type/all/brand/3?PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/items?brand=3&PageSize=5&PageIndex=0",
+      "name": "api/catalog/items?brand=3&PageSize=5&PageIndex=0",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/catalogtypes",
+      "name": "api/catalog/catalogtypes",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:api/catalog/catalogbrands",
+      "name": "api/catalog/catalogbrands",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    },
+    {
+      "id": "url:/api/catalog/items",
+      "name": "/api/catalog/items",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "Catalog.FunctionalTests"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "Catalog.API",
+      "to": "entity:CatalogItem",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:CatalogItem",
+      "to": "Catalog.API",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "entity:CatalogBrand",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:CatalogBrand",
+      "to": "Catalog.API",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "entity:CatalogType",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:CatalogType",
+      "to": "Catalog.API",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/by",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/{id:int}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/by/{name:minlength(1)}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/{id:int}/pic",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/withsemanticrelevance/{text:minlength(1)}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/withsemanticrelevance",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/type/{typeId}/brand/{brandId?}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/items/type/all/brand/{brandId:int?}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/catalogtypes",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:/catalogbrands",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Catalog.API",
+      "to": "route:api/catalog",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "entity:Order",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:Order",
+      "to": "Ordering.Infrastructure",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "entity:OrderItem",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:OrderItem",
+      "to": "Ordering.Infrastructure",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "entity:PaymentMethod",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:PaymentMethod",
+      "to": "Ordering.Infrastructure",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "entity:Buyer",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:Buyer",
+      "to": "Ordering.Infrastructure",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "entity:CardType",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:CardType",
+      "to": "Ordering.Infrastructure",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Ordering.Infrastructure",
+      "to": "table:ordering",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:{orderId:int}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Webhooks.API",
+      "to": "route:/",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "eShop.ServiceDefaults",
+      "to": "route:/",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:/",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:/cardtypes",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:/draft",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:/cancel",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:/ship",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Ordering.API",
+      "to": "route:api/orders",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Webhooks.API",
+      "to": "entity:WebhookSubscription",
+      "direction": "write",
+      "endpointType": "entity"
+    },
+    {
+      "from": "entity:WebhookSubscription",
+      "to": "Webhooks.API",
+      "direction": "read",
+      "endpointType": "entity"
+    },
+    {
+      "from": "Webhooks.API",
+      "to": "route:/{id:int}",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "Webhooks.API",
+      "to": "route:/api/webhooks",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "WebhookClient",
+      "to": "route:/webhook-received",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "WebhookClient",
+      "to": "route:/logout",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "url:/api/webhooks",
+      "to": "WebhookClient",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders/cardtypes",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders/1",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders/draft",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/orders/cancel",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders/cancel",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/orders/ship",
+      "to": "Ordering.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/catalog/items?pageIndex=0&pageSize=5",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/catalog/items/1",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/catalog/items/by?ids=1&ids=2&ids=3",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/catalog/items/2",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/by/Wanderer%20Black%20Hiking%20Boots?PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items?name=Wanderer%20Black%20Hiking%20Boots&PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/by/Alpine?PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items?name=Alpine&PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/1/pic",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/withsemanticrelevance/Wanderer?PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/withsemanticrelevance?text=Wanderer&PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/type/3/brand/3?PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items?type=3&brand=3&PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items/type/all/brand/3?PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/items?brand=3&PageSize=5&PageIndex=0",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/catalogtypes",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:api/catalog/catalogbrands",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/api/catalog/items",
+      "to": "Catalog.FunctionalTests",
+      "direction": "consume",
+      "endpointType": "url"
+    }
+  ],
+  "impliedDependencies": [],
+  "infrastructureGroups": [
+    {
+      "pattern": "gRPC",
+      "type": "api",
+      "projects": {
+        "WebApp": {
+          "unknown": 1
+        },
+        "Basket.API": {
+          "unknown": 1
+        },
+        "ClientApp": {
+          "unknown": 14
+        },
+        "Basket.UnitTests": {
+          "unknown": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.Injection",
+      "type": "api",
+      "projects": {
+        "WebApp": {
+          "consume": 2
+        },
+        "HybridApp": {
+          "consume": 1
+        },
+        "WebhookClient": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "ConnectionString",
+      "type": "config",
+      "projects": {
+        "WebApp": {
+          "unknown": 1
+        },
+        "Catalog.API": {
+          "unknown": 1
+        },
+        "eShop.AppHost": {
+          "unknown": 5
+        },
+        "Ordering.API": {
+          "unknown": 1
+        },
+        "Ordering.FunctionalTests": {
+          "unknown": 3
+        },
+        "Catalog.FunctionalTests": {
+          "unknown": 3
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpGet",
+      "type": "api",
+      "projects": {
+        "Identity.API": {
+          "expose": 8
+        }
+      }
+    },
+    {
+      "pattern": "API.Controller",
+      "type": "api",
+      "projects": {
+        "Identity.API": {
+          "expose": 7
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpPost",
+      "type": "api",
+      "projects": {
+        "Identity.API": {
+          "expose": 6
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "Catalog.API": {
+          "read": 3
+        },
+        "Ordering.Domain": {
+          "read": 1
+        },
+        "Ordering.Infrastructure": {
+          "read": 1
+        },
+        "Ordering.API": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "Catalog.API": {
+          "write": 1
+        },
+        "IntegrationEventLogEF": {
+          "write": 1
+        },
+        "Ordering.API": {
+          "write": 1
+        },
+        "EventBusRabbitMQ": {
+          "write": 1
+        },
+        "ClientApp": {
+          "write": 3
+        },
+        "ClientApp.UnitTests": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "DbContext",
+      "type": "database",
+      "projects": {
+        "Catalog.API": {
+          "both": 1
+        },
+        "Ordering.Infrastructure": {
+          "both": 1
+        },
+        "IntegrationEventLogEF": {
+          "both": 1
+        },
+        "Webhooks.API": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "DbSet",
+      "type": "database",
+      "projects": {
+        "Catalog.API": {
+          "both": 3
+        },
+        "Ordering.Infrastructure": {
+          "both": 5
+        },
+        "Webhooks.API": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "Catalog.API": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "EntityFramework",
+      "type": "database",
+      "projects": {
+        "Catalog.API": {
+          "both": 1
+        },
+        "Ordering.API": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGet",
+      "type": "api",
+      "projects": {
+        "Catalog.API": {
+          "expose": 12
+        },
+        "Ordering.API": {
+          "expose": 3
+        },
+        "eShop.ServiceDefaults": {
+          "expose": 1
+        },
+        "Webhooks.API": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.MapPost",
+      "type": "api",
+      "projects": {
+        "Catalog.API": {
+          "expose": 1
+        },
+        "Ordering.API": {
+          "expose": 2
+        },
+        "Webhooks.API": {
+          "expose": 1
+        },
+        "WebhookClient": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.MapPut",
+      "type": "api",
+      "projects": {
+        "Catalog.API": {
+          "expose": 2
+        },
+        "Ordering.API": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.MapDelete",
+      "type": "api",
+      "projects": {
+        "Catalog.API": {
+          "expose": 1
+        },
+        "Webhooks.API": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGroup",
+      "type": "api",
+      "projects": {
+        "Catalog.API": {
+          "expose": 3
+        },
+        "Ordering.API": {
+          "expose": 1
+        },
+        "Webhooks.API": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Insert",
+      "type": "database",
+      "projects": {
+        "Ordering.Infrastructure": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "Repository",
+      "type": "pattern",
+      "projects": {
+        "Ordering.Infrastructure": {
+          "both": 2
+        },
+        "Basket.API": {
+          "both": 1
+        },
+        "WebhookClient": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Server",
+      "type": "api",
+      "projects": {
+        "Basket.API": {
+          "expose": 7
+        },
+        "Basket.UnitTests": {
+          "expose": 7
+        }
+      }
+    },
+    {
+      "pattern": "Redis",
+      "type": "cache",
+      "projects": {
+        "Basket.API": {
+          "unknown": 2
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "Ordering.API": {
+          "read": 12
+        },
+        "ClientApp": {
+          "read": 19
+        },
+        "Ordering.UnitTests": {
+          "read": 1
+        },
+        "Ordering.FunctionalTests": {
+          "read": 3
+        },
+        "Catalog.FunctionalTests": {
+          "read": 22
+        }
+      }
+    },
+    {
+      "pattern": "RabbitMQ",
+      "type": "messaging",
+      "projects": {
+        "EventBusRabbitMQ": {
+          "unknown": 4
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "ClientApp": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Client",
+      "type": "api",
+      "projects": {
+        "ClientApp": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "ClientApp": {
+          "write": 18
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.PostAsync",
+      "type": "api",
+      "projects": {
+        "WebhookClient": {
+          "consume": 1
+        },
+        "Ordering.FunctionalTests": {
+          "consume": 4
+        },
+        "Catalog.FunctionalTests": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "Ordering.FunctionalTests": {
+          "consume": 3
+        },
+        "Catalog.FunctionalTests": {
+          "consume": 20
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.PutAsync",
+      "type": "api",
+      "projects": {
+        "Ordering.FunctionalTests": {
+          "consume": 4
+        },
+        "Catalog.FunctionalTests": {
+          "consume": 2
+        }
+      }
+    }
+  ]
+}

@@ -9,7 +9,7 @@
 | NuGet Packages | 84 |
 | Project References | 1208 |
 | Cross-Repo References | 40 |
-| Data Access Findings | 462 |
+| Data Access Findings | 1394 |
 | Config Files | 11 |
 
 ## Repositories
@@ -2667,12 +2667,22 @@ graph LR
         test_OrchardCore_Benchmarks["OrchardCore.Benchmarks"]
     end
     subgraph DataSources
-        datasource_src_Dapper[("Dapper")]
-        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_Dapper_Query[("Dapper.Query")]
+        datasource_src_SQL_Select[("SQL.Select")]
+        datasource_src_Dapper_Execute[("Dapper.Execute")]
+        datasource_src_Redis_Write[("Redis.Write")]
+        datasource_src_Redis_Read[("Redis.Read")]
+        datasource_src_MongoDB_Read[("MongoDB.Read")]
         datasource_src_Redis[("Redis")]
         datasource_src_EntityFramework[("EntityFramework")]
         datasource_src_SqlClient[("SqlClient")]
-        datasource_test_Dapper[("Dapper")]
+        datasource_src_Kafka_Topic[("Kafka.Topic")]
+        datasource_src_SQL_Delete[("SQL.Delete")]
+        datasource_test_Redis_Read[("Redis.Read")]
+        datasource_test_Dapper_Execute[("Dapper.Execute")]
+        datasource_test_Dapper_Query[("Dapper.Query")]
+        datasource_test_Redis_Write[("Redis.Write")]
+        datasource_test_SQL_Select[("SQL.Select")]
         datasource_test_EntityFramework[("EntityFramework")]
     end
 ```

@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">115</span> Projects</div>
     <div class="stat"><span class="stat-value">76</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">213</span> Project References</div>
-    <div class="stat"><span class="stat-value">453</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">3013</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">13</span> Config Files</div>
   </div>
 </header>
@@ -196,7 +196,9 @@
   <button class="tab-btn" data-tab="cat_library">Library (29)</button>
   <button class="tab-btn" data-tab="cat_tool">Tool (5)</button>
   <button class="tab-btn" data-tab="cat_application">Application (4)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
+  <button class="tab-btn" data-tab="implieddeps">Implied Dependencies</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
@@ -617,6 +619,38 @@ graph LR
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        NuGet_CommandLine[&quot;NuGet.CommandLine&quot;]
+        NuGet_PackageManagement_UI_Test[&quot;NuGet.PackageManagement.UI.Test&quot;]
+        NuGet_Packaging_Test[&quot;NuGet.Packaging.Test&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        table_the[(&quot;the&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        url_Aa_nuspec([&quot;Aa.nuspec&quot;])
+    end
+    NuGet_CommandLine ==&gt;|write| table_the
+    table_the -.-&gt;|read| NuGet_PackageManagement_UI_Test
+    url_Aa_nuspec -.-&gt;|consume| NuGet_Packaging_Test
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -628,40 +662,121 @@ graph LR
           </thead>
           <tbody>
             <tr>
-              <td><strong>FileStorage</strong></td>
+              <td><strong>File.Write</strong></td>
               <td><span class="tag tag-config">Storage</span></td>
-              <td>210</td>
-              <td>src, test</td>
+              <td>941</td>
+              <td>Dotnet.Integration.Test, GenerateTestPackages, Microsoft.Build.NuGetSdkResolver.Test, Microsoft.Internal.NuGet.Testing.SignedPackages, Msbuild.Integration.Test, ... +31 more</td>
             </tr>
             <tr>
-              <td><strong>Dapper</strong></td>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>817</td>
+              <td>Dotnet.Integration.Test, Msbuild.Integration.Test, NuGet.CommandLine, NuGet.CommandLine.Test, NuGet.Commands, ... +26 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>531</td>
+              <td>Dotnet.Integration.Test, GenerateLicenseList, GenerateTestPackages, Microsoft.Build.NuGetSdkResolver, Microsoft.Internal.NuGet.Testing.SignedPackages, ... +26 more</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper.Execute</strong></td>
               <td><span class="tag tag-db">Database</span></td>
-              <td>150</td>
-              <td>src, test</td>
+              <td>498</td>
+              <td>Microsoft.Internal.NuGet.Testing.SignedPackages, NuGet.Build.Tasks, NuGet.Build.Tasks.Console, NuGet.Build.Tasks.Pack, NuGet.Build.Tasks.Pack.Test, ... +27 more</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>95</td>
+              <td>API.Test, Microsoft.Internal.NuGet.Testing.SignedPackages, NuGet.CommandLine.Test, NuGet.Common.Test, NuGet.Configuration.Test, ... +11 more</td>
             </tr>
             <tr>
               <td><strong>Repository</strong></td>
               <td><span class="tag tag-config">Pattern</span></td>
               <td>47</td>
-              <td>src, test</td>
+              <td>Microsoft.Internal.NuGet.Testing.SignedPackages, NuGet.CommandLine, NuGet.Commands, NuGet.Commands.Test, NuGet.Configuration, ... +15 more</td>
             </tr>
             <tr>
               <td><strong>HttpClient.New</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>29</td>
-              <td>src, test</td>
+              <td>NuGet.PackageManagement.VisualStudio, NuGet.Packaging, NuGet.Protocol, NuGet.Protocol.FuncTest, NuGet.Protocol.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>19</td>
+              <td>NuGet.CommandLine.Test, NuGet.Commands, NuGet.Configuration, NuGet.Configuration.Test, NuGet.Frameworks, ... +8 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Consumer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>13</td>
+              <td>NuGet.VisualStudio.Common.Test</td>
             </tr>
             <tr>
               <td><strong>IMessageAdapter</strong></td>
               <td><span class="tag tag-config">Connector</span></td>
               <td>11</td>
-              <td>src, test</td>
+              <td>NuGet.Build.Tasks.Console, NuGet.CommandLine, NuGet.Common, NuGet.PackageManagement, NuGet.PackageManagement.UI, ... +2 more</td>
             </tr>
             <tr>
               <td><strong>SqlClient</strong></td>
               <td><span class="tag tag-db">Database</span></td>
               <td>6</td>
-              <td>test</td>
+              <td>NuGet.Resolver.Test</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>2</td>
+              <td>NuGet.Packaging.Test</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Select</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>2</td>
+              <td>NuGet.PackageManagement.UI.Test</td>
+            </tr>
+            <tr>
+              <td><strong>API.Controller</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>WebApplication</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Delete</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>1</td>
+              <td>NuGet.CommandLine</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-implieddeps">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Implied Data Dependencies (1)</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Cross-project dependencies derived through shared data infrastructure.
+        Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>NuGet.CommandLine</strong></td>
+              <td><strong>NuGet.PackageManagement.UI.Test</strong></td>
+              <td>the</td>
+              <td><span class="tag tag-db">database</span></td>
+              <td>writes &#8594; reads</td>
             </tr>
           </tbody>
         </table>
@@ -922,6 +1037,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -994,7 +1166,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_tool': 'mermaid-cat_tool', 'cat_application': 'mermaid-cat_application' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_tool': 'mermaid-cat_tool', 'cat_application': 'mermaid-cat_application', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1045,6 +1217,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

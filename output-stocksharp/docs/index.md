@@ -9,7 +9,7 @@
 | NuGet Packages | 50 |
 | Project References | 200 |
 | Cross-Repo References | 70 |
-| Data Access Findings | 144 |
+| Data Access Findings | 1682 |
 | Config Files | 1 |
 
 ## Project Categories
@@ -186,7 +186,13 @@ graph LR
         StockSharp_Media["Media"]
     end
     subgraph DataSources
+        datasource_StockSharp_Redis_Write[("Redis.Write")]
+        datasource_StockSharp_Redis_Read[("Redis.Read")]
+        datasource_StockSharp_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_StockSharp_MongoDB_Read[("MongoDB.Read")]
         datasource_StockSharp_SqlClient[("SqlClient")]
+        datasource_StockSharp_SQL_CreateTable[("SQL.CreateTable")]
+        datasource_StockSharp_Kafka_Topic[("Kafka.Topic")]
     end
 ```
 

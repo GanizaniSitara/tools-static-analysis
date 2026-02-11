@@ -177,6 +177,63 @@ graph TD
 
 *... and 19 more*
 
+### Redis.Write
+| File | Line | Context |
+|------|------|---------||
+| `Algo/Statistics/SortinoRatioParameter.cs` | 62 | `storage.Set("DownsideSumSq", _downsideSumSq);` |
+| `Algo/Statistics/SortinoRatioParameter.cs` | 63 | `storage.Set("DownsideCount", _downsideCount);` |
+| `Algo/Statistics/ITradeStatisticParameter.cs` | 80 | `.Set("CurrStart", _currStart)` |
+| `Algo/Statistics/ITradeStatisticParameter.cs` | 81 | `.Set("PeriodsCount", _periodsCount)` |
+| `Algo/Statistics/ITradeStatisticParameter.cs` | 82 | `.Set("CurrCount", _currCount)` |
+| `Algo/Statistics/ExpectancyParameter.cs` | 74 | `storage.Set("WinCount", _winCount);` |
+| `Algo/Statistics/ExpectancyParameter.cs` | 75 | `storage.Set("LossCount", _lossCount);` |
+| `Algo/Statistics/ExpectancyParameter.cs` | 76 | `storage.Set("WinSum", _winSum);` |
+| `Algo/Statistics/ExpectancyParameter.cs` | 77 | `storage.Set("LossSum", _lossSum);` |
+| `Algo/Statistics/MaxProfitDateParameter.cs` | 42 | `storage.Set("PrevValue", _prevValue);` |
+| `Algo/Statistics/AverageDrawdownParameter.cs` | 128 | `.Set("MaxEquity", _maxEquity)` |
+| `Algo/Statistics/AverageDrawdownParameter.cs` | 129 | `.Set("DrawdownStart", _drawdownStart)` |
+| `Algo/Statistics/AverageDrawdownParameter.cs` | 130 | `.Set("InDrawdown", _inDrawdown)` |
+| `Algo/Statistics/AverageDrawdownParameter.cs` | 131 | `.Set("MinEquityDuringDrawdown", _minEquityDuringDrawdown)` |
+| `Algo/Statistics/AverageDrawdownParameter.cs` | 132 | `.Set("DrawdownSum", _drawdownSum)` |
+
+*... and 40 more*
+
+### Kafka.Consumer
+| File | Line | Context |
+|------|------|---------||
+| `Algo/TraderHelper.cs` | 810 | `connector.Subscribe(connector.BoardLookup);` |
+| `Algo/TraderHelper.cs` | 811 | `connector.Subscribe(connector.SecurityLookup);` |
+| `Algo/TraderHelper.cs` | 812 | `connector.Subscribe(connector.PortfolioLookup);` |
+| `Algo/TraderHelper.cs` | 813 | `connector.Subscribe(connector.OrderLookup);` |
+| `Algo/Connector_Raise.cs` | 34 | `=> ApplySubscriptionManagerActions(_subscriptionManager.Subscribe(subs` |
+
+### Redis.Read
+| File | Line | Context |
+|------|------|---------||
+| `Algo/Candles/Compression/CandleBuilderManager.cs` | 411 | `BigTimeFrameCompressor = new BiggerTimeFrameCandleCompressor(original,` |
+| `Algo/Candles/Compression/CandleBuilderManager.cs` | 767 | `series.BigTimeFrameCompressor = new BiggerTimeFrameCandleCompressor(or` |
+| `Algo/Candles/Compression/CandleBuilderManager.cs` | 971 | `var builder = _candleBuilderProvider.Get(origin.DataType2.MessageType)` |
+| `Algo/Candles/CandleHelper.cs` | 111 | `return candleBuilderProvider.Get(messageType);` |
+| `Algo/SecurityNativeIdManager.cs` | 79 | `var nativeIds = await _storage.GetAsync(cancellationToken);` |
+| `Algo/Storages/INativeIdStorage.cs` | 113 | `=> _inMemory.GetAsync(cancellationToken);` |
+| `Algo/Storages/INativeIdStorage.cs` | 193 | `var items = await _inMemory.GetAsync(cancellationToken);` |
+| `Algo/Storages/StorageHelper.cs` | 372 | `}, provider.Get(typeof(TimeFrameCandleMessage)), tf.TimeFrame()));` |
+| `Algo/Storages/StorageBuffer.cs` | 93 | `=> _ticksBuffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 100 | `=> _orderLogBuffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 107 | `=> _transactionsBuffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 114 | `=> _candleBuffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 121 | `=> _level1Buffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 128 | `=> _positionChangesBuffer.Get();` |
+| `Algo/Storages/StorageBuffer.cs` | 135 | `=> _orderBooksBuffer.Get();` |
+
+*... and 7 more*
+
+### MongoDB.Read
+| File | Line | Context |
+|------|------|---------||
+| `Algo/Storages/StorageHelper.cs` | 682 | `.Aggregate(folderName, (current, pair) => current.Replace(pair.Key, pa` |
+| `Algo/Storages/StorageHelper.cs` | 705 | `.Aggregate(id, (current, pair) => current.ReplaceIgnoreCase(pair.Value` |
+
 
 ---
 

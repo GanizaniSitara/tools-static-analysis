@@ -1,0 +1,736 @@
+{
+  "dataNodes": [
+    {
+      "id": "url:Aa.nuspec",
+      "name": "Aa.nuspec",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "NuGet.Packaging.Test"
+      ]
+    },
+    {
+      "id": "table:the",
+      "name": "the",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "NuGet.CommandLine"
+      ],
+      "readers": [
+        "NuGet.PackageManagement.UI.Test"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "url:Aa.nuspec",
+      "to": "NuGet.Packaging.Test",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "NuGet.CommandLine",
+      "to": "table:the",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:the",
+      "to": "NuGet.PackageManagement.UI.Test",
+      "direction": "read",
+      "endpointType": "table"
+    }
+  ],
+  "impliedDependencies": [
+    {
+      "from": "NuGet.CommandLine",
+      "to": "NuGet.PackageManagement.UI.Test",
+      "via": "the",
+      "viaType": "database",
+      "viaId": "table:the"
+    }
+  ],
+  "infrastructureGroups": [
+    {
+      "pattern": "API.Controller",
+      "type": "api",
+      "projects": {
+        "WebApplication": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "Dotnet.Integration.Test": {
+          "write": 168
+        },
+        "NuGet.Packaging.FuncTest": {
+          "write": 1
+        },
+        "Msbuild.Integration.Test": {
+          "write": 18
+        },
+        "NuGet.XPlat.FuncTest": {
+          "write": 18
+        },
+        "NuGet.Commands.FuncTest": {
+          "write": 9
+        },
+        "NuGet.MSSigning.Extensions.FuncTest": {
+          "write": 1
+        },
+        "NuGet.CommandLine.FuncTest": {
+          "write": 42
+        },
+        "NuGet.Build.Tasks.Pack.Test": {
+          "write": 4
+        },
+        "Microsoft.Build.NuGetSdkResolver.Test": {
+          "write": 8
+        },
+        "NuGet.CommandLine.Xplat.Tests": {
+          "write": 21
+        },
+        "NuGet.Common.Test": {
+          "write": 24
+        },
+        "NuGet.PackageManagement.Test": {
+          "write": 28
+        },
+        "NuGet.Build.Tasks.Console.Test": {
+          "write": 2
+        },
+        "NuGet.ProjectModel.Test": {
+          "write": 15
+        },
+        "NuGet.Commands.Test": {
+          "write": 156
+        },
+        "NuGet.Packaging.Test": {
+          "write": 48
+        },
+        "NuGet.Protocol.Tests": {
+          "write": 42
+        },
+        "NuGet.Build.Tasks.Test": {
+          "write": 10
+        },
+        "NuGet.Configuration.Test": {
+          "write": 71
+        },
+        "GenerateTestPackages": {
+          "write": 4
+        },
+        "NuGet.SolutionRestoreManager.Test": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "write": 40
+        },
+        "NuGet.CommandLine.Test": {
+          "write": 132
+        },
+        "NuGet.VisualStudio.Common.Test": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.UI.Test": {
+          "write": 4
+        },
+        "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+          "write": 3
+        },
+        "Test.Utility": {
+          "write": 46
+        },
+        "NuGet.Tests.Apex": {
+          "write": 2
+        },
+        "NuGet.CommandLine": {
+          "write": 3
+        },
+        "NuGet.PackageManagement": {
+          "write": 2
+        },
+        "NuGet.Commands": {
+          "write": 2
+        },
+        "NuGet.Packaging": {
+          "write": 10
+        },
+        "NuGet.Protocol": {
+          "write": 1
+        },
+        "NuGet.Configuration": {
+          "write": 1
+        },
+        "NuGet.Common": {
+          "write": 1
+        },
+        "ship-public-apis": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "Dotnet.Integration.Test": {
+          "read": 53
+        },
+        "NuGet.Packaging.FuncTest": {
+          "read": 12
+        },
+        "NuGet.Protocol.FuncTest": {
+          "read": 1
+        },
+        "Msbuild.Integration.Test": {
+          "read": 7
+        },
+        "NuGet.XPlat.FuncTest": {
+          "read": 13
+        },
+        "NuGet.Commands.FuncTest": {
+          "read": 3
+        },
+        "NuGet.CommandLine.FuncTest": {
+          "read": 15
+        },
+        "NuGet.CommandLine.Xplat.Tests": {
+          "read": 8
+        },
+        "NuGet.Common.Test": {
+          "read": 3
+        },
+        "NuGet.PackageManagement.Test": {
+          "read": 6
+        },
+        "NuGet.ProjectModel.Test": {
+          "read": 2
+        },
+        "NuGet.Commands.Test": {
+          "read": 15
+        },
+        "NuGet.Packaging.Test": {
+          "read": 107
+        },
+        "NuGet.Protocol.Tests": {
+          "read": 16
+        },
+        "NuGet.Configuration.Test": {
+          "read": 102
+        },
+        "GenerateTestPackages": {
+          "read": 1
+        },
+        "GenerateLicenseList": {
+          "read": 1
+        },
+        "NuGet.CommandLine.Test": {
+          "read": 110
+        },
+        "NuGet.VisualStudio.Common.Test": {
+          "read": 2
+        },
+        "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+          "read": 1
+        },
+        "Test.Utility": {
+          "read": 14
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "read": 5
+        },
+        "NuGet.CommandLine": {
+          "read": 4
+        },
+        "NuGet.PackageManagement.PowerShellCmdlets": {
+          "read": 1
+        },
+        "NuGet.PackageManagement": {
+          "read": 8
+        },
+        "NuGet.Commands": {
+          "read": 1
+        },
+        "NuGet.ProjectModel": {
+          "read": 2
+        },
+        "NuGet.Packaging": {
+          "read": 7
+        },
+        "Microsoft.Build.NuGetSdkResolver": {
+          "read": 1
+        },
+        "NuGet.Protocol": {
+          "read": 9
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "Dotnet.Integration.Test": {
+          "read": 77
+        },
+        "NuGet.Protocol.FuncTest": {
+          "read": 4
+        },
+        "Msbuild.Integration.Test": {
+          "read": 8
+        },
+        "NuGet.PackageManagement.Test": {
+          "read": 10
+        },
+        "NuGet.Commands.Test": {
+          "read": 43
+        },
+        "NuGet.Credentials.Test": {
+          "read": 50
+        },
+        "NuGet.Packaging.Test": {
+          "read": 4
+        },
+        "NuGet.Protocol.Tests": {
+          "read": 44
+        },
+        "NuGet.SolutionRestoreManager.Test": {
+          "read": 14
+        },
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "read": 75
+        },
+        "NuGet.CommandLine.Test": {
+          "read": 157
+        },
+        "NuGetConsole.Host.PowerShell.Test": {
+          "read": 1
+        },
+        "NuGet.VisualStudio.Common.Test": {
+          "read": 75
+        },
+        "NuGet.VisualStudio.Implementation.Test": {
+          "read": 12
+        },
+        "Test.Utility": {
+          "read": 85
+        },
+        "VisualStudio.Test.Utility": {
+          "read": 4
+        },
+        "NuGet.Tests.Apex": {
+          "read": 1
+        },
+        "NuGet.Indexing": {
+          "read": 1
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "read": 8
+        },
+        "NuGet.CommandLine": {
+          "read": 3
+        },
+        "NuGet.PackageManagement.UI": {
+          "read": 2
+        },
+        "NuGet.Console": {
+          "read": 1
+        },
+        "NuGet.Tools": {
+          "read": 4
+        },
+        "NuGet.VisualStudio.Common": {
+          "read": 1
+        },
+        "NuGet.PackageManagement": {
+          "read": 2
+        },
+        "NuGet.Credentials": {
+          "read": 3
+        },
+        "NuGet.Commands": {
+          "read": 1
+        },
+        "NuGet.Packaging": {
+          "read": 70
+        },
+        "NuGet.Versioning": {
+          "read": 6
+        },
+        "NuGet.Protocol": {
+          "read": 43
+        },
+        "NuGet.Configuration": {
+          "read": 8
+        }
+      }
+    },
+    {
+      "pattern": "Repository",
+      "type": "pattern",
+      "projects": {
+        "NuGet.Packaging.FuncTest": {
+          "both": 3
+        },
+        "NuGet.Protocol.FuncTest": {
+          "both": 1
+        },
+        "NuGet.PackageManagement.Test": {
+          "both": 1
+        },
+        "NuGet.Commands.Test": {
+          "both": 2
+        },
+        "NuGet.Packaging.Test": {
+          "both": 4
+        },
+        "NuGet.Protocol.Tests": {
+          "both": 4
+        },
+        "NuGet.Configuration.Test": {
+          "both": 1
+        },
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "both": 2
+        },
+        "NuGet.VisualStudio.Implementation.Test": {
+          "both": 1
+        },
+        "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+          "both": 1
+        },
+        "Test.Utility": {
+          "both": 1
+        },
+        "NuGet.Tests.Apex": {
+          "both": 2
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "both": 2
+        },
+        "NuGet.CommandLine": {
+          "both": 2
+        },
+        "NuGet.VisualStudio.Implementation": {
+          "both": 1
+        },
+        "NuGet.PackageManagement": {
+          "both": 1
+        },
+        "NuGet.Commands": {
+          "both": 1
+        },
+        "NuGet.Packaging": {
+          "both": 7
+        },
+        "NuGet.Protocol": {
+          "both": 9
+        },
+        "NuGet.Configuration": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "NuGet.Protocol.FuncTest": {
+          "write": 3
+        },
+        "NuGet.XPlat.FuncTest": {
+          "write": 29
+        },
+        "NuGet.Commands.FuncTest": {
+          "write": 132
+        },
+        "NuGet.CommandLine.FuncTest": {
+          "write": 12
+        },
+        "NuGet.Build.Tasks.Pack.Test": {
+          "write": 2
+        },
+        "NuGet.CommandLine.Xplat.Tests": {
+          "write": 1
+        },
+        "NuGet.Commands.Test": {
+          "write": 140
+        },
+        "NuGet.Credentials.Test": {
+          "write": 13
+        },
+        "NuGet.Protocol.Tests": {
+          "write": 3
+        },
+        "NuGet.Build.Tasks.Test": {
+          "write": 72
+        },
+        "NuGet.SolutionRestoreManager.Test": {
+          "write": 2
+        },
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "write": 39
+        },
+        "NuGet.CommandLine.Test": {
+          "write": 5
+        },
+        "NuGet.VisualStudio.Common.Test": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.UI.Test": {
+          "write": 2
+        },
+        "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+          "write": 1
+        },
+        "Test.Utility": {
+          "write": 3
+        },
+        "NuGet.Tests.Apex.Daily": {
+          "write": 8
+        },
+        "NuGet.Tests.Apex": {
+          "write": 1
+        },
+        "NuGet.Console.TestContract": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "write": 3
+        },
+        "NuGet.CommandLine": {
+          "write": 2
+        },
+        "NuGet.SolutionRestoreManager": {
+          "write": 2
+        },
+        "NuGet.PackageManagement.UI": {
+          "write": 4
+        },
+        "NuGet.Console": {
+          "write": 6
+        },
+        "NuGet.Tools": {
+          "write": 2
+        },
+        "NuGet.VisualStudio.Common": {
+          "write": 2
+        },
+        "NuGet.Commands": {
+          "write": 2
+        },
+        "NuGet.Build.Tasks.Console": {
+          "write": 1
+        },
+        "NuGet.CommandLine.XPlat": {
+          "write": 1
+        },
+        "NuGet.Build.Tasks.Pack": {
+          "write": 1
+        },
+        "NuGet.Build.Tasks": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "NuGet.Protocol.FuncTest": {
+          "consume": 5
+        },
+        "NuGet.Protocol.Tests": {
+          "consume": 21
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "consume": 1
+        },
+        "NuGet.Packaging": {
+          "consume": 1
+        },
+        "NuGet.Protocol": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "NuGet.Protocol.FuncTest": {
+          "write": 1
+        },
+        "NuGet.Common.Test": {
+          "write": 6
+        },
+        "NuGet.Packaging.Test": {
+          "write": 1
+        },
+        "NuGet.Protocol.Tests": {
+          "write": 50
+        },
+        "NuGet.Configuration.Test": {
+          "write": 1
+        },
+        "API.Test": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "write": 14
+        },
+        "NuGet.CommandLine.Test": {
+          "write": 2
+        },
+        "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+          "write": 1
+        },
+        "VisualStudio.Test.Utility": {
+          "write": 1
+        },
+        "NuGet.Console.TestContract": {
+          "write": 1
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "write": 3
+        },
+        "NuGet.SolutionRestoreManager": {
+          "write": 6
+        },
+        "NuGet.PackageManagement.UI": {
+          "write": 1
+        },
+        "NuGet.Console": {
+          "write": 4
+        },
+        "NuGet.Protocol": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "NuGet.XPlat.FuncTest": {
+          "read": 1
+        },
+        "NuGet.Configuration.Test": {
+          "read": 1
+        },
+        "NuGet.CommandLine.Test": {
+          "read": 1
+        },
+        "NuGet.Indexing.Test": {
+          "read": 3
+        },
+        "NuGet.VisualStudio.Common.Test": {
+          "read": 1
+        },
+        "NuGet.MSSigning.Extensions": {
+          "read": 1
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "read": 3
+        },
+        "NuGet.PackageManagement.UI": {
+          "read": 1
+        },
+        "NuGet.PackageManagement": {
+          "read": 1
+        },
+        "NuGet.Commands": {
+          "read": 2
+        },
+        "NuGet.Frameworks": {
+          "read": 1
+        },
+        "NuGet.Protocol": {
+          "read": 2
+        },
+        "NuGet.Configuration": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "SqlClient",
+      "type": "database",
+      "projects": {
+        "NuGet.Resolver.Test": {
+          "both": 6
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "NuGet.Packaging.Test": {
+          "consume": 2
+        }
+      }
+    },
+    {
+      "pattern": "IMessageAdapter",
+      "type": "connector",
+      "projects": {
+        "NuGet.PackageManagement.VisualStudio.Test": {
+          "both": 1
+        },
+        "NuGet.PackageManagement.VisualStudio": {
+          "both": 2
+        },
+        "NuGet.CommandLine": {
+          "both": 2
+        },
+        "NuGet.PackageManagement.UI": {
+          "both": 1
+        },
+        "NuGet.PackageManagement": {
+          "both": 1
+        },
+        "NuGet.Build.Tasks.Console": {
+          "both": 3
+        },
+        "NuGet.Common": {
+          "both": 1
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Consumer",
+      "type": "messaging",
+      "projects": {
+        "NuGet.VisualStudio.Common.Test": {
+          "read": 13
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Select",
+      "type": "database",
+      "projects": {
+        "NuGet.PackageManagement.UI.Test": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Delete",
+      "type": "database",
+      "projects": {
+        "NuGet.CommandLine": {
+          "write": 1
+        }
+      }
+    }
+  ]
+}

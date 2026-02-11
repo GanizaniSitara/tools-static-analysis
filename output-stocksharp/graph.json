@@ -1963,6 +1963,60 @@
       "description": "IMessageAdapter in StockSharp (104 occurrences)"
     },
     {
+      "id": "datasource:StockSharp:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "StockSharp",
+      "occurrences": 210,
+      "description": "Redis.Write in StockSharp (210 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "StockSharp",
+      "occurrences": 104,
+      "description": "Redis.Read in StockSharp (104 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:Kafka.Consumer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Consumer",
+      "repo": "StockSharp",
+      "occurrences": 102,
+      "description": "Kafka.Consumer in StockSharp (102 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:MongoDB.Read",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Read",
+      "repo": "StockSharp",
+      "occurrences": 8,
+      "description": "MongoDB.Read in StockSharp (8 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:HttpClient.DeleteAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.DeleteAsync",
+      "repo": "StockSharp",
+      "occurrences": 5,
+      "description": "HttpClient.DeleteAsync in StockSharp (5 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
+      "repo": "StockSharp",
+      "occurrences": 1,
+      "description": "HttpClient.GetAsync in StockSharp (1 occurrences)"
+    },
+    {
       "id": "datasource:StockSharp:SqlClient",
       "type": "datasource",
       "subtype": "database",
@@ -1972,13 +2026,40 @@
       "description": "SqlClient in StockSharp (1 occurrences)"
     },
     {
+      "id": "datasource:StockSharp:SQL.CreateTable",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.CreateTable",
+      "repo": "StockSharp",
+      "occurrences": 1,
+      "description": "SQL.CreateTable in StockSharp (1 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:Kafka.Topic",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Topic",
+      "repo": "StockSharp",
+      "occurrences": 5,
+      "description": "Kafka.Topic in StockSharp (5 occurrences)"
+    },
+    {
       "id": "datasource:StockSharp:WebSocket",
       "type": "datasource",
       "subtype": "api",
       "pattern": "WebSocket",
       "repo": "StockSharp",
-      "occurrences": 26,
-      "description": "WebSocket in StockSharp (26 occurrences)"
+      "occurrences": 9,
+      "description": "WebSocket in StockSharp (9 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:gRPC.Client",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Client",
+      "repo": "StockSharp",
+      "occurrences": 1,
+      "description": "gRPC.Client in StockSharp (1 occurrences)"
     },
     {
       "id": "datasource:StockSharp:gRPC",
@@ -1986,8 +2067,17 @@
       "subtype": "api",
       "pattern": "gRPC",
       "repo": "StockSharp",
-      "occurrences": 10,
-      "description": "gRPC in StockSharp (10 occurrences)"
+      "occurrences": 984,
+      "description": "gRPC in StockSharp (984 occurrences)"
+    },
+    {
+      "id": "datasource:StockSharp:gRPC.Server",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Server",
+      "repo": "StockSharp",
+      "occurrences": 125,
+      "description": "gRPC.Server in StockSharp (125 occurrences)"
     },
     {
       "id": "datasource:StockSharp:HttpClient.New",
@@ -3972,7 +4062,7 @@
     "totalNuGetPackages": 50,
     "totalProjectRefs": 200,
     "totalCrossRepoRefs": 70,
-    "totalDataFindings": 144,
+    "totalDataFindings": 1682,
     "totalConfigFiles": 1,
     "repos": {
       "StockSharp": {

@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">84</span> Projects</div>
     <div class="stat"><span class="stat-value">146</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">142</span> Project References</div>
-    <div class="stat"><span class="stat-value">374</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">1616</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">6</span> Config Files</div>
   </div>
 </header>
@@ -198,7 +198,9 @@
   <button class="tab-btn" data-tab="cat_webapp">WebApp (4)</button>
   <button class="tab-btn" data-tab="cat_connector">Connector (3)</button>
   <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
+  <button class="tab-btn" data-tab="implieddeps">Implied Dependencies</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
 
@@ -634,6 +636,111 @@ graph LR
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        KurrentDB[&quot;KurrentDB&quot;]
+        KurrentDB_Auth_OAuth_Tests[&quot;KurrentDB.Auth.OAuth.Tests&quot;]
+        KurrentDB_Auth_UserCertificates_Tests[&quot;KurrentDB.Auth.UserCertificates.Tests&quot;]
+        KurrentDB_AutoScavenge[&quot;KurrentDB.AutoScavenge&quot;]
+        KurrentDB_AutoScavenge_Tests[&quot;KurrentDB.AutoScavenge.Tests&quot;]
+        KurrentDB_Core[&quot;KurrentDB.Core&quot;]
+        KurrentDB_Core_Tests[&quot;KurrentDB.Core.Tests&quot;]
+        KurrentDB_Core_XUnit_Tests[&quot;KurrentDB.Core.XUnit.Tests&quot;]
+        KurrentDB_Licensing[&quot;KurrentDB.Licensing&quot;]
+        KurrentDB_Licensing_Tests[&quot;KurrentDB.Licensing.Tests&quot;]
+        KurrentDB_SchemaRegistry[&quot;KurrentDB.SchemaRegistry&quot;]
+        KurrentDB_SchemaRegistry_Tests[&quot;KurrentDB.SchemaRegistry.Tests&quot;]
+        KurrentDB_SecondaryIndexing[&quot;KurrentDB.SecondaryIndexing&quot;]
+        KurrentDB_SecondaryIndexing_LoadTesting[&quot;KurrentDB.SecondaryIndexing.LoadTesting&quot;]
+        KurrentDB_SecondaryIndexing_Tests[&quot;KurrentDB.SecondaryIndexing.Tests&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        table_schema_versions[(&quot;schema_versions&quot;)]
+        table_schemas[(&quot;schemas&quot;)]
+        table_idx_all[(&quot;idx_all&quot;)]
+        table_inflight[(&quot;inflight&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        route__test([&quot;/test&quot;])
+        route__my_controller([&quot;/my-controller&quot;])
+        route_protected([&quot;protected&quot;])
+        route_unprotected([&quot;unprotected&quot;])
+        url__ping__([&quot;/ping^\&quot;])
+        url__ping_format_json([&quot;/ping?format=json&quot;])
+        url__ping_format_xml([&quot;/ping?format=xml&quot;])
+        url__ping_format_text([&quot;/ping?format=text&quot;])
+        url__license([&quot;/license&quot;])
+        url__test([&quot;/test&quot;])
+        route__license([&quot;/license&quot;])
+        route__enabled([&quot;/enabled&quot;])
+        route__status([&quot;/status&quot;])
+        route__resume([&quot;/resume&quot;])
+        route__pause([&quot;/pause&quot;])
+        route__configure([&quot;/configure&quot;])
+        route__auto_scavenge([&quot;/auto-scavenge&quot;])
+        url__auto_scavenge_enabled([&quot;/auto-scavenge/enabled&quot;])
+        url__auto_scavenge_status([&quot;/auto-scavenge/status&quot;])
+        url__metrics([&quot;/metrics&quot;])
+        url_https___localhost_2113_health_live([&quot;https://localhost:2113/health/live&quot;])
+        url__streams__all([&quot;/streams/$all&quot;])
+        url__streams_a_stream([&quot;/streams/a-stream&quot;])
+        url__streams__systemstream([&quot;/streams/$systemstream&quot;])
+        route__health([&quot;/health&quot;])
+    end
+    KurrentDB_SchemaRegistry ==&gt;|write| table_schema_versions
+    table_schema_versions -.-&gt;|read| KurrentDB_SchemaRegistry
+    table_schema_versions -.-&gt;|read| KurrentDB_SchemaRegistry_Tests
+    KurrentDB_SchemaRegistry ==&gt;|write| table_schemas
+    table_schemas -.-&gt;|read| KurrentDB_SchemaRegistry
+    table_schemas -.-&gt;|read| KurrentDB_SchemaRegistry_Tests
+    table_idx_all -.-&gt;|read| KurrentDB
+    table_idx_all -.-&gt;|read| KurrentDB_SecondaryIndexing
+    table_idx_all -.-&gt;|read| KurrentDB_SecondaryIndexing_LoadTesting
+    table_idx_all -.-&gt;|read| KurrentDB_SecondaryIndexing_Tests
+    table_inflight -.-&gt;|read| KurrentDB
+    KurrentDB_Auth_UserCertificates_Tests ==&gt;|expose| route__test
+    KurrentDB_Core_Tests ==&gt;|expose| route__test
+    KurrentDB_Core_Tests ==&gt;|expose| route__my_controller
+    KurrentDB_Core_Tests ==&gt;|expose| route_protected
+    KurrentDB_Core_Tests ==&gt;|expose| route_unprotected
+    url__ping__ -.-&gt;|consume| KurrentDB_Core_Tests
+    url__ping_format_json -.-&gt;|consume| KurrentDB_Core_Tests
+    url__ping_format_xml -.-&gt;|consume| KurrentDB_Core_Tests
+    url__ping_format_text -.-&gt;|consume| KurrentDB_Core_Tests
+    url__license -.-&gt;|consume| KurrentDB_Licensing_Tests
+    url__test -.-&gt;|consume| KurrentDB_Auth_UserCertificates_Tests
+    KurrentDB_Licensing ==&gt;|expose| route__license
+    KurrentDB_AutoScavenge ==&gt;|expose| route__enabled
+    KurrentDB_AutoScavenge ==&gt;|expose| route__status
+    KurrentDB_AutoScavenge ==&gt;|expose| route__resume
+    KurrentDB_AutoScavenge ==&gt;|expose| route__pause
+    KurrentDB_AutoScavenge ==&gt;|expose| route__configure
+    KurrentDB_AutoScavenge ==&gt;|expose| route__auto_scavenge
+    url__auto_scavenge_enabled -.-&gt;|consume| KurrentDB_AutoScavenge_Tests
+    url__auto_scavenge_status -.-&gt;|consume| KurrentDB_AutoScavenge_Tests
+    url__metrics -.-&gt;|consume| KurrentDB_Core_XUnit_Tests
+    url_https___localhost_2113_health_live -.-&gt;|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams__all -.-&gt;|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams_a_stream -.-&gt;|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams__systemstream -.-&gt;|consume| KurrentDB_Auth_OAuth_Tests
+    KurrentDB_Core ==&gt;|expose| route__health
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -645,52 +752,212 @@ graph LR
           </thead>
           <tbody>
             <tr>
+              <td><strong>Kafka.Consumer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>350</td>
+              <td>KurrentDB, KurrentDB.Auth.StreamPolicyPlugin.Tests, KurrentDB.Connectors, KurrentDB.Connectors.Tests, KurrentDB.Core, ... +18 more</td>
+            </tr>
+            <tr>
               <td><strong>gRPC</strong></td>
               <td><span class="tag tag-api">Api</span></td>
-              <td>130</td>
-              <td>src</td>
+              <td>273</td>
+              <td>KurrentDB.Api.V2, KurrentDB.Api.V2.Tests, KurrentDB.Connectors, KurrentDB.Connectors.Tests, KurrentDB.Core, ... +13 more</td>
             </tr>
             <tr>
-              <td><strong>FileStorage</strong></td>
+              <td><strong>gRPC.Server</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>168</td>
+              <td>KurrentDB.Api.V2, KurrentDB.Connectors, KurrentDB.Core, KurrentDB.Core.XUnit.Tests, KurrentDB.OtlpExporterPlugin.Tests, ... +3 more</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>163</td>
+              <td>KurrentDB.Auth.StreamPolicyPlugin.Tests, KurrentDB.Core, KurrentDB.Core.Tests, KurrentDB.Core.XUnit.Tests, KurrentDB.Projections.Core.Tests, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>121</td>
+              <td>KurrentDB.Api.V2, KurrentDB.Api.V2.Tests, KurrentDB.Auth.OAuth.Tests, KurrentDB.Auth.UserCertificates.Tests, KurrentDB.AutoScavenge, ... +15 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Write</strong></td>
               <td><span class="tag tag-config">Storage</span></td>
-              <td>75</td>
-              <td>src</td>
+              <td>114</td>
+              <td>KurrentDB.Common, KurrentDB.Core, KurrentDB.Core.Tests</td>
             </tr>
             <tr>
-              <td><strong>Dapper</strong></td>
+              <td><strong>Dapper.Execute</strong></td>
               <td><span class="tag tag-db">Database</span></td>
-              <td>66</td>
-              <td>src</td>
+              <td>85</td>
+              <td>KurrentDB.Api.V2, KurrentDB.Api.V2.Tests, KurrentDB.Auth.OAuth.Tests, KurrentDB.Connectors, KurrentDB.Core, ... +11 more</td>
             </tr>
             <tr>
               <td><strong>ConnectionString</strong></td>
               <td><span class="tag tag-config">Config</span></td>
               <td>61</td>
-              <td>src</td>
+              <td>KurrentDB.Connectors, KurrentDB.Core, KurrentDB.Core.Tests, KurrentDB.Core.XUnit.Tests, KurrentDB.SecondaryIndexing.LoadTesting, ... +1 more</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>46</td>
+              <td>KurrentDB, KurrentDB.Api.V2, KurrentDB.Api.V2.Tests, KurrentDB.AutoScavenge, KurrentDB.Common, ... +8 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>33</td>
+              <td>KurrentDB.Connectors, KurrentDB.Core, KurrentDB.Core.Tests, KurrentDB.Core.XUnit.Tests, KurrentDB.Plugins, ... +4 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Producer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>32</td>
+              <td>KurrentDB.Connectors, KurrentDB.Connectors.Tests, KurrentDB.Core, KurrentDB.SchemaRegistry, KurrentDB.Surge, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Topic</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>31</td>
+              <td>KurrentDB.Connectors, KurrentDB.Core, KurrentDB.Core.Tests, KurrentDB.SchemaRegistry, KurrentDB.Surge.Testing</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Select</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>31</td>
+              <td>KurrentDB, KurrentDB.SchemaRegistry, KurrentDB.SchemaRegistry.Tests, KurrentDB.SecondaryIndexing, KurrentDB.SecondaryIndexing.LoadTesting, ... +1 more</td>
             </tr>
             <tr>
               <td><strong>HttpClient.New</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>25</td>
-              <td>src</td>
+              <td>KurrentDB.Auth.OAuth, KurrentDB.Auth.OAuth.Tests, KurrentDB.Auth.UserCertificates.Tests, KurrentDB.Core, KurrentDB.Core.Testing, ... +5 more</td>
             </tr>
             <tr>
-              <td><strong>Kafka</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>19</td>
+              <td>KurrentDB.Auth.OAuth.Tests, KurrentDB.Auth.UserCertificates.Tests, KurrentDB.AutoScavenge.Tests, KurrentDB.Core.Tests, KurrentDB.Core.XUnit.Tests, ... +1 more</td>
+            </tr>
+            <tr>
+              <td><strong>gRPC.Client</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>11</td>
+              <td>KurrentDB.Core, KurrentDB.Core.Tests, KurrentDB.Projections.Core.Tests, KurrentDB.Testing.ClusterVNodeApp</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.CreateTable</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
               <td>10</td>
-              <td>src</td>
+              <td>KurrentDB.Core, KurrentDB.SchemaRegistry, KurrentDB.SecondaryIndexing</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper.Query</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>6</td>
+              <td>KurrentDB, KurrentDB.SchemaRegistry, KurrentDB.SecondaryIndexing.LoadTesting, KurrentDB.SecondaryIndexing.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Write</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>6</td>
+              <td>KurrentDB.Core, KurrentDB.Core.XUnit.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>5</td>
+              <td>KurrentDB.Auth.UserCertificates.Tests, KurrentDB.AutoScavenge, KurrentDB.Core.Tests, KurrentDB.Licensing</td>
             </tr>
             <tr>
               <td><strong>IMessageAdapter</strong></td>
               <td><span class="tag tag-config">Connector</span></td>
               <td>4</td>
-              <td>src</td>
+              <td>KurrentDB.Transport.Http</td>
             </tr>
             <tr>
-              <td><strong>RabbitMQ</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td><strong>HttpClient.PostAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>4</td>
+              <td>KurrentDB.Auth.OAuth.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.Route</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
               <td>3</td>
-              <td>src</td>
+              <td>KurrentDB.Core.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapPost</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>3</td>
+              <td>KurrentDB.AutoScavenge</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGroup</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>3</td>
+              <td>KurrentDB.AutoScavenge, KurrentDB.Core</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Insert</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>3</td>
+              <td>KurrentDB.SchemaRegistry</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Delete</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>3</td>
+              <td>KurrentDB.SchemaRegistry</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>2</td>
+              <td>KurrentDB.Core.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>API.Controller</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>KurrentDB.Core.Tests</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-implieddeps">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Implied Data Dependencies (2)</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Cross-project dependencies derived through shared data infrastructure.
+        Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>KurrentDB.SchemaRegistry</strong></td>
+              <td><strong>KurrentDB.SchemaRegistry.Tests</strong></td>
+              <td>schema_versions</td>
+              <td><span class="tag tag-db">database</span></td>
+              <td>writes &#8594; reads</td>
+            </tr>
+            <tr>
+              <td><strong>KurrentDB.SchemaRegistry</strong></td>
+              <td><strong>KurrentDB.SchemaRegistry.Tests</strong></td>
+              <td>schemas</td>
+              <td><span class="tag tag-db">database</span></td>
+              <td>writes &#8594; reads</td>
             </tr>
           </tbody>
         </table>
@@ -930,6 +1197,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -1002,7 +1326,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1053,6 +1377,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

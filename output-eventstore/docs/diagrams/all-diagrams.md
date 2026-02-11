@@ -332,10 +332,113 @@ graph LR
         src_KurrentDB["KurrentDB"]
     end
     subgraph DataSources
-        datasource_src_Dapper[("Dapper")]
-        datasource_src_Kafka[("Kafka")]
-        datasource_src_RabbitMQ[("RabbitMQ")]
+        datasource_src_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_src_Redis_Read[("Redis.Read")]
+        datasource_src_Redis_Write[("Redis.Write")]
+        datasource_src_Kafka_Topic[("Kafka.Topic")]
+        datasource_src_Dapper_Execute[("Dapper.Execute")]
+        datasource_src_MongoDB_Read[("MongoDB.Read")]
+        datasource_src_Kafka_Producer[("Kafka.Producer")]
+        datasource_src_SQL_CreateTable[("SQL.CreateTable")]
+        datasource_src_SQL_Select[("SQL.Select")]
+        datasource_src_SQL_Insert[("SQL.Insert")]
+        datasource_src_SQL_Delete[("SQL.Delete")]
+        datasource_src_Dapper_Query[("Dapper.Query")]
+        datasource_src_MongoDB_Write[("MongoDB.Write")]
     end
+```
+
+## data flow
+
+```mermaid
+graph LR
+    subgraph Projects["Services & Projects"]
+        KurrentDB["KurrentDB"]
+        KurrentDB_Auth_OAuth_Tests["KurrentDB.Auth.OAuth.Tests"]
+        KurrentDB_Auth_UserCertificates_Tests["KurrentDB.Auth.UserCertificates.Tests"]
+        KurrentDB_AutoScavenge["KurrentDB.AutoScavenge"]
+        KurrentDB_AutoScavenge_Tests["KurrentDB.AutoScavenge.Tests"]
+        KurrentDB_Core["KurrentDB.Core"]
+        KurrentDB_Core_Tests["KurrentDB.Core.Tests"]
+        KurrentDB_Core_XUnit_Tests["KurrentDB.Core.XUnit.Tests"]
+        KurrentDB_Licensing["KurrentDB.Licensing"]
+        KurrentDB_Licensing_Tests["KurrentDB.Licensing.Tests"]
+        KurrentDB_SchemaRegistry["KurrentDB.SchemaRegistry"]
+        KurrentDB_SchemaRegistry_Tests["KurrentDB.SchemaRegistry.Tests"]
+        KurrentDB_SecondaryIndexing["KurrentDB.SecondaryIndexing"]
+        KurrentDB_SecondaryIndexing_LoadTesting["KurrentDB.SecondaryIndexing.LoadTesting"]
+        KurrentDB_SecondaryIndexing_Tests["KurrentDB.SecondaryIndexing.Tests"]
+    end
+    subgraph Database["Database / Storage"]
+        table_schema_versions[("schema_versions")]
+        table_schemas[("schemas")]
+        table_idx_all[("idx_all")]
+        table_inflight[("inflight")]
+    end
+    subgraph APIs["API Routes"]
+        route__test(["/test"])
+        route__my_controller(["/my-controller"])
+        route_protected(["protected"])
+        route_unprotected(["unprotected"])
+        url__ping__(["/ping^\"])
+        url__ping_format_json(["/ping?format=json"])
+        url__ping_format_xml(["/ping?format=xml"])
+        url__ping_format_text(["/ping?format=text"])
+        url__license(["/license"])
+        url__test(["/test"])
+        route__license(["/license"])
+        route__enabled(["/enabled"])
+        route__status(["/status"])
+        route__resume(["/resume"])
+        route__pause(["/pause"])
+        route__configure(["/configure"])
+        route__auto_scavenge(["/auto-scavenge"])
+        url__auto_scavenge_enabled(["/auto-scavenge/enabled"])
+        url__auto_scavenge_status(["/auto-scavenge/status"])
+        url__metrics(["/metrics"])
+        url_https___localhost_2113_health_live(["https://localhost:2113/health/live"])
+        url__streams__all(["/streams/$all"])
+        url__streams_a_stream(["/streams/a-stream"])
+        url__streams__systemstream(["/streams/$systemstream"])
+        route__health(["/health"])
+    end
+    KurrentDB_SchemaRegistry ==>|write| table_schema_versions
+    table_schema_versions -.->|read| KurrentDB_SchemaRegistry
+    table_schema_versions -.->|read| KurrentDB_SchemaRegistry_Tests
+    KurrentDB_SchemaRegistry ==>|write| table_schemas
+    table_schemas -.->|read| KurrentDB_SchemaRegistry
+    table_schemas -.->|read| KurrentDB_SchemaRegistry_Tests
+    table_idx_all -.->|read| KurrentDB
+    table_idx_all -.->|read| KurrentDB_SecondaryIndexing
+    table_idx_all -.->|read| KurrentDB_SecondaryIndexing_LoadTesting
+    table_idx_all -.->|read| KurrentDB_SecondaryIndexing_Tests
+    table_inflight -.->|read| KurrentDB
+    KurrentDB_Auth_UserCertificates_Tests ==>|expose| route__test
+    KurrentDB_Core_Tests ==>|expose| route__test
+    KurrentDB_Core_Tests ==>|expose| route__my_controller
+    KurrentDB_Core_Tests ==>|expose| route_protected
+    KurrentDB_Core_Tests ==>|expose| route_unprotected
+    url__ping__ -.->|consume| KurrentDB_Core_Tests
+    url__ping_format_json -.->|consume| KurrentDB_Core_Tests
+    url__ping_format_xml -.->|consume| KurrentDB_Core_Tests
+    url__ping_format_text -.->|consume| KurrentDB_Core_Tests
+    url__license -.->|consume| KurrentDB_Licensing_Tests
+    url__test -.->|consume| KurrentDB_Auth_UserCertificates_Tests
+    KurrentDB_Licensing ==>|expose| route__license
+    KurrentDB_AutoScavenge ==>|expose| route__enabled
+    KurrentDB_AutoScavenge ==>|expose| route__status
+    KurrentDB_AutoScavenge ==>|expose| route__resume
+    KurrentDB_AutoScavenge ==>|expose| route__pause
+    KurrentDB_AutoScavenge ==>|expose| route__configure
+    KurrentDB_AutoScavenge ==>|expose| route__auto_scavenge
+    url__auto_scavenge_enabled -.->|consume| KurrentDB_AutoScavenge_Tests
+    url__auto_scavenge_status -.->|consume| KurrentDB_AutoScavenge_Tests
+    url__metrics -.->|consume| KurrentDB_Core_XUnit_Tests
+    url_https___localhost_2113_health_live -.->|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams__all -.->|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams_a_stream -.->|consume| KurrentDB_Auth_OAuth_Tests
+    url__streams__systemstream -.->|consume| KurrentDB_Auth_OAuth_Tests
+    KurrentDB_Core ==>|expose| route__health
 ```
 
 ## nuget groups

@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">24</span> Projects</div>
     <div class="stat"><span class="stat-value">69</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">46</span> Project References</div>
-    <div class="stat"><span class="stat-value">77</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">267</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">31</span> Config Files</div>
     <div class="stat"><span class="stat-value">2</span> Repos (src, tests)</div>
   </div>
@@ -199,6 +199,7 @@
   <button class="tab-btn" data-tab="cat_application">Application (2)</button>
   <button class="tab-btn" data-tab="cat_service">Service (2)</button>
   <button class="tab-btn" data-tab="cat_tool">Tool (2)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
@@ -252,7 +253,7 @@ graph LR
       <div class="mermaid-wrap" id="mermaid-cat_webapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph webapp[&quot;Webapp&quot;]
         src_WebApp[&quot;WebApp&quot;]
         src_Identity_API[&quot;Identity.API&quot;]
@@ -310,7 +311,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph library[&quot;Library&quot;]
         src_Ordering_Domain[&quot;Ordering.Domain&quot;]
         src_Ordering_Infrastructure[&quot;Ordering.Infrastructure&quot;]
@@ -349,7 +350,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_test">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph test[&quot;Test&quot;]
         tests_Ordering_UnitTests[&quot;Ordering.UnitTests&quot;]
         tests_Ordering_FunctionalTests[&quot;Ordering.FunctionalTests&quot;]
@@ -384,7 +385,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_application">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph application[&quot;Application&quot;]
         src_eShop_AppHost[&quot;eShop.AppHost&quot;]
         src_HybridApp[&quot;HybridApp&quot;]
@@ -413,7 +414,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_service">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph service[&quot;Service&quot;]
         src_OrderProcessor[&quot;OrderProcessor&quot;]
         src_eShop_ServiceDefaults[&quot;eShop.ServiceDefaults&quot;]
@@ -444,7 +445,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph tool[&quot;Tool&quot;]
         src_ClientApp[&quot;ClientApp&quot;]
         src_WebhookClient[&quot;WebhookClient&quot;]
@@ -455,6 +456,101 @@ graph TD
     ext_application -.-&gt; src_WebhookClient
     src_WebhookClient -.-&gt; ext_service
     ext_test -.-&gt; src_ClientApp
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        Catalog_API[&quot;Catalog.API&quot;]
+        Ordering_API[&quot;Ordering.API&quot;]
+        Ordering_Infrastructure[&quot;Ordering.Infrastructure&quot;]
+        WebhookClient[&quot;WebhookClient&quot;]
+        Webhooks_API[&quot;Webhooks.API&quot;]
+        eShop_ServiceDefaults[&quot;eShop.ServiceDefaults&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        entity_CatalogItem[(&quot;CatalogItem&quot;)]
+        entity_CatalogBrand[(&quot;CatalogBrand&quot;)]
+        entity_CatalogType[(&quot;CatalogType&quot;)]
+        entity_Order[(&quot;Order&quot;)]
+        entity_OrderItem[(&quot;OrderItem&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        route__([&quot;/&quot;])
+        route__items([&quot;/items&quot;])
+        route__items_by([&quot;/items/by&quot;])
+        route__items__id_int_([&quot;/items/{id:int}&quot;])
+        route__items_by__name_minlength_1__([&quot;/items/by/{name:minlength(1)}&quot;])
+        route__items__id_int__pic([&quot;/items/{id:int}/pic&quot;])
+        route__items_withsemanticrelevance__text_minlength_1__([&quot;/items/withsemanticrelevance/{text:minlength(1)}&quot;])
+        route__items_withsemanticrelevance([&quot;/items/withsemanticrelevance&quot;])
+        route__items_type__typeId__brand__brandId__([&quot;/items/type/{typeId}/brand/{brandId?}&quot;])
+        route__items_type_all_brand__brandId_int__([&quot;/items/type/all/brand/{brandId:int?}&quot;])
+        route__catalogtypes([&quot;/catalogtypes&quot;])
+        route__catalogbrands([&quot;/catalogbrands&quot;])
+        route_api_catalog([&quot;api/catalog&quot;])
+        route__orderId_int_([&quot;{orderId:int}&quot;])
+        route__cardtypes([&quot;/cardtypes&quot;])
+        route__draft([&quot;/draft&quot;])
+        route__cancel([&quot;/cancel&quot;])
+        route__ship([&quot;/ship&quot;])
+        route_api_orders([&quot;api/orders&quot;])
+        route___id_int_([&quot;/{id:int}&quot;])
+        route__api_webhooks([&quot;/api/webhooks&quot;])
+        route__webhook_received([&quot;/webhook-received&quot;])
+        route__logout([&quot;/logout&quot;])
+        url__api_webhooks([&quot;/api/webhooks&quot;])
+    end
+    Catalog_API ==&gt;|write| entity_CatalogItem
+    entity_CatalogItem -.-&gt;|read| Catalog_API
+    Catalog_API ==&gt;|write| entity_CatalogBrand
+    entity_CatalogBrand -.-&gt;|read| Catalog_API
+    Catalog_API ==&gt;|write| entity_CatalogType
+    entity_CatalogType -.-&gt;|read| Catalog_API
+    Ordering_Infrastructure ==&gt;|write| entity_Order
+    entity_Order -.-&gt;|read| Ordering_Infrastructure
+    Ordering_Infrastructure ==&gt;|write| entity_OrderItem
+    entity_OrderItem -.-&gt;|read| Ordering_Infrastructure
+    Ordering_API ==&gt;|expose| route__
+    Webhooks_API ==&gt;|expose| route__
+    eShop_ServiceDefaults ==&gt;|expose| route__
+    Catalog_API ==&gt;|expose| route__items
+    Catalog_API ==&gt;|expose| route__items_by
+    Catalog_API ==&gt;|expose| route__items__id_int_
+    Catalog_API ==&gt;|expose| route__items_by__name_minlength_1__
+    Catalog_API ==&gt;|expose| route__items__id_int__pic
+    Catalog_API ==&gt;|expose| route__items_withsemanticrelevance__text_minlength_1__
+    Catalog_API ==&gt;|expose| route__items_withsemanticrelevance
+    Catalog_API ==&gt;|expose| route__items_type__typeId__brand__brandId__
+    Catalog_API ==&gt;|expose| route__items_type_all_brand__brandId_int__
+    Catalog_API ==&gt;|expose| route__catalogtypes
+    Catalog_API ==&gt;|expose| route__catalogbrands
+    Catalog_API ==&gt;|expose| route_api_catalog
+    Ordering_API ==&gt;|expose| route__orderId_int_
+    Ordering_API ==&gt;|expose| route__cardtypes
+    Ordering_API ==&gt;|expose| route__draft
+    Ordering_API ==&gt;|expose| route__cancel
+    Ordering_API ==&gt;|expose| route__ship
+    Ordering_API ==&gt;|expose| route_api_orders
+    Webhooks_API ==&gt;|expose| route___id_int_
+    Webhooks_API ==&gt;|expose| route__api_webhooks
+    WebhookClient ==&gt;|expose| route__webhook_received
+    WebhookClient ==&gt;|expose| route__logout
+    url__api_webhooks -.-&gt;|consume| WebhookClient
         </pre>
       </div>
     </div>
@@ -471,10 +567,34 @@ graph TD
           </thead>
           <tbody>
             <tr>
-              <td><strong>RabbitMQ</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
-              <td>29</td>
-              <td>EventBusRabbitMQ, eShop.AppHost</td>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>57</td>
+              <td>Catalog.FunctionalTests, ClientApp, Ordering.API, Ordering.FunctionalTests, Ordering.UnitTests</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>23</td>
+              <td>Catalog.FunctionalTests, Ordering.FunctionalTests</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>18</td>
+              <td>Catalog.API, Ordering.API, Webhooks.API, eShop.ServiceDefaults</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>18</td>
+              <td>ClientApp</td>
+            </tr>
+            <tr>
+              <td><strong>gRPC</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>17</td>
+              <td>Basket.API, Basket.UnitTests, ClientApp, WebApp</td>
             </tr>
             <tr>
               <td><strong>ConnectionString</strong></td>
@@ -483,16 +603,76 @@ graph TD
               <td>Catalog.API, Catalog.FunctionalTests, Ordering.API, Ordering.FunctionalTests, WebApp, ... +1 more</td>
             </tr>
             <tr>
+              <td><strong>gRPC.Server</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>14</td>
+              <td>Basket.API, Basket.UnitTests</td>
+            </tr>
+            <tr>
               <td><strong>DbContext</strong></td>
               <td><span class="tag tag-db">Database</span></td>
               <td>11</td>
               <td>Catalog.API, IntegrationEventLogEF, Ordering.Infrastructure, Shared, Webhooks.API</td>
             </tr>
             <tr>
-              <td><strong>gRPC</strong></td>
+              <td><strong>Dapper.Execute</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>10</td>
+              <td>Catalog.API, ClientApp, ClientApp.UnitTests, EventBusRabbitMQ, IntegrationEventLogEF, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>DbSet</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>9</td>
+              <td>Catalog.API, Ordering.Infrastructure, Webhooks.API</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpGet</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>8</td>
+              <td>Identity.API</td>
+            </tr>
+            <tr>
+              <td><strong>API.Controller</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>7</td>
+              <td>Identity.API</td>
+            </tr>
+            <tr>
+              <td><strong>API.HttpPost</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>6</td>
-              <td>Basket.API, Basket.UnitTests, ClientApp, WebApp</td>
+              <td>Identity.API</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>6</td>
+              <td>Catalog.API, Ordering.API, Ordering.Domain, Ordering.Infrastructure</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapPost</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>6</td>
+              <td>Catalog.API, Ordering.API, WebhookClient, Webhooks.API</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.PostAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>6</td>
+              <td>Catalog.FunctionalTests, Ordering.FunctionalTests, WebhookClient</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.PutAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>6</td>
+              <td>Catalog.FunctionalTests, Ordering.FunctionalTests</td>
+            </tr>
+            <tr>
+              <td><strong>API.MapGroup</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>5</td>
+              <td>Catalog.API, Ordering.API, Webhooks.API</td>
             </tr>
             <tr>
               <td><strong>HttpClient.Injection</strong></td>
@@ -501,16 +681,22 @@ graph TD
               <td>HybridApp, WebApp, WebhookClient</td>
             </tr>
             <tr>
+              <td><strong>API.MapPut</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>4</td>
+              <td>Catalog.API, Ordering.API</td>
+            </tr>
+            <tr>
               <td><strong>Repository</strong></td>
               <td><span class="tag tag-config">Pattern</span></td>
               <td>4</td>
               <td>Basket.API, Ordering.Infrastructure, WebhookClient</td>
             </tr>
             <tr>
-              <td><strong>Dapper</strong></td>
-              <td><span class="tag tag-db">Database</span></td>
+              <td><strong>RabbitMQ</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
               <td>4</td>
-              <td>ClientApp, ClientApp.UnitTests, EventBusRabbitMQ</td>
+              <td>EventBusRabbitMQ</td>
             </tr>
             <tr>
               <td><strong>EntityFramework</strong></td>
@@ -519,13 +705,37 @@ graph TD
               <td>Catalog.API, Ordering.API</td>
             </tr>
             <tr>
+              <td><strong>API.MapDelete</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>2</td>
+              <td>Catalog.API, Webhooks.API</td>
+            </tr>
+            <tr>
               <td><strong>Redis</strong></td>
               <td><span class="tag tag-cache">Cache</span></td>
               <td>2</td>
               <td>Basket.API</td>
             </tr>
             <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>1</td>
+              <td>Catalog.API</td>
+            </tr>
+            <tr>
+              <td><strong>SQL.Insert</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>1</td>
+              <td>Ordering.Infrastructure</td>
+            </tr>
+            <tr>
               <td><strong>HttpClient.New</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>1</td>
+              <td>ClientApp</td>
+            </tr>
+            <tr>
+              <td><strong>gRPC.Client</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>1</td>
               <td>ClientApp</td>
@@ -535,6 +745,7 @@ graph TD
       </div>
     </div>
   </section>
+
 
 
   <section class="tab-panel" id="panel-connstrings">
@@ -837,6 +1048,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -909,7 +1177,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_webapp': 'mermaid-cat_webapp', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_service': 'mermaid-cat_service', 'cat_tool': 'mermaid-cat_tool' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_webapp': 'mermaid-cat_webapp', 'cat_library': 'mermaid-cat_library', 'cat_test': 'mermaid-cat_test', 'cat_application': 'mermaid-cat_application', 'cat_service': 'mermaid-cat_service', 'cat_tool': 'mermaid-cat_tool', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -960,6 +1228,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

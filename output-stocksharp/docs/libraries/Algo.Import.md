@@ -28,6 +28,12 @@ graph TD
 ## Consumed By
 - Tests
 
+## Data Access Patterns
+### Redis.Read
+| File | Line | Context |
+|------|------|---------||
+| `Algo.Import/ImportSettings.cs` | 392 | `ExtendedStorage = AsyncHelper.Run(() => eis.GetAsync(extendedStorage, ` |
+
 
 ---
 

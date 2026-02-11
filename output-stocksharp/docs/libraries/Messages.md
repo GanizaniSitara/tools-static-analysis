@@ -62,6 +62,25 @@ graph TD
 | Ecng.Linq | 1.0.* |
 
 ## Data Access Patterns
+### Redis.Write
+| File | Line | Context |
+|------|------|---------||
+| `Messages/WorkingTimePeriod.cs` | 92 | `.Set("Day", p.Key)` |
+| `Messages/WorkingTimePeriod.cs` | 93 | `.Set("Periods", p.Value.Select(r => r.ToStorage()).ToArray())` |
+| `Messages/MessageAdapter.cs` | 812 | `.Set(nameof(Id), Id)` |
+| `Messages/MessageAdapter.cs` | 813 | `.Set(nameof(HeartbeatInterval), HeartbeatInterval)` |
+| `Messages/MessageAdapter.cs` | 814 | `.Set(nameof(SupportedInMessages), Do.Invariant(() => SupportedInMessag` |
+| `Messages/MessageAdapter.cs` | 815 | `.Set(nameof(ReConnectionSettings), ReConnectionSettings.Save())` |
+| `Messages/MessageAdapter.cs` | 816 | `.Set(nameof(EnqueueSubscriptions), EnqueueSubscriptions)` |
+| `Messages/MessageAdapter.cs` | 817 | `.Set(nameof(IterationInterval), IterationInterval)` |
+| `Messages/MessageAdapter.cs` | 818 | `.Set(nameof(MaxParallelMessages), MaxParallelMessages)` |
+| `Messages/MessageAdapter.cs` | 819 | `.Set(nameof(FaultDelay), FaultDelay)` |
+| `Messages/AsyncMessageChannel.cs` | 102 | `_processMessageEvt.Set();` |
+| `Messages/AsyncMessageChannel.cs` | 179 | `_processMessageEvt.Set();` |
+| `Messages/AsyncMessageChannel.cs` | 344 | `_processMessageEvt.Set();` |
+| `Messages/WorkingTime.cs` | 169 | `.Set("Day", p.Key)` |
+| `Messages/WorkingTime.cs` | 170 | `.Set("Periods", p.Value.Select(p1 => p1.ToStorage()).ToArray())` |
+
 ### IMessageAdapter
 | File | Line | Context |
 |------|------|---------||

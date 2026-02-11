@@ -1917,6 +1917,33 @@
       "description": "NuGet: Drop.App ($(DropAppVersion))"
     },
     {
+      "id": "datasource:NuGet.Client:API.Controller",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Controller",
+      "repo": "NuGet.Client",
+      "occurrences": 1,
+      "description": "API.Controller in NuGet.Client (1 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "NuGet.Client",
+      "occurrences": 817,
+      "description": "Redis.Read in NuGet.Client (817 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "NuGet.Client",
+      "occurrences": 498,
+      "description": "Dapper.Execute in NuGet.Client (498 occurrences)"
+    },
+    {
       "id": "datasource:NuGet.Client:HttpClient.New",
       "type": "datasource",
       "subtype": "api",
@@ -1926,13 +1953,22 @@
       "description": "HttpClient.New in NuGet.Client (29 occurrences)"
     },
     {
-      "id": "datasource:NuGet.Client:Dapper",
+      "id": "datasource:NuGet.Client:Redis.Write",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
+      "repo": "NuGet.Client",
+      "occurrences": 95,
+      "description": "Redis.Write in NuGet.Client (95 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:MongoDB.Read",
       "type": "datasource",
       "subtype": "database",
-      "pattern": "Dapper",
+      "pattern": "MongoDB.Read",
       "repo": "NuGet.Client",
-      "occurrences": 150,
-      "description": "Dapper in NuGet.Client (150 occurrences)"
+      "occurrences": 19,
+      "description": "MongoDB.Read in NuGet.Client (19 occurrences)"
     },
     {
       "id": "datasource:NuGet.Client:SqlClient",
@@ -1944,6 +1980,15 @@
       "description": "SqlClient in NuGet.Client (6 occurrences)"
     },
     {
+      "id": "datasource:NuGet.Client:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
+      "repo": "NuGet.Client",
+      "occurrences": 2,
+      "description": "HttpClient.GetAsync in NuGet.Client (2 occurrences)"
+    },
+    {
       "id": "datasource:NuGet.Client:IMessageAdapter",
       "type": "datasource",
       "subtype": "connector",
@@ -1951,6 +1996,33 @@
       "repo": "NuGet.Client",
       "occurrences": 11,
       "description": "IMessageAdapter in NuGet.Client (11 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:Kafka.Consumer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Consumer",
+      "repo": "NuGet.Client",
+      "occurrences": 13,
+      "description": "Kafka.Consumer in NuGet.Client (13 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:SQL.Select",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "NuGet.Client",
+      "occurrences": 2,
+      "description": "SQL.Select in NuGet.Client (2 occurrences)"
+    },
+    {
+      "id": "datasource:NuGet.Client:SQL.Delete",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Delete",
+      "repo": "NuGet.Client",
+      "occurrences": 1,
+      "description": "SQL.Delete in NuGet.Client (1 occurrences)"
     }
   ],
   "edges": [
@@ -3896,7 +3968,7 @@
     "totalNuGetPackages": 76,
     "totalProjectRefs": 213,
     "totalCrossRepoRefs": 0,
-    "totalDataFindings": 453,
+    "totalDataFindings": 3013,
     "totalConfigFiles": 13,
     "repos": {
       "NuGet.Client": {

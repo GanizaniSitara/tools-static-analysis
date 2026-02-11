@@ -1,0 +1,78 @@
+graph LR
+    subgraph Projects["Services & Projects"]
+        Catalog_API["Catalog.API"]
+        Ordering_API["Ordering.API"]
+        Ordering_Infrastructure["Ordering.Infrastructure"]
+        WebhookClient["WebhookClient"]
+        Webhooks_API["Webhooks.API"]
+        eShop_ServiceDefaults["eShop.ServiceDefaults"]
+    end
+    subgraph Database["Database / Storage"]
+        entity_CatalogItem[("CatalogItem")]
+        entity_CatalogBrand[("CatalogBrand")]
+        entity_CatalogType[("CatalogType")]
+        entity_Order[("Order")]
+        entity_OrderItem[("OrderItem")]
+    end
+    subgraph APIs["API Routes"]
+        route__(["/"])
+        route__items(["/items"])
+        route__items_by(["/items/by"])
+        route__items__id_int_(["/items/{id:int}"])
+        route__items_by__name_minlength_1__(["/items/by/{name:minlength(1)}"])
+        route__items__id_int__pic(["/items/{id:int}/pic"])
+        route__items_withsemanticrelevance__text_minlength_1__(["/items/withsemanticrelevance/{text:minlength(1)}"])
+        route__items_withsemanticrelevance(["/items/withsemanticrelevance"])
+        route__items_type__typeId__brand__brandId__(["/items/type/{typeId}/brand/{brandId?}"])
+        route__items_type_all_brand__brandId_int__(["/items/type/all/brand/{brandId:int?}"])
+        route__catalogtypes(["/catalogtypes"])
+        route__catalogbrands(["/catalogbrands"])
+        route_api_catalog(["api/catalog"])
+        route__orderId_int_(["{orderId:int}"])
+        route__cardtypes(["/cardtypes"])
+        route__draft(["/draft"])
+        route__cancel(["/cancel"])
+        route__ship(["/ship"])
+        route_api_orders(["api/orders"])
+        route___id_int_(["/{id:int}"])
+        route__api_webhooks(["/api/webhooks"])
+        route__webhook_received(["/webhook-received"])
+        route__logout(["/logout"])
+        url__api_webhooks(["/api/webhooks"])
+    end
+    Catalog_API ==>|write| entity_CatalogItem
+    entity_CatalogItem -.->|read| Catalog_API
+    Catalog_API ==>|write| entity_CatalogBrand
+    entity_CatalogBrand -.->|read| Catalog_API
+    Catalog_API ==>|write| entity_CatalogType
+    entity_CatalogType -.->|read| Catalog_API
+    Ordering_Infrastructure ==>|write| entity_Order
+    entity_Order -.->|read| Ordering_Infrastructure
+    Ordering_Infrastructure ==>|write| entity_OrderItem
+    entity_OrderItem -.->|read| Ordering_Infrastructure
+    Ordering_API ==>|expose| route__
+    Webhooks_API ==>|expose| route__
+    eShop_ServiceDefaults ==>|expose| route__
+    Catalog_API ==>|expose| route__items
+    Catalog_API ==>|expose| route__items_by
+    Catalog_API ==>|expose| route__items__id_int_
+    Catalog_API ==>|expose| route__items_by__name_minlength_1__
+    Catalog_API ==>|expose| route__items__id_int__pic
+    Catalog_API ==>|expose| route__items_withsemanticrelevance__text_minlength_1__
+    Catalog_API ==>|expose| route__items_withsemanticrelevance
+    Catalog_API ==>|expose| route__items_type__typeId__brand__brandId__
+    Catalog_API ==>|expose| route__items_type_all_brand__brandId_int__
+    Catalog_API ==>|expose| route__catalogtypes
+    Catalog_API ==>|expose| route__catalogbrands
+    Catalog_API ==>|expose| route_api_catalog
+    Ordering_API ==>|expose| route__orderId_int_
+    Ordering_API ==>|expose| route__cardtypes
+    Ordering_API ==>|expose| route__draft
+    Ordering_API ==>|expose| route__cancel
+    Ordering_API ==>|expose| route__ship
+    Ordering_API ==>|expose| route_api_orders
+    Webhooks_API ==>|expose| route___id_int_
+    Webhooks_API ==>|expose| route__api_webhooks
+    WebhookClient ==>|expose| route__webhook_received
+    WebhookClient ==>|expose| route__logout
+    url__api_webhooks -.->|consume| WebhookClient

@@ -425,6 +425,156 @@ def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_
     return "\n".join(lines)
 
 
+# ─── Mermaid: Data Flow ────────────────────────────────────────────
+
+def generate_data_flow_mermaid() -> str:
+    """Generate a Mermaid diagram showing projects connected through data infrastructure.
+
+    Uses distinct shapes: [( )] for DB, {{ }} for messaging, ([ ]) for API routes.
+    Thick arrows (==>) for writes, dashed arrows (-.->) for reads.
+    """
+    data_flow_path = os.path.join(OUT_DIR, "data-flow.json")
+    if not os.path.isfile(data_flow_path):
+        return "graph LR\n    no_data[No data flow information available]"
+
+    data_flow = json.loads(Path(data_flow_path).read_text(encoding="utf-8"))
+    data_nodes = data_flow.get("dataNodes", [])
+    data_edges = data_flow.get("dataEdges", [])
+
+    if not data_nodes:
+        return "graph LR\n    no_data[No data flow nodes detected]"
+
+    # Filter to nodes that have at least one writer/reader/exposer/consumer
+    active_nodes = [
+        n for n in data_nodes
+        if n.get("writers") or n.get("readers") or n.get("exposers") or n.get("consumers")
+    ]
+
+    if not active_nodes:
+        return "graph LR\n    no_data[No active data flow connections]"
+
+    # Collect all project names involved
+    all_projects: set[str] = set()
+    for n in active_nodes:
+        all_projects.update(n.get("writers", []))
+        all_projects.update(n.get("readers", []))
+        all_projects.update(n.get("exposers", []))
+        all_projects.update(n.get("consumers", []))
+
+    # Group data nodes by infrastructure type
+    db_nodes = [n for n in active_nodes if n["infrastructure"] == "database"]
+    msg_nodes = [n for n in active_nodes if n["infrastructure"] == "messaging"]
+    api_nodes = [n for n in active_nodes if n["infrastructure"] == "api"]
+
+    # Limit nodes to prevent oversized diagrams
+    MAX_DATA_NODES = 30
+    MAX_PROJECTS = 40
+
+    def top_nodes(nodes: list, limit: int) -> list:
+        """Return top N nodes sorted by connection count."""
+        return sorted(
+            nodes,
+            key=lambda n: len(n.get("writers", [])) + len(n.get("readers", []))
+                        + len(n.get("exposers", [])) + len(n.get("consumers", [])),
+            reverse=True,
+        )[:limit]
+
+    total = len(db_nodes) + len(msg_nodes) + len(api_nodes)
+    if total > MAX_DATA_NODES:
+        ratio = MAX_DATA_NODES / max(total, 1)
+        db_nodes = top_nodes(db_nodes, max(1, int(len(db_nodes) * ratio)))
+        msg_nodes = top_nodes(msg_nodes, max(1, int(len(msg_nodes) * ratio)))
+        api_nodes = top_nodes(api_nodes, max(1, int(len(api_nodes) * ratio)))
+
+    shown_node_ids = {n["id"] for n in db_nodes + msg_nodes + api_nodes}
+
+    # Recalculate projects from shown nodes only
+    all_projects = set()
+    for n in db_nodes + msg_nodes + api_nodes:
+        all_projects.update(n.get("writers", []))
+        all_projects.update(n.get("readers", []))
+        all_projects.update(n.get("exposers", []))
+        all_projects.update(n.get("consumers", []))
+
+    # Limit projects if too many
+    if len(all_projects) > MAX_PROJECTS:
+        # Keep projects with most connections
+        proj_counts: dict[str, int] = {}
+        for n in db_nodes + msg_nodes + api_nodes:
+            for p in n.get("writers", []) + n.get("readers", []) + n.get("exposers", []) + n.get("consumers", []):
+                proj_counts[p] = proj_counts.get(p, 0) + 1
+        all_projects = set(sorted(proj_counts, key=lambda p: -proj_counts[p])[:MAX_PROJECTS])
+
+    lines = ["graph LR"]
+
+    # Project nodes subgraph
+    lines.append('    subgraph Projects["Services & Projects"]')
+    for proj in sorted(all_projects):
+        lines.append(f'        {sanitize_id(proj)}["{proj}"]')
+    lines.append("    end")
+
+    # Database subgraph
+    if db_nodes:
+        lines.append('    subgraph Database["Database / Storage"]')
+        for n in db_nodes:
+            nid = sanitize_id(n["id"])
+            label = n["name"]
+            # [( )] = cylinder shape for databases
+            lines.append(f'        {nid}[("{label}")]')
+        lines.append("    end")
+
+    # Messaging subgraph
+    if msg_nodes:
+        lines.append('    subgraph Messaging["Message Queues / Topics"]')
+        for n in msg_nodes:
+            nid = sanitize_id(n["id"])
+            label = n["name"]
+            # {{ }} = hexagon shape for messaging
+            lines.append(f'        {nid}{{{{"{label}"}}}}')
+        lines.append("    end")
+
+    # API subgraph
+    if api_nodes:
+        lines.append('    subgraph APIs["API Routes"]')
+        for n in api_nodes:
+            nid = sanitize_id(n["id"])
+            label = n["name"]
+            # ([ ]) = stadium shape for API routes
+            lines.append(f'        {nid}(["{label}"])')
+        lines.append("    end")
+
+    # Edges: thick (==>) for write/expose, dashed (-.->) for read/consume
+    edge_set: set[str] = set()
+    for n in db_nodes + msg_nodes + api_nodes:
+        nid = sanitize_id(n["id"])
+        for proj in n.get("writers", []):
+            if proj in all_projects:
+                edge_key = f"{sanitize_id(proj)}==>|write|{nid}"
+                if edge_key not in edge_set:
+                    edge_set.add(edge_key)
+                    lines.append(f"    {sanitize_id(proj)} ==>|write| {nid}")
+        for proj in n.get("readers", []):
+            if proj in all_projects:
+                edge_key = f"{nid}-.->|read|{sanitize_id(proj)}"
+                if edge_key not in edge_set:
+                    edge_set.add(edge_key)
+                    lines.append(f"    {nid} -.->|read| {sanitize_id(proj)}")
+        for proj in n.get("exposers", []):
+            if proj in all_projects:
+                edge_key = f"{sanitize_id(proj)}==>|expose|{nid}"
+                if edge_key not in edge_set:
+                    edge_set.add(edge_key)
+                    lines.append(f"    {sanitize_id(proj)} ==>|expose| {nid}")
+        for proj in n.get("consumers", []):
+            if proj in all_projects:
+                edge_key = f"{nid}-.->|consume|{sanitize_id(proj)}"
+                if edge_key not in edge_set:
+                    edge_set.add(edge_key)
+                    lines.append(f"    {nid} -.->|consume| {sanitize_id(proj)}")
+
+    return "\n".join(lines)
+
+
 # ─── GraphViz DOT: Full landscape ───────────────────────────────────
 
 def generate_landscape_dot() -> str:
@@ -502,6 +652,7 @@ def main():
         "landscape.mmd": generate_landscape_mermaid(),
         "core-libraries.mmd": generate_core_library_mermaid(),
         "data-infrastructure.mmd": generate_data_infra_mermaid(),
+        "data-flow.mmd": generate_data_flow_mermaid(),
         "nuget-groups.mmd": generate_nuget_mermaid(),
     }
 

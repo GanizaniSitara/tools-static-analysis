@@ -4,10 +4,12 @@
 
 | Type | Occurrences |
 |------|-------------|
-| storage | 210 |
-| database | 156 |
+| storage | 1472 |
+| cache | 912 |
+| database | 526 |
 | pattern | 47 |
-| api | 29 |
+| api | 32 |
+| messaging | 13 |
 | connector | 11 |
 
 ## Connection Strings Found
@@ -18,46 +20,153 @@
 
 ## Storage
 
-### FileStorage (210 occurrences)
+### File.Write (941 occurrences)
 
 | Repo | File | Line | Context |
 |------|------|------|---------||
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs` | 5590 | `using (var stream = File.Create(projectFile))` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs` | 5641 | `using (var stream = File.Create(projectFile))` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs` | 6205 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs` | 6279 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs` | 6347 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 118 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 157 | `using (FileStream stream = File.Open(projectFile, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 220 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 303 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 374 | `using (FileStream stream = File.Open(projectFile, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 449 | `using (FileStream stream = File.Open(projectFile, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 530 | `using (FileStream stream = File.Open(projectFile, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 611 | `using (FileStream stream = File.Open(projectFile, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 672 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 758 | `using (var stream = File.Open(projectFile1, FileMode.Open, F` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 913 | `using (var stream = File.Open(projectFile1, FileMode.Open, F` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1338 | `using (var stream = File.Open(projectFile1, FileMode.Open, F` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1397 | `using (var stream = File.Open(projectFile1, FileMode.Open, F` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1555 | `using (var stream = File.Open(projectFilePath, FileMode.Open` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1618 | `using (var stream = File.Open(p2pProjectFilePath, FileMode.O` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1628 | `using (var stream = File.Open(projectFilePath, FileMode.Open` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1682 | `using (var stream = File.Open(libraryProjectFilePath, FileMo` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1704 | `using (var stream = File.Open(consumerProjectFilePath, FileM` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1859 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 1916 | `using (var stream = File.Open(projectFile, FileMode.Open, Fi` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 63 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 82 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 103 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 122 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 135 | `File.WriteAllText(packagesPropsPath, packagesPropsContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 159 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 178 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 199 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 218 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 242 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 261 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 287 | `File.WriteAllText(csprojPath, csprojContents);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetPackageUpdateTests.cs` | 307 | `File.WriteAllText(testContext.NuGetConfig, string.Format(Nug` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 275 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 338 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 403 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 467 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 535 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 598 | `File.WriteAllText(Path.Combine(projectADirectory, "NuGet.Con` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 713 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 762 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 809 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 860 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 912 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 966 | `File.WriteAllText(Path.Combine(pathContext.SolutionRoot, "Di` |
 
-*... and 185 more*
+*... and 916 more*
+
+**Repos:** NuGet.Client
+
+### File.Read (531 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/SignCommandTestFixture.cs` | 331 | `var content = File.ReadAllBytes(crlPath);` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 723 | `</ItemGroup", File.ReadAllText(Path.Combine(pathContext.Solu` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 725 | `File.ReadAllText(Path.Combine(projectADirectory, "projectA.c` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 771 | `</ItemGroup", File.ReadAllText(Path.Combine(pathContext.Solu` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 773 | `File.ReadAllText(Path.Combine(projectADirectory, "projectA.c` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 818 | `Assert.Contains(@$"<PackageVersion Include=""X"" Version=""1` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 820 | `var projectFileFromDisk = File.ReadAllText(Path.Combine(proj` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 867 | `Assert.Contains(@$"<PackageVersion Include=""X"" Version=""2` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 869 | `var projectFileFromDisk = File.ReadAllText(Path.Combine(proj` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 872 | `Assert.Contains(@$"Include=""X""", File.ReadAllText(Path.Com` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 919 | `var propsFileFromDisk = File.ReadAllText(Path.Combine(pathCo` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 988 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 991 | `</ItemGroup>", File.ReadAllText(Path.Combine(projectADirecto` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1050 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1053 | `</ItemGroup>", File.ReadAllText(Path.Combine(projectADirecto` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1115 | `var csprojFromDisk = File.ReadAllText(Path.Combine(projectAD` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1119 | `var assetsFromDisk = File.ReadAllText(Path.Combine(projectAD` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1182 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1185 | `</ItemGroup>", File.ReadAllText(Path.Combine(projectADirecto` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1246 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1305 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1308 | `</ItemGroup>", File.ReadAllText(Path.Combine(projectADirecto` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1366 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1369 | `</ItemGroup>", File.ReadAllText(Path.Combine(projectADirecto` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetAddPackageTests.cs` | 1431 | `</ItemGroup>", File.ReadAllText(Path.Combine(pathContext.Sol` |
+
+*... and 506 more*
+
+**Repos:** NuGet.Client
+
+## Cache
+
+### Redis.Read (817 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 87 | `doc.Root.Add(new XElement(XName.Get("Target"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 88 | `new XAttribute(XName.Get("Name"), "ErrorOnSolutionDir"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 89 | `new XAttribute(XName.Get("BeforeTargets"), "CollectPackageRe` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 90 | `new XElement(XName.Get("Error"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 91 | `new XAttribute(XName.Get("Text"), $"\|SOLUTION $(SolutionDir)` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 241 | `var configuration = new XElement(XName.Get("configuration"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 244 | `var config = new XElement(XName.Get("config"));` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 247 | `var updatePackageLastAccessTime = new XElement(XName.Get("ad` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 248 | `updatePackageLastAccessTime.Add(new XAttribute(XName.Get("ke` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 249 | `updatePackageLastAccessTime.Add(new XAttribute(XName.Get("va` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 322 | `var configuration = new XElement(XName.Get("configuration"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 325 | `var config = new XElement(XName.Get("config"));` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 328 | `var signatureValidationMode = new XElement(XName.Get("add"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 329 | `signatureValidationMode.Add(new XAttribute(XName.Get("key"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 330 | `signatureValidationMode.Add(new XAttribute(XName.Get("value"` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 393 | `var configuration = new XElement(XName.Get("configuration"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 396 | `var config = new XElement(XName.Get("config"));` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 399 | `var signatureValidationMode = new XElement(XName.Get("add"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 400 | `signatureValidationMode.Add(new XAttribute(XName.Get("key"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 401 | `signatureValidationMode.Add(new XAttribute(XName.Get("value"` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 468 | `var configuration = new XElement(XName.Get("configuration"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 471 | `var config = new XElement(XName.Get("config"));` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 474 | `var signatureValidationMode = new XElement(XName.Get("add"))` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 475 | `signatureValidationMode.Add(new XAttribute(XName.Get("key"),` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs` | 476 | `signatureValidationMode.Add(new XAttribute(XName.Get("value"` |
+
+*... and 792 more*
+
+**Repos:** NuGet.Client
+
+### Redis.Write (95 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/PluginTests.cs` | 246 | `closedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 145 | `action1HitSem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 152 | `action2Sem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 174 | `action1Sem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 197 | `action1HitSem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 204 | `action2Sem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Common.Test/ConcurrencyUtilitiesTests.cs` | 226 | `action1Sem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageExtractorTests.cs` | 112 | `sem.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestContextTests.cs` | 143 | `handledEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestContextTests.cs` | 224 | `sentEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestContextTests.cs` | 322 | `handledEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestContextTests.cs` | 368 | `sentEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/OutboundRequestContextTests.cs` | 98 | `cancelEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/AutomaticProgressReporterTests.cs` | 182 | `SentEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 104 | `receivedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 148 | `receivedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 182 | `faultedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 215 | `faultedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 248 | `faultedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/StandardOutputReceiverTests.cs` | 291 | `faultedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestProcessingHandlerTests.cs` | 45 | `Func<Task> task = () => { executed = true; handledEvent.Set(` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestProcessingHandlerTests.cs` | 61 | `Func<Task> task = () => { executed = true; handledEvent.Set(` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/InboundRequestProcessingHandlerTests.cs` | 77 | `Func<Task> task = () => { executed = true; handledEvent.Set(` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginProcessTests.cs` | 38 | `exitedEvent.Set();` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginProcessTests.cs` | 113 | `exitedEvent.Set();` |
+
+*... and 70 more*
 
 **Repos:** NuGet.Client
 
 ## Database
 
-### Dapper (150 occurrences)
+### Dapper.Execute (498 occurrences)
 
 | Repo | File | Line | Context |
 |------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/AuthenticationHandlerTests.cs` | 37 | `await portReserver.ExecuteAsync(async (port, cancellationTok` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/AuthenticationHandlerTests.cs` | 104 | `await portReserver.ExecuteAsync(async (port, cancellationTok` |
+| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs` | 284 | `return await server.ExecuteAsync(async address =>` |
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatTrustTests.cs` | 122 | `int result = testApp.Execute(argList.ToArray());` |
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatVerifyTests.cs` | 37 | `var ex = Assert.Throws<AggregateException>(() => testApp.Exe` |
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatVerifyTests.cs` | 59 | `Assert.Throws<CommandParsingException>(() => testApp.Execute` |
@@ -80,11 +189,34 @@
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 55 | `var result = testApp.Execute(argList.ToArray());` |
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 74 | `Assert.Throws<CommandParsingException>(() => testApp.Execute` |
 | NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 99 | `var result = testApp.Execute(argList.ToArray());` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 116 | `var result = testApp.Execute(argList.ToArray());` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 146 | `var result = testApp.Execute(argList.ToArray());` |
-| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs` | 177 | `Assert.Throws<AggregateException>(() => testApp.Execute(argL` |
 
-*... and 125 more*
+*... and 473 more*
+
+**Repos:** NuGet.Client
+
+### MongoDB.Read (19 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatClientCertTests.cs` | 1020 | `X509Certificate2Collection resultCertificates = store.Certif` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Configuration.Test/ClientCertificateProviderTests.cs` | 170 | `X509Certificate2Collection resultCertificates = store.Certif` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGetClientCertCommandTests.cs` | 1006 | `X509Certificate2Collection resultCertificates = store.Certif` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.Indexing.Test/SearchResultsAggregatorTests.cs` | 46 | `var results = await aggregator.AggregateAsync(queryString, r` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.Indexing.Test/SearchResultsAggregatorTests.cs` | 66 | `var results = await aggregator.AggregateAsync(queryString, r` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.Indexing.Test/SearchResultsAggregatorTests.cs` | 84 | `var results = await aggregator.AggregateAsync(queryString, r` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/Telemetry/PackageSourceTelemetryTests.cs` | 117 | `Assert.Equal(timings.Aggregate(TimeSpan.Zero, (a, b) => a + ` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.MSSigning.Extensions/MSSignAbstract.cs` | 99 | `matchingCertCollection = certCollection.Find(X509FindType.Fi` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/PackageFeeds/MultiSourcePackageFeed.cs` | 273 | `var loadingStatus = aggregated.SourceSearchStatus.Values.Agg` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/PackageFeeds/MultiSourcePackageFeed.cs` | 334 | `var aggregatedItems = await aggregator.AggregateAsync(` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/PackageFeeds/MultiSourcePackageFeed.cs` | 339 | `result.RawItemsCount = items.Aggregate(0, (r, next) => r + n` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/PackageItemLoader.cs` | 397 | `return SourceLoadingStatus.Values.Aggregate();` |
+| NuGet.Client | `src/NuGet.Core/NuGet.PackageManagement/FileModifiers/XmlTransformer.cs` | 134 | `var mergedFragments = elements.Aggregate(` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Commands/SignCommand/CertificateProvider.cs` | 196 | `resultCollection = store.Certificates.Find(X509FindType.Find` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Commands/SignCommand/CertificateProvider.cs` | 215 | `resultCollection = store.Certificates.Find(X509FindType.Find` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Frameworks/CompatibilityListProvider.cs` | 46 | `.Select(g => g.Aggregate((a, b) => a.Version < b.Version ? a` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Protocol/LegacyFeed/V2FeedQueryBuilder.cs` | 237 | `.Aggregate((a, b) => string.Format(CultureInfo.InvariantCult` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Protocol/LegacyFeed/V2FeedQueryBuilder.cs` | 305 | `.Aggregate((a, b) => string.Format(CultureInfo.InvariantCult` |
+| NuGet.Client | `src/NuGet.Core/NuGet.Configuration/Settings/Items/StoreClientCertItem.cs` | 243 | `X509Certificate2Collection foundCertificates = store.Certifi` |
 
 **Repos:** NuGet.Client
 
@@ -98,6 +230,23 @@
 | NuGet.Client | `test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs` | 972 | `packages.Add(new ResolverPackage("System.Data.SqlClient", Nu` |
 | NuGet.Client | `test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs` | 975 | `packages.Add(new ResolverPackage("System.Data.SqlClient", Nu` |
 | NuGet.Client | `test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs` | 976 | `packages.Add(new ResolverPackage("System.Data.SqlClient", Nu` |
+
+**Repos:** NuGet.Client
+
+### SQL.Select (2 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 512 | `//Select a different VM which should clear the Versions list` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1653 | `//Select a different VM which should clear the Versions list` |
+
+**Repos:** NuGet.Client
+
+### SQL.Delete (1 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `src/NuGet.Clients/NuGet.CommandLine/NuGetCommand.Designer.cs` | 417 | `///   Looks up a localized string similar to Specify the Id ` |
 
 **Repos:** NuGet.Client
 
@@ -170,6 +319,45 @@
 | NuGet.Client | `test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs` | 477 | `var httpClient = new HttpClient(testHandler);` |
 
 *... and 4 more*
+
+**Repos:** NuGet.Client
+
+### HttpClient.GetAsync (2 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageFolderReaderTests.cs` | 187 | `using (var stream = await test.Reader.GetStreamAsync("Aa.nus` |
+| NuGet.Client | `test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageArchiveReaderTests.cs` | 563 | `using (var stream = await test.Reader.GetStreamAsync("Aa.nus` |
+
+**Repos:** NuGet.Client
+
+### API.Controller (1 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/Controllers/HomeController.cs` | 9 | `public class HomeController : Controller` |
+
+**Repos:** NuGet.Client
+
+## Messaging
+
+### Kafka.Consumer (13 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 204 | `var subscription = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 253 | `var subscription = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 295 | `var subscription = source.Subscribe(null);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 367 | `var s1 = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 368 | `var s2 = source.Subscribe(sink2);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 369 | `var s3 = source.Subscribe(sink3);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 458 | `var s1 = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 459 | `var s2 = source.Subscribe(sink2);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 460 | `var s3 = source.Subscribe(sink3);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 535 | `var s1 = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 540 | `var s2 = source.Subscribe(sink2);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 606 | `var s1 = source.Subscribe(sink);` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/ErrorListTableDataSourceTests.cs` | 607 | `var s2 = source.Subscribe(sink2);` |
 
 **Repos:** NuGet.Client
 

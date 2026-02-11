@@ -47,6 +47,32 @@ graph TD
 |------|------|---------||
 | `src/Webhooks.API/Infrastructure/WebhooksContext.cs` | 8 | `public class WebhooksContext(DbContextOptions<WebhooksContext> options` |
 
+### DbSet
+| File | Line | Context |
+|------|------|---------||
+| `src/Webhooks.API/Infrastructure/WebhooksContext.cs` | 10 | `public DbSet<WebhookSubscription> Subscriptions { get; set; }` |
+
+### API.MapGet
+| File | Line | Context |
+|------|------|---------||
+| `src/Webhooks.API/Apis/WebHooksApi.cs` | 13 | `api.MapGet("/", async (WebhooksContext context, ClaimsPrincipal user) ` |
+| `src/Webhooks.API/Apis/WebHooksApi.cs` | 20 | `api.MapGet("/{id:int}", async Task<Results<Ok<WebhookSubscription>, No` |
+
+### API.MapPost
+| File | Line | Context |
+|------|------|---------||
+| `src/Webhooks.API/Apis/WebHooksApi.cs` | 35 | `api.MapPost("/", async Task<Results<Created, BadRequest<string>>> (` |
+
+### API.MapDelete
+| File | Line | Context |
+|------|------|---------||
+| `src/Webhooks.API/Apis/WebHooksApi.cs` | 66 | `api.MapDelete("/{id:int}", async Task<Results<Accepted, NotFound<strin` |
+
+### API.MapGroup
+| File | Line | Context |
+|------|------|---------||
+| `src/Webhooks.API/Apis/WebHooksApi.cs` | 11 | `var api = app.MapGroup("/api/webhooks").HasApiVersion(1.0);` |
+
 
 ---
 

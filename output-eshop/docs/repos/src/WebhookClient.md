@@ -36,6 +36,12 @@ graph TD
 | Microsoft.AspNetCore.Components.QuickGrid |  |
 
 ## Data Access Patterns
+### API.MapPost
+| File | Line | Context |
+|------|------|---------||
+| `src/WebhookClient/Endpoints/WebhookEndpoints.cs` | 31 | `app.MapPost("/webhook-received", async (WebhookData hook, HttpRequest ` |
+| `src/WebhookClient/Endpoints/AuthenticationEndpoints.cs` | 12 | `app.MapPost("/logout", async (HttpContext httpContext, IAntiforgery an` |
+
 ### HttpClient.Injection
 | File | Line | Context |
 |------|------|---------||
@@ -45,6 +51,11 @@ graph TD
 | File | Line | Context |
 |------|------|---------||
 | `src/WebhookClient/Services/HooksRepository.cs` | 5 | `public class HooksRepository` |
+
+### HttpClient.PostAsync
+| File | Line | Context |
+|------|------|---------||
+| `src/WebhookClient/Services/WebHooksClient.cs` | 7 | `return client.PostAsJsonAsync("/api/webhooks", payload);` |
 
 
 ---

@@ -38,6 +38,12 @@ graph TD
 | MediatR |  |
 | System.Reflection.TypeExtensions |  |
 
+## Data Access Patterns
+### MongoDB.Read
+| File | Line | Context |
+|------|------|---------||
+| `src/Ordering.Domain/SeedWork/ValueObject.cs` | 37 | `.Aggregate((x, y) => x ^ y);` |
+
 
 ---
 

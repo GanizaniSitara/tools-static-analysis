@@ -162,8 +162,40 @@ graph LR
         StockSharp_Media["Media"]
     end
     subgraph DataSources
+        datasource_StockSharp_Redis_Write[("Redis.Write")]
+        datasource_StockSharp_Redis_Read[("Redis.Read")]
+        datasource_StockSharp_Kafka_Consumer[("Kafka.Consumer")]
+        datasource_StockSharp_MongoDB_Read[("MongoDB.Read")]
         datasource_StockSharp_SqlClient[("SqlClient")]
+        datasource_StockSharp_SQL_CreateTable[("SQL.CreateTable")]
+        datasource_StockSharp_Kafka_Topic[("Kafka.Topic")]
     end
+```
+
+## data flow
+
+```mermaid
+graph LR
+    subgraph Projects["Services & Projects"]
+        Algo_Analytics["Algo.Analytics"]
+        Tests["Tests"]
+    end
+    subgraph Database["Database / Storage"]
+        table_to[("to")]
+    end
+    subgraph APIs["API Routes"]
+        url_delete(["delete"])
+        url_nonexistent(["nonexistent"])
+        url_TestStorage(["TestStorage"])
+        url_test_example_com(["test@example.com"])
+        url_TEST_EXAMPLE_COM(["TEST@EXAMPLE.COM"])
+    end
+    Algo_Analytics ==>|write| table_to
+    url_delete -.->|consume| Tests
+    url_nonexistent -.->|consume| Tests
+    url_TestStorage -.->|consume| Tests
+    url_test_example_com -.->|consume| Tests
+    url_TEST_EXAMPLE_COM -.->|consume| Tests
 ```
 
 ## nuget groups

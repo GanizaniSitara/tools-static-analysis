@@ -2533,6 +2533,42 @@
       "description": "NuGet: YamlDotNet ()"
     },
     {
+      "id": "datasource:src:Kafka.Consumer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Consumer",
+      "repo": "src",
+      "occurrences": 350,
+      "description": "Kafka.Consumer in src (350 occurrences)"
+    },
+    {
+      "id": "datasource:src:Redis.Read",
+      "type": "datasource",
+      "subtype": "cache",
+      "pattern": "Redis.Read",
+      "repo": "src",
+      "occurrences": 121,
+      "description": "Redis.Read in src (121 occurrences)"
+    },
+    {
+      "id": "datasource:src:gRPC.Client",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Client",
+      "repo": "src",
+      "occurrences": 11,
+      "description": "gRPC.Client in src (11 occurrences)"
+    },
+    {
+      "id": "datasource:src:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "src",
+      "occurrences": 273,
+      "description": "gRPC in src (273 occurrences)"
+    },
+    {
       "id": "datasource:src:HttpClient.New",
       "type": "datasource",
       "subtype": "api",
@@ -2542,31 +2578,103 @@
       "description": "HttpClient.New in src (25 occurrences)"
     },
     {
-      "id": "datasource:src:gRPC",
+      "id": "datasource:src:Redis.Write",
       "type": "datasource",
-      "subtype": "api",
-      "pattern": "gRPC",
+      "subtype": "cache",
+      "pattern": "Redis.Write",
       "repo": "src",
-      "occurrences": 130,
-      "description": "gRPC in src (130 occurrences)"
+      "occurrences": 163,
+      "description": "Redis.Write in src (163 occurrences)"
     },
     {
-      "id": "datasource:src:Dapper",
-      "type": "datasource",
-      "subtype": "database",
-      "pattern": "Dapper",
-      "repo": "src",
-      "occurrences": 66,
-      "description": "Dapper in src (66 occurrences)"
-    },
-    {
-      "id": "datasource:src:Kafka",
+      "id": "datasource:src:Kafka.Topic",
       "type": "datasource",
       "subtype": "messaging",
-      "pattern": "Kafka",
+      "pattern": "Kafka.Topic",
       "repo": "src",
-      "occurrences": 10,
-      "description": "Kafka in src (10 occurrences)"
+      "occurrences": 31,
+      "description": "Kafka.Topic in src (31 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapGet",
+      "repo": "src",
+      "occurrences": 5,
+      "description": "API.MapGet in src (5 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.HttpGet",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.HttpGet",
+      "repo": "src",
+      "occurrences": 2,
+      "description": "API.HttpGet in src (2 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.Route",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Route",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "API.Route in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.Controller",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.Controller",
+      "repo": "src",
+      "occurrences": 1,
+      "description": "API.Controller in src (1 occurrences)"
+    },
+    {
+      "id": "datasource:src:HttpClient.GetAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.GetAsync",
+      "repo": "src",
+      "occurrences": 19,
+      "description": "HttpClient.GetAsync in src (19 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper.Execute",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Execute",
+      "repo": "src",
+      "occurrences": 85,
+      "description": "Dapper.Execute in src (85 occurrences)"
+    },
+    {
+      "id": "datasource:src:gRPC.Server",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC.Server",
+      "repo": "src",
+      "occurrences": 168,
+      "description": "gRPC.Server in src (168 occurrences)"
+    },
+    {
+      "id": "datasource:src:MongoDB.Read",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Read",
+      "repo": "src",
+      "occurrences": 46,
+      "description": "MongoDB.Read in src (46 occurrences)"
+    },
+    {
+      "id": "datasource:src:Kafka.Producer",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka.Producer",
+      "repo": "src",
+      "occurrences": 32,
+      "description": "Kafka.Producer in src (32 occurrences)"
     },
     {
       "id": "datasource:src:IMessageAdapter",
@@ -2578,13 +2686,85 @@
       "description": "IMessageAdapter in src (4 occurrences)"
     },
     {
-      "id": "datasource:src:RabbitMQ",
+      "id": "datasource:src:API.MapPost",
       "type": "datasource",
-      "subtype": "messaging",
-      "pattern": "RabbitMQ",
+      "subtype": "api",
+      "pattern": "API.MapPost",
       "repo": "src",
       "occurrences": 3,
-      "description": "RabbitMQ in src (3 occurrences)"
+      "description": "API.MapPost in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:API.MapGroup",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "API.MapGroup",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "API.MapGroup in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.CreateTable",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.CreateTable",
+      "repo": "src",
+      "occurrences": 10,
+      "description": "SQL.CreateTable in src (10 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Select",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Select",
+      "repo": "src",
+      "occurrences": 31,
+      "description": "SQL.Select in src (31 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Insert",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Insert",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "SQL.Insert in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:SQL.Delete",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "SQL.Delete",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "SQL.Delete in src (3 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper.Query",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper.Query",
+      "repo": "src",
+      "occurrences": 6,
+      "description": "Dapper.Query in src (6 occurrences)"
+    },
+    {
+      "id": "datasource:src:MongoDB.Write",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "MongoDB.Write",
+      "repo": "src",
+      "occurrences": 6,
+      "description": "MongoDB.Write in src (6 occurrences)"
+    },
+    {
+      "id": "datasource:src:HttpClient.PostAsync",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.PostAsync",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "HttpClient.PostAsync in src (4 occurrences)"
     }
   ],
   "edges": [
@@ -4885,7 +5065,7 @@
     "totalNuGetPackages": 146,
     "totalProjectRefs": 142,
     "totalCrossRepoRefs": 0,
-    "totalDataFindings": 374,
+    "totalDataFindings": 1616,
     "totalConfigFiles": 6,
     "repos": {
       "src": {

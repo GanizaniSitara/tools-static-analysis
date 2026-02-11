@@ -23,6 +23,12 @@ project_meta = json.loads(Path(os.path.join(OUT_DIR, "project-meta.json")).read_
 data_findings = json.loads(Path(os.path.join(OUT_DIR, "data-sources.json")).read_text(encoding="utf-8"))
 configs = json.loads(Path(os.path.join(OUT_DIR, "configs.json")).read_text(encoding="utf-8"))
 
+# Load data flow (optional — may not exist on older runs)
+data_flow_path = os.path.join(OUT_DIR, "data-flow.json")
+data_flow: dict = {}
+if os.path.isfile(data_flow_path):
+    data_flow = json.loads(Path(data_flow_path).read_text(encoding="utf-8"))
+
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
 
@@ -394,6 +400,19 @@ def generate_viewer_html() -> str:
                 "warning": edge_filter_warning,
             })
 
+    # ── Data Flow diagram tab ──
+    data_flow_mmd_path = os.path.join(diagrams_dir, "data-flow.mmd")
+    if os.path.isfile(data_flow_mmd_path):
+        content = Path(data_flow_mmd_path).read_text(encoding="utf-8")
+        # Only add if there's real content (not just the "no data" placeholder)
+        if "no_data" not in content:
+            diagram_tabs.append({
+                "id": "dataflow",
+                "label": "Data Flow",
+                "title": "Data Flow — Projects Connected Through Data Infrastructure",
+                "mermaid": content,
+            })
+
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
     for f in data_findings:
@@ -401,9 +420,11 @@ def generate_viewer_html() -> str:
         if p not in pattern_summary:
             pattern_summary[p] = {"type": f["type"], "count": 0, "projects": set()}
         pattern_summary[p]["count"] += 1
-        parts = f["file"].replace("\\", "/").split("/")
-        proj_dir = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
-        pattern_summary[p]["projects"].add(proj_dir)
+        proj = f.get("project") or ""
+        if not proj:
+            parts = f["file"].replace("\\", "/").split("/")
+            proj = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
+        pattern_summary[p]["projects"].add(proj)
 
     # ── Connection strings ──
     conn_strings: list[dict] = []
@@ -434,12 +455,17 @@ def generate_viewer_html() -> str:
         for count, label in stats_items
     )
 
+    # ── Implied dependencies from data flow ──
+    implied_deps = data_flow.get("impliedDependencies", [])
+
     # Tab buttons
     all_tab_ids: list[tuple[str, str]] = []
     for dt in diagram_tabs:
         all_tab_ids.append((dt["id"], dt["label"]))
     if pattern_summary:
         all_tab_ids.append(("datasources", "Data Sources"))
+    if implied_deps:
+        all_tab_ids.append(("implieddeps", "Implied Dependencies"))
     if conn_strings:
         all_tab_ids.append(("connstrings", "Connection Strings"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -539,6 +565,45 @@ def generate_viewer_html() -> str:
         <table>
           <thead>
             <tr><th>Config File</th><th>Repo</th><th>Connection Name</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+{rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
+    # Implied dependencies panel
+    implieddeps_panel = ""
+    if implied_deps:
+        infra_tag_class = {
+            "database": "tag-db", "messaging": "tag-messaging", "api": "tag-api",
+        }
+        rows = ""
+        for dep in implied_deps:
+            tag_cls = infra_tag_class.get(dep.get("viaType", ""), "tag-config")
+            via_label = _esc_html(dep.get("viaType", ""))
+            rows += f"""            <tr>
+              <td><strong>{_esc_html(dep['from'])}</strong></td>
+              <td><strong>{_esc_html(dep['to'])}</strong></td>
+              <td>{_esc_html(dep.get('via', ''))}</td>
+              <td><span class="tag {tag_cls}">{via_label}</span></td>
+              <td>writes &#8594; reads</td>
+            </tr>
+"""
+        implieddeps_panel = f"""
+  <section class="tab-panel" id="panel-implieddeps">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Implied Data Dependencies ({len(implied_deps)})</div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Cross-project dependencies derived through shared data infrastructure.
+        Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -774,6 +839,7 @@ def generate_viewer_html() -> str:
 <main class="content">
 {diagram_panels}
 {datasources_panel}
+{implieddeps_panel}
 {connstrings_panel}
 {all_projects_panel}
 </main>
@@ -983,6 +1049,63 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {{}};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {{
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  }});
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {{
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  }});
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {{
+    if (sharedDataNodes.length > 0) {{
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {{
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      }});
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }}
+    if (relevantImplied.length > 0) {{
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {{
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      }});
+      html += '</ul>';
+    }}
+  }} else {{
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }}
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -1106,6 +1229,12 @@ function zoomDiagram(containerId, delta) {{
 
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
+  window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
+    window._dataFlow = df;
+  }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
 
   // Load All Projects data
   Promise.all([

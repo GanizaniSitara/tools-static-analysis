@@ -185,7 +185,7 @@
     <div class="stat"><span class="stat-value">23</span> Projects</div>
     <div class="stat"><span class="stat-value">33</span> NuGet Packages</div>
     <div class="stat"><span class="stat-value">117</span> Project References</div>
-    <div class="stat"><span class="stat-value">195</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">1160</span> Data Patterns</div>
     <div class="stat"><span class="stat-value">0</span> Config Files</div>
   </div>
 </header>
@@ -197,6 +197,7 @@
   <button class="tab-btn" data-tab="cat_webapp">WebApp (1)</button>
   <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
   <button class="tab-btn" data-tab="cat_test">Test (1)</button>
+  <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
@@ -248,7 +249,7 @@ graph LR
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph library[&quot;Library&quot;]
         Lean_QuantConnect_Configuration[&quot;QuantConnect.Configuration&quot;]
         Lean_QuantConnect_Compression[&quot;QuantConnect.Compression&quot;]
@@ -380,7 +381,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_application">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph application[&quot;Application&quot;]
         Lean_QuantConnect_Optimizer_Launcher[&quot;QuantConnect.Optimizer.Launcher&quot;]
         Lean_QuantConnect_DownloaderDataProvider_Launcher[&quot;QuantConnect.DownloaderDataProvider.Launcher&quot;]
@@ -421,7 +422,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_webapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph webapp[&quot;Webapp&quot;]
         Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
     end
@@ -449,7 +450,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_tool">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph tool[&quot;Tool&quot;]
         Lean_QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
     end
@@ -476,7 +477,7 @@ graph TD
       <div class="mermaid-wrap" id="mermaid-cat_test">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph TD
+graph LR
     subgraph test[&quot;Test&quot;]
         Lean_QuantConnect_Tests[&quot;QuantConnect.Tests&quot;]
     end
@@ -493,6 +494,41 @@ graph TD
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-dataflow">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Flow — Projects Connected Through Data Infrastructure
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-dataflow', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-dataflow">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    subgraph Projects[&quot;Services &amp; Projects&quot;]
+        QuantConnect[&quot;QuantConnect&quot;]
+        QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
+        QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
+    end
+    subgraph Database[&quot;Database / Storage&quot;]
+        table_the[(&quot;the&quot;)]
+        table_collection[(&quot;collection&quot;)]
+    end
+    subgraph APIs[&quot;API Routes&quot;]
+        url_https___api_tournament_crunchdao_com_v2_rounds__current([&quot;https://api.tournament.crunchdao.com/v2/rounds/@current&quot;])
+    end
+    table_the -.-&gt;|read| QuantConnect
+    table_the -.-&gt;|read| QuantConnect_Algorithm
+    table_the -.-&gt;|read| QuantConnect_ToolBox
+    table_collection -.-&gt;|read| QuantConnect
+    url_https___api_tournament_crunchdao_com_v2_rounds__current -.-&gt;|consume| QuantConnect
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -504,46 +540,77 @@ graph TD
           </thead>
           <tbody>
             <tr>
+              <td><strong>Redis.Read</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>580</td>
+              <td>QuantConnect, QuantConnect.Algorithm, QuantConnect.Algorithm.CSharp, QuantConnect.AlgorithmFactory, QuantConnect.Brokerages, ... +10 more</td>
+            </tr>
+            <tr>
+              <td><strong>Redis.Write</strong></td>
+              <td><span class="tag tag-cache">Cache</span></td>
+              <td>316</td>
+              <td>QuantConnect, QuantConnect.Algorithm, QuantConnect.Brokerages, QuantConnect.Lean.Engine, QuantConnect.Optimizer.Launcher, ... +1 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Read</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>84</td>
+              <td>QuantConnect, QuantConnect.AlgorithmFactory, QuantConnect.Compression, QuantConnect.Configuration, QuantConnect.Lean.Engine, ... +5 more</td>
+            </tr>
+            <tr>
+              <td><strong>File.Write</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>57</td>
+              <td>QuantConnect, QuantConnect.Compression, QuantConnect.Configuration, QuantConnect.Lean.Engine, QuantConnect.Report, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka.Consumer</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>35</td>
+              <td>QuantConnect, QuantConnect.Brokerages, QuantConnect.Lean.Engine, QuantConnect.Tests</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper.Execute</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>29</td>
+              <td>QuantConnect, QuantConnect.Algorithm, QuantConnect.Algorithm.CSharp, QuantConnect.Api, QuantConnect.Configuration, ... +2 more</td>
+            </tr>
+            <tr>
+              <td><strong>MongoDB.Read</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>22</td>
+              <td>QuantConnect, QuantConnect.Algorithm, QuantConnect.Algorithm.CSharp, QuantConnect.Algorithm.Framework, QuantConnect.Brokerages, ... +3 more</td>
+            </tr>
+            <tr>
               <td><strong>WebSocket</strong></td>
               <td><span class="tag tag-api">Api</span></td>
-              <td>141</td>
-              <td>Brokerages</td>
+              <td>18</td>
+              <td>QuantConnect.Brokerages</td>
             </tr>
             <tr>
-              <td><strong>Dapper</strong></td>
+              <td><strong>SQL.Select</strong></td>
               <td><span class="tag tag-db">Database</span></td>
-              <td>28</td>
-              <td>Algorithm, Algorithm.CSharp, Common, Configuration, Engine, ... +1 more</td>
-            </tr>
-            <tr>
-              <td><strong>FileStorage</strong></td>
-              <td><span class="tag tag-config">Storage</span></td>
-              <td>13</td>
-              <td>Compression, Logging, Tests, ToolBox</td>
+              <td>10</td>
+              <td>QuantConnect, QuantConnect.Algorithm, QuantConnect.ToolBox</td>
             </tr>
             <tr>
               <td><strong>HttpClient.New</strong></td>
               <td><span class="tag tag-api">Api</span></td>
               <td>8</td>
-              <td>Api, Common, Engine, Tests</td>
+              <td>QuantConnect, QuantConnect.Api, QuantConnect.Lean.Engine, QuantConnect.Tests</td>
             </tr>
             <tr>
-              <td><strong>RabbitMQ</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
-              <td>4</td>
-              <td>Tests</td>
-            </tr>
-            <tr>
-              <td><strong>Kafka</strong></td>
-              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td><strong>HttpClient.GetAsync</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
               <td>1</td>
-              <td>Common</td>
+              <td>QuantConnect</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
+
 
 
 
@@ -777,6 +844,63 @@ function showEdgeDetail(fromName, toName) {
   }
   html += '</div>';
 
+  // Data Flow section (from data-flow.json)
+  var df = window._dataFlow || {};
+  var dfNodes = df.dataNodes || [];
+  var dfImplied = df.impliedDependencies || [];
+
+  // Find data nodes that both projects connect to
+  var sharedDataNodes = dfNodes.filter(function (n) {
+    var allFrom = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var allTo = (n.writers || []).concat(n.readers || []).concat(n.exposers || []).concat(n.consumers || []);
+    var fromConnected = allFrom.indexOf(fromName) !== -1;
+    var toConnected = allTo.indexOf(toName) !== -1;
+    return fromConnected && toConnected;
+  });
+
+  // Find implied dependencies between these projects
+  var relevantImplied = dfImplied.filter(function (d) {
+    return (d.from === fromName && d.to === toName) || (d.from === toName && d.to === fromName);
+  });
+
+  html += '<div class="detail-section"><h4>Data Flow</h4>';
+  if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {
+    if (sharedDataNodes.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<ul class="detail-list">';
+      sharedDataNodes.slice(0, 10).forEach(function (n) {
+        var fromRole = [];
+        var toRole = [];
+        if ((n.writers || []).indexOf(fromName) !== -1) fromRole.push('writes');
+        if ((n.readers || []).indexOf(fromName) !== -1) fromRole.push('reads');
+        if ((n.exposers || []).indexOf(fromName) !== -1) fromRole.push('exposes');
+        if ((n.consumers || []).indexOf(fromName) !== -1) fromRole.push('consumes');
+        if ((n.writers || []).indexOf(toName) !== -1) toRole.push('writes');
+        if ((n.readers || []).indexOf(toName) !== -1) toRole.push('reads');
+        if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
+        if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
+        var infraLabel = n.infrastructure || n.type || '';
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+          + '</li>';
+      });
+      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      html += '</ul>';
+    }
+    if (relevantImplied.length > 0) {
+      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<ul class="detail-list">';
+      relevantImplied.forEach(function (d) {
+        html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
+      });
+      html += '</ul>';
+    }
+  } else {
+    html += '<div class="detail-empty">No shared data flow connections</div>';
+  }
+  html += '</div>';
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   var closeBtn = document.getElementById('detailCloseBtn');
@@ -849,7 +973,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_test': 'mermaid-cat_test' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_test': 'mermaid-cat_test', 'dataflow': 'mermaid-dataflow' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -900,6 +1024,12 @@ function zoomDiagram(containerId, delta) {
 
   // Global project data for edge detail lookups
   window._projData = { meta: [], refs: [], deps: [], dataSources: [] };
+  window._dataFlow = { dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] };
+
+  // Load data-flow.json for edge detail panel
+  fetch('data-flow.json').then(function (r) { return r.json(); }).then(function (df) {
+    window._dataFlow = df;
+  }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
   // Load All Projects data
   Promise.all([

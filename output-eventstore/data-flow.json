@@ -1,0 +1,1401 @@
+{
+  "dataNodes": [
+    {
+      "id": "topic:badlogin",
+      "name": "badlogin",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:user2",
+      "name": "user2",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:user1",
+      "name": "user1",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:adm",
+      "name": "adm",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:read-stream",
+      "name": "read-stream",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:noacl-stream",
+      "name": "noacl-stream",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:normal-all",
+      "name": "normal-all",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "route:/test",
+      "name": "/test",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Auth.UserCertificates.Tests",
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "route:/my-controller",
+      "name": "/my-controller",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "route:protected",
+      "name": "protected",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "route:unprotected",
+      "name": "unprotected",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "url:/ping^\\",
+      "name": "/ping^\\",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "url:/ping?format=json",
+      "name": "/ping?format=json",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "url:/ping?format=xml",
+      "name": "/ping?format=xml",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "url:/ping?format=text",
+      "name": "/ping?format=text",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Core.Tests"
+      ]
+    },
+    {
+      "id": "url:/license",
+      "name": "/license",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Licensing.Tests"
+      ]
+    },
+    {
+      "id": "url:/test",
+      "name": "/test",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Auth.UserCertificates.Tests"
+      ]
+    },
+    {
+      "id": "topic:test-pdx",
+      "name": "test-pdx",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "route:/license",
+      "name": "/license",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Licensing"
+      ]
+    },
+    {
+      "id": "route:/enabled",
+      "name": "/enabled",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "route:/status",
+      "name": "/status",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "route:/resume",
+      "name": "/resume",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "route:/pause",
+      "name": "/pause",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "route:/configure",
+      "name": "/configure",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "route:/auto-scavenge",
+      "name": "/auto-scavenge",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.AutoScavenge"
+      ]
+    },
+    {
+      "id": "url:/auto-scavenge/enabled",
+      "name": "/auto-scavenge/enabled",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.AutoScavenge.Tests"
+      ]
+    },
+    {
+      "id": "url:/auto-scavenge/status",
+      "name": "/auto-scavenge/status",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.AutoScavenge.Tests"
+      ]
+    },
+    {
+      "id": "topic:EventuousProducer",
+      "name": "EventuousProducer",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "table:schema_versions",
+      "name": "schema_versions",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "KurrentDB.SchemaRegistry"
+      ],
+      "readers": [
+        "KurrentDB.SchemaRegistry",
+        "KurrentDB.SchemaRegistry.Tests"
+      ]
+    },
+    {
+      "id": "table:schemas",
+      "name": "schemas",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [
+        "KurrentDB.SchemaRegistry"
+      ],
+      "readers": [
+        "KurrentDB.SchemaRegistry",
+        "KurrentDB.SchemaRegistry.Tests"
+      ]
+    },
+    {
+      "id": "table:idx_all",
+      "name": "idx_all",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "KurrentDB",
+        "KurrentDB.SecondaryIndexing",
+        "KurrentDB.SecondaryIndexing.LoadTesting",
+        "KurrentDB.SecondaryIndexing.Tests"
+      ]
+    },
+    {
+      "id": "url:/metrics",
+      "name": "/metrics",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Core.XUnit.Tests"
+      ]
+    },
+    {
+      "id": "url:https://localhost:2113/health/live",
+      "name": "https://localhost:2113/health/live",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Auth.OAuth.Tests"
+      ]
+    },
+    {
+      "id": "url:/streams/$all",
+      "name": "/streams/$all",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Auth.OAuth.Tests"
+      ]
+    },
+    {
+      "id": "url:/streams/a-stream",
+      "name": "/streams/a-stream",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Auth.OAuth.Tests"
+      ]
+    },
+    {
+      "id": "url:/streams/$systemstream",
+      "name": "/streams/$systemstream",
+      "type": "url",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "consumers": [
+        "KurrentDB.Auth.OAuth.Tests"
+      ]
+    },
+    {
+      "id": "route:/health",
+      "name": "/health",
+      "type": "route",
+      "infrastructure": "api",
+      "writers": [],
+      "readers": [],
+      "exposers": [
+        "KurrentDB.Core"
+      ]
+    },
+    {
+      "id": "topic:maximum-subscribers-reached",
+      "name": "maximum-subscribers-reached",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:SystemSnapshotProjectionsStoreProducer",
+      "name": "SystemSnapshotProjectionsStoreProducer",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:Kurrent.Surge.DataProtection.Producer",
+      "name": "Kurrent.Surge.DataProtection.Producer",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "topic:ConnectorsControlRegistryProducer",
+      "name": "ConnectorsControlRegistryProducer",
+      "type": "topic",
+      "infrastructure": "messaging",
+      "writers": [],
+      "readers": []
+    },
+    {
+      "id": "table:inflight",
+      "name": "inflight",
+      "type": "table",
+      "infrastructure": "database",
+      "writers": [],
+      "readers": [
+        "KurrentDB"
+      ]
+    }
+  ],
+  "dataEdges": [
+    {
+      "from": "KurrentDB.Auth.UserCertificates.Tests",
+      "to": "route:/test",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.Core.Tests",
+      "to": "route:/test",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.Core.Tests",
+      "to": "route:/my-controller",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.Core.Tests",
+      "to": "route:protected",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.Core.Tests",
+      "to": "route:unprotected",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "url:/ping^\\",
+      "to": "KurrentDB.Core.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/ping?format=json",
+      "to": "KurrentDB.Core.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/ping?format=xml",
+      "to": "KurrentDB.Core.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/ping?format=text",
+      "to": "KurrentDB.Core.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/license",
+      "to": "KurrentDB.Licensing.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/test",
+      "to": "KurrentDB.Auth.UserCertificates.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "KurrentDB.Licensing",
+      "to": "route:/license",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/enabled",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/status",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/resume",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/pause",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/configure",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "KurrentDB.AutoScavenge",
+      "to": "route:/auto-scavenge",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "url:/auto-scavenge/enabled",
+      "to": "KurrentDB.AutoScavenge.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/auto-scavenge/status",
+      "to": "KurrentDB.AutoScavenge.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "KurrentDB.SchemaRegistry",
+      "to": "table:schema_versions",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:schema_versions",
+      "to": "KurrentDB.SchemaRegistry.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:schema_versions",
+      "to": "KurrentDB.SchemaRegistry",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "KurrentDB.SchemaRegistry",
+      "to": "table:schemas",
+      "direction": "write",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:schemas",
+      "to": "KurrentDB.SchemaRegistry.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:schemas",
+      "to": "KurrentDB.SchemaRegistry",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
+      "to": "KurrentDB",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
+      "to": "KurrentDB.SecondaryIndexing",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
+      "to": "KurrentDB.SecondaryIndexing.LoadTesting",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
+      "to": "KurrentDB.SecondaryIndexing.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "url:/metrics",
+      "to": "KurrentDB.Core.XUnit.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:https://localhost:2113/health/live",
+      "to": "KurrentDB.Auth.OAuth.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/streams/$all",
+      "to": "KurrentDB.Auth.OAuth.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/streams/a-stream",
+      "to": "KurrentDB.Auth.OAuth.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "url:/streams/$systemstream",
+      "to": "KurrentDB.Auth.OAuth.Tests",
+      "direction": "consume",
+      "endpointType": "url"
+    },
+    {
+      "from": "KurrentDB.Core",
+      "to": "route:/health",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "table:inflight",
+      "to": "KurrentDB",
+      "direction": "read",
+      "endpointType": "table"
+    }
+  ],
+  "impliedDependencies": [
+    {
+      "from": "KurrentDB.SchemaRegistry",
+      "to": "KurrentDB.SchemaRegistry.Tests",
+      "via": "schema_versions",
+      "viaType": "database",
+      "viaId": "table:schema_versions"
+    },
+    {
+      "from": "KurrentDB.SchemaRegistry",
+      "to": "KurrentDB.SchemaRegistry.Tests",
+      "via": "schemas",
+      "viaType": "database",
+      "viaId": "table:schemas"
+    }
+  ],
+  "infrastructureGroups": [
+    {
+      "pattern": "File.Write",
+      "type": "storage",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "write": 107
+        },
+        "KurrentDB.Common": {
+          "write": 5
+        },
+        "KurrentDB.Core": {
+          "write": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Consumer",
+      "type": "messaging",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "read": 90
+        },
+        "KurrentDB.Core.Testing": {
+          "read": 11
+        },
+        "KurrentDB.Licensing.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "read": 132
+        },
+        "KurrentDB.Surge.Testing": {
+          "read": 4
+        },
+        "KurrentDB.Core.Testing.NUnit": {
+          "read": 10
+        },
+        "KurrentDB.Surge": {
+          "read": 5
+        },
+        "KurrentDB.Auth.StreamPolicyPlugin.Tests": {
+          "read": 18
+        },
+        "KurrentDB.Projections.Core": {
+          "read": 40
+        },
+        "KurrentDB.Licensing": {
+          "read": 3
+        },
+        "KurrentDB.Projections.Core.Javascript.Tests": {
+          "read": 1
+        },
+        "KurrentDB.SchemaRegistry": {
+          "read": 2
+        },
+        "KurrentDB.SchemaRegistry.Tests": {
+          "read": 2
+        },
+        "KurrentDB.Logging": {
+          "read": 1
+        },
+        "KurrentDB.SecondaryIndexing": {
+          "read": 1
+        },
+        "KurrentDB.Testing.ClusterVNodeApp": {
+          "read": 1
+        },
+        "KurrentDB.Core": {
+          "read": 6
+        },
+        "KurrentDB.Connectors.Tests": {
+          "read": 2
+        },
+        "KurrentDB.Connectors": {
+          "read": 13
+        },
+        "KurrentDB.Testing": {
+          "read": 2
+        },
+        "KurrentDB.TcpPlugin.Tests": {
+          "read": 1
+        },
+        "KurrentDB": {
+          "read": 1
+        },
+        "KurrentDB.Plugins": {
+          "read": 3
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Read",
+      "type": "cache",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "read": 53
+        },
+        "KurrentDB.Licensing.Tests": {
+          "read": 4
+        },
+        "KurrentDB.Auth.UserCertificates.Tests": {
+          "read": 5
+        },
+        "KurrentDB.Api.V2.Tests": {
+          "read": 4
+        },
+        "KurrentDB.Api.V2": {
+          "read": 1
+        },
+        "KurrentDB.Surge.Testing": {
+          "read": 2
+        },
+        "KurrentDB.Common.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Projections.Core": {
+          "read": 1
+        },
+        "KurrentDB.Licensing": {
+          "read": 1
+        },
+        "KurrentDB.AutoScavenge": {
+          "read": 1
+        },
+        "KurrentDB.AutoScavenge.Tests": {
+          "read": 2
+        },
+        "KurrentDB.SchemaRegistry.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Logging": {
+          "read": 1
+        },
+        "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests": {
+          "read": 3
+        },
+        "KurrentDB.Transport.Tcp": {
+          "read": 4
+        },
+        "KurrentDB.TestClient": {
+          "read": 1
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "read": 2
+        },
+        "KurrentDB.Auth.OAuth.Tests": {
+          "read": 3
+        },
+        "KurrentDB.Testing.ClusterVNodeApp": {
+          "read": 1
+        },
+        "KurrentDB.Core": {
+          "read": 30
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Client",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "consume": 6
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "consume": 2
+        },
+        "KurrentDB.Testing.ClusterVNodeApp": {
+          "consume": 2
+        },
+        "KurrentDB.Core": {
+          "consume": 1
+        }
+      }
+    },
+    {
+      "pattern": "gRPC",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "unknown": 46
+        },
+        "KurrentDB.Plugins.Api.V2": {
+          "unknown": 1
+        },
+        "KurrentDB.Api.V2.Tests": {
+          "unknown": 18
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "unknown": 4
+        },
+        "KurrentDB.Api.V2": {
+          "unknown": 28
+        },
+        "KurrentDB.LogV3": {
+          "unknown": 2
+        },
+        "KurrentDB.Projections.Core": {
+          "unknown": 12
+        },
+        "KurrentDB.SchemaRegistry": {
+          "unknown": 17
+        },
+        "KurrentDB.SchemaRegistry.Tests": {
+          "unknown": 33
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "unknown": 4
+        },
+        "KurrentDB.SecondaryIndexing": {
+          "unknown": 2
+        },
+        "KurrentDB.Core.TUnit.Tests": {
+          "unknown": 2
+        },
+        "KurrentDB.Testing.ClusterVNodeApp": {
+          "unknown": 8
+        },
+        "KurrentDB.Core": {
+          "unknown": 57
+        },
+        "KurrentDB.Connectors.Tests": {
+          "unknown": 19
+        },
+        "KurrentDB.Connectors": {
+          "unknown": 18
+        },
+        "KurrentDB.Testing": {
+          "unknown": 1
+        },
+        "KurrentDB.OtlpExporterPlugin.Tests": {
+          "unknown": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.New",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "consume": 8
+        },
+        "KurrentDB.Core.Testing": {
+          "consume": 2
+        },
+        "KurrentDB.Licensing.Tests": {
+          "consume": 2
+        },
+        "KurrentDB.Auth.UserCertificates.Tests": {
+          "consume": 1
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "consume": 1
+        },
+        "KurrentDB.Auth.OAuth": {
+          "consume": 2
+        },
+        "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests": {
+          "consume": 2
+        },
+        "KurrentDB.TestClient": {
+          "consume": 1
+        },
+        "KurrentDB.Auth.OAuth.Tests": {
+          "consume": 3
+        },
+        "KurrentDB.Core": {
+          "consume": 3
+        }
+      }
+    },
+    {
+      "pattern": "Redis.Write",
+      "type": "cache",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "write": 90
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "write": 17
+        },
+        "KurrentDB.Surge": {
+          "write": 3
+        },
+        "KurrentDB.Auth.StreamPolicyPlugin.Tests": {
+          "write": 3
+        },
+        "KurrentDB.TestClient": {
+          "write": 26
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "write": 9
+        },
+        "KurrentDB.Core": {
+          "write": 15
+        }
+      }
+    },
+    {
+      "pattern": "ConnectionString",
+      "type": "config",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "unknown": 16
+        },
+        "KurrentDB.SecondaryIndexing.LoadTesting": {
+          "unknown": 6
+        },
+        "KurrentDB.TestClient": {
+          "unknown": 13
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "unknown": 11
+        },
+        "KurrentDB.Core": {
+          "unknown": 13
+        },
+        "KurrentDB.Connectors": {
+          "unknown": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Topic",
+      "type": "messaging",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "unknown": 24
+        },
+        "KurrentDB.Surge.Testing": {
+          "unknown": 1
+        },
+        "KurrentDB.SchemaRegistry": {
+          "unknown": 1
+        },
+        "KurrentDB.Core": {
+          "unknown": 1
+        },
+        "KurrentDB.Connectors": {
+          "unknown": 4
+        }
+      }
+    },
+    {
+      "pattern": "File.Read",
+      "type": "storage",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "read": 16
+        },
+        "KurrentDB.SystemRuntime": {
+          "read": 1
+        },
+        "KurrentDB.Security.EncryptionAtRest": {
+          "read": 1
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "read": 1
+        },
+        "KurrentDB.SourceGenerators.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "read": 4
+        },
+        "KurrentDB.Core": {
+          "read": 7
+        },
+        "KurrentDB.Connectors": {
+          "read": 1
+        },
+        "KurrentDB.Plugins": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGet",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "expose": 1
+        },
+        "KurrentDB.Auth.UserCertificates.Tests": {
+          "expose": 1
+        },
+        "KurrentDB.Licensing": {
+          "expose": 1
+        },
+        "KurrentDB.AutoScavenge": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.HttpGet",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "API.Route",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "expose": 3
+        }
+      }
+    },
+    {
+      "pattern": "API.Controller",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.GetAsync",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Core.Tests": {
+          "consume": 5
+        },
+        "KurrentDB.Licensing.Tests": {
+          "consume": 3
+        },
+        "KurrentDB.Auth.UserCertificates.Tests": {
+          "consume": 5
+        },
+        "KurrentDB.AutoScavenge.Tests": {
+          "consume": 2
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "consume": 1
+        },
+        "KurrentDB.Auth.OAuth.Tests": {
+          "consume": 3
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Execute",
+      "type": "database",
+      "projects": {
+        "KurrentDB.Core.Testing": {
+          "write": 2
+        },
+        "KurrentDB.Api.V2.Tests": {
+          "write": 1
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "write": 2
+        },
+        "KurrentDB.Api.V2": {
+          "write": 2
+        },
+        "KurrentDB.Surge": {
+          "write": 2
+        },
+        "KurrentDB.Projections.Core": {
+          "write": 1
+        },
+        "KurrentDB.Licensing": {
+          "write": 3
+        },
+        "KurrentDB.Projections.Core.Javascript.Tests": {
+          "write": 1
+        },
+        "KurrentDB.SchemaRegistry": {
+          "write": 12
+        },
+        "KurrentDB.SchemaRegistry.Tests": {
+          "write": 1
+        },
+        "KurrentDB.TestClient": {
+          "write": 2
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "write": 4
+        },
+        "KurrentDB.Auth.OAuth.Tests": {
+          "write": 2
+        },
+        "KurrentDB.Testing.ClusterVNodeApp": {
+          "write": 1
+        },
+        "KurrentDB.Core": {
+          "write": 48
+        },
+        "KurrentDB.Connectors": {
+          "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "gRPC.Server",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Plugins.Api.V2": {
+          "expose": 2
+        },
+        "KurrentDB.Api.V2": {
+          "expose": 55
+        },
+        "KurrentDB.Projections.Core": {
+          "expose": 11
+        },
+        "KurrentDB.SchemaRegistry": {
+          "expose": 20
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "expose": 5
+        },
+        "KurrentDB.Core": {
+          "expose": 59
+        },
+        "KurrentDB.Connectors": {
+          "expose": 14
+        },
+        "KurrentDB.OtlpExporterPlugin.Tests": {
+          "expose": 2
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Read",
+      "type": "database",
+      "projects": {
+        "KurrentDB.Api.V2.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Projections.Core.Tests": {
+          "read": 10
+        },
+        "KurrentDB.Api.V2": {
+          "read": 2
+        },
+        "KurrentDB.Core.Testing.NUnit": {
+          "read": 5
+        },
+        "KurrentDB.NETCore.Compatibility": {
+          "read": 3
+        },
+        "KurrentDB.AutoScavenge": {
+          "read": 1
+        },
+        "KurrentDB.Common": {
+          "read": 1
+        },
+        "KurrentDB.SchemaRegistry": {
+          "read": 5
+        },
+        "KurrentDB.TestClient": {
+          "read": 2
+        },
+        "KurrentDB.Core.XUnit.Tests": {
+          "read": 1
+        },
+        "KurrentDB.Core": {
+          "read": 9
+        },
+        "KurrentDB.Connectors": {
+          "read": 4
+        },
+        "KurrentDB": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "Kafka.Producer",
+      "type": "messaging",
+      "projects": {
+        "KurrentDB.Surge.Testing": {
+          "write": 3
+        },
+        "KurrentDB.Surge": {
+          "write": 10
+        },
+        "KurrentDB.SchemaRegistry": {
+          "write": 1
+        },
+        "KurrentDB.Surge.Tests": {
+          "write": 1
+        },
+        "KurrentDB.Core": {
+          "write": 1
+        },
+        "KurrentDB.Connectors.Tests": {
+          "write": 2
+        },
+        "KurrentDB.Connectors": {
+          "write": 14
+        }
+      }
+    },
+    {
+      "pattern": "IMessageAdapter",
+      "type": "connector",
+      "projects": {
+        "KurrentDB.Transport.Http": {
+          "both": 4
+        }
+      }
+    },
+    {
+      "pattern": "API.MapPost",
+      "type": "api",
+      "projects": {
+        "KurrentDB.AutoScavenge": {
+          "expose": 3
+        }
+      }
+    },
+    {
+      "pattern": "API.MapGroup",
+      "type": "api",
+      "projects": {
+        "KurrentDB.AutoScavenge": {
+          "expose": 2
+        },
+        "KurrentDB.Core": {
+          "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "SQL.CreateTable",
+      "type": "database",
+      "projects": {
+        "KurrentDB.SchemaRegistry": {
+          "write": 2
+        },
+        "KurrentDB.SecondaryIndexing": {
+          "write": 1
+        },
+        "KurrentDB.Core": {
+          "write": 7
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Select",
+      "type": "database",
+      "projects": {
+        "KurrentDB.SchemaRegistry": {
+          "read": 5
+        },
+        "KurrentDB.SchemaRegistry.Tests": {
+          "read": 2
+        },
+        "KurrentDB.SecondaryIndexing.LoadTesting": {
+          "read": 2
+        },
+        "KurrentDB.SecondaryIndexing": {
+          "read": 18
+        },
+        "KurrentDB.SecondaryIndexing.Tests": {
+          "read": 2
+        },
+        "KurrentDB": {
+          "read": 2
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Insert",
+      "type": "database",
+      "projects": {
+        "KurrentDB.SchemaRegistry": {
+          "write": 3
+        }
+      }
+    },
+    {
+      "pattern": "SQL.Delete",
+      "type": "database",
+      "projects": {
+        "KurrentDB.SchemaRegistry": {
+          "write": 3
+        }
+      }
+    },
+    {
+      "pattern": "Dapper.Query",
+      "type": "database",
+      "projects": {
+        "KurrentDB.SchemaRegistry": {
+          "read": 1
+        },
+        "KurrentDB.SecondaryIndexing.LoadTesting": {
+          "read": 2
+        },
+        "KurrentDB.SecondaryIndexing.Tests": {
+          "read": 2
+        },
+        "KurrentDB": {
+          "read": 1
+        }
+      }
+    },
+    {
+      "pattern": "MongoDB.Write",
+      "type": "database",
+      "projects": {
+        "KurrentDB.Core.XUnit.Tests": {
+          "write": 3
+        },
+        "KurrentDB.Core": {
+          "write": 3
+        }
+      }
+    },
+    {
+      "pattern": "HttpClient.PostAsync",
+      "type": "api",
+      "projects": {
+        "KurrentDB.Auth.OAuth.Tests": {
+          "consume": 4
+        }
+      }
+    }
+  ]
+}

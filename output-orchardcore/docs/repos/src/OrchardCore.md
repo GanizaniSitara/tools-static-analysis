@@ -44,6 +44,40 @@ graph TD
 | NodaTime |  |
 
 ## Data Access Patterns
+### Dapper.Execute
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore.Setup.Core/Services/SetupService.cs` | 231 | `await recipeExecutor.ExecuteAsync(executionId, context.Recipe, context` |
+| `src/OrchardCore/OrchardCore.Indexing.Core/IndexingTaskManager.cs` | 171 | `await transaction.Connection.ExecuteAsync(deleteCmd,` |
+| `src/OrchardCore/OrchardCore.Indexing.Core/IndexingTaskManager.cs` | 180 | `await transaction.Connection.ExecuteAsync(insertCmd, localQueue, trans` |
+| `src/OrchardCore/OrchardCore.Notifications.Core/DefaultNotificationsAdminListQueryService.cs` | 25 | `query = await options.FilterResult.ExecuteAsync(new NotificationQueryC` |
+| `src/OrchardCore/OrchardCore.DisplayManagement/Implementation/DisplayHelper.cs` | 90 | `return _htmlDisplay.ExecuteAsync(context);` |
+| `src/OrchardCore/OrchardCore.Recipes.Core/Services/RecipeMigrator.cs` | 57 | `return await _recipeExecutor.ExecuteAsync(executionId, recipeDescripto` |
+| `src/OrchardCore/OrchardCore.Recipes.Core/Services/RecipeExecutor.cs` | 180 | `await recipeStepHandler.ExecuteAsync(recipeStep);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Commands/DefaultCommandManager.cs` | 26 | `await match.CommandHandler.ExecuteAsync(match.Context);` |
+| `src/OrchardCore/OrchardCore.Data.YesSql/Removing/ShellDbTablesInfo.cs` | 302 | `Connection.Execute(statement, null, Transaction);` |
+
+### Redis.Write
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore.Setup.Core/Services/SetupService.cs` | 152 | `_httpContextAccessor.HttpContext.Features.Set(recipeEnvironmentFeature` |
+| `src/OrchardCore/OrchardCore.DisplayManagement/Razor/RazorViewActionFilter.cs` | 50 | `context.HttpContext.Features.Set(razorViewFeature);` |
+| `src/OrchardCore/OrchardCore.Data/Documents/FileDocumentStore.cs` | 43 | `ShellScope.Set(typeof(T), document);` |
+| `src/OrchardCore/OrchardCore.Data/Documents/FileDocumentStore.cs` | 67 | `ShellScope.Set(typeof(T), null);` |
+| `src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchIndexNameProvider.cs` | 52 | `_memoryCache.Set(_prefixCacheKey, value);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/LocationExpander/SharedViewLocationExpanderProvider.cs` | 106 | `_memoryCache.Set(PageCacheKey, modulePageSharedViewLocations);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/LocationExpander/SharedViewLocationExpanderProvider.cs` | 118 | `_memoryCache.Set(CacheKey, moduleSharedViewLocations);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/LocationExpander/ComponentViewLocationExpanderProvider.cs` | 118 | `_memoryCache.Set(CacheKey, moduleComponentViewLocations);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/ShellFileVersionProvider.cs` | 114 | `_sharedCache.Set(resolvedPath, value, cacheEntryOptions);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/ShellFileVersionProvider.cs` | 118 | `_cache.Set(cacheKey, value, cacheEntryOptions);` |
+| `src/OrchardCore/OrchardCore.Mvc.Core/ShellFileVersionProvider.cs` | 127 | `_cache.Set(cacheKey, string.Empty, cacheEntryOptions);` |
+| `src/OrchardCore/OrchardCore.Search.AzureAI.Core/Services/AzureAISearchIndexNameProvider.cs` | 48 | `_memoryCache.Set(_prefixCacheKey, safePrefix);` |
+| `src/OrchardCore/OrchardCore.Localization.Core/PortableObject/PoParser.cs` | 49 | `entryBuilder.Set(context, content);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Documents/DocumentManager.cs` | 56 | `ShellScope.Set(DocumentStoreServiceType, documentStore);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Documents/DocumentManager.cs` | 89 | `ShellScope.Set(typeof(TDocument), document);` |
+
+*... and 16 more*
+
 ### ConnectionString
 | File | Line | Context |
 |------|------|---------||
@@ -65,7 +99,7 @@ graph TD
 
 *... and 31 more*
 
-### Dapper
+### Dapper.Query
 | File | Line | Context |
 |------|------|---------||
 | `src/OrchardCore/OrchardCore.Indexing.Core/ContentIndexingService.cs` | 88 | `var contentItems = await _readonlySession.Query<ContentItem, ContentIt` |
@@ -78,36 +112,63 @@ graph TD
 | `src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs` | 77 | `return await _session.Query<IndexProfile, IndexProfileIndex>()` |
 | `src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs` | 98 | `return await _session.Query<IndexProfile, IndexProfileIndex>().ListAsy` |
 | `src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileStore.cs` | 139 | `var query = _session.Query<IndexProfile, IndexProfileIndex>();` |
+| `src/OrchardCore/OrchardCore.Indexing.Core/IndexingTaskManager.cs` | 92 | `return await connection.QueryAsync<RecordIndexingTask>(sqlBuilder.ToSq` |
 | `src/OrchardCore/OrchardCore.Notifications.Core/DefaultNotificationsAdminListQueryService.cs` | 23 | `var query = _session.Query<Notification>(collection: NotificationConst` |
 | `src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Providers/ElasticsearchContentPickerResultProvider.cs` | 65 | `.Query(q => q` |
 | `src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Providers/ElasticsearchContentPickerResultProvider.cs` | 81 | `.Query(q => q` |
 | `src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchDocumentIndexManager.cs` | 34 | `.Query(q => q` |
-| `src/OrchardCore/OrchardCore.Search.Elasticsearch.Core/Services/ElasticsearchDocumentIndexManager.cs` | 67 | `.Query(q => q` |
 
 *... and 83 more*
 
-### RabbitMQ
+### Redis.Read
 | File | Line | Context |
 |------|------|---------||
-| `src/OrchardCore/OrchardCore.Notifications.Core/Services/NotificationFilterEngineModelBinder.cs` | 5 | `public class NotificationFilterEngineModelBinder : IModelBinder` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinder.cs` | 5 | `public class CheckMarkModelBinder : IModelBinder` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinderProvider.cs` | 5 | `internal sealed class SafeBoolModelBinderProvider : IModelBinderProvid` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinderProvider.cs` | 7 | `public IModelBinder GetBinder(ModelBinderProviderContext context)` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs` | 6 | `/// An <see cref="IModelBinderProvider"/> for <see cref="CheckMarkMode` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs` | 8 | `public class CheckMarkModelBinderProvider : IModelBinderProvider` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/CheckMarkModelBinderProvider.cs` | 11 | `public IModelBinder GetBinder(ModelBinderProviderContext context)` |
-| `src/OrchardCore/OrchardCore.Mvc.Core/ModelBinding/SafeBoolModelBinder.cs` | 12 | `internal sealed class SafeBoolModelBinder : IModelBinder` |
-| `src/OrchardCore/OrchardCore.Infrastructure.Abstractions/Entities/ModelHandlerBase.cs` | 3 | `public abstract class ModelHandlerBase<T> : IModelHandler<T>` |
-| `src/OrchardCore/OrchardCore.Infrastructure.Abstractions/Entities/IModelHandler.cs` | 3 | `public interface IModelHandler<T>` |
-| `src/OrchardCore/OrchardCore.Indexing.Abstractions/IIndexProfileHandler.cs` | 6 | `public interface IIndexProfileHandler : IModelHandler<IndexProfile>` |
-| `src/OrchardCore/OrchardCore.Contents.Core/Services/ContentItemFilterEngineModelBinder.cs` | 5 | `public class ContentItemFilterEngineModelBinder : IModelBinder` |
-| `src/OrchardCore/OrchardCore.Users.Core/Services/UserFilterEngineModelBinder.cs` | 5 | `public class UserFilterEngineModelBinder : IModelBinder` |
-| `src/OrchardCore/OrchardCore.AuditTrail.Abstractions/Services/AuditTrailFilterEngineModelBinder.cs` | 5 | `public class AuditTrailFilterEngineModelBinder : IModelBinder` |
+| `src/OrchardCore/OrchardCore.Indexing.Core/DefaultIndexProfileManager.cs` | 198 | `var models = await _store.GetAsync(providerName, type);` |
+| `src/OrchardCore/OrchardCore.Email.Core/Services/DefaultEmailService.cs` | 29 | `var provider = await _providerResolver.GetAsync(name);` |
+| `src/OrchardCore/OrchardCore.Search.Lucene.Core/Services/LuceneQuerySource.cs` | 93 | `var indexedContentItemVersionIds = docs.TopDocs.ScoreDocs.Select(x => ` |
+| `src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Queries/Types/TypedContentTypeBuilder.cs` | 81 | `var resolvedPart = context.Source.Get(partType, nameToResolve);` |
+| `src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Queries/Types/TypedContentTypeBuilder.cs` | 107 | `return context.Source.Get(typeToResolve, nameToResolve);` |
+| `src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Queries/Types/DynamicContentTypeBuilder.cs` | 198 | `return context.Source.Get(typeToResolve, nameToResolve);` |
+| `src/OrchardCore/OrchardCore.ContentManagement.GraphQL/Queries/ContentItemQuery.cs` | 55 | `return await contentManager.GetAsync(contentItemId);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Documents/DocumentManager.cs` | 35 | `_options = options.Get(typeof(TDocument).FullName);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Documents/DocumentManager.cs` | 52 | `var documentStore = (IDocumentStore)ShellScope.Get(DocumentStoreServic` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Documents/DocumentManager.cs` | 368 | `data = await _distributedCache.GetAsync(_options.CacheKey);` |
+| `src/OrchardCore/OrchardCore.ContentManagement.Abstractions/ContentItemExtensions.cs` | 54 | `part = contentItem.Get(contentElementType, name);` |
+| `src/OrchardCore/OrchardCore.ContentManagement.Abstractions/ContentManagerExtensions.cs` | 21 | `(await contentManager.GetAsync(content.ContentItem.ContentItemId, Vers` |
+| `src/OrchardCore/OrchardCore.ContentManagement.Abstractions/ContentManagerExtensions.cs` | 76 | `var contentItem = await contentManager.GetAsync(contentItemId, options` |
+| `src/OrchardCore/OrchardCore.ContentManagement.Abstractions/ContentExtensions.cs` | 35 | `var result = contentElement.Get(typeof(TElement), name);` |
+| `src/OrchardCore/OrchardCore.Contents.Core/Extensions/ContentOrchardHelperExtensions.cs` | 39 | `return await contentManager.GetAsync(contentItemId, option);` |
 
-### FileStorage
+*... and 19 more*
+
+### MongoDB.Read
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore.DisplayManagement/Descriptors/ShapePlacementStrategy/ShapePlacementParsingStrategy.cs` | 81 | `predicate = matches.Aggregate(predicate, BuildPredicate);` |
+| `src/OrchardCore/OrchardCore.DisplayManagement/BaseDisplayManager.cs` | 54 | `return placementResolvers.Aggregate<IPlacementInfoResolver, PlacementI` |
+
+### File.Read
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore.Data/Documents/FileDocumentStore.cs` | 98 | `using var stream = File.OpenRead(filename);` |
+| `src/OrchardCore/OrchardCore.FileStorage.FileSystem/FileSystemStore.cs` | 247 | `var stream = File.OpenRead(physicalPath);` |
+| `src/OrchardCore/OrchardCore.FileStorage.FileSystem/FileSystemStore.cs` | 271 | `var stream = File.OpenRead(physicalPath);` |
+| `src/OrchardCore/OrchardCore.Search.Lucene.Core/Services/LuceneIndexingState.cs` | 90 | `_stateDocument = JObject.Parse(await File.ReadAllTextAsync(_stateFileN` |
+| `src/OrchardCore/OrchardCore.Shells.Azure/Configuration/BlobShellsConfigurationSources.cs` | 80 | `using var file = File.OpenRead(fileSystemPath);` |
+| `src/OrchardCore/OrchardCore.Shells.Azure/Configuration/BlobShellsSettingsSources.cs` | 118 | `using var file = File.OpenRead(_tenantsFileSystemName);` |
+| `src/OrchardCore/OrchardCore.Shells.Azure/Configuration/BlobShellConfigurationSources.cs` | 111 | `using var file = File.OpenRead(tenantFile);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellsSettingsSources.cs` | 149 | `using var fileStream = File.OpenRead(_tenants);` |
+| `src/OrchardCore/OrchardCore.Infrastructure/Shells.Database/Configuration/DatabaseShellConfigurationSources.cs` | 147 | `using var stream = File.OpenRead(appsettings);` |
+| `src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs` | 30 | `using var streamReader = File.OpenRead(_tenants);` |
+| `src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs` | 62 | `using (var streamReader = File.OpenRead(_tenants))` |
+| `src/OrchardCore/OrchardCore/Shell/Configuration/ShellConfigurationSources.cs` | 39 | `using var streamReader = File.OpenRead(appsettings);` |
+
+### File.Write
 | File | Line | Context |
 |------|------|---------||
 | `src/OrchardCore/OrchardCore.Data/Documents/FileDocumentStore.cs` | 122 | `using var stream = File.Create(filename);` |
+| `src/OrchardCore/OrchardCore.Search.Lucene.Core/Services/LuceneIndexingState.cs` | 59 | `await File.WriteAllTextAsync(_stateFileName, _stateDocument.ToJsonStri` |
+| `src/OrchardCore/OrchardCore.Search.Lucene.Core/Services/LuceneIndexingState.cs` | 87 | `await File.WriteAllTextAsync(_stateFileName, new JsonObject().ToJsonSt` |
 | `src/OrchardCore/OrchardCore.Media.Core/DefaultMediaFileStoreCacheFileProvider.cs` | 64 | `using var fileStream = File.Create(cachePath);` |
 | `src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs` | 53 | `using var streamWriter = File.Create(_tenants);` |
 | `src/OrchardCore/OrchardCore/Shell/Configuration/ShellsSettingsSources.cs` | 69 | `using var streamWriter = File.Create(_tenants);` |
@@ -145,10 +206,23 @@ graph TD
 | `src/OrchardCore/OrchardCore.ReCaptcha.Core/ServiceCollectionExtensions.cs` | 20 | `.AddHttpClient(nameof(ReCaptchaService))` |
 | `src/OrchardCore/OrchardCore.Sms.Core/ServiceCollectionExtensions.cs` | 46 | `services.AddHttpClient(TwilioSmsProvider.TechnicalName, client =>` |
 
+### Kafka.Topic
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore/Caching/Distributed/DistributedSignal.cs` | 23 | `public override Task ActivatedAsync() => _messageBus.SubscribeAsync("S` |
+
 ### HttpClient.BaseAddress
 | File | Line | Context |
 |------|------|---------||
 | `src/OrchardCore/OrchardCore.Sms.Core/ServiceCollectionExtensions.cs` | 48 | `client.BaseAddress = new Uri("https://api.twilio.com/2010-04-01/Accoun` |
+
+### SQL.Delete
+| File | Line | Context |
+|------|------|---------||
+| `src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs` | 378 | `// Delete from the original collection.` |
+| `src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs` | 389 | `// Delete from the original collection.` |
+| `src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs` | 481 | `// Delete from the original collection.` |
+| `src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs` | 492 | `// Delete from the original collection.` |
 
 
 ---

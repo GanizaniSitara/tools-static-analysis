@@ -35,6 +35,12 @@ graph TD
 | NSubstitute |  |
 | NSubstitute.Analyzers.CSharp |  |
 
+## Data Access Patterns
+### Redis.Read
+| File | Line | Context |
+|------|------|---------||
+| `tests/Ordering.UnitTests/Application/NewOrderCommandHandlerTest.cs` | 31 | `_orderRepositoryMock.GetAsync(Arg.Any<int>())` |
+
 
 ---
 

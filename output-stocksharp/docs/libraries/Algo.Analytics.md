@@ -31,6 +31,12 @@ graph TD
 - Algo.Analytics.CSharp
 - Tests
 
+## Data Access Patterns
+### SQL.CreateTable
+| File | Line | Context |
+|------|------|---------||
+| `Algo.Analytics/IAnalyticsPanel.cs` | 11 | `/// Create table to show analytics result.` |
+
 
 ---
 

@@ -1,0 +1,18 @@
+graph LR
+    subgraph Projects["Services & Projects"]
+        QuantConnect["QuantConnect"]
+        QuantConnect_Algorithm["QuantConnect.Algorithm"]
+        QuantConnect_ToolBox["QuantConnect.ToolBox"]
+    end
+    subgraph Database["Database / Storage"]
+        table_the[("the")]
+        table_collection[("collection")]
+    end
+    subgraph APIs["API Routes"]
+        url_https___api_tournament_crunchdao_com_v2_rounds__current(["https://api.tournament.crunchdao.com/v2/rounds/@current"])
+    end
+    table_the -.->|read| QuantConnect
+    table_the -.->|read| QuantConnect_Algorithm
+    table_the -.->|read| QuantConnect_ToolBox
+    table_collection -.->|read| QuantConnect
+    url_https___api_tournament_crunchdao_com_v2_rounds__current -.->|consume| QuantConnect

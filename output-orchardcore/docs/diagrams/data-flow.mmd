@@ -1,0 +1,82 @@
+graph LR
+    subgraph Projects["Services & Projects"]
+        OrchardCore_Contents["OrchardCore.Contents"]
+        OrchardCore_Demo["OrchardCore.Demo"]
+        OrchardCore_Facebook["OrchardCore.Facebook"]
+        OrchardCore_Liquid["OrchardCore.Liquid"]
+        OrchardCore_Notifications["OrchardCore.Notifications"]
+        OrchardCore_OpenId_Core["OrchardCore.OpenId.Core"]
+        OrchardCore_Queries["OrchardCore.Queries"]
+        OrchardCore_Search["OrchardCore.Search"]
+        OrchardCore_Search_Elasticsearch["OrchardCore.Search.Elasticsearch"]
+        OrchardCore_Search_Lucene["OrchardCore.Search.Lucene"]
+        OrchardCore_Tests["OrchardCore.Tests"]
+        OrchardCore_Twitter["OrchardCore.Twitter"]
+        OrchardCore_UrlRewriting["OrchardCore.UrlRewriting"]
+        OrchardCore_Users["OrchardCore.Users"]
+    end
+    subgraph Database["Database / Storage"]
+        table_ContentItemIndex[("ContentItemIndex")]
+        table_the[("the")]
+        table_tp_t[("tp_t")]
+        table_t1[("t1")]
+        table_tp_d[("tp_d")]
+        table_tp_b[("tp_b")]
+        table_tp_a[("tp_a")]
+    end
+    subgraph APIs["API Routes"]
+        route_content(["content"])
+        route_documents(["documents"])
+        route_api_queries(["api/queries"])
+        route__name_(["{name}"])
+        url_https___api_twitter_com(["https://api.twitter.com"])
+        route_TwoFactor_Authenticator_SmsSendCode(["TwoFactor-Authenticator/SmsSendCode"])
+        route_TwoFactor_Authenticator_EmailSendCode(["TwoFactor-Authenticator/EmailSendCode"])
+        route_api_elasticsearch(["api/elasticsearch"])
+        route_Notifications_MarkAsRead(["Notifications/MarkAsRead"])
+        route_OrchardCore_Liquid_Scripts_liquid_intellisense_js(["OrchardCore.Liquid/Scripts/liquid-intellisense.js"])
+        route_api_content(["api/content"])
+        route_api_content__contentItemId_(["api/content/{contentItemId}"])
+        route__OrchardCore_Facebook_sdk_init_js(["/OrchardCore.Facebook/sdk/init.js"])
+        route__OrchardCore_Facebook_sdk_sdk__culture_length_2_6___js(["/OrchardCore.Facebook/sdk/sdk.{culture:length(2,6)}.js"])
+        route_api_lucene(["api/lucene"])
+        route_url_rewriting_resort(["url-rewriting/resort"])
+        route_search__index__(["search/{index?}"])
+        route_Demo(["Demo"])
+        route_Demo_Index(["Demo/Index"])
+        route_Demo_About(["Demo/About"])
+        route_Demo_Contact(["Demo/Contact"])
+        route_api_demo(["api/demo"])
+    end
+    table_ContentItemIndex -.->|read| OrchardCore_Queries
+    table_ContentItemIndex -.->|read| OrchardCore_Tests
+    OrchardCore_OpenId_Core ==>|write| table_the
+    table_tp_t -.->|read| OrchardCore_Tests
+    table_t1 -.->|read| OrchardCore_Tests
+    table_tp_d -.->|read| OrchardCore_Tests
+    table_tp_b -.->|read| OrchardCore_Tests
+    table_tp_a -.->|read| OrchardCore_Tests
+    OrchardCore_Search_Elasticsearch ==>|expose| route_content
+    OrchardCore_Search_Lucene ==>|expose| route_content
+    OrchardCore_Search_Elasticsearch ==>|expose| route_documents
+    OrchardCore_Search_Lucene ==>|expose| route_documents
+    OrchardCore_Queries ==>|expose| route_api_queries
+    OrchardCore_Queries ==>|expose| route__name_
+    url_https___api_twitter_com -.->|consume| OrchardCore_Twitter
+    OrchardCore_Users ==>|expose| route_TwoFactor_Authenticator_SmsSendCode
+    OrchardCore_Users ==>|expose| route_TwoFactor_Authenticator_EmailSendCode
+    OrchardCore_Search_Elasticsearch ==>|expose| route_api_elasticsearch
+    OrchardCore_Notifications ==>|expose| route_Notifications_MarkAsRead
+    OrchardCore_Liquid ==>|expose| route_OrchardCore_Liquid_Scripts_liquid_intellisense_js
+    OrchardCore_Contents ==>|expose| route_api_content
+    OrchardCore_Contents ==>|expose| route_api_content__contentItemId_
+    OrchardCore_Facebook ==>|expose| route__OrchardCore_Facebook_sdk_init_js
+    OrchardCore_Facebook ==>|expose| route__OrchardCore_Facebook_sdk_sdk__culture_length_2_6___js
+    OrchardCore_Search_Lucene ==>|expose| route_api_lucene
+    OrchardCore_UrlRewriting ==>|expose| route_url_rewriting_resort
+    OrchardCore_Search ==>|expose| route_search__index__
+    OrchardCore_Demo ==>|expose| route_Demo
+    OrchardCore_Demo ==>|expose| route_Demo_Index
+    OrchardCore_Demo ==>|expose| route_Demo_About
+    OrchardCore_Demo ==>|expose| route_Demo_Contact
+    OrchardCore_Demo ==>|expose| route_api_demo

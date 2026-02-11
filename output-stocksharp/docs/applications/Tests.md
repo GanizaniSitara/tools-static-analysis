@@ -68,6 +68,27 @@ graph TD
 | Ecng.Data.Ado | 1.0.* |
 
 ## Data Access Patterns
+### Redis.Read
+| File | Line | Context |
+|------|------|---------||
+| `Tests/SnapshotRegistryTests.cs` | 51 | `var snapDay1 = storage.Get(secId);` |
+| `Tests/SnapshotRegistryTests.cs` | 68 | `var latest = storage.Get(secId);` |
+| `Tests/SnapshotRegistryTests.cs` | 98 | `storage.Get(secId1).AssertNotNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 99 | `storage.Get(secId2).AssertNotNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 102 | `storage.Get(secId1).AssertNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 103 | `storage.Get(secId2).AssertNotNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 106 | `storage.Get(secId1).AssertNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 107 | `storage.Get(secId2).AssertNull();` |
+| `Tests/SnapshotRegistryTests.cs` | 137 | `var snap1 = storage.Get(secId);` |
+| `Tests/SnapshotRegistryTests.cs` | 151 | `var snap2 = storage.Get(secId);` |
+| `Tests/CsvStorageTests.cs` | 963 | `var item2 = await ((IExtendedInfoStorage)storage2).GetAsync("TestStora` |
+| `Tests/CsvStorageTests.cs` | 1063 | `var items = await storage.GetAsync(token);` |
+| `Tests/CsvStorageTests.cs` | 1294 | `var itemsB = await storageB.GetAsync(token);` |
+| `Tests/CsvStorageTests.cs` | 1299 | `var itemsA = await storageA.GetAsync(token);` |
+| `Tests/IndicatorTests.cs` | 744 | `var builder = provider.Get(typeof(TimeFrameCandleMessage));` |
+
+*... and 55 more*
+
 ### IMessageAdapter
 | File | Line | Context |
 |------|------|---------||
@@ -89,10 +110,64 @@ graph TD
 
 *... and 18 more*
 
-### FileStorage
+### HttpClient.DeleteAsync
+| File | Line | Context |
+|------|------|---------||
+| `Tests/PermissionsTests.cs` | 538 | `var deleted = await storage.DeleteAsync("delete", CancellationToken);` |
+| `Tests/PermissionsTests.cs` | 551 | `var deleted = await storage.DeleteAsync("nonexistent", CancellationTok` |
+| `Tests/FileCredentialsStorageTests.cs` | 119 | `var result = await storage.DeleteAsync("test@example.com", Cancellatio` |
+| `Tests/FileCredentialsStorageTests.cs` | 132 | `var result = await storage.DeleteAsync("nonexistent", CancellationToke` |
+| `Tests/FileCredentialsStorageTests.cs` | 213 | `var result = await storage.DeleteAsync("TEST@EXAMPLE.COM", Cancellatio` |
+
+### HttpClient.GetAsync
+| File | Line | Context |
+|------|------|---------||
+| `Tests/CsvStorageTests.cs` | 963 | `var item2 = await ((IExtendedInfoStorage)storage2).GetAsync("TestStora` |
+
+### File.Write
 | File | Line | Context |
 |------|------|---------||
 | `Tests/StrategyReportTemplateHelper.cs` | 141 | `using var file = File.Create(filePath);` |
+
+### File.Read
+| File | Line | Context |
+|------|------|---------||
+| `Tests/IndicatorTests.cs` | 1367 | `var data = Do.Invariant(() => File.ReadAllLines(Path.Combine(Helper.Re` |
+| `Tests/AsmInit.cs` | 25 | `await CompilationExtensions.Init(Paths.FileSystem, Helper.LogManager.A` |
+| `Tests/CompilationTests.cs` | 80 | `var sourceCode = await File.ReadAllTextAsync(scriptFile, token);` |
+| `Tests/CompilationTests.cs` | 126 | `? await File.ReadAllTextAsync(Path.Combine(folderPath, "Properties", "` |
+| `Tests/CompilationTests.cs` | 166 | `var sourceCode = await File.ReadAllTextAsync(scriptFile, token);` |
+| `Tests/CompilationTests.cs` | 490 | `var sourceCode = File.ReadAllText(Path.Combine(_designerFolder, fileNa` |
+| `Tests/CompilationTests.cs` | 529 | `var sourceCode = File.ReadAllText(Path.Combine(_designerFolder, fileNa` |
+| `Tests/CompilationTests.cs` | 572 | `var sourceCode = File.ReadAllText(Path.Combine(_designerFolder, fileNa` |
+| `Tests/ReportTests.cs` | 180 | `var expected = File.ReadAllText(expectedPath);` |
+
+### Kafka.Consumer
+| File | Line | Context |
+|------|------|---------||
+| `Tests/ConnectorRoutingTests.cs` | 451 | `connector.Subscribe(btcSubscription);` |
+| `Tests/ConnectorRoutingTests.cs` | 452 | `connector.Subscribe(ethSubscription);` |
+| `Tests/ConnectorRoutingTests.cs` | 579 | `connector.Subscribe(btcSub);` |
+| `Tests/ConnectorRoutingTests.cs` | 580 | `connector.Subscribe(ethSub);` |
+| `Tests/ConnectorRoutingTests.cs` | 715 | `connector.Subscribe(sub);` |
+| `Tests/ConnectorRoutingTests.cs` | 796 | `connector.Subscribe(sub);` |
+| `Tests/ConnectorRoutingTests.cs` | 859 | `connector.Subscribe(sub);` |
+| `Tests/ConnectorRoutingTests.cs` | 898 | `connector.Subscribe(btcSub);` |
+| `Tests/ConnectorRoutingTests.cs` | 1005 | `connector.Subscribe(sub1);` |
+| `Tests/ConnectorRoutingTests.cs` | 1006 | `connector.Subscribe(sub2);` |
+| `Tests/ConnectorRoutingTests.cs` | 1083 | `connector.Subscribe(sub);` |
+| `Tests/ConnectorRoutingTests.cs` | 1124 | `connector.Subscribe(sub);` |
+| `Tests/StrategyDecomposedTests.cs` | 499 | `registry.Subscribe(sub);` |
+| `Tests/StrategyDecomposedTests.cs` | 520 | `registry.Subscribe(sub);` |
+| `Tests/StrategyDecomposedTests.cs` | 539 | `registry.Subscribe(sub1);` |
+
+*... and 33 more*
+
+### MongoDB.Read
+| File | Line | Context |
+|------|------|---------||
+| `Tests/MarketEmulatorTests.cs` | 130 | `var m = (ExecutionMessage)res.Find(x => x is ExecutionMessage em && em` |
+| `Tests/MarketEmulatorTests.cs` | 157 | `var m = (ExecutionMessage)res.Find(x => x is ExecutionMessage em && em` |
 
 ### SqlClient
 | File | Line | Context |
