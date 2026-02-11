@@ -632,8 +632,61 @@ def generate_business_layer_mermaid() -> str:
     return "\n".join(lines)
 
 
+def _group_by_prefix(names: list[str], max_nodes: int = 8) -> list[dict]:
+    """Group project names by semantic category. Returns individual nodes if few, grouped otherwise.
+
+    Each result: {"id": str, "label": str, "members": list[str]}
+    Aims to produce at most `max_nodes` groups for compact diagrams.
+    """
+    if len(names) <= max_nodes:
+        return [{"id": sanitize_id(n), "label": n, "members": [n]} for n in sorted(names)]
+
+    # Extract semantic category: strip leading numbers, take the category word
+    # e.g. "01_Strategies.HistorySMA" -> "Strategies"
+    #      "02_Chart_ActiveOrders" -> "Chart"
+    #      "BusinessEntities" -> "BusinessEntities"
+    import re
+    def _category(name: str) -> str:
+        # Strip leading digits and underscores: "01_Strategies.HistorySMA" -> "Strategies.HistorySMA"
+        stripped = re.sub(r"^\d+_", "", name)
+        # Take first segment before . or _
+        for sep in (".", "_"):
+            if sep in stripped:
+                return stripped.split(sep)[0]
+        return stripped
+
+    groups: dict[str, list[str]] = {}
+    for name in names:
+        cat = _category(name)
+        groups.setdefault(cat, []).append(name)
+
+    # If still too many groups, merge the smallest ones into "Other"
+    if len(groups) > max_nodes:
+        sorted_groups = sorted(groups.items(), key=lambda x: -len(x[1]))
+        kept = dict(sorted_groups[:max_nodes - 1])
+        other_members = []
+        for cat, members in sorted_groups[max_nodes - 1:]:
+            other_members.extend(members)
+        if other_members:
+            kept["Other"] = other_members
+        groups = kept
+
+    result = []
+    for cat, members in sorted(groups.items(), key=lambda x: -len(x[1])):
+        if len(members) == 1:
+            result.append({"id": sanitize_id(members[0]), "label": members[0], "members": members})
+        else:
+            gid = sanitize_id(f"grp_{cat}")
+            result.append({"id": gid, "label": f"{cat} ({len(members)})", "members": members})
+    return result
+
+
 def generate_e2e_flows_mermaid() -> str:
-    """Generate aggregated E2E flows diagram showing projects grouped by business layer."""
+    """Generate aggregated E2E flows diagram showing projects grouped by business layer.
+
+    Groups projects by name prefix within each layer to keep the diagram compact
+    and vertically oriented regardless of project count.
+    """
     flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
     if not os.path.isfile(flow_paths_path):
         return "graph TD\n    no_data[No flow path data available]"
@@ -645,9 +698,7 @@ def generate_e2e_flows_mermaid() -> str:
     if not flow_paths:
         return "graph TD\n    no_data[No end-to-end flow paths found]"
 
-    MAX_PROJECTS = 40
-
-    # Collect all projects on flow paths
+    # Collect all projects and endpoints on flow paths
     projects_on_paths: set[str] = set()
     endpoints_on_paths: set[str] = set()
     for fp in flow_paths:
@@ -657,44 +708,40 @@ def generate_e2e_flows_mermaid() -> str:
             elif "endpoint" in step:
                 endpoints_on_paths.add(step["endpoint"])
 
-    # Limit if too many
-    if len(projects_on_paths) > MAX_PROJECTS:
-        # Keep those that appear most frequently
-        proj_freq: dict[str, int] = {}
-        for fp in flow_paths:
-            for step in fp["path"]:
-                if "project" in step:
-                    proj_freq[step["project"]] = proj_freq.get(step["project"], 0) + 1
-        projects_on_paths = set(sorted(proj_freq, key=lambda p: -proj_freq[p])[:MAX_PROJECTS])
-
     # Group projects by layer
     layer_projects: dict[str, list[str]] = {}
     for proj in projects_on_paths:
         layer = layers_data.get(proj, {}).get("layer", "Unclassified")
         layer_projects.setdefault(layer, []).append(proj)
 
+    # Build project-to-group-id mapping for edge routing
+    proj_to_node: dict[str, str] = {}  # project name -> mermaid node id
+
     lines = ["graph TD"]
 
-    # Emit layer subgraphs
+    # Emit layer subgraphs with grouped nodes
     layer_order = ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]
     for layer in layer_order:
         projs = layer_projects.get(layer, [])
         if not projs:
             continue
         lid = sanitize_id(f"sg_{layer}")
-        lines.append(f'    subgraph {lid}["{layer}"]')
-        for proj in sorted(projs):
-            pid = sanitize_id(proj)
-            lines.append(f'        {pid}["{proj}"]')
+        grouped = _group_by_prefix(projs)
+        lines.append(f'    subgraph {lid}["{layer} ({len(projs)})"]')
+        for g in grouped:
+            lines.append(f'        {g["id"]}["{g["label"]}"]')
+            for member in g["members"]:
+                proj_to_node[member] = g["id"]
         lines.append("    end")
 
-    # Emit data endpoint nodes
+    # Emit data endpoint nodes (limit to 10)
+    ep_to_node: dict[str, str] = {}
     if endpoints_on_paths:
         lines.append('    subgraph sg_Data["Data Endpoints"]')
-        for ep in sorted(list(endpoints_on_paths)[:15]):
+        for ep in sorted(list(endpoints_on_paths)[:10]):
             eid = sanitize_id(ep)
             ep_name = ep.split(":", 1)[-1] if ":" in ep else ep
-            # Use cylinder for database, hexagon for messaging
+            ep_to_node[ep] = eid
             if ep.startswith("entity:") or ep.startswith("table:") or ep.startswith("collection:"):
                 lines.append(f'        {eid}[("{ep_name}")]')
             elif ep.startswith("topic:") or ep.startswith("queue:") or ep.startswith("exchange:"):
@@ -705,8 +752,8 @@ def generate_e2e_flows_mermaid() -> str:
                 lines.append(f'        {eid}["{ep_name}"]')
         lines.append("    end")
 
-    # Collect edges from flow paths (deduplicated)
-    edge_set: set[str] = set()
+    # Collect edges using group ids (deduplicated)
+    edge_set: set[tuple[str, str]] = set()
     for fp in flow_paths:
         path = fp.get("path", [])
         for i in range(len(path) - 1):
@@ -717,17 +764,17 @@ def generate_e2e_flows_mermaid() -> str:
             to_id = None
 
             if "project" in step:
-                from_id = sanitize_id(step["project"])
+                from_id = proj_to_node.get(step["project"])
             elif "endpoint" in step:
-                from_id = sanitize_id(step["endpoint"])
+                from_id = ep_to_node.get(step["endpoint"])
 
             if "project" in next_step:
-                to_id = sanitize_id(next_step["project"])
+                to_id = proj_to_node.get(next_step["project"])
             elif "endpoint" in next_step:
-                to_id = sanitize_id(next_step["endpoint"])
+                to_id = ep_to_node.get(next_step["endpoint"])
 
             if from_id and to_id and from_id != to_id:
-                edge_key = f"{from_id}-->{to_id}"
+                edge_key = (from_id, to_id)
                 if edge_key not in edge_set:
                     edge_set.add(edge_key)
                     lines.append(f"    {from_id} --> {to_id}")
@@ -739,9 +786,9 @@ def generate_flow_path_mermaid(flow_path: dict) -> str:
     """Generate a Mermaid diagram for a single flow path."""
     path = flow_path.get("path", [])
     if not path:
-        return "graph LR\n    empty[Empty path]"
+        return "graph TD\n    empty[Empty path]"
 
-    lines = ["graph LR"]
+    lines = ["graph TD"]
 
     prev_id = None
     for step in path:
