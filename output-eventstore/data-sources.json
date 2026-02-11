@@ -1,0 +1,3368 @@
+[
+  {
+    "file": "src/KurrentDB.Core.Tests/DataStructures/persistent_stream_bloom_filter.cs",
+    "repo": "src",
+    "line": 130,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(_path, FileMode.Open);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Configuration/ClusterNodeOptionsTests/when_building/with_secure_tcp.cs",
+    "repo": "src",
+    "line": 48,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var fileStream = File.Create(filePath);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/when_node_becomes_leader_with_unindexed_data.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_httpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/when_node_becomes_leader_with_unindexed_data.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/when_node_becomes_leader_with_unindexed_data.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/authenticated_requests_made_from_a_follower.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var httpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/authenticated_requests_made_from_a_follower.cs",
+    "repo": "src",
+    "line": 88,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "HttpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/authenticated_requests_made_from_a_follower.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/authenticated_requests_made_from_a_follower.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Integration/authenticated_requests_made_from_a_follower.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using StatusCode = Grpc.Core.StatusCode;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "string connectionString = string.Format(\"ConnectTo=tcp://{0};\", _node.TcpEndPoint);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = EventStoreConnection.Create(connectionString)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "string connectionString = string.Format(\"GossipSeeds={0};\", _node.HttpEndPoint);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 46,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "Assert.DoesNotThrow(() => connection = EventStoreConnection.Create(connectionString));"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 54,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "string connectionString = string.Format(\"ConnectTo=tcp://{0};GossipSeeds={1}\", _node.TcpEndPoint,"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "Assert.Throws<NotSupportedException>(() => EventStoreConnection.Create(connectionString));"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "string connectionString = string.Format(\"HeartBeatTimeout=2000\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connecting_with_connection_string.cs",
+    "repo": "src",
+    "line": 62,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "Assert.Throws<Exception>(() => EventStoreConnection.Create(connectionString));"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"verboselogging=true\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"Verbose Logging=true\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 26,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"maxretries=55\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"heartbeattimeout=5555\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"heartbeattimeout=5555;maxretries=55\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"heArtbeAtTimeout=5555\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString.GetConnectionSettings("
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/ClientAPI/connection_string.cs",
+    "repo": "src",
+    "line": 59,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var settings = ConnectionString.GetConnectionSettings(\"DefaultUserCredentials=foo:bar\");"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/corrupt_index_should.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var stream = File.Open(bloomFilterFile, FileMode.Open);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/corrupt_index_should.cs",
+    "repo": "src",
+    "line": 64,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(ptableFile, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/table_index_with_corrupt_index_entries_should.cs",
+    "repo": "src",
+    "line": 115,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(ptableFile, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 103,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_indexMapFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 144,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_indexMapFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 160,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_ptableFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 177,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_ptableFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 191,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_ptableFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV1/index_map_should_detect_corruption.cs",
+    "repo": "src",
+    "line": 208,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(_ptableFileName, FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV4/when_merging_ptables_vx_to_v4.cs",
+    "repo": "src",
+    "line": 98,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var filestream = File.Open(newTableFileCopy, FileMode.Open, FileAccess.Read)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Index/IndexV4/when_merging_ptables_vx_to_v4.cs",
+    "repo": "src",
+    "line": 217,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var filestream = File.Open(newTableFileCopy, FileMode.Open, FileAccess.Read)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/mono_filestream_bug.cs",
+    "repo": "src",
+    "line": 47,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var filestream = File.Open(filename, FileMode.Open, FileAccess.Read)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Unbuffered/UnbufferedTests.cs",
+    "repo": "src",
+    "line": 686,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/when_chasing_a_chunked_transaction_log.cs",
+    "repo": "src",
+    "line": 287,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(fileName).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/when_writing_an_existing_chunked_transaction_file_with_checksum_and_data_bigger_than_buffer.cs",
+    "repo": "src",
+    "line": 71,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "await using var filestream = File.Open(filename,"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/when_writing_a_new_chunked_transaction_file.cs",
+    "repo": "src",
+    "line": 55,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "await using var filestream = File.Open(GetFilePathFor(\"chunk-000000.000000\"), FileMode.Open, FileAccess.Read);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/when_writing_an_existing_chunked_transaction_file_with_checksum.cs",
+    "repo": "src",
+    "line": 66,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "await using var filestream = File.Open(filename, new FileStreamOptions { Mode = FileMode.Open, Access = FileAccess.Read, Options = FileOptions.Asynchronous });"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 296,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 297,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 507,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 508,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla.scavenge.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 509,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db.cs",
+    "repo": "src",
+    "line": 544,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (Stream stream = File.Open(GetFilePathFor(\"chunk-000000.000000\"), FileMode.Open)) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db_with_multi_chunks.cs",
+    "repo": "src",
+    "line": 82,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/Validation/when_validating_tfchunk_db_with_multi_chunks.cs",
+    "repo": "src",
+    "line": 83,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/when_writing_an_existing_chunked_transaction_file_with_not_enough_space_in_chunk.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "await using var filestream = File.Open(filename2, new FileStreamOptions { Mode = FileMode.Open, Access = FileAccess.Read, Options = FileOptions.Asynchronous });"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 51,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 54,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000001.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 55,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000002.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000003.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 58,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 59,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000007\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000002\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000005\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 74,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 75,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 76,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000001.000000.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-001.000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 79,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000001.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 80,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000002.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 81,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000003.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 83,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000000\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 84,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000007\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 85,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000002\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 86,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000005\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 103,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 105,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla.temp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 107,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000007.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 109,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 122,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000000.000000.tmp\")).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 137,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(tmp1).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/versioned_pattern_filenaming_strategy.cs",
+    "repo": "src",
+    "line": 138,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(tmp2).Close();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"foo\")).Close(); // should be ignored"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 22,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"bla\")).Close(); // should be ignored"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 23,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000001.000000.tmp\")).Close(); // should be ignored"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 24,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-001.000\")).Close(); // should be ignored"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 27,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000001.000000\")).Close(); // chunks 1 - 1 (latest)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 28,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000002.000001\")).Close(); // chunks 2 - 2 (latest)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000000\")).Close(); // chunks 5 - 5 (old)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 32,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000001\")).Close(); // chunks 5 - 6 (old)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000005.000002\")).Close(); // chunks 5 - 7 (latest)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000006.000000\")).Close(); // chunks 6 - 6 (old)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 36,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000008.000007\")).Close(); // chunks 8 - 8 (latest)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/TransactionLog/with_tfchunk_enumerator.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(GetFilePathFor(\"chunk-000010.000005\")).Close(); // chunks 10 - 14 (latest)"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Http/HttpProtocols/clear_text_http_multiplexing_middleware.cs",
+    "repo": "src",
+    "line": 63,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Http/HttpProtocols/clear_text_http_multiplexing_middleware.cs",
+    "repo": "src",
+    "line": 72,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient();"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadIndexForwardsTests.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/DeleteTests.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadAllBackwardsTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/GrpcSpecification.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/GrpcSpecification.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/SubscribeToAllTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadAllForwardsTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadStreamsForwardTests.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/SubscribeToAllFilteredTests.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadAllForwardsFilteredTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/SubscribeToStreamTests.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadAllBackwardsFilteredTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadIndexBackwardsTests.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/ReadStreamsBackwardTests.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/StreamsTests/TombstoneTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/PersistentSubscriptionTests/ReplayParkedTests.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/PersistentSubscriptionTests/GetInfoTests.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/MonitoringTests/StatsTests.cs",
+    "repo": "src",
+    "line": 35,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "HttpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/MonitoringTests/StatsTests.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/ServerFeaturesTests/ServerFeaturesTest.cs",
+    "repo": "src",
+    "line": 67,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "HttpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Grpc/ServerFeaturesTests/ServerFeaturesTest.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core.Tests/Services/Transport/Http/Authorization/authorization_tests.cs",
+    "repo": "src",
+    "line": 28,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(new HttpClientHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Testing/Bus/Helpers/WaitingConsumer.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "((Action<DeferredExecutionTestMessage>)(deffered => deffered.Execute()))(typedMsg);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Testing/Bus/Helpers/WaitingConsumer.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "((Action<ExecutableTestMessage>)(deffered => deffered.Execute()))(executableTestMessage);"
+  },
+  {
+    "file": "src/KurrentDB.Core.Testing/Helpers/MiniClusterNode.cs",
+    "repo": "src",
+    "line": 277,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Core.Testing/Helpers/MiniNode.cs",
+    "repo": "src",
+    "line": 277,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "HttpClient = new HttpClient(HttpMessageHandler) {"
+  },
+  {
+    "file": "src/KurrentDB.Licensing.Tests/LicensingPluginTests.cs",
+    "repo": "src",
+    "line": 153,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_authenticatedClient = new HttpClient() {"
+  },
+  {
+    "file": "src/KurrentDB.Licensing.Tests/LicensingPluginTests.cs",
+    "repo": "src",
+    "line": 162,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_unauthenticatedClient = new HttpClient() {"
+  },
+  {
+    "file": "src/KurrentDB.Auth.UserCertificates.Tests/UserCertificatesPluginTests.cs",
+    "repo": "src",
+    "line": 183,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(handler, disposeHandler: true) {"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Fixtures/ClusterVNodeTestContext.Helpers.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Infrastructure/Grpc/Validation/RequestValidationTests.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Modules/Streams/StreamsServiceTests.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Modules/Indexes/IndexesSubscriptionTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Modules/Indexes/IndexesReadTests.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2.Tests/Modules/Indexes/IndexesServiceTests.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core.Tests/Services/grpc_service/ServerFeaturesTests.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core.Tests/Services/grpc_service/ProjectionsStatisticsTests.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core.Tests/Services/grpc_service/ProjectionsStatisticsTests.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core.Tests/Services/http_service/authorization_tests.cs",
+    "repo": "src",
+    "line": 28,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(new HttpClientHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/ServerCallContextExtensions.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/ApiCommand.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Errors/RpcExceptions.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Authorization/AuthorizationExtensions.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Validation/RequestValidation.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Validation/RequestValidationInterceptor.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Validation/RequestValidationOptions.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Interceptors/InterceptingStreamReader.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Interceptors/ServerRequestInterceptor.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/Grpc/Interceptors/ServerRequestInterceptor.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core.Interceptors;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Infrastructure/ApiCallback.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/ApiErrors.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/Streams/ApiErrors.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/Streams/StreamsService.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/Streams/StreamsService.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return await command.Execute(context);"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/Indexes/ApiErrors.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Api.V2/Modules/Indexes/IndexesService.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Surge.Testing/Fixtures/SystemComponentsAssemblyFixture.cs",
+    "repo": "src",
+    "line": 58,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public IProducer Producer { get; private set; } = null!;"
+  },
+  {
+    "file": "src/KurrentDB.Auth.OAuth/OAuthAuthenticationPlugin.cs",
+    "repo": "src",
+    "line": 113,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_httpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Auth.OAuth/OAuthAuthenticationPlugin.cs",
+    "repo": "src",
+    "line": 130,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var httpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Security.EncryptionAtRest.Tests/EncryptionAtRestPluginTests.cs",
+    "repo": "src",
+    "line": 172,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(chunk, FileMode.Open, FileAccess.ReadWrite, FileShare.None);"
+  },
+  {
+    "file": "src/KurrentDB.Security.EncryptionAtRest.Tests/EncryptionAtRestPluginTests.cs",
+    "repo": "src",
+    "line": 185,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(chunk, FileMode.Open, FileAccess.ReadWrite, FileShare.None);"
+  },
+  {
+    "file": "src/KurrentDB.Security.EncryptionAtRest.Tests/EncryptionAtRestPluginTests.cs",
+    "repo": "src",
+    "line": 196,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(chunk, FileMode.Open, FileAccess.ReadWrite, FileShare.None);"
+  },
+  {
+    "file": "src/KurrentDB.Security.EncryptionAtRest.Tests/EncryptionAtRestPluginTests.cs",
+    "repo": "src",
+    "line": 223,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(chunk, FileMode.Open, FileAccess.Read, FileShare.None);"
+  },
+  {
+    "file": "src/KurrentDB.Security.EncryptionAtRest.Tests/EncryptionAtRestPluginTests.cs",
+    "repo": "src",
+    "line": 249,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var fileStream = File.Open(chunk, FileMode.Open, FileAccess.Read, FileShare.None);"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Producers/SystemProducerProvider.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public class SystemProducerProvider(Func<SystemProducerBuilder> builderFactory) : IProducerProvider {"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Producers/SystemProducerProvider.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public IProducer GetProducer(Func<ProducerOptions, ProducerOptions> configure) {"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Producers/SystemProducer.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public class SystemProducer : IProducer {"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Producers/SystemProducer.cs",
+    "repo": "src",
+    "line": 112,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await callback.Execute(result);"
+  },
+  {
+    "file": "src/KurrentDB.Surge/SurgeExtensions.cs",
+    "repo": "src",
+    "line": 48,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "services.AddSingleton<IProducerBuilder, SystemProducerBuilder>(ctx => {"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Eventuous/SystemEventStore.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public class SystemEventStore(IReader reader, IProducer producer) : IEventStore, IAsyncDisposable {"
+  },
+  {
+    "file": "src/KurrentDB.Surge/Eventuous/SystemEventStore.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "IProducer Producer { get; } = producer;"
+  },
+  {
+    "file": "src/KurrentDB.Transport.Http/EntityManagement/CoreHttpRequestAdapter.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoreHttpRequestAdapter",
+    "context": "public class CoreHttpRequestAdapter : IHttpRequest {"
+  },
+  {
+    "file": "src/KurrentDB.Transport.Http/EntityManagement/HttpListenerRequestAdapter.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class HttpListenerRequestAdapter",
+    "context": "public class HttpListenerRequestAdapter : IHttpRequest {"
+  },
+  {
+    "file": "src/KurrentDB.Transport.Http/EntityManagement/CoreHttpResponseAdapter.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CoreHttpResponseAdapter",
+    "context": "public class CoreHttpResponseAdapter : IHttpResponse {"
+  },
+  {
+    "file": "src/KurrentDB.Transport.Http/EntityManagement/HttpListenerResponseAdapter.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class HttpListenerResponseAdapter",
+    "context": "public class HttpListenerResponseAdapter : IHttpResponse {"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.RestartSubsystem.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Result.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Update.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Create.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Enable.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Disable.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Delete.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Reset.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Grpc/ProjectionManagement.Statistics.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core/Services/Interpreted/JintProjectionStateHandler.cs",
+    "repo": "src",
+    "line": 69,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_engine.Execute(source);"
+  },
+  {
+    "file": "src/KurrentDB.Common/Compression/Rfc1952GzipCompressionProvider.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Compression;"
+  },
+  {
+    "file": "src/KurrentDB.Projections.Core.Javascript.Tests/SpecRunner.cs",
+    "repo": "src",
+    "line": 456,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return def.Execute(_output).AsTask();"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/SchemaRegistryService.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Infrastructure/Grpc/RpcExceptions.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/SchemaRegistryWireUp.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/SchemaRegistryWireUp.cs",
+    "repo": "src",
+    "line": 57,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "var producer = ctx.GetRequiredService<IProducerBuilder>()"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaDbSchema.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(createTablesAndIndexesSql);"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 50,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(insertSchemaVersionSql,"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(insertSchemaSql,"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute("
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 117,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute("
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 141,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute("
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 162,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute("
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 183,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute("
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 216,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(deleteSelectedSchemaVersionsSql, new {"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 221,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(updateSchemaLatestVersionSql, new {"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 249,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(deleteSchemaVersionsSql, new { schema_name = msg.SchemaName });"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Data/SchemaProjections.cs",
+    "repo": "src",
+    "line": 250,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "connection.Execute(deleteSchemasSql, new { schema_name = msg.SchemaName });"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Modules/Schemas/Domain/DomainServices.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry/Planes/Storage/DuckDBQueryExtensions.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "foreach (var record in connection.Query(sql, param))"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Fixtures/ClusterVNodeTestContext.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.ClientFactory;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/DeleteSchemaVersionsIntegrationTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/DeleteSchemaIntegrationTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/RegisterSchemaVersionIntegrationTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/LookupSchemaNameIntegrationTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/ListSchemaIntegrationTests.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/GetSchemaIntegrationTests.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/GetSchemaVersionIntegrationTests.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/UpdateSchemaIntegrationTests.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/Modules/Schemas/Integration/CheckSchemaCompatibilityIntegrationTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Program.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "?? new LoadTestConfig { DuckDbConnectionString = \"DUMMY\", KurrentDBConnectionString = \"DUMMY\" };"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Assertions/DuckDb/DuckDbIndexingSummaryAssertion.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var categories = connection.Query<string>(\"select distinct category from idx_all\");"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Assertions/DuckDb/DuckDbIndexingSummaryAssertion.cs",
+    "repo": "src",
+    "line": 27,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var eventTypes = connection.Query<string>(\"select distinct event_type from idx_all\");"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Environments/gRPC/gRPCClientEnvironment.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public gRPCClientEnvironment(string dbConnectionString) {"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Environments/gRPC/gRPCClientEnvironment.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "_client = new(KurrentDBClientSettings.Create(dbConnectionString));"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/Environments/LoadTestEnvironment.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "LoadTestEnvironmentType.gRPC => new gRPCClientEnvironment(config.KurrentDBConnectionString),"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/LoadTestConfig.cs",
+    "repo": "src",
+    "line": 20,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public required string KurrentDBConnectionString { get; set; } = \"Dummy\";"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/LoadTestConfig.cs",
+    "repo": "src",
+    "line": 21,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public required string DuckDbConnectionString { get; set; } = \"Dummy\";"
+  },
+  {
+    "file": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/LogsEndpointPluginTests.cs",
+    "repo": "src",
+    "line": 158,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_authenticatedClient = new HttpClient() {"
+  },
+  {
+    "file": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/LogsEndpointPluginTests.cs",
+    "repo": "src",
+    "line": 166,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_unauthenticatedClient = new HttpClient() {"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/Program.cs",
+    "repo": "src",
+    "line": 43,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "/// <param name=\"connectionString\">The connection string to use when connecting to the server. Not used by the raw TCP client</param>"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/Program.cs",
+    "repo": "src",
+    "line": 49,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "bool reconnect = true, bool useTls = false, bool tlsValidateServer = false, string connectionString = \"\","
+  },
+  {
+    "file": "src/KurrentDB.TestClient/Program.cs",
+    "repo": "src",
+    "line": 78,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = connectionString,"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/GrpcTestClient.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_log.Debug(\"Creating gRPC client with connection string '{connectionString}'.\", ConnectionString);"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/GrpcTestClient.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private EventStoreClientSettings Settings => EventStoreClientSettings.Create(ConnectionString);"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/GrpcTestClient.cs",
+    "repo": "src",
+    "line": 44,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private string ConnectionString => string.IsNullOrWhiteSpace(_options.ConnectionString)"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/GrpcTestClient.cs",
+    "repo": "src",
+    "line": 46,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": ": _options.ConnectionString;"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientOptions.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; set; }"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientOptions.cs",
+    "repo": "src",
+    "line": 50,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = string.Empty;"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientApiTcpTestClient.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = string.IsNullOrWhiteSpace(Options.ConnectionString)"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientApiTcpTestClient.cs",
+    "repo": "src",
+    "line": 36,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": ": Options.ConnectionString;"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientApiTcpTestClient.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_log.Debug(\"Creating TCP client with connection string '{connectionString}.\", connectionString);"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/ClientApiTcpTestClient.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "return EventStoreConnection.Create(connectionString, connectionSettings);"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/PortsHelper.cs",
+    "repo": "src",
+    "line": 62,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient();"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/CommandsProcessor.cs",
+    "repo": "src",
+    "line": 47,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_regCommandsProcessor.Execute(context, new string[0]);"
+  },
+  {
+    "file": "src/KurrentDB.TestClient/CommandsProcessor.cs",
+    "repo": "src",
+    "line": 57,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var syntaxOk = commandProcessor.Execute(context, commandArgs);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Infrastructure/TracingIndexExecutor.cs",
+    "repo": "src",
+    "line": 29,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await _wrapped.Execute(scavengePoint, state, scavengerLogger, cancellationToken);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Infrastructure/TracingIndexExecutor.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await _wrapped.Execute(checkpoint, state, scavengerLogger, cancellationToken);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Infrastructure/TracingChunkExecutor.cs",
+    "repo": "src",
+    "line": 29,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await _wrapped.Execute(scavengePoint, state, scavengerLogger, cancellationToken);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Infrastructure/TracingChunkExecutor.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await _wrapped.Execute(checkpoint, state, scavengerLogger, cancellationToken);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private readonly string _connectionString;"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 24,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionStringBuilder = new SqliteConnectionStringBuilder();"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connectionStringBuilder.Pooling = false; // prevents the db files from being locked"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 26,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connectionStringBuilder.DataSource = Path.Combine(dir, fileName);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 27,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_connectionString = connectionStringBuilder.ConnectionString;"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "DbConnection = new SqliteConnection(_connectionString);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Scavenge/Sqlite/SqliteDbFixture.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var dbConnection = new SqliteConnection(_connectionString);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Archive/Storage/AzuriteHelpers.cs",
+    "repo": "src",
+    "line": 12,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "private const string AzureConnectionString ="
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Archive/Storage/AzuriteHelpers.cs",
+    "repo": "src",
+    "line": 16,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "var client = new BlobServiceClient(AzureConnectionString).GetBlobContainerClient(AzureContainerName);"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Archive/Storage/AzuriteHelpers.cs",
+    "repo": "src",
+    "line": 26,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionStringOrServiceUrl = AzureConnectionString,"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Archive/Storage/AzuriteHelpers.cs",
+    "repo": "src",
+    "line": 28,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "Authentication = AzureOptions.AuthenticationType.ConnectionString,"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Transport/Grpc/FakeAsyncStreamReader.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Transport/Grpc/TestServerCallContext.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core.XUnit.Tests/Services/Transport/Grpc/MetadataHelpersTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Auth.OAuth.Tests/Fixture.cs",
+    "repo": "src",
+    "line": 90,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Auth.OAuth.Tests/IdpFixture.cs",
+    "repo": "src",
+    "line": 56,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "HttpClient = new HttpClient(new SocketsHttpHandler {"
+  },
+  {
+    "file": "src/KurrentDB.Auth.OAuth.Tests/OAuthAuthenticationHttpIntegrationTests.cs",
+    "repo": "src",
+    "line": 74,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "return new HttpClient(socketsHttpHandler) {"
+  },
+  {
+    "file": "src/KurrentDB.Core.TUnit.Tests/PersistentSubscriptionsTests.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/GrpcChannelShim.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/GrpcChannelShim.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/TestStreamsClientExtensions.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/NodeShim.EmbeddedNode.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.ClientFactory;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/StreamsClientExtensions.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client.Balancer;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.ClientFactory;"
+  },
+  {
+    "file": "src/KurrentDB.Testing.ClusterVNodeApp/ServiceCollectionExtensions.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Compression;"
+  },
+  {
+    "file": "src/KurrentDB.Core/ClusterVNode.cs",
+    "repo": "src",
+    "line": 1288,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionStringBuilder = new SqliteConnectionStringBuilder {"
+  },
+  {
+    "file": "src/KurrentDB.Core/ClusterVNode.cs",
+    "repo": "src",
+    "line": 1292,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connection = new SqliteConnection(connectionStringBuilder.ConnectionString);"
+  },
+  {
+    "file": "src/KurrentDB.Core/ClusterVNode.cs",
+    "repo": "src",
+    "line": 400,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using var _ = File.Create(Path.Combine(dbPath, $\"write-attempt-{Guid.NewGuid()}.tmp\"),"
+  },
+  {
+    "file": "src/KurrentDB.Core/DuckDB/DuckDBConnectionPoolLifetime.cs",
+    "repo": "src",
+    "line": 120,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private class ConnectionPoolWithFunctions(string connectionString, IReadOnlyList<IDuckDBSetup> setup) : DuckDBConnectionPool(connectionString) {"
+  },
+  {
+    "file": "src/KurrentDB.Core/DuckDB/DuckDBConnectionPoolLifetime.cs",
+    "repo": "src",
+    "line": 54,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "s.Execute(connection);"
+  },
+  {
+    "file": "src/KurrentDB.Core/DuckDB/DuckDBConnectionPoolLifetime.cs",
+    "repo": "src",
+    "line": 126,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "setup[i].Execute(connection);"
+  },
+  {
+    "file": "src/KurrentDB.Core/Telemetry/TelemetrySink.cs",
+    "repo": "src",
+    "line": 33,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_httpClient = new HttpClient();"
+  },
+  {
+    "file": "src/KurrentDB.Core/Metrics/ThreadPoolQueueLengthMonitor.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "void IThreadPoolWorkItem.Execute() {"
+  },
+  {
+    "file": "src/KurrentDB.Core/Cluster/EventStoreClusterClient.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Net",
+    "context": "using Grpc.Net.Client;"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteCollisionScavengeMap.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_add.Execute(key);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteCollisionScavengeMap.cs",
+    "repo": "src",
+    "line": 60,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _all.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 87,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "set => _add.Execute(key, value);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 99,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_setTombstone.Execute(key);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 103,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_setMetadata.Execute(key, metadata);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 107,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_setDiscardPoints.Execute(key, status, discardPoint, maybeDiscardPoint);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 115,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _all.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 119,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _active.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 123,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _fromCheckpoint.Execute(checkpoint);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteOriginalStreamScavengeMap.cs",
+    "repo": "src",
+    "line": 127,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_deleteMany.Execute(deleteArchived);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteScavengeMap.cs",
+    "repo": "src",
+    "line": 73,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_add.Execute(key, value);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteScavengeMap.cs",
+    "repo": "src",
+    "line": 85,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _all.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkTimeStampRangeScavengeMap.cs",
+    "repo": "src",
+    "line": 45,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "set => _add.Execute(key, value);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkTimeStampRangeScavengeMap.cs",
+    "repo": "src",
+    "line": 57,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _all.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteScavengeCheckpointMap.cs",
+    "repo": "src",
+    "line": 37,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_add.Execute(value);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkWeightScavengeMap.cs",
+    "repo": "src",
+    "line": 30,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _allWeightsAreZero.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkWeightScavengeMap.cs",
+    "repo": "src",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_increaseWeight.Execute(logicalChunkNumber, extraWeight);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkWeightScavengeMap.cs",
+    "repo": "src",
+    "line": 38,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _sumChunkWeights.Execute(startLogicalChunkNumber, endLogicalChunkNumber);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteChunkWeightScavengeMap.cs",
+    "repo": "src",
+    "line": 42,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_resetChunkWeights.Execute(startLogicalChunkNumber, endLogicalChunkNumber);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteMetastreamScavengeMap.cs",
+    "repo": "src",
+    "line": 61,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "set => _add.Execute(key, value);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteMetastreamScavengeMap.cs",
+    "repo": "src",
+    "line": 73,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return _all.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteMetastreamScavengeMap.cs",
+    "repo": "src",
+    "line": 77,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_setTombstone.Execute(key);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteMetastreamScavengeMap.cs",
+    "repo": "src",
+    "line": 81,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_setDiscardPoint.Execute(key, discardPoint);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Sqlite/SqliteMetastreamScavengeMap.cs",
+    "repo": "src",
+    "line": 85,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_deleteAll.Execute();"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Scavenger.cs",
+    "repo": "src",
+    "line": 193,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_chunkExecutor.Execute(executingChunks, _state, scavengerLogger, cancellationToken),"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Scavenger.cs",
+    "repo": "src",
+    "line": 207,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_indexExecutor.Execute(executingIndex, _state, scavengerLogger, cancellationToken),"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Scavenger.cs",
+    "repo": "src",
+    "line": 325,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_chunkExecutor.Execute(scavengePoint, _state, scavengerLogger, cancellationToken), cancellationToken);"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Scavenging/Scavenger.cs",
+    "repo": "src",
+    "line": 347,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "_indexExecutor.Execute(scavengePoint, _state, scavengerLogger, cancellationToken),"
+  },
+  {
+    "file": "src/KurrentDB.Core/TransactionLog/Chunks/TFChunkManager.cs",
+    "repo": "src",
+    "line": 72,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "async void IThreadPoolWorkItem.Execute() {"
+  },
+  {
+    "file": "src/KurrentDB.Core/Bus/ThreadPoolMessageScheduler.StateMachine.cs",
+    "repo": "src",
+    "line": 127,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "void IThreadPoolWorkItem.Execute() => InvokeConsumer();"
+  },
+  {
+    "file": "src/KurrentDB.Core/Bus/QueuedHandlerThreadPool.cs",
+    "repo": "src",
+    "line": 121,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "async void IThreadPoolWorkItem.Execute() {"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 91,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionStringOrServiceUrl { get; init; } = \"\";"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 115,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "case AuthenticationType.ConnectionString:"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 116,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (string.IsNullOrWhiteSpace(ConnectionStringOrServiceUrl))"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 117,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "error = \"Please provide a connection string (using ConnectionStringOrServiceUrl) for the Azure archive's storage account\";"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 126,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "if (string.IsNullOrWhiteSpace(ConnectionStringOrServiceUrl))"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 127,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "error = \"Please provide a Service URL (using ConnectionStringOrServiceUrl) for the Azure archive's storage account\";"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveOptions.cs",
+    "repo": "src",
+    "line": 167,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString,"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/Storage/Azure/AzureOptionsExtensions.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "case AzureOptions.AuthenticationType.ConnectionString:"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/Storage/Azure/AzureOptionsExtensions.cs",
+    "repo": "src",
+    "line": 19,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return new(options.ConnectionStringOrServiceUrl);"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/Storage/Azure/AzureOptionsExtensions.cs",
+    "repo": "src",
+    "line": 31,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "return new(new Uri(options.ConnectionStringOrServiceUrl, UriKind.Absolute), credential);"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Archive/ArchiveCatchup/ArchiveCatchup.cs",
+    "repo": "src",
+    "line": 107,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "await using var outputStream = File.Open("
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Storage/StorageChaser.cs",
+    "repo": "src",
+    "line": 88,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "async void IThreadPoolWorkItem.Execute() {"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Storage/IndexCommitterService.cs",
+    "repo": "src",
+    "line": 95,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "async void IThreadPoolWorkItem.Execute() {"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/HttpSendService.cs",
+    "repo": "src",
+    "line": 52,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_forwardClient = new HttpClient(socketsHttpHandler);"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Monitoring.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.Read.cs",
+    "repo": "src",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Streams.Read.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.Info.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Streams.Delete.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.ChangePassword.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/ServiceBase.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Redaction.SwitchChunks.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Redaction.GetEventPositions.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/AsyncStreamExtensions.cs",
+    "repo": "src",
+    "line": 25,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Cluster.Gossip.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.Update.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Streams.BatchAppend.cs",
+    "repo": "src",
+    "line": 18,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/LogRetriesInterceptor.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/LogRetriesInterceptor.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core.Interceptors;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.ResetPassword.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.Delete.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Disable.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.RestartSubsystem.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Gossip.Read.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Details.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Cluster.Elections.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Streams.Append.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Operations.Scavenge.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/ServerFeatures.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Update.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.ReplayParked.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Operations.Admin.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Delete.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/RpcExceptions.cs",
+    "repo": "src",
+    "line": 6,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Enable.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/PersistentSubscriptions.Create.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Grpc/Users.Create.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Http/AuthenticationMiddleware.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Http/NodeHttpClientFactory/NodeHttpClientFactory.cs",
+    "repo": "src",
+    "line": 44,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "return new HttpClient(httpMessageHandler);"
+  },
+  {
+    "file": "src/KurrentDB.Core/Services/Transport/Http/GrpcProtocolHelpers.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.Tests/Indexes/DefaultIndexProcessorTests.cs",
+    "repo": "src",
+    "line": 134,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var records = connection.Query<string>(\"select distinct category from idx_all order by log_position\");"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.Tests/Indexes/DefaultIndexProcessorTests.cs",
+    "repo": "src",
+    "line": 148,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query<",
+    "context": "var records = connection.Query<string>(\"select distinct event_type from idx_all order by log_position\");"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors.Tests/Planes/Management/ConnectorsLicenseServiceTests.cs",
+    "repo": "src",
+    "line": 9,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "using Kurrent.Connectors.RabbitMQ;"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/SurgeExtensions.cs",
+    "repo": "src",
+    "line": 104,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "services.AddSingleton<IProducerProvider, SystemProducerProvider>();"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/SurgeExtensions.cs",
+    "repo": "src",
+    "line": 198,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "builder.Services.AddSingleton<IProducer>(ctx => {"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/Components/Connectors/ConnectorCatalogue.cs",
+    "repo": "src",
+    "line": 10,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "using Kurrent.Connectors.RabbitMQ;"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/Components/Connectors/ConnectorDataProtectors.cs",
+    "repo": "src",
+    "line": 26,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "\"ConnectionString\","
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/Components/Connectors/ConnectorDataProtectors.cs",
+    "repo": "src",
+    "line": 65,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "\"ConnectionString\""
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/Connect/Components/Connectors/ConnectorDataProtectors.cs",
+    "repo": "src",
+    "line": 8,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "using Kurrent.Connectors.RabbitMQ;"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Infrastructure/RpcExceptions.cs",
+    "repo": "src",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Planes/Management/ConnectorsQueryService.cs",
+    "repo": "src",
+    "line": 7,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Connectors/Planes/Management/ConnectorsCommandService.cs",
+    "repo": "src",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.Testing/Toolkit/ToolkitTestExecutor.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.OtlpExporterPlugin.Tests/OtlpExporterTests.cs",
+    "repo": "src",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using OpenTelemetry.Proto.Collector.Metrics.V1;"
+  },
+  {
+    "file": "src/KurrentDB.OtlpExporterPlugin.Tests/FakeCollector.cs",
+    "repo": "src",
+    "line": 4,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": "Grpc.Core",
+    "context": "using Grpc.Core;"
+  },
+  {
+    "file": "src/KurrentDB.OtlpExporterPlugin.Tests/FakeCollector.cs",
+    "repo": "src",
+    "line": 5,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using OpenTelemetry.Proto.Collector.Metrics.V1;"
+  },
+  {
+    "file": "src/KurrentDB/Components/Query/QueryService.cs",
+    "repo": "src",
+    "line": 80,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "var items = (IEnumerable<IDictionary<string, object>>)connection.Query(query);"
+  }
+]

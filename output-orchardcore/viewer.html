@@ -73,6 +73,10 @@
     padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
   }
   .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
+  .edge-filter-warning {
+    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
+  }
   .mermaid-wrap {
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
     min-height: 120px; max-height: 80vh;
@@ -190,9 +194,11 @@ graph LR
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
         </span>
       </div>
+      <div class="edge-filter-warning">Showing 127 of 768 edges (hiding 641 edges with fewer than 2 references to stay within rendering limits)</div>
       <div class="mermaid-wrap" id="mermaid-cat_library">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
+%% EDGE_FILTER: total=768 shown=127 hidden=641 min_count=2
 graph TD
     subgraph library[&quot;Library&quot;]
         grp_OrchardCore_Search[&quot;OrchardCore.Search (10)&quot;]

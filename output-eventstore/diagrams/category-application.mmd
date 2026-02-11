@@ -1,0 +1,30 @@
+graph TD
+    subgraph application["Application"]
+        src_KurrentDB_Diagnostics_LogsEndpointPlugin["KurrentDB.Diagnostics.LogsEndpointPlugin"]
+        src_KurrentDB_Security_EncryptionAtRest["KurrentDB.Security.EncryptionAtRest"]
+        src_KurrentDB_Auth_OAuth["KurrentDB.Auth.OAuth"]
+        src_KurrentDB_MicroBenchmarks["KurrentDB.MicroBenchmarks"]
+        src_KurrentDB_Plugins_SchemaRegistry["KurrentDB.Plugins.SchemaRegistry"]
+        src_KurrentDB_Auth_Ldaps["KurrentDB.Auth.Ldaps"]
+        src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled["KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled"]
+        src_KurrentDB_Auth_UserCertificates["KurrentDB.Auth.UserCertificates"]
+    end
+    ext_test(["Test (7)"])
+    ext_library(["Library (2)"])
+    ext_webapp(["Webapp (1)"])
+    ext_test -.-> src_KurrentDB_Auth_UserCertificates
+    ext_test -.-> src_KurrentDB_Auth_Ldaps
+    ext_test -.-> src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled
+    ext_test -.-> src_KurrentDB_Security_EncryptionAtRest
+    src_KurrentDB_MicroBenchmarks -.-> ext_test
+    src_KurrentDB_MicroBenchmarks -.-> ext_library
+    src_KurrentDB_Plugins_SchemaRegistry -.-> ext_library
+    ext_test -.-> src_KurrentDB_Diagnostics_LogsEndpointPlugin
+    ext_test -.-> src_KurrentDB_Auth_OAuth
+    ext_webapp -.-> src_KurrentDB_Auth_Ldaps
+    ext_webapp -.-> src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled
+    ext_webapp -.-> src_KurrentDB_Auth_OAuth
+    ext_webapp -.-> src_KurrentDB_Auth_UserCertificates
+    ext_webapp -.-> src_KurrentDB_Diagnostics_LogsEndpointPlugin
+    ext_webapp -.-> src_KurrentDB_Security_EncryptionAtRest
+    ext_webapp -.-> src_KurrentDB_Plugins_SchemaRegistry

@@ -1,0 +1,321 @@
+graph LR
+    subgraph Applications
+        akka_net_SerializationBenchmarks["SerializationBenchmarks"]
+        akka_net_Akka_Benchmarks["Akka.Benchmarks"]
+        akka_net_Akka_Cluster_Benchmarks["Akka.Cluster.Benchmarks"]
+        akka_net_RemotePingPong["RemotePingPong"]
+        akka_net_Akka_Cluster_Cpu_Benchmark["Akka.Cluster.Cpu.Benchmark"]
+        akka_net_PingPong["PingPong"]
+        akka_net_SpawnBenchmark["SpawnBenchmark"]
+        akka_net_TimeServer["TimeServer"]
+        akka_net_System1["System1"]
+        akka_net_System2["System2"]
+        akka_net_Shared["Shared"]
+        akka_net_ClusterSharding_Node["ClusterSharding.Node"]
+        akka_net_ShoppingCart["ShoppingCart"]
+        akka_net_HelloAkka["HelloAkka"]
+        akka_net_Routing["Routing"]
+        akka_net_HelloWorld["HelloWorld"]
+        akka_net_ChatServer["ChatServer"]
+        akka_net_AppConfig["AppConfig"]
+        akka_net_FaultTolerance["FaultTolerance"]
+    end
+    subgraph Tests
+        akka_net_Akka_DependencyInjection_Tests["Akka.DependencyInjection.Tests"]
+        akka_net_Akka_TestKit_Xunit_Tests["Akka.TestKit.Xunit.Tests"]
+        akka_net_Akka_TestKit_Xunit2["Akka.TestKit.Xunit2"]
+        akka_net_Akka_TestKit_Xunit2_Tests["Akka.TestKit.Xunit2.Tests"]
+        akka_net_Akka_TestKit_Xunit["Akka.TestKit.Xunit"]
+        akka_net_Akka_Cluster_Tools_Tests_MultiNode["Akka.Cluster.Tools.Tests.MultiNode"]
+        akka_net_Akka_Cluster_Sharding_Tests["Akka.Cluster.Sharding.Tests"]
+        akka_net_Akka_DistributedData_Tests_MultiNode["Akka.DistributedData.Tests.MultiNode"]
+        akka_net_Akka_Cluster_Metrics_Tests["Akka.Cluster.Metrics.Tests"]
+        akka_net_Akka_Cluster_Tools_Tests["Akka.Cluster.Tools.Tests"]
+        akka_net_Akka_Cluster_Sharding_Tests_MultiNode["Akka.Cluster.Sharding.Tests.MultiNode"]
+        akka_net_Akka_DistributedData_Tests["Akka.DistributedData.Tests"]
+        akka_net_Akka_Cluster_Metrics_Tests_MultiNode["Akka.Cluster.Metrics.Tests.MultiNode"]
+        akka_net_Akka_Persistence_Query_InMemory_Tests["Akka.Persistence.Query.InMemory.Tests"]
+        akka_net_Akka_Serialization_TestKit["Akka.Serialization.TestKit"]
+        akka_net_Akka_Serialization_Hyperion_Tests["Akka.Serialization.Hyperion.Tests"]
+        akka_net_Akka_Persistence_Custom_Tests["Akka.Persistence.Custom.Tests"]
+        akka_net_DDataStressTest["DDataStressTest"]
+        akka_net_Akka_Persistence_Tests["Akka.Persistence.Tests"]
+        akka_net_Akka_Tests_Performance["Akka.Tests.Performance"]
+        akka_net_Akka_Docs_Tests["Akka.Docs.Tests"]
+        akka_net_Akka_Remote_Tests_MultiNode["Akka.Remote.Tests.MultiNode"]
+        akka_net_Akka_Remote_TestKit["Akka.Remote.TestKit"]
+        akka_net_Akka_Cluster_Tests_MultiNode["Akka.Cluster.Tests.MultiNode"]
+        akka_net_Akka_Streams_Tests["Akka.Streams.Tests"]
+        akka_net_Akka_Cluster_TestKit["Akka.Cluster.TestKit"]
+        akka_net_Akka_Streams_TestKit["Akka.Streams.TestKit"]
+        akka_net_Akka_Remote_Tests_Performance["Akka.Remote.Tests.Performance"]
+        akka_net_Akka_TestKit_Tests["Akka.TestKit.Tests"]
+        akka_net_Akka_Streams_Tests_TCK["Akka.Streams.Tests.TCK"]
+        akka_net_Akka_Discovery_Tests["Akka.Discovery.Tests"]
+        akka_net_Akka_Coordination_Tests["Akka.Coordination.Tests"]
+        akka_net_Akka_Persistence_Query_Tests["Akka.Persistence.Query.Tests"]
+        akka_net_Akka_Persistence_TCK_Tests["Akka.Persistence.TCK.Tests"]
+        akka_net_Akka_API_Tests["Akka.API.Tests"]
+        akka_net_Akka_Persistence_TestKit_Tests["Akka.Persistence.TestKit.Tests"]
+        akka_net_Akka_Persistence_TestKit_Xunit2["Akka.Persistence.TestKit.Xunit2"]
+        akka_net_Akka_Cluster_Tests_Performance["Akka.Cluster.Tests.Performance"]
+        akka_net_Akka_Remote_Tests["Akka.Remote.Tests"]
+        akka_net_Akka_Persistence_TestKit["Akka.Persistence.TestKit"]
+        akka_net_Akka_Streams_TestKit_Tests["Akka.Streams.TestKit.Tests"]
+        akka_net_Akka_Tests["Akka.Tests"]
+        akka_net_Akka_Cluster_Tests["Akka.Cluster.Tests"]
+        akka_net_Akka_TestKit["Akka.TestKit"]
+        akka_net_Akka_Docs_Tutorials["Akka.Docs.Tutorials"]
+        akka_net_Akka_Streams_Tests_Performance["Akka.Streams.Tests.Performance"]
+        akka_net_Akka_Remote_TestKit_Tests["Akka.Remote.TestKit.Tests"]
+        akka_net_Akka_Tests_Shared_Internals["Akka.Tests.Shared.Internals"]
+    end
+    subgraph Librarys
+        akka_net_Akka_DependencyInjection["Akka.DependencyInjection"]
+        akka_net_Akka_DistributedData_LightningDB["Akka.DistributedData.LightningDB"]
+        akka_net_Akka_Cluster_Metrics["Akka.Cluster.Metrics"]
+        akka_net_Akka_DistributedData["Akka.DistributedData"]
+        akka_net_Akka_Cluster_Sharding["Akka.Cluster.Sharding"]
+        akka_net_Akka_Persistence_Query_InMemory["Akka.Persistence.Query.InMemory"]
+        akka_net_Akka_Serialization_Hyperion["Akka.Serialization.Hyperion"]
+        akka_net_Akka_Persistence_Custom["Akka.Persistence.Custom"]
+        akka_net_ChatMessages["ChatMessages"]
+        akka_net_Akka_Discovery["Akka.Discovery"]
+        akka_net_Akka_Cluster["Akka.Cluster"]
+        akka_net_Akka_Persistence_Query["Akka.Persistence.Query"]
+        akka_net_Akka_Persistence_TCK["Akka.Persistence.TCK"]
+        akka_net_Akka_Persistence["Akka.Persistence"]
+        akka_net_Akka_Streams["Akka.Streams"]
+        akka_net_Akka_Coordination["Akka.Coordination"]
+        akka_net_Akka_Remote["Akka.Remote"]
+        akka_net_Akka["Akka"]
+    end
+    subgraph Tools
+        akka_net_Akka_Cluster_Tools["Akka.Cluster.Tools"]
+        akka_net_TimeClient["TimeClient"]
+        akka_net_ChatClient["ChatClient"]
+    end
+    subgraph Webapps
+        akka_net_Akka_AspNetCore["Akka.AspNetCore"]
+    end
+    subgraph Services
+        akka_net_TcpEchoService_Server["TcpEchoService.Server"]
+        akka_net_AkkaWindowsService["AkkaWindowsService"]
+        akka_net_AkkaHeadlesssService["AkkaHeadlesssService"]
+    end
+    subgraph Desktopapps
+        akka_net_SymbolLookup["SymbolLookup"]
+    end
+    akka_net_SerializationBenchmarks --> akka_net_Akka_Serialization_Hyperion
+    akka_net_SerializationBenchmarks --> akka_net_Akka
+    akka_net_Akka_Benchmarks --> akka_net_Akka_DistributedData
+    akka_net_Akka_Benchmarks --> akka_net_Akka_Serialization_Hyperion
+    akka_net_Akka_Benchmarks --> akka_net_Akka_Cluster
+    akka_net_Akka_Benchmarks --> akka_net_Akka_Persistence
+    akka_net_Akka_Benchmarks --> akka_net_Akka_Remote
+    akka_net_Akka_Benchmarks --> akka_net_Akka_Streams
+    akka_net_Akka_Benchmarks --> akka_net_Akka
+    akka_net_Akka_Cluster_Benchmarks --> akka_net_Akka_Cluster_Sharding
+    akka_net_RemotePingPong --> akka_net_Akka_Remote
+    akka_net_Akka_Cluster_Cpu_Benchmark --> akka_net_Akka_Cluster
+    akka_net_PingPong --> akka_net_Akka
+    akka_net_SpawnBenchmark --> akka_net_Akka
+    akka_net_Akka_DependencyInjection_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_DependencyInjection_Tests --> akka_net_Akka_DependencyInjection
+    akka_net_Akka_DependencyInjection --> akka_net_Akka
+    akka_net_Akka_TestKit_Xunit_Tests --> akka_net_Akka_TestKit_Xunit
+    akka_net_Akka_TestKit_Xunit2 --> akka_net_Akka_TestKit
+    akka_net_Akka_TestKit_Xunit2_Tests --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_TestKit_Xunit --> akka_net_Akka_TestKit
+    akka_net_Akka_Cluster_Tools_Tests_MultiNode --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Cluster_Tools_Tests_MultiNode --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Cluster_Tools_Tests_MultiNode --> akka_net_Akka_Cluster_TestKit
+    akka_net_Akka_Cluster_Tools_Tests_MultiNode --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_Sharding_Tests --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Cluster_Sharding_Tests --> akka_net_Akka_Cluster_Sharding
+    akka_net_Akka_Cluster_Sharding_Tests --> akka_net_Akka_Persistence
+    akka_net_Akka_Cluster_Sharding_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_DistributedData_LightningDB --> akka_net_Akka_DistributedData
+    akka_net_Akka_Cluster_Metrics --> akka_net_Akka_Cluster
+    akka_net_Akka_DistributedData_Tests_MultiNode --> akka_net_Akka_DistributedData_LightningDB
+    akka_net_Akka_DistributedData_Tests_MultiNode --> akka_net_Akka_DistributedData
+    akka_net_Akka_DistributedData_Tests_MultiNode --> akka_net_Akka_Cluster_TestKit
+    akka_net_Akka_DistributedData_Tests_MultiNode --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_DistributedData --> akka_net_Akka_Cluster
+    akka_net_Akka_Cluster_Metrics_Tests --> akka_net_Akka_Cluster_Metrics
+    akka_net_Akka_Cluster_Metrics_Tests --> akka_net_Akka_Cluster_Tests
+    akka_net_Akka_Cluster_Tools_Tests --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Cluster_Tools_Tests --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Cluster_Tools_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_Sharding_Tests_MultiNode --> akka_net_Akka_Serialization_Hyperion
+    akka_net_Akka_Cluster_Sharding_Tests_MultiNode --> akka_net_Akka_Cluster_Sharding
+    akka_net_Akka_Cluster_Sharding_Tests_MultiNode --> akka_net_Akka_Cluster_TestKit
+    akka_net_Akka_Cluster_Sharding_Tests_MultiNode --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_Sharding_Tests_MultiNode --> akka_net_Akka_DistributedData_LightningDB
+    akka_net_Akka_DistributedData_Tests --> akka_net_Akka_Cluster_Sharding
+    akka_net_Akka_DistributedData_Tests --> akka_net_Akka_DistributedData_LightningDB
+    akka_net_Akka_DistributedData_Tests --> akka_net_Akka_DistributedData
+    akka_net_Akka_DistributedData_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_Metrics_Tests_MultiNode --> akka_net_Akka_Cluster_Metrics_Tests
+    akka_net_Akka_Cluster_Metrics_Tests_MultiNode --> akka_net_Akka_Cluster_Metrics
+    akka_net_Akka_Cluster_Metrics_Tests_MultiNode --> akka_net_Akka_Cluster_TestKit
+    akka_net_Akka_Cluster_Tools --> akka_net_Akka_Cluster
+    akka_net_Akka_Cluster_Tools --> akka_net_Akka_Coordination
+    akka_net_Akka_Cluster_Tools --> akka_net_Akka_Discovery
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_Coordination
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_Persistence
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_DistributedData_LightningDB
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_DistributedData
+    akka_net_Akka_Persistence_Query_InMemory --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Persistence_Query_InMemory_Tests --> akka_net_Akka_Persistence_TCK
+    akka_net_Akka_Persistence_Query_InMemory_Tests --> akka_net_Akka_Persistence_Query_InMemory
+    akka_net_Akka_Serialization_TestKit --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Serialization_Hyperion --> akka_net_Akka
+    akka_net_Akka_Serialization_Hyperion_Tests --> akka_net_Akka_Serialization_Hyperion
+    akka_net_Akka_Serialization_Hyperion_Tests --> akka_net_Akka_Serialization_TestKit
+    akka_net_Akka_Serialization_Hyperion_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_AspNetCore --> akka_net_Akka_DependencyInjection
+    akka_net_Akka_AspNetCore --> akka_net_Akka
+    akka_net_TimeClient --> akka_net_Akka_Remote
+    akka_net_TimeClient --> akka_net_Akka
+    akka_net_TimeServer --> akka_net_Akka_Remote
+    akka_net_TimeServer --> akka_net_Akka
+    akka_net_Akka_Persistence_Custom --> akka_net_Akka_Persistence
+    akka_net_System1 --> akka_net_Akka_Remote
+    akka_net_System1 --> akka_net_Akka
+    akka_net_System1 --> akka_net_Shared
+    akka_net_System2 --> akka_net_Akka_Remote
+    akka_net_System2 --> akka_net_Akka
+    akka_net_System2 --> akka_net_Shared
+    akka_net_Shared --> akka_net_Akka
+    akka_net_Akka_Persistence_Custom_Tests --> akka_net_Akka_Persistence_TCK
+    akka_net_Akka_Persistence_Custom_Tests --> akka_net_Akka_Persistence_Custom
+    akka_net_ClusterSharding_Node --> akka_net_Akka_Cluster_Sharding
+    akka_net_ClusterSharding_Node --> akka_net_Akka_Serialization_Hyperion
+    akka_net_ShoppingCart --> akka_net_Akka_Cluster_Sharding
+    akka_net_DDataStressTest --> akka_net_Akka_DistributedData
+    akka_net_TcpEchoService_Server --> akka_net_Akka
+    akka_net_HelloAkka --> akka_net_Akka
+    akka_net_Routing --> akka_net_Akka
+    akka_net_AkkaWindowsService --> akka_net_Akka_DependencyInjection
+    akka_net_AkkaWindowsService --> akka_net_Akka
+    akka_net_HelloWorld --> akka_net_Akka
+    akka_net_AkkaHeadlesssService --> akka_net_Akka_DependencyInjection
+    akka_net_AkkaHeadlesssService --> akka_net_Akka
+    akka_net_SymbolLookup --> akka_net_Akka
+    akka_net_ChatClient --> akka_net_Akka_Remote
+    akka_net_ChatClient --> akka_net_ChatMessages
+    akka_net_ChatServer --> akka_net_Akka_Remote
+    akka_net_ChatServer --> akka_net_ChatMessages
+    akka_net_ChatMessages --> akka_net_Akka
+    akka_net_FaultTolerance --> akka_net_Akka
+    akka_net_Akka_Persistence_Tests --> akka_net_Akka_Serialization_Hyperion
+    akka_net_Akka_Persistence_Tests --> akka_net_Akka_Persistence_TestKit_Xunit2
+    akka_net_Akka_Persistence_Tests --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence_Tests --> akka_net_Akka_Remote
+    akka_net_Akka_Persistence_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Tests_Performance --> akka_net_Akka
+    akka_net_Akka_Tests_Performance --> akka_net_Akka_TestKit
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_Cluster_Metrics
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Docs_Tests --> akka_net_Akka
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_Persistence
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_Streams
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_TestKit
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Docs_Tests --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Remote_Tests_MultiNode --> akka_net_Akka_Remote_TestKit
+    akka_net_Akka_Remote_Tests_MultiNode --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Remote_TestKit --> akka_net_Akka_Remote
+    akka_net_Akka_Remote_TestKit --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Cluster_Tests_MultiNode --> akka_net_Akka_Cluster_TestKit
+    akka_net_Akka_Cluster_Tests_MultiNode --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Cluster_Tests_MultiNode --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Discovery --> akka_net_Akka
+    akka_net_Akka_Streams_Tests --> akka_net_Akka_Remote
+    akka_net_Akka_Streams_Tests --> akka_net_Akka_Streams
+    akka_net_Akka_Streams_Tests --> akka_net_Akka_Streams_TestKit
+    akka_net_Akka_Streams_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_TestKit --> akka_net_Akka_Remote_TestKit
+    akka_net_Akka_Cluster_TestKit --> akka_net_Akka_Cluster
+    akka_net_Akka_Streams_TestKit --> akka_net_Akka_Streams
+    akka_net_Akka_Streams_TestKit --> akka_net_Akka_TestKit
+    akka_net_Akka_Remote_Tests_Performance --> akka_net_Akka_Remote
+    akka_net_Akka_Cluster --> akka_net_Akka_Coordination
+    akka_net_Akka_Cluster --> akka_net_Akka_Remote
+    akka_net_Akka_TestKit_Tests --> akka_net_Akka
+    akka_net_Akka_TestKit_Tests --> akka_net_Akka_TestKit
+    akka_net_Akka_TestKit_Tests --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_TestKit_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka_Streams
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka_Streams_TestKit
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka_TestKit
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Streams_Tests_TCK --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Discovery_Tests --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Discovery_Tests --> akka_net_Akka_Discovery
+    akka_net_Akka_Coordination_Tests --> akka_net_Akka_Coordination
+    akka_net_Akka_Coordination_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Persistence_Query_Tests --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Persistence_Query_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Persistence_TCK_Tests --> akka_net_Akka_Persistence_TCK
+    akka_net_Akka_API_Tests --> akka_net_Akka_Cluster_Metrics
+    akka_net_Akka_API_Tests --> akka_net_Akka_Cluster_Sharding
+    akka_net_Akka_API_Tests --> akka_net_Akka_DistributedData
+    akka_net_Akka_API_Tests --> akka_net_Akka_Persistence_Query_InMemory
+    akka_net_Akka_API_Tests --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_API_Tests --> akka_net_Akka_Coordination
+    akka_net_Akka_API_Tests --> akka_net_Akka_Discovery
+    akka_net_Akka_API_Tests --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_API_Tests --> akka_net_Akka_TestKit
+    akka_net_Akka_API_Tests --> akka_net_Akka
+    akka_net_Akka_API_Tests --> akka_net_Akka_Cluster
+    akka_net_Akka_API_Tests --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_API_Tests --> akka_net_Akka_Persistence
+    akka_net_Akka_API_Tests --> akka_net_Akka_Remote
+    akka_net_Akka_API_Tests --> akka_net_Akka_Streams
+    akka_net_Akka_Persistence_TestKit_Tests --> akka_net_Akka_Persistence_TestKit
+    akka_net_Akka_Persistence_TestKit_Tests --> akka_net_Akka_Persistence_TestKit_Xunit2
+    akka_net_Akka_Persistence_TestKit_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Persistence_TestKit_Xunit2 --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Persistence_TestKit_Xunit2 --> akka_net_Akka_Persistence_TestKit
+    akka_net_Akka_Persistence_TestKit_Xunit2 --> akka_net_Akka_TestKit
+    akka_net_Akka_Cluster_Tests_Performance --> akka_net_Akka_Cluster
+    akka_net_Akka_Remote_Tests --> akka_net_Akka_Serialization_Hyperion
+    akka_net_Akka_Remote_Tests --> akka_net_Akka_Remote
+    akka_net_Akka_Remote_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Persistence_Query --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence_Query --> akka_net_Akka_Streams
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_Streams_TestKit
+    akka_net_Akka_Persistence --> akka_net_Akka
+    akka_net_Akka_Persistence_TestKit --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Persistence_TestKit --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence_TestKit --> akka_net_Akka_TestKit
+    akka_net_Akka_Streams --> akka_net_Akka
+    akka_net_Akka_Coordination --> akka_net_Akka
+    akka_net_Akka_Remote --> akka_net_Akka
+    akka_net_Akka_Streams_TestKit_Tests --> akka_net_Akka_Streams_TestKit
+    akka_net_Akka_Streams_TestKit_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Tests --> akka_net_Akka
+    akka_net_Akka_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Cluster_Tests --> akka_net_Akka_Cluster
+    akka_net_Akka_Cluster_Tests --> akka_net_Akka_Coordination_Tests
+    akka_net_Akka_Cluster_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_TestKit --> akka_net_Akka
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka_Persistence
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka_Streams
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka_TestKit
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Docs_Tutorials --> akka_net_Akka_TestKit_Xunit2
+    akka_net_Akka_Streams_Tests_Performance --> akka_net_Akka_Streams
+    akka_net_Akka_Streams_Tests_Performance --> akka_net_Akka_Streams_Tests
+    akka_net_Akka_Streams_Tests_Performance --> akka_net_Akka_Streams_TestKit
+    akka_net_Akka_Remote_TestKit_Tests --> akka_net_Akka_Remote_TestKit
+    akka_net_Akka_Remote_TestKit_Tests --> akka_net_Akka_Tests_Shared_Internals
+    akka_net_Akka_Tests_Shared_Internals --> akka_net_Akka_TestKit_Xunit2

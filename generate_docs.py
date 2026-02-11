@@ -372,11 +372,26 @@ def generate_viewer_html() -> str:
         mmd_path = os.path.join(diagrams_dir, f"category-{cat_key}.mmd")
         if os.path.isfile(mmd_path):
             content = Path(mmd_path).read_text(encoding="utf-8")
+            # Check for edge filter metadata comment
+            edge_filter_warning = ""
+            for line in content.splitlines():
+                if line.startswith("%% EDGE_FILTER:"):
+                    parts = dict(kv.split("=") for kv in line[len("%% EDGE_FILTER:"):].strip().split())
+                    hidden = int(parts.get("hidden", 0))
+                    min_count = int(parts.get("min_count", 1))
+                    total = int(parts.get("total", 0))
+                    shown = int(parts.get("shown", 0))
+                    edge_filter_warning = (
+                        f"Showing {shown} of {total} edges (hiding {hidden} edges "
+                        f"with fewer than {min_count} references to stay within rendering limits)"
+                    )
+                    break
             diagram_tabs.append({
                 "id": f"cat_{sanitize_id(cat_key)}",
                 "label": f"{cat_name} ({count})",
                 "title": f"{cat_name} Projects ({count})",
                 "mermaid": content,
+                "warning": edge_filter_warning,
             })
 
     # ── Aggregate data sources by pattern ──
@@ -438,6 +453,9 @@ def generate_viewer_html() -> str:
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
         active = " active" if i == 0 else ""
+        warning_html = ""
+        if dt.get("warning"):
+            warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
         diagram_panels += f"""
   <section class="tab-panel{active}" id="panel-{dt['id']}">
     <div class="card">
@@ -447,7 +465,7 @@ def generate_viewer_html() -> str:
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
         </span>
-      </div>
+      </div>{warning_html}
       <div class="mermaid-wrap" id="mermaid-{dt['id']}">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -636,6 +654,10 @@ def generate_viewer_html() -> str:
     padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
   }}
   .zoom-btn:hover {{ color: #e2e8f0; border-color: #3b82f6; }}
+  .edge-filter-warning {{
+    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
+  }}
   .mermaid-wrap {{
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
     min-height: 120px; max-height: 80vh;

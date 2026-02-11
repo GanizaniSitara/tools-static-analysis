@@ -1,0 +1,17 @@
+graph LR
+    test["Test (48)"]
+    application["Application (19)"]
+    library["Library (18)"]
+    tool["Tool (3)"]
+    service["Service (3)"]
+    webapp["Webapp (1)"]
+    desktopapp["Desktopapp (1)"]
+    test -->|63| library
+    application -->|30| library
+    tool -->|7| library
+    test -->|5| tool
+    service -->|5| library
+    webapp -->|2| library
+    library -->|2| test
+    library -->|1| tool
+    desktopapp -->|1| library

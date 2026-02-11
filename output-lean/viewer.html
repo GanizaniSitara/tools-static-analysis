@@ -6,7 +6,7 @@
 <title>Lean — Dependency Map</title>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 200000, maxEdges: 600 });
   window.mermaidAPI = mermaid;
 </script>
 <style>
@@ -66,12 +66,23 @@
     display: flex; align-items: center; gap: 0.5rem;
   }
   .card-title .icon { color: #3b82f6; }
-  .mermaid-wrap {
-    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow-x: auto;
-    min-height: 120px; display: flex; align-items: center; justify-content: center;
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
   }
-  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; }
-  .mermaid-wrap svg { max-width: 100%; height: auto; }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
+  .edge-filter-warning {
+    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
+  }
+  .mermaid-wrap {
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
+    min-height: 120px; max-height: 80vh;
+  }
+  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
+  .mermaid-wrap svg { max-width: none !important; height: auto; transform-origin: top left; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   thead th {
@@ -131,27 +142,65 @@
 </header>
 
 <nav class="tabs" id="tabNav">
-  <button class="tab-btn active" data-tab="landscape">Full Landscape</button>
-  <button class="tab-btn" data-tab="corelibraries">Core Libraries</button>
-  <button class="tab-btn" data-tab="datainfrastructure">Data Infrastructure</button>
-  <button class="tab-btn" data-tab="nugetgroups">NuGet Packages</button>
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="cat_library">Library (16)</button>
+  <button class="tab-btn" data-tab="cat_application">Application (4)</button>
+  <button class="tab-btn" data-tab="cat_webapp">WebApp (1)</button>
+  <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
+  <button class="tab-btn" data-tab="cat_test">Test (1)</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
 
 <main class="content">
 
-  <section class="tab-panel active" id="panel-landscape">
+  <section class="tab-panel active" id="panel-overview">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Full Solution Dependency Graph</div>
-      <div class="mermaid-wrap" id="mermaid-landscape">
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-overview">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph LR
-    subgraph Webapps
-        Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
-    end
-    subgraph Librarys
+    library[&quot;Library (16)&quot;]
+    application[&quot;Application (4)&quot;]
+    webapp[&quot;Webapp (1)&quot;]
+    tool[&quot;Tool (1)&quot;]
+    test[&quot;Test (1)&quot;]
+    application --&gt;|28| library
+    test --&gt;|15| library
+    webapp --&gt;|3| library
+    library --&gt;|3| webapp
+    test --&gt;|3| application
+    application --&gt;|2| webapp
+    application --&gt;|2| tool
+    tool --&gt;|1| library
+    test --&gt;|1| webapp
+    test --&gt;|1| tool
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_library">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (16)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_library">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph library[&quot;Library&quot;]
         Lean_QuantConnect_Configuration[&quot;QuantConnect.Configuration&quot;]
         Lean_QuantConnect_Compression[&quot;QuantConnect.Compression&quot;]
         Lean_QuantConnect_Messaging[&quot;QuantConnect.Messaging&quot;]
@@ -169,48 +218,27 @@ graph LR
         Lean_QuantConnect_Logging[&quot;QuantConnect.Logging&quot;]
         Lean_QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
     end
-    subgraph Applications
-        Lean_QuantConnect_Optimizer_Launcher[&quot;QuantConnect.Optimizer.Launcher&quot;]
-        Lean_QuantConnect_DownloaderDataProvider_Launcher[&quot;QuantConnect.DownloaderDataProvider.Launcher&quot;]
-        Lean_QuantConnect_Lean_Launcher[&quot;QuantConnect.Lean.Launcher&quot;]
-        Lean_QuantConnect_Report[&quot;QuantConnect.Report&quot;]
-    end
-    subgraph Tools
-        Lean_QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
-    end
-    subgraph Tests
-        Lean_QuantConnect_Tests[&quot;QuantConnect.Tests&quot;]
-    end
-    Lean_QuantConnect_Api --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Api --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Api --&gt; Lean_QuantConnect_Logging
+    ext_webapp([&quot;Webapp (1)&quot;])
+    ext_application([&quot;Application (4)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_test([&quot;Test (1)&quot;])
     Lean_QuantConnect_Configuration --&gt; Lean_QuantConnect_Logging
     Lean_QuantConnect_Compression --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Optimizer_Launcher --&gt; Lean_QuantConnect_Optimizer
     Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect
     Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Logging
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm_Framework
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Api
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Lean_Engine
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Indicators
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Logging
     Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Queues
-    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Api
     Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect
     Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Compression
     Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect
-    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Lean_Engine
-    Lean_QuantConnect_DownloaderDataProvider_Launcher --&gt; Lean_QuantConnect_Logging
     Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm_Framework
     Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm
     Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect
@@ -221,7 +249,6 @@ graph LR
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm_CSharp
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_AlgorithmFactory
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Api
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Brokerages
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Compression
     Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Configuration
@@ -236,30 +263,9 @@ graph LR
     Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect
     Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_ToolBox --&gt; Lean_QuantConnect_Lean_Engine
     Lean_QuantConnect --&gt; Lean_QuantConnect_Compression
     Lean_QuantConnect --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm_CSharp
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm_Framework
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_AlgorithmFactory
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Api
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Brokerages
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Compression
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Lean_Engine
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Optimizer
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Research
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Lean_Launcher
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Messaging
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Queues
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_Report
-    Lean_QuantConnect_Tests --&gt; Lean_QuantConnect_ToolBox
     Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect
     Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect_Logging
     Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect
@@ -268,210 +274,171 @@ graph LR
     Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Algorithm
     Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect
     Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Algorithm_CSharp
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_AlgorithmFactory
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Api
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Brokerages
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Compression
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Lean_Engine
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Optimizer_Launcher
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Research
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Messaging
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Queues
-    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_ToolBox
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Api
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Brokerages
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Lean_Engine
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_Messaging
-    Lean_QuantConnect_Report --&gt; Lean_QuantConnect_ToolBox
     Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Configuration
     Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Indicators
     Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect
     Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Logging
+    ext_webapp -.-&gt; Lean_QuantConnect
+    ext_webapp -.-&gt; Lean_QuantConnect_Configuration
+    ext_webapp -.-&gt; Lean_QuantConnect_Logging
+    ext_application -.-&gt; Lean_QuantConnect
+    ext_application -.-&gt; Lean_QuantConnect_Configuration
+    ext_application -.-&gt; Lean_QuantConnect_Logging
+    ext_application -.-&gt; Lean_QuantConnect_Optimizer
+    Lean_QuantConnect_Research -.-&gt; ext_webapp
+    Lean_QuantConnect_Brokerages -.-&gt; ext_webapp
+    ext_application -.-&gt; Lean_QuantConnect_Lean_Engine
+    Lean_QuantConnect_Lean_Engine -.-&gt; ext_webapp
+    ext_tool -.-&gt; Lean_QuantConnect_Lean_Engine
+    ext_test -.-&gt; Lean_QuantConnect_Algorithm_CSharp
+    ext_test -.-&gt; Lean_QuantConnect_Algorithm_Framework
+    ext_test -.-&gt; Lean_QuantConnect_AlgorithmFactory
+    ext_test -.-&gt; Lean_QuantConnect_Algorithm
+    ext_test -.-&gt; Lean_QuantConnect_Brokerages
+    ext_test -.-&gt; Lean_QuantConnect
+    ext_test -.-&gt; Lean_QuantConnect_Compression
+    ext_test -.-&gt; Lean_QuantConnect_Configuration
+    ext_test -.-&gt; Lean_QuantConnect_Lean_Engine
+    ext_test -.-&gt; Lean_QuantConnect_Indicators
+    ext_test -.-&gt; Lean_QuantConnect_Optimizer
+    ext_test -.-&gt; Lean_QuantConnect_Research
+    ext_test -.-&gt; Lean_QuantConnect_Logging
+    ext_test -.-&gt; Lean_QuantConnect_Messaging
+    ext_test -.-&gt; Lean_QuantConnect_Queues
+    ext_application -.-&gt; Lean_QuantConnect_Algorithm_CSharp
+    ext_application -.-&gt; Lean_QuantConnect_AlgorithmFactory
+    ext_application -.-&gt; Lean_QuantConnect_Algorithm
+    ext_application -.-&gt; Lean_QuantConnect_Brokerages
+    ext_application -.-&gt; Lean_QuantConnect_Compression
+    ext_application -.-&gt; Lean_QuantConnect_Indicators
+    ext_application -.-&gt; Lean_QuantConnect_Research
+    ext_application -.-&gt; Lean_QuantConnect_Messaging
+    ext_application -.-&gt; Lean_QuantConnect_Queues
         </pre>
       </div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-corelibraries">
+  <section class="tab-panel" id="panel-cat_application">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Core Library Dependencies</div>
-      <div class="mermaid-wrap" id="mermaid-corelibraries">
+      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (4)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_application">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
 graph TD
-    Lean_QuantConnect_Configuration[&quot;QuantConnect.Configuration&quot;]
-    Lean_QuantConnect_Compression[&quot;QuantConnect.Compression&quot;]
-    Lean_QuantConnect_Messaging[&quot;QuantConnect.Messaging&quot;]
-    Lean_QuantConnect_Research[&quot;QuantConnect.Research&quot;]
-    Lean_QuantConnect_Brokerages[&quot;QuantConnect.Brokerages&quot;]
-    Lean_QuantConnect_Algorithm_CSharp[&quot;QuantConnect.Algorithm.CSharp&quot;]
-    Lean_QuantConnect_Algorithm_Framework[&quot;QuantConnect.Algorithm.Framework&quot;]
-    Lean_QuantConnect_Lean_Engine[&quot;QuantConnect.Lean.Engine&quot;]
-    Lean_QuantConnect_Queues[&quot;QuantConnect.Queues&quot;]
-    Lean_QuantConnect_AlgorithmFactory[&quot;QuantConnect.AlgorithmFactory&quot;]
-    Lean_QuantConnect[&quot;QuantConnect&quot;]
-    Lean_QuantConnect_Indicators[&quot;QuantConnect.Indicators&quot;]
-    Lean_QuantConnect_Optimizer[&quot;QuantConnect.Optimizer&quot;]
-    Lean_QuantConnect_Algorithm_Python[&quot;QuantConnect.Algorithm.Python&quot;]
-    Lean_QuantConnect_Logging[&quot;QuantConnect.Logging&quot;]
-    Lean_QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
-    Lean_QuantConnect_Configuration --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Compression --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Messaging --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm_Framework
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Lean_Engine
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Research --&gt; Lean_QuantConnect_Queues
-    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Compression
-    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Brokerages --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm_Framework
-    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Algorithm_CSharp --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Algorithm_Framework --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm_CSharp
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_AlgorithmFactory
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Brokerages
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Compression
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Lean_Engine --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Brokerages
-    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Queues --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect
-    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_AlgorithmFactory --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect --&gt; Lean_QuantConnect_Compression
-    Lean_QuantConnect --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Indicators --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Optimizer --&gt; Lean_QuantConnect_Logging
-    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Algorithm
-    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Algorithm_Python --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Configuration
-    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Indicators
-    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect
-    Lean_QuantConnect_Algorithm --&gt; Lean_QuantConnect_Logging
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="tab-panel" id="panel-datainfrastructure">
-    <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Data Infrastructure &amp; External Sources</div>
-      <div class="mermaid-wrap" id="mermaid-datainfrastructure">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-graph LR
-    subgraph Applications
-        Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
+    subgraph application[&quot;Application&quot;]
         Lean_QuantConnect_Optimizer_Launcher[&quot;QuantConnect.Optimizer.Launcher&quot;]
         Lean_QuantConnect_DownloaderDataProvider_Launcher[&quot;QuantConnect.DownloaderDataProvider.Launcher&quot;]
         Lean_QuantConnect_Lean_Launcher[&quot;QuantConnect.Lean.Launcher&quot;]
         Lean_QuantConnect_Report[&quot;QuantConnect.Report&quot;]
     end
-    subgraph DataSources
-        datasource_Lean_Dapper[(&quot;Dapper&quot;)]
-        datasource_Lean_Kafka[(&quot;Kafka&quot;)]
-        datasource_Lean_RabbitMQ[(&quot;RabbitMQ&quot;)]
-    end
+    ext_library([&quot;Library (14)&quot;])
+    ext_test([&quot;Test (1)&quot;])
+    ext_webapp([&quot;Webapp (1)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
+    Lean_QuantConnect_Lean_Launcher --&gt; Lean_QuantConnect_Optimizer_Launcher
+    Lean_QuantConnect_Optimizer_Launcher -.-&gt; ext_library
+    Lean_QuantConnect_DownloaderDataProvider_Launcher -.-&gt; ext_library
+    ext_test -.-&gt; Lean_QuantConnect_DownloaderDataProvider_Launcher
+    ext_test -.-&gt; Lean_QuantConnect_Lean_Launcher
+    ext_test -.-&gt; Lean_QuantConnect_Report
+    Lean_QuantConnect_Lean_Launcher -.-&gt; ext_library
+    Lean_QuantConnect_Lean_Launcher -.-&gt; ext_webapp
+    Lean_QuantConnect_Lean_Launcher -.-&gt; ext_tool
+    Lean_QuantConnect_Report -.-&gt; ext_library
+    Lean_QuantConnect_Report -.-&gt; ext_webapp
+    Lean_QuantConnect_Report -.-&gt; ext_tool
         </pre>
       </div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-nugetgroups">
+  <section class="tab-panel" id="panel-cat_webapp">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> NuGet Package Groups</div>
-      <div class="mermaid-wrap" id="mermaid-nugetgroups">
+      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_webapp">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
-graph LR
-    subgraph Accord[&quot;Accord&quot;]
-        nuget_Accord[&quot;Accord&lt;br/&gt;3.6.0&quot;]
-        nuget_Accord_Fuzzy[&quot;Accord.Fuzzy&lt;br/&gt;3.6.0&quot;]
-        nuget_Accord_MachineLearning[&quot;Accord.MachineLearning&lt;br/&gt;3.6.0&quot;]
-        nuget_Accord_Math[&quot;Accord.Math&lt;br/&gt;3.6.0&quot;]
-        nuget_Accord_Statistics[&quot;Accord.Statistics&lt;br/&gt;3.6.0&quot;]
+graph TD
+    subgraph webapp[&quot;Webapp&quot;]
+        Lean_QuantConnect_Api[&quot;QuantConnect.Api&quot;]
     end
-    subgraph Plotly[&quot;Plotly&quot;]
-        nuget_Plotly_NET[&quot;Plotly.NET&lt;br/&gt;5.1.0&quot;]
-        nuget_Plotly_NET_CSharp[&quot;Plotly.NET.CSharp&lt;br/&gt;0.13.0&quot;]
-        nuget_Plotly_NET_Interactive[&quot;Plotly.NET.Interactive&lt;br/&gt;5.0.0&quot;]
+    ext_library([&quot;Library (6)&quot;])
+    ext_test([&quot;Test (1)&quot;])
+    ext_application([&quot;Application (2)&quot;])
+    Lean_QuantConnect_Api -.-&gt; ext_library
+    ext_library -.-&gt; Lean_QuantConnect_Api
+    ext_test -.-&gt; Lean_QuantConnect_Api
+    ext_application -.-&gt; Lean_QuantConnect_Api
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_tool">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_tool">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph tool[&quot;Tool&quot;]
+        Lean_QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
     end
-    subgraph Microsoft[&quot;Microsoft&quot;]
-        nuget_Microsoft_IO_RecyclableMemoryStream[&quot;Microsoft.IO.RecyclableMemoryStream&lt;br/&gt;3.0.1&quot;]
-        nuget_Microsoft_NET_Test_Sdk[&quot;Microsoft.NET.Test.Sdk&lt;br/&gt;16.9.4&quot;]
-        nuget_Microsoft_TestPlatform_ObjectModel[&quot;Microsoft.TestPlatform.ObjectModel&lt;br/&gt;16.9.4&quot;]
+    ext_library([&quot;Library (1)&quot;])
+    ext_test([&quot;Test (1)&quot;])
+    ext_application([&quot;Application (2)&quot;])
+    Lean_QuantConnect_ToolBox -.-&gt; ext_library
+    ext_test -.-&gt; Lean_QuantConnect_ToolBox
+    ext_application -.-&gt; Lean_QuantConnect_ToolBox
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_test">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_test">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph test[&quot;Test&quot;]
+        Lean_QuantConnect_Tests[&quot;QuantConnect.Tests&quot;]
     end
-    subgraph Common[&quot;Common&quot;]
-        nuget_Common_Logging[&quot;Common.Logging&lt;br/&gt;3.4.1&quot;]
-        nuget_Common_Logging_Core[&quot;Common.Logging.Core&lt;br/&gt;3.4.1&quot;]
-    end
-    subgraph Newtonsoft[&quot;Newtonsoft&quot;]
-        nuget_Newtonsoft_Json[&quot;Newtonsoft.Json&lt;br/&gt;13.0.2&quot;]
-    end
-    subgraph NodaTime[&quot;NodaTime&quot;]
-        nuget_NodaTime[&quot;NodaTime&lt;br/&gt;3.0.5&quot;]
-    end
-    subgraph RestSharp[&quot;RestSharp&quot;]
-        nuget_RestSharp[&quot;RestSharp&lt;br/&gt;106.12.0&quot;]
-    end
-    subgraph McMaster[&quot;McMaster&quot;]
-        nuget_McMaster_Extensions_CommandLineUtils[&quot;McMaster.Extensions.CommandLineUtils&lt;br/&gt;2.6.0&quot;]
-    end
-    subgraph DotNetZip[&quot;DotNetZip&quot;]
-        nuget_DotNetZip[&quot;DotNetZip&lt;br/&gt;1.16.0&quot;]
-    end
-    subgraph SharpZipLib[&quot;SharpZipLib&quot;]
-        nuget_SharpZipLib[&quot;SharpZipLib&lt;br/&gt;1.3.3&quot;]
-    end
-    subgraph NetMQ[&quot;NetMQ&quot;]
-        nuget_NetMQ[&quot;NetMQ&lt;br/&gt;4.0.1.6&quot;]
-    end
-    subgraph QuantConnect[&quot;QuantConnect&quot;]
-        nuget_QuantConnect_pythonnet[&quot;QuantConnect.pythonnet&lt;br/&gt;2.0.52&quot;]
-    end
-    subgraph CsvHelper[&quot;CsvHelper&quot;]
-        nuget_CsvHelper[&quot;CsvHelper&lt;br/&gt;19.0.0&quot;]
-    end
-    subgraph DynamicInterop[&quot;DynamicInterop&quot;]
-        nuget_DynamicInterop[&quot;DynamicInterop&lt;br/&gt;0.9.1&quot;]
-    end
-    subgraph MathNet[&quot;MathNet&quot;]
-        nuget_MathNet_Numerics[&quot;MathNet.Numerics&lt;br/&gt;5.0.0&quot;]
-    end
+    ext_library([&quot;Library (15)&quot;])
+    ext_webapp([&quot;Webapp (1)&quot;])
+    ext_application([&quot;Application (3)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    Lean_QuantConnect_Tests -.-&gt; ext_library
+    Lean_QuantConnect_Tests -.-&gt; ext_webapp
+    Lean_QuantConnect_Tests -.-&gt; ext_application
+    Lean_QuantConnect_Tests -.-&gt; ext_tool
         </pre>
       </div>
     </div>
@@ -557,10 +524,22 @@ graph LR
 </main>
 
 <footer class="footer">
-  Generated by Dependency Mapper (Python) &mdash; 2026-02-10
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
 </footer>
 
 <script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
 (function () {
   'use strict';
 
@@ -610,7 +589,7 @@ graph LR
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'landscape': 'mermaid-landscape', 'corelibraries': 'mermaid-corelibraries', 'datainfrastructure': 'mermaid-datainfrastructure', 'nugetgroups': 'mermaid-nugetgroups' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_test': 'mermaid-cat_test' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -625,7 +604,22 @@ graph LR
       var loading = container.querySelector('.loading');
       pre.style.display = '';
       if (loading) loading.style.display = 'none';
-      window.mermaidAPI.run({ nodes: [pre] }).catch(function (err) {
+      window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+        // Fix SVG sizing: use natural viewBox width instead of 100%
+        var svg = container.querySelector('svg');
+        if (svg) {
+          var vb = svg.getAttribute('viewBox');
+          if (vb) {
+            var parts = vb.split(' ');
+            var naturalWidth = parseFloat(parts[2]);
+            var naturalHeight = parseFloat(parts[3]);
+            svg.style.width = naturalWidth + 'px';
+            svg.style.height = naturalHeight + 'px';
+            svg.style.maxWidth = 'none';
+            svg.removeAttribute('width');
+          }
+        }
+      }).catch(function (err) {
         console.error('Mermaid render error for ' + tabId + ':', err);
         if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
       });

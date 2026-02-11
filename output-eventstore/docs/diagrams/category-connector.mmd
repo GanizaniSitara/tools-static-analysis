@@ -1,0 +1,14 @@
+graph TD
+    subgraph connector["Connector"]
+        src_KurrentDB_Connectors_Contracts["KurrentDB.Connectors.Contracts"]
+        src_KurrentDB_Plugins_Connectors["KurrentDB.Plugins.Connectors"]
+        src_KurrentDB_Connectors["KurrentDB.Connectors"]
+    end
+    ext_test(["Test (2)"])
+    ext_library(["Library (4)"])
+    ext_webapp(["Webapp (1)"])
+    src_KurrentDB_Plugins_Connectors --> src_KurrentDB_Connectors
+    src_KurrentDB_Connectors --> src_KurrentDB_Connectors_Contracts
+    ext_test -.-> src_KurrentDB_Connectors
+    src_KurrentDB_Connectors -.-> ext_library
+    ext_webapp -.-> src_KurrentDB_Plugins_Connectors

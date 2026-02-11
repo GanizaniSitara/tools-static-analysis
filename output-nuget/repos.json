@@ -1,0 +1,9 @@
+[
+  {
+    "name": "NuGet.Client",
+    "root": "/home/user/NuGet.Client",
+    "solutions": [
+      "NuGet.sln"
+    ]
+  }
+]

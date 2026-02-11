@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NuGet.Client — Dependency Map</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 200000, maxEdges: 600 });
+  window.mermaidAPI = mermaid;
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh;
+  }
+  a { color: #3b82f6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    border-bottom: 1px solid #334155; padding: 1.5rem 2rem 1rem;
+  }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }
+  .header h1 span { color: #3b82f6; }
+  .search-box { position: relative; width: 280px; }
+  .search-box input {
+    width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.2rem; border-radius: 6px;
+    border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    font-size: 0.875rem; outline: none; transition: border-color .2s;
+  }
+  .search-box input::placeholder { color: #64748b; }
+  .search-box input:focus { border-color: #3b82f6; }
+  .search-box .search-icon {
+    position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+    color: #64748b; font-size: 0.85rem; pointer-events: none;
+  }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }
+  .stat { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8; }
+  .stat-value { font-weight: 700; font-size: 1rem; color: #3b82f6; }
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
+    background: #0f172a; border-bottom: 1px solid #334155;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem; background: transparent; border: none; color: #94a3b8;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: #e2e8f0; }
+  .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+  .content { padding: 1.5rem 2rem 3rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+  }
+  .card-title {
+    font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card-title .icon { color: #3b82f6; }
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
+  .edge-filter-warning {
+    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
+  }
+  .mermaid-wrap {
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
+    min-height: 120px; max-height: 80vh;
+  }
+  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
+  .mermaid-wrap svg { max-width: none !important; height: auto; transform-origin: top left; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead th {
+    background: #1a2438; color: #94a3b8; font-weight: 600; text-transform: uppercase;
+    font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.6rem 0.75rem; text-align: left;
+    border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 1;
+  }
+  tbody td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+  tbody tr:hover { background: rgba(59,130,246,0.06); }
+  .tag {
+    display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .tag-webapp      { background: rgba(26,188,156,.15); color: #1ABC9C; }
+  .tag-library     { background: rgba(74,144,217,.15); color: #4A90D9; }
+  .tag-application { background: rgba(231,76,60,.15);  color: #E74C3C; }
+  .tag-service     { background: rgba(52,152,219,.15); color: #3498DB; }
+  .tag-tool        { background: rgba(243,156,18,.15); color: #F39C12; }
+  .tag-test        { background: rgba(155,89,182,.15); color: #9B59B6; }
+  .tag-connector   { background: rgba(230,126,34,.15); color: #E67E22; }
+  .tag-desktopapp  { background: rgba(233,30,99,.15);  color: #E91E63; }
+  .tag-db       { background: rgba(74,144,217,.15);  color: #4A90D9; }
+  .tag-messaging{ background: rgba(231,76,60,.15);   color: #E74C3C; }
+  .tag-api      { background: rgba(52,152,219,.15);  color: #3498DB; }
+  .tag-cache    { background: rgba(243,156,18,.15);  color: #F39C12; }
+  .tag-config   { background: rgba(155,89,182,.15);  color: #9B59B6; }
+  .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
+  .footer {
+    text-align: center; padding: 1.5rem 2rem; color: #475569;
+    font-size: 0.78rem; font-style: italic; border-top: 1px solid #334155;
+  }
+  @media (max-width: 768px) {
+    .header { padding: 1rem; }
+    .content { padding: 1rem; }
+    .tabs { padding: 0 1rem; }
+    .search-box { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <h1><span>NuGet.Client</span> Dependency Map</h1>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-value">115</span> Projects</div>
+    <div class="stat"><span class="stat-value">76</span> NuGet Packages</div>
+    <div class="stat"><span class="stat-value">213</span> Project References</div>
+    <div class="stat"><span class="stat-value">453</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">13</span> Config Files</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav">
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="cat_test">Test (76)</button>
+  <button class="tab-btn" data-tab="cat_library">Library (29)</button>
+  <button class="tab-btn" data-tab="cat_tool">Tool (5)</button>
+  <button class="tab-btn" data-tab="cat_application">Application (4)</button>
+  <button class="tab-btn" data-tab="datasources">Data Sources</button>
+  <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
+  <button class="tab-btn" data-tab="allprojects">All Projects</button>
+</nav>
+
+<main class="content">
+
+  <section class="tab-panel active" id="panel-overview">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-overview">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    test[&quot;Test (70)&quot;]
+    library[&quot;Library (29)&quot;]
+    tool[&quot;Tool (5)&quot;]
+    application[&quot;Application (4)&quot;]
+    test --&gt;|57| library
+    tool --&gt;|31| library
+    test --&gt;|9| tool
+    test --&gt;|5| application
+    application --&gt;|4| library
+    library --&gt;|1| application
+    library --&gt;|1| tool
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_test">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (76)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_test">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph test[&quot;Test&quot;]
+        grp_NuGet_PackageManagement[&quot;NuGet.PackageManagement (4)&quot;]
+        grp_NuGet_VisualStudio[&quot;NuGet.VisualStudio (4)&quot;]
+        grp_NuGet_CommandLine[&quot;NuGet.CommandLine (3)&quot;]
+        grp_NuGet_Build[&quot;NuGet.Build (3)&quot;]
+        grp_NuGet_Packaging[&quot;NuGet.Packaging (2)&quot;]
+        grp_NuGet_Protocol[&quot;NuGet.Protocol (2)&quot;]
+        grp_NuGet_Commands[&quot;NuGet.Commands (2)&quot;]
+        grp_NuGet_MSSigning[&quot;NuGet.MSSigning (2)&quot;]
+        grp_NuGet_Tests[&quot;NuGet.Tests (2)&quot;]
+        grp_UAPApp[&quot;UAPApp&quot;]
+        grp_ClassLibrary1[&quot;ClassLibrary1&quot;]
+        grp_WebApplication[&quot;WebApplication&quot;]
+        grp_BuildIntegratedClassLibrary[&quot;BuildIntegratedClassLibrary&quot;]
+        grp_EmptyMvcApplication[&quot;EmptyMvcApplication&quot;]
+        grp_ConsoleApp[&quot;ConsoleApp&quot;]
+        grp_ClassLibrary47[&quot;ClassLibrary47&quot;]
+        grp_WPFApplication[&quot;WPFApplication&quot;]
+        grp_ConsoleApp10[&quot;ConsoleApp10&quot;]
+        grp_classlibrary[&quot;classlibrary&quot;]
+        grp_consoleapplication[&quot;consoleapplication&quot;]
+        grp_ClassLibrary6[&quot;ClassLibrary6&quot;]
+        grp_BuildIntegratedProj[&quot;BuildIntegratedProj&quot;]
+        grp_Dotnet_Integration[&quot;Dotnet.Integration.Test&quot;]
+        grp_Msbuild_Integration[&quot;Msbuild.Integration.Test&quot;]
+        grp_NuGet_XPlat[&quot;NuGet.XPlat.FuncTest&quot;]
+        grp_NuGet_Signing[&quot;NuGet.Signing.CrossFramework.Test&quot;]
+        grp_Microsoft_Build[&quot;Microsoft.Build.NuGetSdkResolver.Test&quot;]
+        grp_NuGet_Frameworks[&quot;NuGet.Frameworks.Test&quot;]
+        grp_NuGet_Common[&quot;NuGet.Common.Test&quot;]
+        grp_NuGet_DependencyResolver[&quot;NuGet.DependencyResolver.Core.Tests&quot;]
+        grp_NuGet_ProjectModel[&quot;NuGet.ProjectModel.Test&quot;]
+        grp_NuGet_Credentials[&quot;NuGet.Credentials.Test&quot;]
+        grp_NuGet_LibraryModel[&quot;NuGet.LibraryModel.Tests&quot;]
+        grp_NuGet_Versioning[&quot;NuGet.Versioning.Test&quot;]
+        grp_NuGet_Resolver[&quot;NuGet.Resolver.Test&quot;]
+        grp_NuGet_Configuration[&quot;NuGet.Configuration.Test&quot;]
+        grp_NuGet_Shared[&quot;NuGet.Shared.Tests&quot;]
+        grp_GenerateTestPackages[&quot;GenerateTestPackages&quot;]
+        grp_GenerateLicenseList[&quot;GenerateLicenseList&quot;]
+        grp_SampleCommandLineExtensions[&quot;SampleCommandLineExtensions&quot;]
+        grp_API_Test[&quot;API.Test&quot;]
+        grp_TestableCredentialProvider[&quot;TestableCredentialProvider&quot;]
+        grp_TestablePlugin[&quot;TestablePlugin&quot;]
+        grp_NuGet_SolutionRestoreManager[&quot;NuGet.SolutionRestoreManager.Test&quot;]
+        grp_NuGet_Tools[&quot;NuGet.Tools.Test&quot;]
+        grp_NuGet_Indexing[&quot;NuGet.Indexing.Test&quot;]
+        grp_NuGetConsole_Host[&quot;NuGetConsole.Host.PowerShell.Test&quot;]
+        grp_project1[&quot;project1&quot;]
+        grp_project2[&quot;project2&quot;]
+        grp_Microsoft_Internal[&quot;Microsoft.Internal.NuGet.Testing.SignedPackages&quot;]
+        grp_Test_Utility[&quot;Test.Utility&quot;]
+        grp_VisualStudio_Test[&quot;VisualStudio.Test.Utility&quot;]
+        grp_NuGet_Console[&quot;NuGet.Console.TestContract&quot;]
+        grp_PackageReferenceSdk[&quot;PackageReferenceSdk&quot;]
+        grp_NuGet_OptProf[&quot;NuGet.OptProf&quot;]
+    end
+    ext_library([&quot;Library (27)&quot;])
+    ext_tool([&quot;Tool (4)&quot;])
+    ext_application([&quot;Application (2)&quot;])
+    grp_NuGet_CommandLine --&gt;|3| grp_Test_Utility
+    grp_NuGet_Build --&gt;|3| grp_Test_Utility
+    grp_NuGet_PackageManagement --&gt;|3| grp_VisualStudio_Test
+    grp_NuGet_VisualStudio --&gt;|3| grp_VisualStudio_Test
+    grp_NuGet_Packaging --&gt;|2| grp_NuGet_Configuration
+    grp_NuGet_Packaging --&gt;|2| grp_Test_Utility
+    grp_NuGet_Protocol --&gt;|2| grp_Test_Utility
+    grp_NuGet_Commands --&gt;|2| grp_Test_Utility
+    grp_NuGet_MSSigning --&gt;|2| grp_Test_Utility
+    grp_NuGet_CommandLine --&gt;|2| grp_NuGet_Configuration
+    grp_NuGet_Tests --&gt;|2| grp_Test_Utility
+    grp_NuGet_Tests --&gt;|2| grp_NuGet_Console
+    grp_NuGet_Tests --&gt;|2| grp_NuGet_PackageManagement
+    grp_Dotnet_Integration --&gt;|1| grp_NuGet_XPlat
+    grp_Dotnet_Integration --&gt;|1| grp_Test_Utility
+    grp_NuGet_Protocol --&gt;|1| grp_TestablePlugin
+    grp_Msbuild_Integration --&gt;|1| grp_Test_Utility
+    grp_NuGet_XPlat --&gt;|1| grp_Test_Utility
+    grp_NuGet_XPlat --&gt;|1| grp_NuGet_CommandLine
+    grp_NuGet_XPlat --&gt;|1| grp_NuGet_Configuration
+    grp_NuGet_Signing --&gt;|1| grp_NuGet_Packaging
+    grp_NuGet_Signing --&gt;|1| grp_NuGet_Configuration
+    grp_NuGet_Signing --&gt;|1| grp_Test_Utility
+    grp_NuGet_MSSigning --&gt;|1| grp_NuGet_CommandLine
+    grp_Microsoft_Build --&gt;|1| grp_Test_Utility
+    grp_NuGet_Common --&gt;|1| grp_Test_Utility
+    grp_NuGet_PackageManagement --&gt;|1| grp_Test_Utility
+    grp_NuGet_DependencyResolver --&gt;|1| grp_Test_Utility
+    grp_NuGet_ProjectModel --&gt;|1| grp_Test_Utility
+    grp_NuGet_Commands --&gt;|1| grp_NuGet_Configuration
+    grp_NuGet_Credentials --&gt;|1| grp_Test_Utility
+    grp_NuGet_Versioning --&gt;|1| grp_Test_Utility
+    grp_NuGet_Build --&gt;|1| grp_NuGet_Configuration
+    grp_NuGet_Configuration --&gt;|1| grp_Test_Utility
+    grp_NuGet_Shared --&gt;|1| grp_Test_Utility
+    grp_NuGet_SolutionRestoreManager --&gt;|1| grp_VisualStudio_Test
+    grp_NuGet_Tools --&gt;|1| grp_VisualStudio_Test
+    grp_NuGet_CommandLine --&gt;|1| grp_SampleCommandLineExtensions
+    grp_NuGet_CommandLine --&gt;|1| grp_TestableCredentialProvider
+    grp_NuGetConsole_Host --&gt;|1| grp_VisualStudio_Test
+    grp_NuGet_VisualStudio --&gt;|1| grp_NuGet_PackageManagement
+    grp_Test_Utility --&gt;|1| grp_Microsoft_Internal
+    grp_VisualStudio_Test --&gt;|1| grp_Microsoft_Internal
+    grp_VisualStudio_Test --&gt;|1| grp_Test_Utility
+    grp_Dotnet_Integration -.-&gt;|2| ext_library
+    grp_Dotnet_Integration -.-&gt;|1| ext_tool
+    grp_NuGet_Packaging -.-&gt;|2| ext_library
+    grp_Msbuild_Integration -.-&gt;|3| ext_library
+    grp_Msbuild_Integration -.-&gt;|1| ext_tool
+    grp_NuGet_XPlat -.-&gt;|1| ext_application
+    grp_NuGet_XPlat -.-&gt;|1| ext_library
+    grp_NuGet_Signing -.-&gt;|1| ext_tool
+    grp_NuGet_Signing -.-&gt;|2| ext_library
+    grp_NuGet_Signing -.-&gt;|1| ext_application
+    grp_NuGet_MSSigning -.-&gt;|2| ext_library
+    grp_NuGet_Build -.-&gt;|2| ext_library
+    grp_Microsoft_Build -.-&gt;|1| ext_library
+    grp_NuGet_Frameworks -.-&gt;|2| ext_library
+    grp_NuGet_CommandLine -.-&gt;|2| ext_application
+    grp_NuGet_Common -.-&gt;|1| ext_library
+    grp_NuGet_PackageManagement -.-&gt;|11| ext_library
+    grp_NuGet_DependencyResolver -.-&gt;|1| ext_library
+    grp_NuGet_Build -.-&gt;|2| ext_tool
+    grp_NuGet_ProjectModel -.-&gt;|1| ext_library
+    grp_NuGet_Commands -.-&gt;|1| ext_library
+    grp_NuGet_Credentials -.-&gt;|1| ext_library
+    grp_NuGet_LibraryModel -.-&gt;|1| ext_library
+    grp_NuGet_Versioning -.-&gt;|1| ext_library
+    grp_NuGet_Resolver -.-&gt;|1| ext_library
+    grp_NuGet_Protocol -.-&gt;|1| ext_library
+    grp_NuGet_Configuration -.-&gt;|1| ext_library
+    grp_SampleCommandLineExtensions -.-&gt;|1| ext_application
+    grp_API_Test -.-&gt;|1| ext_library
+    grp_TestablePlugin -.-&gt;|2| ext_library
+    grp_NuGet_VisualStudio -.-&gt;|3| ext_library
+    grp_NuGet_SolutionRestoreManager -.-&gt;|2| ext_library
+    grp_NuGet_Tools -.-&gt;|1| ext_tool
+    grp_NuGet_Indexing -.-&gt;|1| ext_library
+    grp_NuGetConsole_Host -.-&gt;|1| ext_library
+    grp_Microsoft_Internal -.-&gt;|1| ext_library
+    grp_Test_Utility -.-&gt;|1| ext_library
+    grp_VisualStudio_Test -.-&gt;|2| ext_library
+    grp_NuGet_Tests -.-&gt;|4| ext_library
+    grp_NuGet_Tests -.-&gt;|2| ext_tool
+    grp_NuGet_Console -.-&gt;|1| ext_tool
+    grp_NuGet_OptProf -.-&gt;|1| ext_library
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_library">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (29)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_library">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph library[&quot;Library&quot;]
+        NuGet_Client_NuGet_MSSigning_Extensions[&quot;NuGet.MSSigning.Extensions&quot;]
+        NuGet_Client_NuGet_Indexing[&quot;NuGet.Indexing&quot;]
+        NuGet_Client_NuGet_VisualStudio_Internal_Contracts[&quot;NuGet.VisualStudio.Internal.Contracts&quot;]
+        NuGet_Client_NuGet_VisualStudio_Contracts[&quot;NuGet.VisualStudio.Contracts&quot;]
+        NuGet_Client_NuGet_PackageManagement_VisualStudio[&quot;NuGet.PackageManagement.VisualStudio&quot;]
+        NuGet_Client_NuGet_SolutionRestoreManager[&quot;NuGet.SolutionRestoreManager&quot;]
+        NuGet_Client_NuGet_PackageManagement_UI[&quot;NuGet.PackageManagement.UI&quot;]
+        NuGet_Client_NuGet_VisualStudio[&quot;NuGet.VisualStudio&quot;]
+        NuGet_Client_NuGet_VisualStudio_Implementation[&quot;NuGet.VisualStudio.Implementation&quot;]
+        NuGet_Client_NuGet_VisualStudio_Common[&quot;NuGet.VisualStudio.Common&quot;]
+        NuGet_Client_NuGet_VisualStudio_Interop[&quot;NuGet.VisualStudio.Interop&quot;]
+        NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets[&quot;NuGet.PackageManagement.PowerShellCmdlets&quot;]
+        NuGet_Client_NuGet_PackageManagement[&quot;NuGet.PackageManagement&quot;]
+        NuGet_Client_NuGet_DependencyResolver_Core[&quot;NuGet.DependencyResolver.Core&quot;]
+        NuGet_Client_NuGet_Credentials[&quot;NuGet.Credentials&quot;]
+        NuGet_Client_NuGet_Resolver[&quot;NuGet.Resolver&quot;]
+        NuGet_Client_NuGet_Commands[&quot;NuGet.Commands&quot;]
+        NuGet_Client_NuGet_ProjectModel[&quot;NuGet.ProjectModel&quot;]
+        NuGet_Client_NuGet_Packaging[&quot;NuGet.Packaging&quot;]
+        NuGet_Client_NuGet_Frameworks[&quot;NuGet.Frameworks&quot;]
+        NuGet_Client_NuGet_Versioning[&quot;NuGet.Versioning&quot;]
+        NuGet_Client_NuGet_LibraryModel[&quot;NuGet.LibraryModel&quot;]
+        NuGet_Client_Microsoft_Build_NuGetSdkResolver[&quot;Microsoft.Build.NuGetSdkResolver&quot;]
+        NuGet_Client_NuGet_Build_Tasks_Pack[&quot;NuGet.Build.Tasks.Pack&quot;]
+        NuGet_Client_NuGet_Build_Tasks[&quot;NuGet.Build.Tasks&quot;]
+        NuGet_Client_NuGet_Protocol[&quot;NuGet.Protocol&quot;]
+        NuGet_Client_NuGet_Configuration[&quot;NuGet.Configuration&quot;]
+        NuGet_Client_NuGet_Common[&quot;NuGet.Common&quot;]
+        NuGet_Client_doc_tasks[&quot;doc.tasks&quot;]
+    end
+    ext_test([&quot;Test (40)&quot;])
+    ext_application([&quot;Application (3)&quot;])
+    ext_tool([&quot;Tool (4)&quot;])
+    NuGet_Client_NuGet_Indexing --&gt; NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_VisualStudio_Internal_Contracts --&gt; NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_PackageManagement_VisualStudio --&gt; NuGet_Client_NuGet_Indexing
+    NuGet_Client_NuGet_PackageManagement_VisualStudio --&gt; NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_SolutionRestoreManager --&gt; NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_SolutionRestoreManager --&gt; NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_SolutionRestoreManager --&gt; NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_PackageManagement_UI --&gt; NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --&gt; NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --&gt; NuGet_Client_NuGet_VisualStudio_Contracts
+    NuGet_Client_NuGet_VisualStudio_Implementation --&gt; NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --&gt; NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_VisualStudio_Common --&gt; NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_VisualStudio_Common --&gt; NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    NuGet_Client_NuGet_VisualStudio_Common --&gt; NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Interop --&gt; NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_PackageManagement --&gt; NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_PackageManagement --&gt; NuGet_Client_NuGet_Resolver
+    NuGet_Client_NuGet_DependencyResolver_Core --&gt; NuGet_Client_NuGet_Configuration
+    NuGet_Client_NuGet_DependencyResolver_Core --&gt; NuGet_Client_NuGet_LibraryModel
+    NuGet_Client_NuGet_DependencyResolver_Core --&gt; NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Credentials --&gt; NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Resolver --&gt; NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Commands --&gt; NuGet_Client_NuGet_Credentials
+    NuGet_Client_NuGet_Commands --&gt; NuGet_Client_NuGet_ProjectModel
+    NuGet_Client_NuGet_ProjectModel --&gt; NuGet_Client_NuGet_DependencyResolver_Core
+    NuGet_Client_NuGet_Packaging --&gt; NuGet_Client_NuGet_Configuration
+    NuGet_Client_NuGet_Packaging --&gt; NuGet_Client_NuGet_Versioning
+    NuGet_Client_NuGet_LibraryModel --&gt; NuGet_Client_NuGet_Common
+    NuGet_Client_NuGet_LibraryModel --&gt; NuGet_Client_NuGet_Versioning
+    NuGet_Client_Microsoft_Build_NuGetSdkResolver --&gt; NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks_Pack --&gt; NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks --&gt; NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks --&gt; NuGet_Client_NuGet_Build_Tasks_Pack
+    NuGet_Client_NuGet_Build_Tasks --&gt; NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_Protocol --&gt; NuGet_Client_NuGet_Packaging
+    NuGet_Client_NuGet_Configuration --&gt; NuGet_Client_NuGet_Common
+    NuGet_Client_NuGet_Common --&gt; NuGet_Client_NuGet_Frameworks
+    ext_test -.-&gt; NuGet_Client_NuGet_Build_Tasks_Pack
+    ext_test -.-&gt; NuGet_Client_Microsoft_Build_NuGetSdkResolver
+    ext_test -.-&gt; NuGet_Client_NuGet_Packaging
+    ext_test -.-&gt; NuGet_Client_NuGet_Build_Tasks
+    ext_test -.-&gt; NuGet_Client_NuGet_MSSigning_Extensions
+    ext_test -.-&gt; NuGet_Client_NuGet_Frameworks
+    ext_test -.-&gt; NuGet_Client_NuGet_Common
+    ext_test -.-&gt; NuGet_Client_NuGet_PackageManagement
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio_Common
+    ext_test -.-&gt; NuGet_Client_NuGet_PackageManagement_VisualStudio
+    ext_test -.-&gt; NuGet_Client_NuGet_DependencyResolver_Core
+    ext_test -.-&gt; NuGet_Client_NuGet_ProjectModel
+    ext_test -.-&gt; NuGet_Client_NuGet_Commands
+    ext_test -.-&gt; NuGet_Client_NuGet_Credentials
+    ext_test -.-&gt; NuGet_Client_NuGet_LibraryModel
+    ext_test -.-&gt; NuGet_Client_NuGet_Versioning
+    ext_test -.-&gt; NuGet_Client_NuGet_Resolver
+    ext_test -.-&gt; NuGet_Client_NuGet_Protocol
+    ext_test -.-&gt; NuGet_Client_NuGet_Configuration
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio
+    ext_test -.-&gt; NuGet_Client_NuGet_SolutionRestoreManager
+    ext_test -.-&gt; NuGet_Client_NuGet_PackageManagement_UI
+    ext_test -.-&gt; NuGet_Client_NuGet_Indexing
+    ext_test -.-&gt; NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio_Implementation
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio_Contracts
+    NuGet_Client_NuGet_MSSigning_Extensions -.-&gt; ext_application
+    ext_tool -.-&gt; NuGet_Client_Microsoft_Build_NuGetSdkResolver
+    ext_tool -.-&gt; NuGet_Client_NuGet_Build_Tasks
+    ext_tool -.-&gt; NuGet_Client_NuGet_Common
+    ext_tool -.-&gt; NuGet_Client_NuGet_Configuration
+    ext_tool -.-&gt; NuGet_Client_NuGet_DependencyResolver_Core
+    ext_tool -.-&gt; NuGet_Client_NuGet_Frameworks
+    ext_tool -.-&gt; NuGet_Client_NuGet_LibraryModel
+    ext_tool -.-&gt; NuGet_Client_NuGet_PackageManagement
+    ext_tool -.-&gt; NuGet_Client_NuGet_Packaging
+    ext_tool -.-&gt; NuGet_Client_NuGet_ProjectModel
+    ext_tool -.-&gt; NuGet_Client_NuGet_Protocol
+    ext_tool -.-&gt; NuGet_Client_NuGet_Resolver
+    ext_tool -.-&gt; NuGet_Client_NuGet_Versioning
+    ext_tool -.-&gt; NuGet_Client_NuGet_Indexing
+    ext_tool -.-&gt; NuGet_Client_NuGet_Commands
+    ext_tool -.-&gt; NuGet_Client_NuGet_Credentials
+    ext_tool -.-&gt; NuGet_Client_NuGet_SolutionRestoreManager
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio_Contracts
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio_Implementation
+    ext_tool -.-&gt; NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets
+    ext_tool -.-&gt; NuGet_Client_NuGet_PackageManagement_UI
+    ext_tool -.-&gt; NuGet_Client_NuGet_PackageManagement_VisualStudio
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio_Interop
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio_Common
+    ext_tool -.-&gt; NuGet_Client_NuGet_VisualStudio
+    ext_application -.-&gt; NuGet_Client_NuGet_PackageManagement
+    ext_application -.-&gt; NuGet_Client_NuGet_Build_Tasks
+    NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets -.-&gt; ext_tool
+    ext_application -.-&gt; NuGet_Client_NuGet_Commands
+    ext_application -.-&gt; NuGet_Client_NuGet_Protocol
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_tool">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (5)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_tool">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph tool[&quot;Tool&quot;]
+        NuGet_Client_NuGet_VisualStudio_Client[&quot;NuGet.VisualStudio.Client&quot;]
+        NuGet_Client_NuGet_Console[&quot;NuGet.Console&quot;]
+        NuGet_Client_NuGet_Tools[&quot;NuGet.Tools&quot;]
+        NuGet_Client_NuGet_Build_Tasks_Console[&quot;NuGet.Build.Tasks.Console&quot;]
+        NuGet_Client_Tools[&quot;Tools&quot;]
+    end
+    ext_test([&quot;Test (9)&quot;])
+    ext_library([&quot;Library (26)&quot;])
+    NuGet_Client_NuGet_VisualStudio_Client --&gt; NuGet_Client_NuGet_Build_Tasks_Console
+    NuGet_Client_NuGet_VisualStudio_Client --&gt; NuGet_Client_NuGet_Tools
+    NuGet_Client_NuGet_VisualStudio_Client --&gt; NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_Tools --&gt; NuGet_Client_NuGet_Console
+    ext_test -.-&gt; NuGet_Client_NuGet_Build_Tasks_Console
+    ext_test -.-&gt; NuGet_Client_NuGet_Tools
+    ext_test -.-&gt; NuGet_Client_NuGet_VisualStudio_Client
+    ext_test -.-&gt; NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_VisualStudio_Client -.-&gt; ext_library
+    NuGet_Client_NuGet_Console -.-&gt; ext_library
+    NuGet_Client_NuGet_Tools -.-&gt; ext_library
+    ext_library -.-&gt; NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_Build_Tasks_Console -.-&gt; ext_library
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_application">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (4)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_application">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph application[&quot;Application&quot;]
+        NuGet_Client_NuGet_CommandLine[&quot;NuGet.CommandLine&quot;]
+        NuGet_Client_NuGet_CommandLine_XPlat[&quot;NuGet.CommandLine.XPlat&quot;]
+        NuGet_Client_ensure_nupkg_dependencies_on_source[&quot;ensure-nupkg-dependencies-on-source&quot;]
+        NuGet_Client_ship_public_apis[&quot;ship-public-apis&quot;]
+    end
+    ext_test([&quot;Test (5)&quot;])
+    ext_library([&quot;Library (5)&quot;])
+    ext_test -.-&gt; NuGet_Client_NuGet_CommandLine_XPlat
+    ext_test -.-&gt; NuGet_Client_NuGet_CommandLine
+    ext_library -.-&gt; NuGet_Client_NuGet_CommandLine
+    NuGet_Client_NuGet_CommandLine -.-&gt; ext_library
+    NuGet_Client_NuGet_CommandLine_XPlat -.-&gt; ext_library
+    NuGet_Client_ensure_nupkg_dependencies_on_source -.-&gt; ext_library
+        </pre>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-datasources">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FileStorage</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>210</td>
+              <td>src, test</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>150</td>
+              <td>src, test</td>
+            </tr>
+            <tr>
+              <td><strong>Repository</strong></td>
+              <td><span class="tag tag-config">Pattern</span></td>
+              <td>47</td>
+              <td>src, test</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.New</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>29</td>
+              <td>src, test</td>
+            </tr>
+            <tr>
+              <td><strong>IMessageAdapter</strong></td>
+              <td><span class="tag tag-config">Connector</span></td>
+              <td>11</td>
+              <td>src, test</td>
+            </tr>
+            <tr>
+              <td><strong>SqlClient</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>6</td>
+              <td>test</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-connstrings">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Connection Strings</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Config File</th><th>Repo</th><th>Connection Name</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">test/EndToEnd/ProjectTemplates/WebApplicationProject40.zip/Web.config</td>
+              <td>NuGet.Client</td>
+              <td>ApplicationServices</td>
+              <td class="mono">data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirector</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-allprojects">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="table-wrap">
+        <table id="projectsTable">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Repo</th>
+              <th>Category</th>
+              <th>Project Refs</th>
+              <th>NuGet Deps</th>
+              <th>Path</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
+</footer>
+
+<script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
+(function () {
+  'use strict';
+
+  var categoryClass = {
+    'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
+    'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
+    'connector': 'tag-connector', 'desktopapp': 'tag-desktopapp'
+  };
+
+  function tagHTML(category) {
+    var lower = (category || '').toLowerCase();
+    var cls = categoryClass[lower] || 'tag-service';
+    return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function parseCSV(text) {
+    var lines = text.trim().split('\n');
+    if (lines.length === 0) return [];
+    var headers = lines[0].split(',');
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {
+      var vals = lines[i].split(',');
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h.trim()] = (vals[idx] || '').trim(); });
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels  = document.querySelectorAll('.tab-panel');
+  var renderedTabs = {};
+
+  function activateTab(tabId) {
+    tabButtons.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === tabId); });
+    tabPanels.forEach(function (p)  { p.classList.toggle('active', p.id === 'panel-' + tabId); });
+    lazyRenderMermaid(tabId);
+  }
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
+  });
+
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_tool': 'mermaid-cat_tool', 'cat_application': 'mermaid-cat_application' };
+
+  function lazyRenderMermaid(tabId) {
+    var containerId = mermaidContainers[tabId];
+    if (!containerId || renderedTabs[tabId]) return;
+
+    function doRender() {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      var pre = container.querySelector('pre.mermaid');
+      if (!pre) return;
+      renderedTabs[tabId] = true;
+      var loading = container.querySelector('.loading');
+      pre.style.display = '';
+      if (loading) loading.style.display = 'none';
+      window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+        // Fix SVG sizing: use natural viewBox width instead of 100%
+        var svg = container.querySelector('svg');
+        if (svg) {
+          var vb = svg.getAttribute('viewBox');
+          if (vb) {
+            var parts = vb.split(' ');
+            var naturalWidth = parseFloat(parts[2]);
+            var naturalHeight = parseFloat(parts[3]);
+            svg.style.width = naturalWidth + 'px';
+            svg.style.height = naturalHeight + 'px';
+            svg.style.maxWidth = 'none';
+            svg.removeAttribute('width');
+          }
+        }
+      }).catch(function (err) {
+        console.error('Mermaid render error for ' + tabId + ':', err);
+        if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
+      });
+    }
+
+    if (window.mermaidAPI) { doRender(); }
+    else {
+      var interval = setInterval(function () {
+        if (window.mermaidAPI) { clearInterval(interval); doRender(); }
+      }, 150);
+    }
+  }
+
+  // Render first tab on load
+  var firstTab = document.querySelector('.tab-btn');
+  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+
+  // Load All Projects data
+  Promise.all([
+    fetch('project-meta.json').then(function (r) { return r.json(); }),
+    fetch('project-refs.csv').then(function (r) { return r.text(); }),
+    fetch('dependencies.csv').then(function (r) { return r.text(); })
+  ]).then(function (results) {
+    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
+    var refCounts = {}, depCounts = {};
+    refs.forEach(function (r) { refCounts[r.project] = (refCounts[r.project] || 0) + 1; });
+    deps.forEach(function (d) { depCounts[d.project] = (depCounts[d.project] || 0) + 1; });
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '';
+    meta.forEach(function (p) {
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(p.project) + '</strong></td>' +
+        '<td>' + escHtml(p.repo || '') + '</td>' +
+        '<td>' + tagHTML(p.category) + '</td>' +
+        '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
+        '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
+        '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
+      tbody.appendChild(tr);
+    });
+  }).catch(function (err) {
+    console.error('Failed to load project data:', err);
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+  });
+
+  // Search
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {
+    var query = searchInput.value.trim().toLowerCase();
+    if (query.length > 0) activateTab('allprojects');
+    var rows = document.querySelectorAll('#projectsBody tr[data-search]');
+    rows.forEach(function (row) {
+      var text = row.getAttribute('data-search') || '';
+      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

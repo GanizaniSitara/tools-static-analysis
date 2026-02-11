@@ -1,0 +1,807 @@
+[
+  {
+    "project": "UAPApp",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/UAPApp.zip/UAPApp.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/UAPApp.zip/UAPApp.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ClassLibrary1",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/PackageReferenceClassLibraryWithLockFile.zip/ClassLibrary1.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/PackageReferenceClassLibraryWithLockFile.zip/ClassLibrary1.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "WebApplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/WebApplicationProject40.zip/WebApplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/WebApplicationProject40.zip/WebApplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "BuildIntegratedClassLibrary",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/BuildIntegratedClassLibrary.zip/BuildIntegratedClassLibrary.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/BuildIntegratedClassLibrary.zip/BuildIntegratedClassLibrary.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "EmptyMvcApplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/EmptyMvcWebApplicationProjectTemplatev4.0.csaspx.zip/EmptyMvcApplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/EmptyMvcWebApplicationProjectTemplatev4.0.csaspx.zip/EmptyMvcApplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "WebApplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/WebApplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/WebApplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ConsoleApp",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/NetCoreConsoleApp.zip/ConsoleApp.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/NetCoreConsoleApp.zip/ConsoleApp.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ConsoleApp",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/NetCoreConsoleMultipleTargetFrameworksApp.zip/ConsoleApp.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/NetCoreConsoleMultipleTargetFrameworksApp.zip/ConsoleApp.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ClassLibrary47",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/UwpPackageRefClassLibrary.zip/ClassLibrary47.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/UwpPackageRefClassLibrary.zip/ClassLibrary47.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "WPFApplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/WPFApplication.zip/WPFApplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/WPFApplication.zip/WPFApplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ConsoleApp10",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/NetCoreConsoleAppWithCustomRestorePackagesPath.zip/ConsoleApp10.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/NetCoreConsoleAppWithCustomRestorePackagesPath.zip/ConsoleApp10.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ClassLibrary1",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/PackageReferenceClassLibrary.zip/ClassLibrary1.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/PackageReferenceClassLibrary.zip/ClassLibrary1.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ConsoleApp",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/NetCoreConsoleTargetFrameworksApp.zip/ConsoleApp.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/NetCoreConsoleTargetFrameworksApp.zip/ConsoleApp.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "WebApplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/EmptyWebApplicationProject40.zip/WebApplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/EmptyWebApplicationProject40.zip/WebApplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "classlibrary",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/ClassLibrary.zip/classlibrary.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/ClassLibrary.zip/classlibrary.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "consoleapplication",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/ConsoleApplication.zip/consoleapplication.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/ConsoleApplication.zip/consoleapplication.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "ClassLibrary6",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/UwpClassLibraryProjectJson.zip/ClassLibrary6.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/UwpClassLibraryProjectJson.zip/ClassLibrary6.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "BuildIntegratedProj",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/BuildIntegratedProj.zip/BuildIntegratedProj.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/BuildIntegratedProj.zip/BuildIntegratedProj.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "classlibrary",
+    "repo": "NuGet.Client",
+    "path": "test/EndToEnd/ProjectTemplates/ClassLibrary46.zip/classlibrary.csproj",
+    "globalPath": "test/EndToEnd/ProjectTemplates/ClassLibrary46.zip/classlibrary.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Dotnet.Integration.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/Dotnet.Integration.Test.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/Dotnet.Integration.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Packaging.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/NuGet.Packaging.FuncTest.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/NuGet.Packaging.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Protocol.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/NuGet.Protocol.FuncTest.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/NuGet.Protocol.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Msbuild.Integration.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/Msbuild.Integration.Test/Msbuild.Integration.Test.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/Msbuild.Integration.Test/Msbuild.Integration.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.XPlat.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/NuGet.XPlat.FuncTest.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/NuGet.XPlat.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Signing.CrossFramework.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/NuGet.Signing.CrossFramework.Test/NuGet.Signing.CrossFramework.Test.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/NuGet.Signing.CrossFramework.Test/NuGet.Signing.CrossFramework.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Commands.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.FuncTests/NuGet.Commands.FuncTest/NuGet.Commands.FuncTest.csproj",
+    "globalPath": "test/NuGet.Core.FuncTests/NuGet.Commands.FuncTest/NuGet.Commands.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.MSSigning.Extensions.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.FuncTests/NuGet.MSSigning.Extensions.FuncTest/NuGet.MSSigning.Extensions.FuncTest.csproj",
+    "globalPath": "test/NuGet.Clients.FuncTests/NuGet.MSSigning.Extensions.FuncTest/NuGet.MSSigning.Extensions.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.CommandLine.FuncTest",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/NuGet.CommandLine.FuncTest.csproj",
+    "globalPath": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/NuGet.CommandLine.FuncTest.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Build.Tasks.Pack.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Pack.Test/NuGet.Build.Tasks.Pack.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Pack.Test/NuGet.Build.Tasks.Pack.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Microsoft.Build.NuGetSdkResolver.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/Microsoft.Build.NuGetSdkResolver.Test/Microsoft.Build.NuGetSdkResolver.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/Microsoft.Build.NuGetSdkResolver.Test/Microsoft.Build.NuGetSdkResolver.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Frameworks.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Frameworks.Test/NuGet.Frameworks.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Frameworks.Test/NuGet.Frameworks.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.CommandLine.Xplat.Tests",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.CommandLine.Xplat.Tests/NuGet.CommandLine.Xplat.Tests.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.CommandLine.Xplat.Tests/NuGet.CommandLine.Xplat.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Common.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Common.Test/NuGet.Common.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Common.Test/NuGet.Common.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.PackageManagement.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.PackageManagement.Test/NuGet.PackageManagement.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.PackageManagement.Test/NuGet.PackageManagement.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.DependencyResolver.Core.Tests",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.DependencyResolver.Core.Tests/NuGet.DependencyResolver.Core.Tests.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.DependencyResolver.Core.Tests/NuGet.DependencyResolver.Core.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Build.Tasks.Console.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Console.Test/NuGet.Build.Tasks.Console.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Console.Test/NuGet.Build.Tasks.Console.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.ProjectModel.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.ProjectModel.Test/NuGet.ProjectModel.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.ProjectModel.Test/NuGet.ProjectModel.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Commands.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Commands.Test/NuGet.Commands.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Commands.Test/NuGet.Commands.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Credentials.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Credentials.Test/NuGet.Credentials.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Credentials.Test/NuGet.Credentials.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.LibraryModel.Tests",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.LibraryModel.Tests/NuGet.LibraryModel.Tests.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.LibraryModel.Tests/NuGet.LibraryModel.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Versioning.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Versioning.Test/NuGet.Versioning.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Versioning.Test/NuGet.Versioning.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Resolver.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Resolver.Test/NuGet.Resolver.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Resolver.Test/NuGet.Resolver.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Packaging.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Packaging.Test/NuGet.Packaging.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Packaging.Test/NuGet.Packaging.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Protocol.Tests",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/NuGet.Protocol.Tests.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/NuGet.Protocol.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Build.Tasks.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/NuGet.Build.Tasks.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/NuGet.Build.Tasks.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Configuration.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Configuration.Test/NuGet.Configuration.Test.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Configuration.Test/NuGet.Configuration.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Shared.Tests",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Core.Tests/NuGet.Shared.Tests/NuGet.Shared.Tests.csproj",
+    "globalPath": "test/NuGet.Core.Tests/NuGet.Shared.Tests/NuGet.Shared.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "GenerateTestPackages",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/GenerateTestPackages/GenerateTestPackages.csproj",
+    "globalPath": "test/TestExtensions/GenerateTestPackages/GenerateTestPackages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "GenerateLicenseList",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/GenerateLicenseList/GenerateLicenseList.csproj",
+    "globalPath": "test/TestExtensions/GenerateLicenseList/GenerateLicenseList.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "SampleCommandLineExtensions",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/SampleCommandLineExtensions/SampleCommandLineExtensions.csproj",
+    "globalPath": "test/TestExtensions/SampleCommandLineExtensions/SampleCommandLineExtensions.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "API.Test",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/API.Test/API.Test.csproj",
+    "globalPath": "test/TestExtensions/API.Test/API.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "TestableCredentialProvider",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/TestablePluginCredentialProvider/TestableCredentialProvider.csproj",
+    "globalPath": "test/TestExtensions/TestablePluginCredentialProvider/TestableCredentialProvider.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "TestablePlugin",
+    "repo": "NuGet.Client",
+    "path": "test/TestExtensions/TestablePlugin/TestablePlugin.csproj",
+    "globalPath": "test/TestExtensions/TestablePlugin/TestablePlugin.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.VisualStudio.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Test/NuGet.VisualStudio.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Test/NuGet.VisualStudio.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.SolutionRestoreManager.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.SolutionRestoreManager.Test/NuGet.SolutionRestoreManager.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.SolutionRestoreManager.Test/NuGet.SolutionRestoreManager.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Tools.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.Tools.Test/NuGet.Tools.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.Tools.Test/NuGet.Tools.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.PackageManagement.VisualStudio.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/NuGet.PackageManagement.VisualStudio.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/NuGet.PackageManagement.VisualStudio.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.CommandLine.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGet.CommandLine.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGet.CommandLine.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.MSSigning.Extensions.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.MSSigning.Extensions.Test/NuGet.MSSigning.Extensions.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.MSSigning.Extensions.Test/NuGet.MSSigning.Extensions.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Indexing.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.Indexing.Test/NuGet.Indexing.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.Indexing.Test/NuGet.Indexing.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGetConsole.Host.PowerShell.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGetConsole.Host.PowerShell.Test/NuGetConsole.Host.PowerShell.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGetConsole.Host.PowerShell.Test/NuGetConsole.Host.PowerShell.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.VisualStudio.Internal.Contracts.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Internal.Contracts.Test/NuGet.VisualStudio.Internal.Contracts.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Internal.Contracts.Test/NuGet.VisualStudio.Internal.Contracts.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.VisualStudio.Common.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/NuGet.VisualStudio.Common.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Common.Test/NuGet.VisualStudio.Common.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.VisualStudio.Implementation.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Implementation.Test/NuGet.VisualStudio.Implementation.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Implementation.Test/NuGet.VisualStudio.Implementation.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.PackageManagement.UI.Test",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/NuGet.PackageManagement.UI.Test.csproj",
+    "globalPath": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/NuGet.PackageManagement.UI.Test.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "project1",
+    "repo": "NuGet.Client",
+    "path": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/compiler/resources/project1.csproj",
+    "globalPath": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/compiler/resources/project1.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "project2",
+    "repo": "NuGet.Client",
+    "path": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/compiler/resources/project2.csproj",
+    "globalPath": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/compiler/resources/project2.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Microsoft.Internal.NuGet.Testing.SignedPackages",
+    "repo": "NuGet.Client",
+    "path": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/Microsoft.Internal.NuGet.Testing.SignedPackages.csproj",
+    "globalPath": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/Microsoft.Internal.NuGet.Testing.SignedPackages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "Test.Utility",
+    "repo": "NuGet.Client",
+    "path": "test/TestUtilities/Test.Utility/Test.Utility.csproj",
+    "globalPath": "test/TestUtilities/Test.Utility/Test.Utility.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "VisualStudio.Test.Utility",
+    "repo": "NuGet.Client",
+    "path": "test/TestUtilities/VisualStudio.Test.Utility/VisualStudio.Test.Utility.csproj",
+    "globalPath": "test/TestUtilities/VisualStudio.Test.Utility/VisualStudio.Test.Utility.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Tests.Apex.Daily",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGet.Tests.Apex.Daily.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGet.Tests.Apex.Daily.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Tests.Apex",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/NuGet.Tests.Apex.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/NuGet.Tests.Apex.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.Console.TestContract",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.Console.TestContract/NuGet.Console.TestContract.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.Console.TestContract/NuGet.Console.TestContract.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "PackageReferenceSdk",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.OptProf/Assets/PackageReferenceSdk/PackageReferenceSdk/PackageReferenceSdk.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.OptProf/Assets/PackageReferenceSdk/PackageReferenceSdk/PackageReferenceSdk.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.OptProf",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.OptProf/NuGet.OptProf.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.OptProf/NuGet.OptProf.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.PackageManagement.UI.TestContract",
+    "repo": "NuGet.Client",
+    "path": "test/NuGet.Tests.Apex/NuGet.PackageManagement.UI.TestContract/NuGet.PackageManagement.UI.TestContract.csproj",
+    "globalPath": "test/NuGet.Tests.Apex/NuGet.PackageManagement.UI.TestContract/NuGet.PackageManagement.UI.TestContract.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "NuGet.MSSigning.Extensions",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.MSSigning.Extensions/NuGet.MSSigning.Extensions.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.MSSigning.Extensions/NuGet.MSSigning.Extensions.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.VisualStudio.Client",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Client/NuGet.VisualStudio.Client.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Client/NuGet.VisualStudio.Client.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "NuGet.Indexing",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.Indexing/NuGet.Indexing.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.Indexing/NuGet.Indexing.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.VisualStudio.Internal.Contracts",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Internal.Contracts/NuGet.VisualStudio.Internal.Contracts.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Internal.Contracts/NuGet.VisualStudio.Internal.Contracts.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.VisualStudio.Contracts",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Contracts/NuGet.VisualStudio.Contracts.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Contracts/NuGet.VisualStudio.Contracts.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.PackageManagement.VisualStudio",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/NuGet.PackageManagement.VisualStudio.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/NuGet.PackageManagement.VisualStudio.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.CommandLine",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.CommandLine/NuGet.CommandLine.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.CommandLine/NuGet.CommandLine.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "NuGet.SolutionRestoreManager",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.SolutionRestoreManager/NuGet.SolutionRestoreManager.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.SolutionRestoreManager/NuGet.SolutionRestoreManager.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.PackageManagement.UI",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.PackageManagement.UI/NuGet.PackageManagement.UI.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.PackageManagement.UI/NuGet.PackageManagement.UI.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Console",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.Console/NuGet.Console.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.Console/NuGet.Console.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "NuGet.VisualStudio",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio/NuGet.VisualStudio.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio/NuGet.VisualStudio.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.VisualStudio.Implementation",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Implementation/NuGet.VisualStudio.Implementation.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Implementation/NuGet.VisualStudio.Implementation.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Tools",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.Tools/NuGet.Tools.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.Tools/NuGet.Tools.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "NuGet.VisualStudio.Common",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Common/NuGet.VisualStudio.Common.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Common/NuGet.VisualStudio.Common.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.VisualStudio.Interop",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.VisualStudio.Interop/NuGet.VisualStudio.Interop.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.VisualStudio.Interop/NuGet.VisualStudio.Interop.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.PackageManagement.PowerShellCmdlets",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Clients/NuGet.PackageManagement.PowerShellCmdlets/NuGet.PackageManagement.PowerShellCmdlets.csproj",
+    "globalPath": "src/NuGet.Clients/NuGet.PackageManagement.PowerShellCmdlets/NuGet.PackageManagement.PowerShellCmdlets.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.PackageManagement",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.PackageManagement/NuGet.PackageManagement.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.PackageManagement/NuGet.PackageManagement.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.DependencyResolver.Core",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.DependencyResolver.Core/NuGet.DependencyResolver.Core.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.DependencyResolver.Core/NuGet.DependencyResolver.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Credentials",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Credentials/NuGet.Credentials.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Credentials/NuGet.Credentials.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Resolver",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Resolver/NuGet.Resolver.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Resolver/NuGet.Resolver.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Commands",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Commands/NuGet.Commands.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Commands/NuGet.Commands.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.ProjectModel",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.ProjectModel/NuGet.ProjectModel.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.ProjectModel/NuGet.ProjectModel.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Packaging",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Packaging/NuGet.Packaging.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Packaging/NuGet.Packaging.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Frameworks",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Frameworks/NuGet.Frameworks.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Frameworks/NuGet.Frameworks.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Build.Tasks.Console",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Build.Tasks.Console/NuGet.Build.Tasks.Console.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Build.Tasks.Console/NuGet.Build.Tasks.Console.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "NuGet.Versioning",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Versioning/NuGet.Versioning.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Versioning/NuGet.Versioning.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Localization",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Localization/NuGet.Localization.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Localization/NuGet.Localization.csproj",
+    "category": "Localization"
+  },
+  {
+    "project": "NuGet.CommandLine.XPlat",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.CommandLine.XPlat/NuGet.CommandLine.XPlat.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.CommandLine.XPlat/NuGet.CommandLine.XPlat.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "NuGet.LibraryModel",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.LibraryModel/NuGet.LibraryModel.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.LibraryModel/NuGet.LibraryModel.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "Microsoft.Build.NuGetSdkResolver",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/Microsoft.Build.NuGetSdkResolver/Microsoft.Build.NuGetSdkResolver.csproj",
+    "globalPath": "src/NuGet.Core/Microsoft.Build.NuGetSdkResolver/Microsoft.Build.NuGetSdkResolver.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Build.Tasks.Pack",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Build.Tasks.Pack/NuGet.Build.Tasks.Pack.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Build.Tasks.Pack/NuGet.Build.Tasks.Pack.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Build.Tasks",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Build.Tasks/NuGet.Build.Tasks.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Build.Tasks/NuGet.Build.Tasks.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Protocol",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Protocol/NuGet.Protocol.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Protocol/NuGet.Protocol.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Configuration",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Configuration/NuGet.Configuration.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Configuration/NuGet.Configuration.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "NuGet.Common",
+    "repo": "NuGet.Client",
+    "path": "src/NuGet.Core/NuGet.Common/NuGet.Common.csproj",
+    "globalPath": "src/NuGet.Core/NuGet.Common/NuGet.Common.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "Tools",
+    "repo": "NuGet.Client",
+    "path": "eng/common/internal/Tools.csproj",
+    "globalPath": "eng/common/internal/Tools.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "ensure-nupkg-dependencies-on-source",
+    "repo": "NuGet.Client",
+    "path": "tools-local/ensure-nupkg-dependencies-on-source/ensure-nupkg-dependencies-on-source.csproj",
+    "globalPath": "tools-local/ensure-nupkg-dependencies-on-source/ensure-nupkg-dependencies-on-source.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "doc.tasks",
+    "repo": "NuGet.Client",
+    "path": "tools-local/doc.tasks/doc.tasks.csproj",
+    "globalPath": "tools-local/doc.tasks/doc.tasks.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "ship-public-apis",
+    "repo": "NuGet.Client",
+    "path": "tools-local/ship-public-apis/ship-public-apis.csproj",
+    "globalPath": "tools-local/ship-public-apis/ship-public-apis.csproj",
+    "category": "Application"
+  }
+]

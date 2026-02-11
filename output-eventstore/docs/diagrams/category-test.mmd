@@ -1,0 +1,111 @@
+graph TD
+    subgraph test["Test"]
+        src_KurrentDB_Core_Tests["KurrentDB.Core.Tests"]
+        src_FakePlugin["FakePlugin"]
+        src_KurrentDB_Core_Testing["KurrentDB.Core.Testing"]
+        src_KurrentDB_Plugins_Tests["KurrentDB.Plugins.Tests"]
+        src_KurrentDB_Licensing_Tests["KurrentDB.Licensing.Tests"]
+        src_KurrentDB_Auth_UserCertificates_Tests["KurrentDB.Auth.UserCertificates.Tests"]
+        src_KurrentDB_Auth_Ldaps_Tests["KurrentDB.Auth.Ldaps.Tests"]
+        src_KurrentDB_Api_V2_Tests["KurrentDB.Api.V2.Tests"]
+        src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled_Tests["KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests"]
+        src_KurrentDB_Projections_Core_Tests["KurrentDB.Projections.Core.Tests"]
+        src_KurrentDB_Surge_Testing["KurrentDB.Surge.Testing"]
+        src_KurrentDB_Common_Tests["KurrentDB.Common.Tests"]
+        src_KurrentDB_Security_EncryptionAtRest_Tests["KurrentDB.Security.EncryptionAtRest.Tests"]
+        src_KurrentDB_Core_Testing_NUnit["KurrentDB.Core.Testing.NUnit"]
+        src_KurrentDB_Projections_Core_XUnit_Tests["KurrentDB.Projections.Core.XUnit.Tests"]
+        src_KurrentDB_Auth_StreamPolicyPlugin_Tests["KurrentDB.Auth.StreamPolicyPlugin.Tests"]
+        src_KurrentDB_Surge_Testing_Messages["KurrentDB.Surge.Testing.Messages"]
+        src_KurrentDB_Core_Testing_XUnit["KurrentDB.Core.Testing.XUnit"]
+        src_KurrentDB_SystemRuntime_Tests["KurrentDB.SystemRuntime.Tests"]
+        src_KurrentDB_AutoScavenge_Tests["KurrentDB.AutoScavenge.Tests"]
+        src_KurrentDB_Projections_Core_Javascript_Tests["KurrentDB.Projections.Core.Javascript.Tests"]
+        src_KurrentDB_SchemaRegistry_Tests["KurrentDB.SchemaRegistry.Tests"]
+        src_KurrentDB_SecondaryIndexing_LoadTesting["KurrentDB.SecondaryIndexing.LoadTesting"]
+        src_KurrentDB_Plugins_TestHelpers["KurrentDB.Plugins.TestHelpers"]
+        src_KurrentDB_BufferManagement_Tests["KurrentDB.BufferManagement.Tests"]
+        src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests["KurrentDB.Diagnostics.LogsEndpointPlugin.Tests"]
+        src_KurrentDB_LogV3_Tests["KurrentDB.LogV3.Tests"]
+        src_KurrentDB_SourceGenerators_Tests["KurrentDB.SourceGenerators.Tests"]
+        src_KurrentDB_TestClient["KurrentDB.TestClient"]
+        src_KurrentDB_Core_XUnit_Tests["KurrentDB.Core.XUnit.Tests"]
+        src_KurrentDB_Auth_OAuth_Tests["KurrentDB.Auth.OAuth.Tests"]
+        src_KurrentDB_Surge_Tests["KurrentDB.Surge.Tests"]
+        src_KurrentDB_Core_TUnit_Tests["KurrentDB.Core.TUnit.Tests"]
+        src_KurrentDB_Testing_ClusterVNodeApp["KurrentDB.Testing.ClusterVNodeApp"]
+        src_KurrentDB_SecondaryIndexing_Tests["KurrentDB.SecondaryIndexing.Tests"]
+        src_KurrentDB_Connectors_Tests["KurrentDB.Connectors.Tests"]
+        src_KurrentDB_Connectors_TestServer["KurrentDB.Connectors.TestServer"]
+        src_KurrentDB_Testing["KurrentDB.Testing"]
+        src_KurrentDB_OtlpExporterPlugin_Tests["KurrentDB.OtlpExporterPlugin.Tests"]
+        src_KurrentDB_TcpPlugin_Tests["KurrentDB.TcpPlugin.Tests"]
+    end
+    ext_library(["Library (18)"])
+    ext_application(["Application (7)"])
+    ext_webapp(["Webapp (2)"])
+    ext_tool(["Tool (1)"])
+    ext_connector(["Connector (1)"])
+    src_KurrentDB_Core_Tests --> src_KurrentDB_Core_Testing_NUnit
+    src_KurrentDB_Api_V2_Tests --> src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_Api_V2_Tests --> src_KurrentDB_Testing
+    src_KurrentDB_Projections_Core_Tests --> src_KurrentDB_Core_Testing_NUnit
+    src_KurrentDB_Core_Testing_NUnit --> src_KurrentDB_Core_Testing
+    src_KurrentDB_Projections_Core_XUnit_Tests --> src_KurrentDB_Core_Testing
+    src_KurrentDB_Auth_StreamPolicyPlugin_Tests --> src_KurrentDB_Core_Testing
+    src_KurrentDB_Core_Testing_XUnit --> src_KurrentDB_Core_Testing
+    src_KurrentDB_SchemaRegistry_Tests --> src_KurrentDB_Surge_Testing_Messages
+    src_KurrentDB_SchemaRegistry_Tests --> src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_SchemaRegistry_Tests --> src_KurrentDB_Testing
+    src_KurrentDB_SecondaryIndexing_LoadTesting --> src_KurrentDB_Connectors_TestServer
+    src_KurrentDB_SecondaryIndexing_LoadTesting --> src_KurrentDB_SecondaryIndexing_Tests
+    src_KurrentDB_Core_XUnit_Tests --> src_KurrentDB_Core_Testing_XUnit
+    src_KurrentDB_Surge_Tests --> src_KurrentDB_Surge_Testing
+    src_KurrentDB_Core_TUnit_Tests --> src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_Core_TUnit_Tests --> src_KurrentDB_Testing
+    src_KurrentDB_Testing_ClusterVNodeApp --> src_KurrentDB_Testing
+    src_KurrentDB_SecondaryIndexing_Tests --> src_KurrentDB_Core_Testing_XUnit
+    src_KurrentDB_SecondaryIndexing_Tests --> src_KurrentDB_Surge_Testing
+    src_KurrentDB_Connectors_Tests --> src_KurrentDB_Surge_Testing
+    src_KurrentDB_TcpPlugin_Tests --> src_KurrentDB_Core_Testing
+    src_KurrentDB_Core_Testing -.-> ext_library
+    src_KurrentDB_Plugins_Tests -.-> ext_library
+    src_KurrentDB_Licensing_Tests -.-> ext_library
+    src_KurrentDB_Auth_UserCertificates_Tests -.-> ext_application
+    src_KurrentDB_Auth_UserCertificates_Tests -.-> ext_library
+    src_KurrentDB_Auth_Ldaps_Tests -.-> ext_application
+    src_KurrentDB_Api_V2_Tests -.-> ext_webapp
+    src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled_Tests -.-> ext_application
+    src_KurrentDB_Projections_Core_Tests -.-> ext_library
+    src_KurrentDB_Surge_Testing -.-> ext_webapp
+    src_KurrentDB_Common_Tests -.-> ext_library
+    src_KurrentDB_Security_EncryptionAtRest_Tests -.-> ext_library
+    src_KurrentDB_Security_EncryptionAtRest_Tests -.-> ext_application
+    src_KurrentDB_Projections_Core_XUnit_Tests -.-> ext_library
+    src_KurrentDB_Auth_StreamPolicyPlugin_Tests -.-> ext_library
+    ext_application -.-> src_KurrentDB_Projections_Core_Tests
+    src_KurrentDB_SystemRuntime_Tests -.-> ext_library
+    src_KurrentDB_AutoScavenge_Tests -.-> ext_library
+    ext_library -.-> src_KurrentDB_Api_V2_Tests
+    ext_library -.-> src_KurrentDB_Core_TUnit_Tests
+    src_KurrentDB_Projections_Core_Javascript_Tests -.-> ext_library
+    src_KurrentDB_SchemaRegistry_Tests -.-> ext_webapp
+    src_KurrentDB_SchemaRegistry_Tests -.-> ext_library
+    src_KurrentDB_SecondaryIndexing_LoadTesting -.-> ext_library
+    src_KurrentDB_Plugins_TestHelpers -.-> ext_library
+    src_KurrentDB_BufferManagement_Tests -.-> ext_library
+    src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests -.-> ext_library
+    src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests -.-> ext_application
+    src_KurrentDB_LogV3_Tests -.-> ext_library
+    src_KurrentDB_SourceGenerators_Tests -.-> ext_tool
+    src_KurrentDB_TestClient -.-> ext_library
+    src_KurrentDB_Core_XUnit_Tests -.-> ext_library
+    src_KurrentDB_Core_XUnit_Tests -.-> ext_tool
+    src_KurrentDB_Auth_OAuth_Tests -.-> ext_application
+    src_KurrentDB_Testing_ClusterVNodeApp -.-> ext_webapp
+    src_KurrentDB_SecondaryIndexing_Tests -.-> ext_library
+    src_KurrentDB_Connectors_Tests -.-> ext_webapp
+    src_KurrentDB_Connectors_Tests -.-> ext_connector
+    src_KurrentDB_Connectors_TestServer -.-> ext_connector
+    src_KurrentDB_OtlpExporterPlugin_Tests -.-> ext_library
+    src_KurrentDB_TcpPlugin_Tests -.-> ext_library

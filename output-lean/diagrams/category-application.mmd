@@ -1,0 +1,24 @@
+graph TD
+    subgraph application["Application"]
+        Lean_QuantConnect_Optimizer_Launcher["QuantConnect.Optimizer.Launcher"]
+        Lean_QuantConnect_DownloaderDataProvider_Launcher["QuantConnect.DownloaderDataProvider.Launcher"]
+        Lean_QuantConnect_Lean_Launcher["QuantConnect.Lean.Launcher"]
+        Lean_QuantConnect_Report["QuantConnect.Report"]
+    end
+    ext_library(["Library (14)"])
+    ext_test(["Test (1)"])
+    ext_webapp(["Webapp (1)"])
+    ext_tool(["Tool (1)"])
+    Lean_QuantConnect_Lean_Launcher --> Lean_QuantConnect_DownloaderDataProvider_Launcher
+    Lean_QuantConnect_Lean_Launcher --> Lean_QuantConnect_Optimizer_Launcher
+    Lean_QuantConnect_Optimizer_Launcher -.-> ext_library
+    Lean_QuantConnect_DownloaderDataProvider_Launcher -.-> ext_library
+    ext_test -.-> Lean_QuantConnect_DownloaderDataProvider_Launcher
+    ext_test -.-> Lean_QuantConnect_Lean_Launcher
+    ext_test -.-> Lean_QuantConnect_Report
+    Lean_QuantConnect_Lean_Launcher -.-> ext_library
+    Lean_QuantConnect_Lean_Launcher -.-> ext_webapp
+    Lean_QuantConnect_Lean_Launcher -.-> ext_tool
+    Lean_QuantConnect_Report -.-> ext_library
+    Lean_QuantConnect_Report -.-> ext_webapp
+    Lean_QuantConnect_Report -.-> ext_tool

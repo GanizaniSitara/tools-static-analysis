@@ -1,0 +1,11 @@
+graph TD
+    subgraph webapp["Webapp"]
+        Lean_QuantConnect_Api["QuantConnect.Api"]
+    end
+    ext_library(["Library (6)"])
+    ext_test(["Test (1)"])
+    ext_application(["Application (2)"])
+    Lean_QuantConnect_Api -.-> ext_library
+    ext_library -.-> Lean_QuantConnect_Api
+    ext_test -.-> Lean_QuantConnect_Api
+    ext_application -.-> Lean_QuantConnect_Api

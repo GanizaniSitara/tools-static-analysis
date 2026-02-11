@@ -1,0 +1,13 @@
+graph TD
+    subgraph tool["Tool"]
+        akka_net_Akka_Cluster_Tools["Akka.Cluster.Tools"]
+        akka_net_TimeClient["TimeClient"]
+        akka_net_ChatClient["ChatClient"]
+    end
+    ext_test(["Test (5)"])
+    ext_library(["Library (7)"])
+    ext_test -.-> akka_net_Akka_Cluster_Tools
+    akka_net_Akka_Cluster_Tools -.-> ext_library
+    ext_library -.-> akka_net_Akka_Cluster_Tools
+    akka_net_TimeClient -.-> ext_library
+    akka_net_ChatClient -.-> ext_library

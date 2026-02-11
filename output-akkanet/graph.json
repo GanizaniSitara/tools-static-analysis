@@ -1,0 +1,4278 @@
+{
+  "nodes": [
+    {
+      "id": "akka.net/SerializationBenchmarks",
+      "project": "SerializationBenchmarks",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/SerializationBenchmarks/SerializationBenchmarks.csproj",
+      "globalPath": "src/benchmark/SerializationBenchmarks/SerializationBenchmarks.csproj",
+      "description": "Application: SerializationBenchmarks (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Benchmarks",
+      "project": "Akka.Benchmarks",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/Akka.Benchmarks/Akka.Benchmarks.csproj",
+      "globalPath": "src/benchmark/Akka.Benchmarks/Akka.Benchmarks.csproj",
+      "description": "Application: Akka.Benchmarks (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Benchmarks",
+      "project": "Akka.Cluster.Benchmarks",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/Akka.Cluster.Benchmarks/Akka.Cluster.Benchmarks.csproj",
+      "globalPath": "src/benchmark/Akka.Cluster.Benchmarks/Akka.Cluster.Benchmarks.csproj",
+      "description": "Application: Akka.Cluster.Benchmarks (akka.net)"
+    },
+    {
+      "id": "akka.net/RemotePingPong",
+      "project": "RemotePingPong",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/RemotePingPong/RemotePingPong.csproj",
+      "globalPath": "src/benchmark/RemotePingPong/RemotePingPong.csproj",
+      "description": "Application: RemotePingPong (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Cpu.Benchmark",
+      "project": "Akka.Cluster.Cpu.Benchmark",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/Akka.Cluster.Cpu.Benchmark/Akka.Cluster.Cpu.Benchmark.csproj",
+      "globalPath": "src/benchmark/Akka.Cluster.Cpu.Benchmark/Akka.Cluster.Cpu.Benchmark.csproj",
+      "description": "Application: Akka.Cluster.Cpu.Benchmark (akka.net)"
+    },
+    {
+      "id": "akka.net/PingPong",
+      "project": "PingPong",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/PingPong/PingPong.csproj",
+      "globalPath": "src/benchmark/PingPong/PingPong.csproj",
+      "description": "Application: PingPong (akka.net)"
+    },
+    {
+      "id": "akka.net/SpawnBenchmark",
+      "project": "SpawnBenchmark",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/benchmark/SpawnBenchmark/SpawnBenchmark.csproj",
+      "globalPath": "src/benchmark/SpawnBenchmark/SpawnBenchmark.csproj",
+      "description": "Application: SpawnBenchmark (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DependencyInjection.Tests",
+      "project": "Akka.DependencyInjection.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/dependencyinjection/Akka.DependencyInjection.Tests/Akka.DependencyInjection.Tests.csproj",
+      "globalPath": "src/contrib/dependencyinjection/Akka.DependencyInjection.Tests/Akka.DependencyInjection.Tests.csproj",
+      "description": "Test: Akka.DependencyInjection.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DependencyInjection",
+      "project": "Akka.DependencyInjection",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/dependencyinjection/Akka.DependencyInjection/Akka.DependencyInjection.csproj",
+      "globalPath": "src/contrib/dependencyinjection/Akka.DependencyInjection/Akka.DependencyInjection.csproj",
+      "description": "Library: Akka.DependencyInjection (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit.Xunit.Tests",
+      "project": "Akka.TestKit.Xunit.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/testkits/Akka.TestKit.Xunit.Tests/Akka.TestKit.Xunit.Tests.csproj",
+      "globalPath": "src/contrib/testkits/Akka.TestKit.Xunit.Tests/Akka.TestKit.Xunit.Tests.csproj",
+      "description": "Test: Akka.TestKit.Xunit.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit.Xunit2",
+      "project": "Akka.TestKit.Xunit2",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/testkits/Akka.TestKit.Xunit2/Akka.TestKit.Xunit2.csproj",
+      "globalPath": "src/contrib/testkits/Akka.TestKit.Xunit2/Akka.TestKit.Xunit2.csproj",
+      "description": "Test: Akka.TestKit.Xunit2 (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit.Xunit2.Tests",
+      "project": "Akka.TestKit.Xunit2.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/testkits/Akka.TestKit.Xunit2.Tests/Akka.TestKit.Xunit2.Tests.csproj",
+      "globalPath": "src/contrib/testkits/Akka.TestKit.Xunit2.Tests/Akka.TestKit.Xunit2.Tests.csproj",
+      "description": "Test: Akka.TestKit.Xunit2.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit.Xunit",
+      "project": "Akka.TestKit.Xunit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/testkits/Akka.TestKit.Xunit/Akka.TestKit.Xunit.csproj",
+      "globalPath": "src/contrib/testkits/Akka.TestKit.Xunit/Akka.TestKit.Xunit.csproj",
+      "description": "Test: Akka.TestKit.Xunit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "project": "Akka.Cluster.Tools.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Tools.Tests.MultiNode/Akka.Cluster.Tools.Tests.MultiNode.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Tools.Tests.MultiNode/Akka.Cluster.Tools.Tests.MultiNode.csproj",
+      "description": "Test: Akka.Cluster.Tools.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Sharding.Tests",
+      "project": "Akka.Cluster.Sharding.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/Akka.Cluster.Sharding.Tests.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/Akka.Cluster.Sharding.Tests.csproj",
+      "description": "Test: Akka.Cluster.Sharding.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DistributedData.LightningDB",
+      "project": "Akka.DistributedData.LightningDB",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/cluster/Akka.DistributedData.LightningDB/Akka.DistributedData.LightningDB.csproj",
+      "globalPath": "src/contrib/cluster/Akka.DistributedData.LightningDB/Akka.DistributedData.LightningDB.csproj",
+      "description": "Library: Akka.DistributedData.LightningDB (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Metrics",
+      "project": "Akka.Cluster.Metrics",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/cluster/Akka.Cluster.Metrics/Akka.Cluster.Metrics.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Metrics/Akka.Cluster.Metrics.csproj",
+      "description": "Library: Akka.Cluster.Metrics (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "project": "Akka.DistributedData.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.DistributedData.Tests.MultiNode/Akka.DistributedData.Tests.MultiNode.csproj",
+      "globalPath": "src/contrib/cluster/Akka.DistributedData.Tests.MultiNode/Akka.DistributedData.Tests.MultiNode.csproj",
+      "description": "Test: Akka.DistributedData.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DistributedData",
+      "project": "Akka.DistributedData",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/cluster/Akka.DistributedData/Akka.DistributedData.csproj",
+      "globalPath": "src/contrib/cluster/Akka.DistributedData/Akka.DistributedData.csproj",
+      "description": "Library: Akka.DistributedData (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Metrics.Tests",
+      "project": "Akka.Cluster.Metrics.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Metrics.Tests/Akka.Cluster.Metrics.Tests.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Metrics.Tests/Akka.Cluster.Metrics.Tests.csproj",
+      "description": "Test: Akka.Cluster.Metrics.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tools.Tests",
+      "project": "Akka.Cluster.Tools.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Tools.Tests/Akka.Cluster.Tools.Tests.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Tools.Tests/Akka.Cluster.Tools.Tests.csproj",
+      "description": "Test: Akka.Cluster.Tools.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "project": "Akka.Cluster.Sharding.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Sharding.Tests.MultiNode/Akka.Cluster.Sharding.Tests.MultiNode.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Sharding.Tests.MultiNode/Akka.Cluster.Sharding.Tests.MultiNode.csproj",
+      "description": "Test: Akka.Cluster.Sharding.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.DistributedData.Tests",
+      "project": "Akka.DistributedData.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.DistributedData.Tests/Akka.DistributedData.Tests.csproj",
+      "globalPath": "src/contrib/cluster/Akka.DistributedData.Tests/Akka.DistributedData.Tests.csproj",
+      "description": "Test: Akka.DistributedData.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "project": "Akka.Cluster.Metrics.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/cluster/Akka.Cluster.Metrics.Tests.MultiNode/Akka.Cluster.Metrics.Tests.MultiNode.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Metrics.Tests.MultiNode/Akka.Cluster.Metrics.Tests.MultiNode.csproj",
+      "description": "Test: Akka.Cluster.Metrics.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tools",
+      "project": "Akka.Cluster.Tools",
+      "repo": "akka.net",
+      "type": "tool",
+      "path": "src/contrib/cluster/Akka.Cluster.Tools/Akka.Cluster.Tools.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Tools/Akka.Cluster.Tools.csproj",
+      "description": "Tool: Akka.Cluster.Tools (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Sharding",
+      "project": "Akka.Cluster.Sharding",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/cluster/Akka.Cluster.Sharding/Akka.Cluster.Sharding.csproj",
+      "globalPath": "src/contrib/cluster/Akka.Cluster.Sharding/Akka.Cluster.Sharding.csproj",
+      "description": "Library: Akka.Cluster.Sharding (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Query.InMemory",
+      "project": "Akka.Persistence.Query.InMemory",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/persistence/Akka.Persistence.Query.InMemory/Akka.Persistence.Query.InMemory.csproj",
+      "globalPath": "src/contrib/persistence/Akka.Persistence.Query.InMemory/Akka.Persistence.Query.InMemory.csproj",
+      "description": "Library: Akka.Persistence.Query.InMemory (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "project": "Akka.Persistence.Query.InMemory.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/persistence/Akka.Persistence.Query.InMemory.Tests/Akka.Persistence.Query.InMemory.Tests.csproj",
+      "globalPath": "src/contrib/persistence/Akka.Persistence.Query.InMemory.Tests/Akka.Persistence.Query.InMemory.Tests.csproj",
+      "description": "Test: Akka.Persistence.Query.InMemory.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Serialization.TestKit",
+      "project": "Akka.Serialization.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/serializers/Akka.Serialization.TestKit/Akka.Serialization.TestKit.csproj",
+      "globalPath": "src/contrib/serializers/Akka.Serialization.TestKit/Akka.Serialization.TestKit.csproj",
+      "description": "Test: Akka.Serialization.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Serialization.Hyperion",
+      "project": "Akka.Serialization.Hyperion",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/contrib/serializers/Akka.Serialization.Hyperion/Akka.Serialization.Hyperion.csproj",
+      "globalPath": "src/contrib/serializers/Akka.Serialization.Hyperion/Akka.Serialization.Hyperion.csproj",
+      "description": "Library: Akka.Serialization.Hyperion (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "project": "Akka.Serialization.Hyperion.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/contrib/serializers/Akka.Serialization.Hyperion.Tests/Akka.Serialization.Hyperion.Tests.csproj",
+      "globalPath": "src/contrib/serializers/Akka.Serialization.Hyperion.Tests/Akka.Serialization.Hyperion.Tests.csproj",
+      "description": "Test: Akka.Serialization.Hyperion.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.AspNetCore",
+      "project": "Akka.AspNetCore",
+      "repo": "akka.net",
+      "type": "webapp",
+      "path": "src/examples/AspNetCore/Akka.AspNetCore/Akka.AspNetCore.csproj",
+      "globalPath": "src/examples/AspNetCore/Akka.AspNetCore/Akka.AspNetCore.csproj",
+      "description": "WebApp: Akka.AspNetCore (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Akka.AspNetCore",
+      "project": "Samples.Akka.AspNetCore",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/AspNetCore/Samples.Akka.AspNetCore/Samples.Akka.AspNetCore.csproj",
+      "globalPath": "src/examples/AspNetCore/Samples.Akka.AspNetCore/Samples.Akka.AspNetCore.csproj",
+      "description": "Sample: Samples.Akka.AspNetCore (akka.net)"
+    },
+    {
+      "id": "akka.net/TimeClient",
+      "project": "TimeClient",
+      "repo": "akka.net",
+      "type": "tool",
+      "path": "src/examples/TimeServer/TimeClient/TimeClient.csproj",
+      "globalPath": "src/examples/TimeServer/TimeClient/TimeClient.csproj",
+      "description": "Tool: TimeClient (akka.net)"
+    },
+    {
+      "id": "akka.net/TimeServer",
+      "project": "TimeServer",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/TimeServer/TimeServer/TimeServer.csproj",
+      "globalPath": "src/examples/TimeServer/TimeServer/TimeServer.csproj",
+      "description": "Application: TimeServer (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Custom",
+      "project": "Akka.Persistence.Custom",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/examples/Akka.Persistence.Custom/Akka.Persistence.Custom.csproj",
+      "globalPath": "src/examples/Akka.Persistence.Custom/Akka.Persistence.Custom.csproj",
+      "description": "Library: Akka.Persistence.Custom (akka.net)"
+    },
+    {
+      "id": "akka.net/System1",
+      "project": "System1",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/RemoteDeploy/System1/System1.csproj",
+      "globalPath": "src/examples/RemoteDeploy/System1/System1.csproj",
+      "description": "Application: System1 (akka.net)"
+    },
+    {
+      "id": "akka.net/System2",
+      "project": "System2",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/RemoteDeploy/System2/System2.csproj",
+      "globalPath": "src/examples/RemoteDeploy/System2/System2.csproj",
+      "description": "Application: System2 (akka.net)"
+    },
+    {
+      "id": "akka.net/Shared",
+      "project": "Shared",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/RemoteDeploy/Shared/Shared.csproj",
+      "globalPath": "src/examples/RemoteDeploy/Shared/Shared.csproj",
+      "description": "Application: Shared (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Custom.Tests",
+      "project": "Akka.Persistence.Custom.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/examples/Akka.Persistence.Custom.Tests/Akka.Persistence.Custom.Tests.csproj",
+      "globalPath": "src/examples/Akka.Persistence.Custom.Tests/Akka.Persistence.Custom.Tests.csproj",
+      "description": "Test: Akka.Persistence.Custom.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.Transformation",
+      "project": "Samples.Cluster.Transformation",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Roles/Samples.Cluster.Transformation/Samples.Cluster.Transformation.csproj",
+      "globalPath": "src/examples/Cluster/Roles/Samples.Cluster.Transformation/Samples.Cluster.Transformation.csproj",
+      "description": "Sample: Samples.Cluster.Transformation (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.Metrics.Common",
+      "project": "Samples.Cluster.Metrics.Common",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Metrics/Samples.Cluster.Metrics.Common/Samples.Cluster.Metrics.Common.csproj",
+      "globalPath": "src/examples/Cluster/Metrics/Samples.Cluster.Metrics.Common/Samples.Cluster.Metrics.Common.csproj",
+      "description": "Sample: Samples.Cluster.Metrics.Common (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.Metrics",
+      "project": "Samples.Cluster.Metrics",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Metrics/Samples.Cluster.Metrics/Samples.Cluster.Metrics.csproj",
+      "globalPath": "src/examples/Cluster/Metrics/Samples.Cluster.Metrics/Samples.Cluster.Metrics.csproj",
+      "description": "Sample: Samples.Cluster.Metrics (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.AdaptiveGroup",
+      "project": "Samples.Cluster.AdaptiveGroup",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Metrics/Samples.Cluster.AdaptiveGroup/Samples.Cluster.AdaptiveGroup.csproj",
+      "globalPath": "src/examples/Cluster/Metrics/Samples.Cluster.AdaptiveGroup/Samples.Cluster.AdaptiveGroup.csproj",
+      "description": "Sample: Samples.Cluster.AdaptiveGroup (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.ConsistentHashRouting",
+      "project": "Samples.Cluster.ConsistentHashRouting",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Routing/Samples.Cluster.ConsistentHashRouting/Samples.Cluster.ConsistentHashRouting.csproj",
+      "globalPath": "src/examples/Cluster/Routing/Samples.Cluster.ConsistentHashRouting/Samples.Cluster.ConsistentHashRouting.csproj",
+      "description": "Sample: Samples.Cluster.ConsistentHashRouting (akka.net)"
+    },
+    {
+      "id": "akka.net/ClusterSharding.Node",
+      "project": "ClusterSharding.Node",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/Cluster/ClusterSharding/ClusterSharding.Node/ClusterSharding.Node.csproj",
+      "globalPath": "src/examples/Cluster/ClusterSharding/ClusterSharding.Node/ClusterSharding.Node.csproj",
+      "description": "Application: ClusterSharding.Node (akka.net)"
+    },
+    {
+      "id": "akka.net/ShoppingCart",
+      "project": "ShoppingCart",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/Cluster/ClusterSharding/ShoppingCart/ShoppingCart.csproj",
+      "globalPath": "src/examples/Cluster/ClusterSharding/ShoppingCart/ShoppingCart.csproj",
+      "description": "Application: ShoppingCart (akka.net)"
+    },
+    {
+      "id": "akka.net/ClusterToolsExample.Shared",
+      "project": "ClusterToolsExample.Shared",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Shared/ClusterToolsExample.Shared.csproj",
+      "globalPath": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Shared/ClusterToolsExample.Shared.csproj",
+      "description": "Sample: ClusterToolsExample.Shared (akka.net)"
+    },
+    {
+      "id": "akka.net/ClusterToolsExample.Seed",
+      "project": "ClusterToolsExample.Seed",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Seed/ClusterToolsExample.Seed.csproj",
+      "globalPath": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Seed/ClusterToolsExample.Seed.csproj",
+      "description": "Sample: ClusterToolsExample.Seed (akka.net)"
+    },
+    {
+      "id": "akka.net/ClusterToolsExample.Node",
+      "project": "ClusterToolsExample.Node",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Node/ClusterToolsExample.Node.csproj",
+      "globalPath": "src/examples/Cluster/ClusterTools/ClusterToolsExample.Node/ClusterToolsExample.Node.csproj",
+      "description": "Sample: ClusterToolsExample.Node (akka.net)"
+    },
+    {
+      "id": "akka.net/Samples.Cluster.Simple",
+      "project": "Samples.Cluster.Simple",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/Samples.Cluster.Simple/Samples.Cluster.Simple.csproj",
+      "globalPath": "src/examples/Cluster/Samples.Cluster.Simple/Samples.Cluster.Simple.csproj",
+      "description": "Sample: Samples.Cluster.Simple (akka.net)"
+    },
+    {
+      "id": "akka.net/SampleDestination",
+      "project": "SampleDestination",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/PublishSubscribe/SampleDestination/SampleDestination.csproj",
+      "globalPath": "src/examples/Cluster/PublishSubscribe/SampleDestination/SampleDestination.csproj",
+      "description": "Sample: SampleDestination (akka.net)"
+    },
+    {
+      "id": "akka.net/SamplePublisher",
+      "project": "SamplePublisher",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/PublishSubscribe/SamplePublisher/SamplePublisher.csproj",
+      "globalPath": "src/examples/Cluster/PublishSubscribe/SamplePublisher/SamplePublisher.csproj",
+      "description": "Sample: SamplePublisher (akka.net)"
+    },
+    {
+      "id": "akka.net/SampleSubscriber",
+      "project": "SampleSubscriber",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/PublishSubscribe/SamplePublishSubscribe/SampleSubscriber.csproj",
+      "globalPath": "src/examples/Cluster/PublishSubscribe/SamplePublishSubscribe/SampleSubscriber.csproj",
+      "description": "Sample: SampleSubscriber (akka.net)"
+    },
+    {
+      "id": "akka.net/SampleSender",
+      "project": "SampleSender",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Cluster/PublishSubscribe/SampleSender/SampleSender.csproj",
+      "globalPath": "src/examples/Cluster/PublishSubscribe/SampleSender/SampleSender.csproj",
+      "description": "Sample: SampleSender (akka.net)"
+    },
+    {
+      "id": "akka.net/DDataStressTest",
+      "project": "DDataStressTest",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/examples/Cluster/DData/DDataStressTest/DDataStressTest.csproj",
+      "globalPath": "src/examples/Cluster/DData/DDataStressTest/DDataStressTest.csproj",
+      "description": "Test: DDataStressTest (akka.net)"
+    },
+    {
+      "id": "akka.net/StreamsExamples",
+      "project": "StreamsExamples",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/Streams/StreamsExamples/StreamsExamples.csproj",
+      "globalPath": "src/examples/Streams/StreamsExamples/StreamsExamples.csproj",
+      "description": "Sample: StreamsExamples (akka.net)"
+    },
+    {
+      "id": "akka.net/TcpEchoService.Server",
+      "project": "TcpEchoService.Server",
+      "repo": "akka.net",
+      "type": "service",
+      "path": "src/examples/TcpEchoService.Server/TcpEchoService.Server.csproj",
+      "globalPath": "src/examples/TcpEchoService.Server/TcpEchoService.Server.csproj",
+      "description": "Service: TcpEchoService.Server (akka.net)"
+    },
+    {
+      "id": "akka.net/HelloAkka",
+      "project": "HelloAkka",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/HelloWorld/HelloAkka/HelloAkka.csproj",
+      "globalPath": "src/examples/HelloWorld/HelloAkka/HelloAkka.csproj",
+      "description": "Application: HelloAkka (akka.net)"
+    },
+    {
+      "id": "akka.net/Routing",
+      "project": "Routing",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/Routing/Routing.csproj",
+      "globalPath": "src/examples/Routing/Routing.csproj",
+      "description": "Application: Routing (akka.net)"
+    },
+    {
+      "id": "akka.net/AkkaWindowsService",
+      "project": "AkkaWindowsService",
+      "repo": "akka.net",
+      "type": "service",
+      "path": "src/examples/WindowsService/AkkaWindowsService/AkkaWindowsService.csproj",
+      "globalPath": "src/examples/WindowsService/AkkaWindowsService/AkkaWindowsService.csproj",
+      "description": "Service: AkkaWindowsService (akka.net)"
+    },
+    {
+      "id": "akka.net/PersistenceExample",
+      "project": "PersistenceExample",
+      "repo": "akka.net",
+      "type": "sample",
+      "path": "src/examples/PersistenceExample/PersistenceExample.csproj",
+      "globalPath": "src/examples/PersistenceExample/PersistenceExample.csproj",
+      "description": "Sample: PersistenceExample (akka.net)"
+    },
+    {
+      "id": "akka.net/HelloWorld",
+      "project": "HelloWorld",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/HelloAkka/HelloWorld/HelloWorld.csproj",
+      "globalPath": "src/examples/HelloAkka/HelloWorld/HelloWorld.csproj",
+      "description": "Application: HelloWorld (akka.net)"
+    },
+    {
+      "id": "akka.net/AkkaHeadlesssService",
+      "project": "AkkaHeadlesssService",
+      "repo": "akka.net",
+      "type": "service",
+      "path": "src/examples/HeadlessService/AkkaHeadlesssService/AkkaHeadlesssService.csproj",
+      "globalPath": "src/examples/HeadlessService/AkkaHeadlesssService/AkkaHeadlesssService.csproj",
+      "description": "Service: AkkaHeadlesssService (akka.net)"
+    },
+    {
+      "id": "akka.net/SymbolLookup",
+      "project": "SymbolLookup",
+      "repo": "akka.net",
+      "type": "desktopapp",
+      "path": "src/examples/Stocks/SymbolLookup/SymbolLookup.csproj",
+      "globalPath": "src/examples/Stocks/SymbolLookup/SymbolLookup.csproj",
+      "description": "DesktopApp: SymbolLookup (akka.net)"
+    },
+    {
+      "id": "akka.net/ChatClient",
+      "project": "ChatClient",
+      "repo": "akka.net",
+      "type": "tool",
+      "path": "src/examples/Chat/ChatClient/ChatClient.csproj",
+      "globalPath": "src/examples/Chat/ChatClient/ChatClient.csproj",
+      "description": "Tool: ChatClient (akka.net)"
+    },
+    {
+      "id": "akka.net/ChatServer",
+      "project": "ChatServer",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/Chat/ChatServer/ChatServer.csproj",
+      "globalPath": "src/examples/Chat/ChatServer/ChatServer.csproj",
+      "description": "Application: ChatServer (akka.net)"
+    },
+    {
+      "id": "akka.net/ChatMessages",
+      "project": "ChatMessages",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/examples/Chat/ChatMessages/ChatMessages.csproj",
+      "globalPath": "src/examples/Chat/ChatMessages/ChatMessages.csproj",
+      "description": "Library: ChatMessages (akka.net)"
+    },
+    {
+      "id": "akka.net/AppConfig",
+      "project": "AppConfig",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/AppConfig/AppConfig.csproj",
+      "globalPath": "src/examples/AppConfig/AppConfig.csproj",
+      "description": "Application: AppConfig (akka.net)"
+    },
+    {
+      "id": "akka.net/FaultTolerance",
+      "project": "FaultTolerance",
+      "repo": "akka.net",
+      "type": "application",
+      "path": "src/examples/FaultTolerance/FaultTolerance.csproj",
+      "globalPath": "src/examples/FaultTolerance/FaultTolerance.csproj",
+      "description": "Application: FaultTolerance (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Tests",
+      "project": "Akka.Persistence.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.Tests/Akka.Persistence.Tests.csproj",
+      "globalPath": "src/core/Akka.Persistence.Tests/Akka.Persistence.Tests.csproj",
+      "description": "Test: Akka.Persistence.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Tests.Performance",
+      "project": "Akka.Tests.Performance",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Tests.Performance/Akka.Tests.Performance.csproj",
+      "globalPath": "src/core/Akka.Tests.Performance/Akka.Tests.Performance.csproj",
+      "description": "Test: Akka.Tests.Performance (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Docs.Tests",
+      "project": "Akka.Docs.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Docs.Tests/Akka.Docs.Tests.csproj",
+      "globalPath": "src/core/Akka.Docs.Tests/Akka.Docs.Tests.csproj",
+      "description": "Test: Akka.Docs.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote.Tests.MultiNode",
+      "project": "Akka.Remote.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Remote.Tests.MultiNode/Akka.Remote.Tests.MultiNode.csproj",
+      "globalPath": "src/core/Akka.Remote.Tests.MultiNode/Akka.Remote.Tests.MultiNode.csproj",
+      "description": "Test: Akka.Remote.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote.TestKit",
+      "project": "Akka.Remote.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Remote.TestKit/Akka.Remote.TestKit.csproj",
+      "globalPath": "src/core/Akka.Remote.TestKit/Akka.Remote.TestKit.csproj",
+      "description": "Test: Akka.Remote.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "project": "Akka.Cluster.Tests.MultiNode",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Cluster.Tests.MultiNode/Akka.Cluster.Tests.MultiNode.csproj",
+      "globalPath": "src/core/Akka.Cluster.Tests.MultiNode/Akka.Cluster.Tests.MultiNode.csproj",
+      "description": "Test: Akka.Cluster.Tests.MultiNode (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Discovery",
+      "project": "Akka.Discovery",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Discovery/Akka.Discovery.csproj",
+      "globalPath": "src/core/Akka.Discovery/Akka.Discovery.csproj",
+      "description": "Library: Akka.Discovery (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams.Tests",
+      "project": "Akka.Streams.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Streams.Tests/Akka.Streams.Tests.csproj",
+      "globalPath": "src/core/Akka.Streams.Tests/Akka.Streams.Tests.csproj",
+      "description": "Test: Akka.Streams.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.TestKit",
+      "project": "Akka.Cluster.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Cluster.TestKit/Akka.Cluster.TestKit.csproj",
+      "globalPath": "src/core/Akka.Cluster.TestKit/Akka.Cluster.TestKit.csproj",
+      "description": "Test: Akka.Cluster.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams.TestKit",
+      "project": "Akka.Streams.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Streams.TestKit/Akka.Streams.TestKit.csproj",
+      "globalPath": "src/core/Akka.Streams.TestKit/Akka.Streams.TestKit.csproj",
+      "description": "Test: Akka.Streams.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote.Tests.Performance",
+      "project": "Akka.Remote.Tests.Performance",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Remote.Tests.Performance/Akka.Remote.Tests.Performance.csproj",
+      "globalPath": "src/core/Akka.Remote.Tests.Performance/Akka.Remote.Tests.Performance.csproj",
+      "description": "Test: Akka.Remote.Tests.Performance (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster",
+      "project": "Akka.Cluster",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Cluster/Akka.Cluster.csproj",
+      "globalPath": "src/core/Akka.Cluster/Akka.Cluster.csproj",
+      "description": "Library: Akka.Cluster (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit.Tests",
+      "project": "Akka.TestKit.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.TestKit.Tests/Akka.TestKit.Tests.csproj",
+      "globalPath": "src/core/Akka.TestKit.Tests/Akka.TestKit.Tests.csproj",
+      "description": "Test: Akka.TestKit.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams.Tests.TCK",
+      "project": "Akka.Streams.Tests.TCK",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Streams.Tests.TCK/Akka.Streams.Tests.TCK.csproj",
+      "globalPath": "src/core/Akka.Streams.Tests.TCK/Akka.Streams.Tests.TCK.csproj",
+      "description": "Test: Akka.Streams.Tests.TCK (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Discovery.Tests",
+      "project": "Akka.Discovery.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Discovery.Tests/Akka.Discovery.Tests.csproj",
+      "globalPath": "src/core/Akka.Discovery.Tests/Akka.Discovery.Tests.csproj",
+      "description": "Test: Akka.Discovery.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Coordination.Tests",
+      "project": "Akka.Coordination.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Coordination.Tests/Akka.Coordination.Tests.csproj",
+      "globalPath": "src/core/Akka.Coordination.Tests/Akka.Coordination.Tests.csproj",
+      "description": "Test: Akka.Coordination.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Query.Tests",
+      "project": "Akka.Persistence.Query.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.Query.Tests/Akka.Persistence.Query.Tests.csproj",
+      "globalPath": "src/core/Akka.Persistence.Query.Tests/Akka.Persistence.Query.Tests.csproj",
+      "description": "Test: Akka.Persistence.Query.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.TCK.Tests",
+      "project": "Akka.Persistence.TCK.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.TCK.Tests/Akka.Persistence.TCK.Tests.csproj",
+      "globalPath": "src/core/Akka.Persistence.TCK.Tests/Akka.Persistence.TCK.Tests.csproj",
+      "description": "Test: Akka.Persistence.TCK.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.API.Tests",
+      "project": "Akka.API.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.API.Tests/Akka.API.Tests.csproj",
+      "globalPath": "src/core/Akka.API.Tests/Akka.API.Tests.csproj",
+      "description": "Test: Akka.API.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.TestKit.Tests",
+      "project": "Akka.Persistence.TestKit.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.TestKit.Tests/Akka.Persistence.TestKit.Tests.csproj",
+      "globalPath": "src/core/Akka.Persistence.TestKit.Tests/Akka.Persistence.TestKit.Tests.csproj",
+      "description": "Test: Akka.Persistence.TestKit.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "project": "Akka.Persistence.TestKit.Xunit2",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.TestKit.Xunit2/Akka.Persistence.TestKit.Xunit2.csproj",
+      "globalPath": "src/core/Akka.Persistence.TestKit.Xunit2/Akka.Persistence.TestKit.Xunit2.csproj",
+      "description": "Test: Akka.Persistence.TestKit.Xunit2 (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tests.Performance",
+      "project": "Akka.Cluster.Tests.Performance",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Cluster.Tests.Performance/Akka.Cluster.Tests.Performance.csproj",
+      "globalPath": "src/core/Akka.Cluster.Tests.Performance/Akka.Cluster.Tests.Performance.csproj",
+      "description": "Test: Akka.Cluster.Tests.Performance (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote.Tests",
+      "project": "Akka.Remote.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Remote.Tests/Akka.Remote.Tests.csproj",
+      "globalPath": "src/core/Akka.Remote.Tests/Akka.Remote.Tests.csproj",
+      "description": "Test: Akka.Remote.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.Query",
+      "project": "Akka.Persistence.Query",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Persistence.Query/Akka.Persistence.Query.csproj",
+      "globalPath": "src/core/Akka.Persistence.Query/Akka.Persistence.Query.csproj",
+      "description": "Library: Akka.Persistence.Query (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.TCK",
+      "project": "Akka.Persistence.TCK",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Persistence.TCK/Akka.Persistence.TCK.csproj",
+      "globalPath": "src/core/Akka.Persistence.TCK/Akka.Persistence.TCK.csproj",
+      "description": "Library: Akka.Persistence.TCK (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence",
+      "project": "Akka.Persistence",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Persistence/Akka.Persistence.csproj",
+      "globalPath": "src/core/Akka.Persistence/Akka.Persistence.csproj",
+      "description": "Library: Akka.Persistence (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Persistence.TestKit",
+      "project": "Akka.Persistence.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Persistence.TestKit/Akka.Persistence.TestKit.csproj",
+      "globalPath": "src/core/Akka.Persistence.TestKit/Akka.Persistence.TestKit.csproj",
+      "description": "Test: Akka.Persistence.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams",
+      "project": "Akka.Streams",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Streams/Akka.Streams.csproj",
+      "globalPath": "src/core/Akka.Streams/Akka.Streams.csproj",
+      "description": "Library: Akka.Streams (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Coordination",
+      "project": "Akka.Coordination",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Coordination/Akka.Coordination.csproj",
+      "globalPath": "src/core/Akka.Coordination/Akka.Coordination.csproj",
+      "description": "Library: Akka.Coordination (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote",
+      "project": "Akka.Remote",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka.Remote/Akka.Remote.csproj",
+      "globalPath": "src/core/Akka.Remote/Akka.Remote.csproj",
+      "description": "Library: Akka.Remote (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams.TestKit.Tests",
+      "project": "Akka.Streams.TestKit.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Streams.TestKit.Tests/Akka.Streams.TestKit.Tests.csproj",
+      "globalPath": "src/core/Akka.Streams.TestKit.Tests/Akka.Streams.TestKit.Tests.csproj",
+      "description": "Test: Akka.Streams.TestKit.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Tests",
+      "project": "Akka.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Tests/Akka.Tests.csproj",
+      "globalPath": "src/core/Akka.Tests/Akka.Tests.csproj",
+      "description": "Test: Akka.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Cluster.Tests",
+      "project": "Akka.Cluster.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Cluster.Tests/Akka.Cluster.Tests.csproj",
+      "globalPath": "src/core/Akka.Cluster.Tests/Akka.Cluster.Tests.csproj",
+      "description": "Test: Akka.Cluster.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.TestKit",
+      "project": "Akka.TestKit",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.TestKit/Akka.TestKit.csproj",
+      "globalPath": "src/core/Akka.TestKit/Akka.TestKit.csproj",
+      "description": "Test: Akka.TestKit (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka",
+      "project": "Akka",
+      "repo": "akka.net",
+      "type": "library",
+      "path": "src/core/Akka/Akka.csproj",
+      "globalPath": "src/core/Akka/Akka.csproj",
+      "description": "Library: Akka (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Docs.Tutorials",
+      "project": "Akka.Docs.Tutorials",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Docs.Tutorials/Akka.Docs.Tutorials.csproj",
+      "globalPath": "src/core/Akka.Docs.Tutorials/Akka.Docs.Tutorials.csproj",
+      "description": "Test: Akka.Docs.Tutorials (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Streams.Tests.Performance",
+      "project": "Akka.Streams.Tests.Performance",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Streams.Tests.Performance/Akka.Streams.Tests.Performance.csproj",
+      "globalPath": "src/core/Akka.Streams.Tests.Performance/Akka.Streams.Tests.Performance.csproj",
+      "description": "Test: Akka.Streams.Tests.Performance (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Remote.TestKit.Tests",
+      "project": "Akka.Remote.TestKit.Tests",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Remote.TestKit.Tests/Akka.Remote.TestKit.Tests.csproj",
+      "globalPath": "src/core/Akka.Remote.TestKit.Tests/Akka.Remote.TestKit.Tests.csproj",
+      "description": "Test: Akka.Remote.TestKit.Tests (akka.net)"
+    },
+    {
+      "id": "akka.net/Akka.Tests.Shared.Internals",
+      "project": "Akka.Tests.Shared.Internals",
+      "repo": "akka.net",
+      "type": "test",
+      "path": "src/core/Akka.Tests.Shared.Internals/Akka.Tests.Shared.Internals.csproj",
+      "globalPath": "src/core/Akka.Tests.Shared.Internals/Akka.Tests.Shared.Internals.csproj",
+      "description": "Test: Akka.Tests.Shared.Internals (akka.net)"
+    },
+    {
+      "id": "nuget:BenchmarkDotNet",
+      "type": "nuget-package",
+      "versions": [
+        "0.13.11",
+        "0.15.4"
+      ],
+      "consumers": [
+        "akka.net/Akka.Benchmarks",
+        "akka.net/Akka.Cluster.Benchmarks",
+        "akka.net/SerializationBenchmarks"
+      ],
+      "description": "NuGet: BenchmarkDotNet (0.13.11, 0.15.4)"
+    },
+    {
+      "id": "nuget:FluentAssertions",
+      "type": "nuget-package",
+      "versions": [
+        "5.10.3"
+      ],
+      "consumers": [
+        "akka.net/Akka.Benchmarks",
+        "akka.net/Akka.Cluster.Metrics.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Sharding.Tests",
+        "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Cluster.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tools.Tests",
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+        "akka.net/Akka.Coordination.Tests",
+        "akka.net/Akka.DependencyInjection.Tests",
+        "akka.net/Akka.Discovery.Tests",
+        "akka.net/Akka.DistributedData.Tests",
+        "akka.net/Akka.DistributedData.Tests.MultiNode",
+        "akka.net/Akka.Docs.Tests",
+        "akka.net/Akka.Docs.Tutorials",
+        "akka.net/Akka.Persistence.Query.InMemory.Tests",
+        "akka.net/Akka.Persistence.Query.Tests",
+        "akka.net/Akka.Persistence.TCK",
+        "akka.net/Akka.Persistence.TCK.Tests",
+        "akka.net/Akka.Persistence.TestKit.Tests",
+        "akka.net/Akka.Persistence.Tests",
+        "akka.net/Akka.Remote.TestKit.Tests",
+        "akka.net/Akka.Remote.Tests",
+        "akka.net/Akka.Remote.Tests.MultiNode",
+        "akka.net/Akka.Serialization.Hyperion.Tests",
+        "akka.net/Akka.Streams.TestKit.Tests",
+        "akka.net/Akka.Streams.Tests",
+        "akka.net/Akka.TestKit.Tests",
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: FluentAssertions (5.10.3)"
+    },
+    {
+      "id": "nuget:NDesk.Options.Core",
+      "type": "nuget-package",
+      "versions": [
+        "1.2.8"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Cpu.Benchmark"
+      ],
+      "description": "NuGet: NDesk.Options.Core (1.2.8)"
+    },
+    {
+      "id": "nuget:Tmds.ExecFunction",
+      "type": "nuget-package",
+      "versions": [
+        "0.7.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Cpu.Benchmark"
+      ],
+      "description": "NuGet: Tmds.ExecFunction (0.7.1)"
+    },
+    {
+      "id": "nuget:Universe.CpuUsage",
+      "type": "nuget-package",
+      "versions": [
+        "2.2.497.598"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Cpu.Benchmark"
+      ],
+      "description": "NuGet: Universe.CpuUsage (2.2.497.598)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Hosting",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka.DependencyInjection.Tests",
+        "akka.net/AkkaHeadlesssService"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Hosting ([6.0.*,))"
+    },
+    {
+      "id": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-package",
+      "versions": [
+        "17.9.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Sharding.Tests",
+        "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Cluster.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tools.Tests",
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+        "akka.net/Akka.Coordination.Tests",
+        "akka.net/Akka.DependencyInjection.Tests",
+        "akka.net/Akka.Discovery.Tests",
+        "akka.net/Akka.DistributedData.Tests",
+        "akka.net/Akka.DistributedData.Tests.MultiNode",
+        "akka.net/Akka.Docs.Tests",
+        "akka.net/Akka.Persistence.Custom.Tests",
+        "akka.net/Akka.Persistence.Query.InMemory.Tests",
+        "akka.net/Akka.Persistence.Query.Tests",
+        "akka.net/Akka.Persistence.TCK.Tests",
+        "akka.net/Akka.Persistence.TestKit.Tests",
+        "akka.net/Akka.Persistence.Tests",
+        "akka.net/Akka.Remote.TestKit.Tests",
+        "akka.net/Akka.Remote.Tests",
+        "akka.net/Akka.Remote.Tests.MultiNode",
+        "akka.net/Akka.Serialization.Hyperion.Tests",
+        "akka.net/Akka.Streams.TestKit.Tests",
+        "akka.net/Akka.Streams.Tests",
+        "akka.net/Akka.Streams.Tests.TCK",
+        "akka.net/Akka.TestKit.Tests",
+        "akka.net/Akka.TestKit.Xunit.Tests",
+        "akka.net/Akka.TestKit.Xunit2.Tests",
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: Microsoft.NET.Test.Sdk (17.9.0)"
+    },
+    {
+      "id": "nuget:xunit",
+      "type": "nuget-package",
+      "versions": [
+        "2.8.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Sharding.Tests",
+        "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Cluster.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tools.Tests",
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+        "akka.net/Akka.Coordination.Tests",
+        "akka.net/Akka.DependencyInjection.Tests",
+        "akka.net/Akka.Discovery.Tests",
+        "akka.net/Akka.DistributedData.Tests",
+        "akka.net/Akka.DistributedData.Tests.MultiNode",
+        "akka.net/Akka.Docs.Tests",
+        "akka.net/Akka.Docs.Tutorials",
+        "akka.net/Akka.Persistence.Custom.Tests",
+        "akka.net/Akka.Persistence.Query.InMemory.Tests",
+        "akka.net/Akka.Persistence.Query.Tests",
+        "akka.net/Akka.Persistence.TCK.Tests",
+        "akka.net/Akka.Persistence.TestKit.Tests",
+        "akka.net/Akka.Persistence.Tests",
+        "akka.net/Akka.Remote.TestKit.Tests",
+        "akka.net/Akka.Remote.Tests",
+        "akka.net/Akka.Remote.Tests.MultiNode",
+        "akka.net/Akka.Serialization.Hyperion.Tests",
+        "akka.net/Akka.Streams.TestKit.Tests",
+        "akka.net/Akka.Streams.Tests",
+        "akka.net/Akka.TestKit.Tests",
+        "akka.net/Akka.TestKit.Xunit2",
+        "akka.net/Akka.TestKit.Xunit2.Tests",
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: xunit (2.8.1)"
+    },
+    {
+      "id": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-package",
+      "versions": [
+        "2.8.1",
+        "3.0.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests",
+        "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Sharding.Tests",
+        "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Cluster.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tools.Tests",
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+        "akka.net/Akka.Coordination.Tests",
+        "akka.net/Akka.DependencyInjection.Tests",
+        "akka.net/Akka.Discovery.Tests",
+        "akka.net/Akka.DistributedData.Tests",
+        "akka.net/Akka.DistributedData.Tests.MultiNode",
+        "akka.net/Akka.Docs.Tests",
+        "akka.net/Akka.Docs.Tutorials",
+        "akka.net/Akka.Persistence.Custom.Tests",
+        "akka.net/Akka.Persistence.Query.InMemory.Tests",
+        "akka.net/Akka.Persistence.Query.Tests",
+        "akka.net/Akka.Persistence.TCK.Tests",
+        "akka.net/Akka.Persistence.TestKit.Tests",
+        "akka.net/Akka.Persistence.Tests",
+        "akka.net/Akka.Remote.TestKit.Tests",
+        "akka.net/Akka.Remote.Tests",
+        "akka.net/Akka.Remote.Tests.MultiNode",
+        "akka.net/Akka.Serialization.Hyperion.Tests",
+        "akka.net/Akka.Streams.TestKit.Tests",
+        "akka.net/Akka.Streams.Tests",
+        "akka.net/Akka.TestKit.Tests",
+        "akka.net/Akka.TestKit.Xunit.Tests",
+        "akka.net/Akka.TestKit.Xunit2.Tests",
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: xunit.runner.visualstudio (2.8.1, 3.0.2)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.DependencyInjection.Abstractions",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka.DependencyInjection"
+      ],
+      "description": "NuGet: Microsoft.Extensions.DependencyInjection.Abstractions ([6.0.*,))"
+    },
+    {
+      "id": "nuget:xunit.v3",
+      "type": "nuget-package",
+      "versions": [
+        "2.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit.Xunit.Tests"
+      ],
+      "description": "NuGet: xunit.v3 (2.0.1)"
+    },
+    {
+      "id": "nuget:coverlet.collector",
+      "type": "nuget-package",
+      "versions": [
+        "3.1.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit.Xunit.Tests"
+      ],
+      "description": "NuGet: coverlet.collector (3.1.2)"
+    },
+    {
+      "id": "nuget:xunit.v3.extensibility.core",
+      "type": "nuget-package",
+      "versions": [
+        "2.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit.Xunit"
+      ],
+      "description": "NuGet: xunit.v3.extensibility.core (2.0.1)"
+    },
+    {
+      "id": "nuget:xunit.v3.assert",
+      "type": "nuget-package",
+      "versions": [
+        "2.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit.Xunit"
+      ],
+      "description": "NuGet: xunit.v3.assert (2.0.1)"
+    },
+    {
+      "id": "nuget:Akka.Management",
+      "type": "nuget-package",
+      "versions": [
+        "1.5.50"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode"
+      ],
+      "description": "NuGet: Akka.Management (1.5.50)"
+    },
+    {
+      "id": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-package",
+      "versions": [
+        "1.5.40"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tests.MultiNode",
+        "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+        "akka.net/Akka.DistributedData.Tests.MultiNode",
+        "akka.net/Akka.Remote.Tests.MultiNode"
+      ],
+      "description": "NuGet: Akka.MultiNode.TestAdapter (1.5.40)"
+    },
+    {
+      "id": "nuget:LightningDB",
+      "type": "nuget-package",
+      "versions": [
+        "0.16.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.DistributedData.LightningDB"
+      ],
+      "description": "NuGet: LightningDB (0.16.0)"
+    },
+    {
+      "id": "nuget:System.Diagnostics.Process",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Metrics"
+      ],
+      "description": "NuGet: System.Diagnostics.Process (4.3.0)"
+    },
+    {
+      "id": "nuget:Grpc.Tools",
+      "type": "nuget-package",
+      "versions": [
+        "2.60.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster",
+        "akka.net/Akka.Cluster.Metrics",
+        "akka.net/Akka.Cluster.Tools",
+        "akka.net/Akka.DistributedData",
+        "akka.net/Akka.Persistence",
+        "akka.net/Akka.Remote",
+        "akka.net/Akka.Remote.TestKit",
+        "akka.net/Akka.Streams"
+      ],
+      "description": "NuGet: Grpc.Tools (2.60.0)"
+    },
+    {
+      "id": "nuget:Hyperion",
+      "type": "nuget-package",
+      "versions": [
+        "0.12.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.Serialization.Hyperion"
+      ],
+      "description": "NuGet: Hyperion (0.12.2)"
+    },
+    {
+      "id": "nuget:System.Reflection",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Serialization.Hyperion"
+      ],
+      "description": "NuGet: System.Reflection (4.3.0)"
+    },
+    {
+      "id": "nuget:System.Runtime",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Serialization.Hyperion"
+      ],
+      "description": "NuGet: System.Runtime (4.3.1)"
+    },
+    {
+      "id": "nuget:Swashbuckle.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        "6.5.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.AspNetCore"
+      ],
+      "description": "NuGet: Swashbuckle.AspNetCore (6.5.0)"
+    },
+    {
+      "id": "nuget:Microsoft.Data.SQLite",
+      "type": "nuget-package",
+      "versions": [
+        "8.0.4"
+      ],
+      "consumers": [
+        "akka.net/Akka.Persistence.Custom"
+      ],
+      "description": "NuGet: Microsoft.Data.SQLite (8.0.4)"
+    },
+    {
+      "id": "nuget:Akka.Bootstrap.Docker",
+      "type": "nuget-package",
+      "versions": [
+        "0.5.3"
+      ],
+      "consumers": [
+        "akka.net/ClusterSharding.Node",
+        "akka.net/ShoppingCart"
+      ],
+      "description": "NuGet: Akka.Bootstrap.Docker (0.5.3)"
+    },
+    {
+      "id": "nuget:Akka.Persistence.Sql",
+      "type": "nuget-package",
+      "versions": [
+        "1.5.44"
+      ],
+      "consumers": [
+        "akka.net/ClusterSharding.Node"
+      ],
+      "description": "NuGet: Akka.Persistence.Sql (1.5.44)"
+    },
+    {
+      "id": "nuget:Microsoft.Data.Sqlite",
+      "type": "nuget-package",
+      "versions": [
+        "8.0.14"
+      ],
+      "consumers": [
+        "akka.net/ClusterSharding.Node"
+      ],
+      "description": "NuGet: Microsoft.Data.Sqlite (8.0.14)"
+    },
+    {
+      "id": "nuget:Microsoft.Data.Sqlite.Core",
+      "type": "nuget-package",
+      "versions": [
+        "8.0.14"
+      ],
+      "consumers": [
+        "akka.net/ClusterSharding.Node"
+      ],
+      "description": "NuGet: Microsoft.Data.Sqlite.Core (8.0.14)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Hosting.WindowsServices",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/AkkaWindowsService"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Hosting.WindowsServices ([6.0.*,))"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Http",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/AkkaWindowsService"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Http ([6.0.*,))"
+    },
+    {
+      "id": "nuget:NBench",
+      "type": "nuget-package",
+      "versions": [
+        "2.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Tests.Performance",
+        "akka.net/Akka.Remote.Tests.Performance",
+        "akka.net/Akka.Streams.Tests.Performance",
+        "akka.net/Akka.Tests.Performance"
+      ],
+      "description": "NuGet: NBench (2.0.1)"
+    },
+    {
+      "id": "nuget:Google.Protobuf",
+      "type": "nuget-package",
+      "versions": [
+        "3.26.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Persistence",
+        "akka.net/Akka.Remote",
+        "akka.net/Akka.Remote.TestKit",
+        "akka.net/Akka.Streams"
+      ],
+      "description": "NuGet: Google.Protobuf (3.26.1)"
+    },
+    {
+      "id": "nuget:System.Collections.Specialized",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Remote.TestKit"
+      ],
+      "description": "NuGet: System.Collections.Specialized (4.3.0)"
+    },
+    {
+      "id": "nuget:System.Net.Sockets",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams.Tests"
+      ],
+      "description": "NuGet: System.Net.Sockets (4.3.0)"
+    },
+    {
+      "id": "nuget:System.Runtime.Extensions",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams.Tests"
+      ],
+      "description": "NuGet: System.Runtime.Extensions (4.3.1)"
+    },
+    {
+      "id": "nuget:Polyfill",
+      "type": "nuget-package",
+      "versions": [
+        "1.28.0"
+      ],
+      "consumers": [
+        "akka.net/Akka",
+        "akka.net/Akka.Streams.TestKit"
+      ],
+      "description": "NuGet: Polyfill (1.28.0)"
+    },
+    {
+      "id": "nuget:NUnit3TestAdapter",
+      "type": "nuget-package",
+      "versions": [
+        "4.5.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams.Tests.TCK"
+      ],
+      "description": "NuGet: NUnit3TestAdapter (4.5.0)"
+    },
+    {
+      "id": "nuget:Reactive.Streams.TCK",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.4"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams.Tests.TCK"
+      ],
+      "description": "NuGet: Reactive.Streams.TCK (1.0.4)"
+    },
+    {
+      "id": "nuget:NUnit",
+      "type": "nuget-package",
+      "versions": [
+        "3.7.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams.Tests.TCK"
+      ],
+      "description": "NuGet: NUnit (3.7.1)"
+    },
+    {
+      "id": "nuget:FluentDateTime",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Discovery.Tests"
+      ],
+      "description": "NuGet: FluentDateTime (3.0.0)"
+    },
+    {
+      "id": "nuget:FsCheck.Xunit",
+      "type": "nuget-package",
+      "versions": [
+        "2.16.6"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Coordination.Tests",
+        "akka.net/Akka.Remote.Tests",
+        "akka.net/Akka.Tests",
+        "akka.net/Akka.Tests.Shared.Internals"
+      ],
+      "description": "NuGet: FsCheck.Xunit (2.16.6)"
+    },
+    {
+      "id": "nuget:PublicApiGenerator",
+      "type": "nuget-package",
+      "versions": [
+        "11.5.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests"
+      ],
+      "description": "NuGet: PublicApiGenerator (11.5.0)"
+    },
+    {
+      "id": "nuget:Verify.Xunit",
+      "type": "nuget-package",
+      "versions": [
+        "25.0.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests"
+      ],
+      "description": "NuGet: Verify.Xunit (25.0.2)"
+    },
+    {
+      "id": "nuget:Verify.DiffPlex",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.API.Tests"
+      ],
+      "description": "NuGet: Verify.DiffPlex (3.0.0)"
+    },
+    {
+      "id": "nuget:TeamCity.ServiceMessages",
+      "type": "nuget-package",
+      "versions": [
+        "3.0.13"
+      ],
+      "consumers": [
+        "akka.net/Akka.Persistence.TestKit.Tests"
+      ],
+      "description": "NuGet: TeamCity.ServiceMessages (3.0.13)"
+    },
+    {
+      "id": "nuget:FsCheck",
+      "type": "nuget-package",
+      "versions": [
+        "2.16.6"
+      ],
+      "consumers": [
+        "akka.net/Akka.Remote.Tests"
+      ],
+      "description": "NuGet: FsCheck (2.16.6)"
+    },
+    {
+      "id": "nuget:MathNet.Numerics",
+      "type": "nuget-package",
+      "versions": [
+        "5.0.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Persistence.TCK"
+      ],
+      "description": "NuGet: MathNet.Numerics (5.0.0)"
+    },
+    {
+      "id": "nuget:System.Reflection.TypeExtensions",
+      "type": "nuget-package",
+      "versions": [
+        "4.7.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams"
+      ],
+      "description": "NuGet: System.Reflection.TypeExtensions (4.7.0)"
+    },
+    {
+      "id": "nuget:Microsoft.Bcl.AsyncInterfaces",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams",
+        "akka.net/Akka.TestKit"
+      ],
+      "description": "NuGet: Microsoft.Bcl.AsyncInterfaces ([6.0.*,))"
+    },
+    {
+      "id": "nuget:Reactive.Streams",
+      "type": "nuget-package",
+      "versions": [
+        "1.0.4"
+      ],
+      "consumers": [
+        "akka.net/Akka.Streams"
+      ],
+      "description": "NuGet: Reactive.Streams (1.0.4)"
+    },
+    {
+      "id": "nuget:DotNetty.Handlers",
+      "type": "nuget-package",
+      "versions": [
+        "0.7.6"
+      ],
+      "consumers": [
+        "akka.net/Akka.Remote"
+      ],
+      "description": "NuGet: DotNetty.Handlers (0.7.6)"
+    },
+    {
+      "id": "nuget:Xunit.SkippableFact",
+      "type": "nuget-package",
+      "versions": [
+        "1.4.13"
+      ],
+      "consumers": [
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: Xunit.SkippableFact (1.4.13)"
+    },
+    {
+      "id": "nuget:System.Linq.Async",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit",
+        "akka.net/Akka.Tests"
+      ],
+      "description": "NuGet: System.Linq.Async (6.0.1)"
+    },
+    {
+      "id": "nuget:Fsharp.Core",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.5"
+      ],
+      "consumers": [
+        "akka.net/Akka.Cluster.Tests",
+        "akka.net/Akka.Tests.Shared.Internals"
+      ],
+      "description": "NuGet: Fsharp.Core (6.0.5)"
+    },
+    {
+      "id": "nuget:Nito.AsyncEx.Coordination",
+      "type": "nuget-package",
+      "versions": [
+        "5.1.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit"
+      ],
+      "description": "NuGet: Nito.AsyncEx.Coordination (5.1.2)"
+    },
+    {
+      "id": "nuget:Nito.AsyncEx.Context",
+      "type": "nuget-package",
+      "versions": [
+        "5.1.2"
+      ],
+      "consumers": [
+        "akka.net/Akka.TestKit"
+      ],
+      "description": "NuGet: Nito.AsyncEx.Context (5.1.2)"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.ObjectPool",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: Microsoft.Extensions.ObjectPool ([6.0.*,))"
+    },
+    {
+      "id": "nuget:Newtonsoft.Json",
+      "type": "nuget-package",
+      "versions": [
+        "[13.0.1,)"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: Newtonsoft.Json ([13.0.1,))"
+    },
+    {
+      "id": "nuget:System.Collections.Immutable",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: System.Collections.Immutable ([6.0.*,))"
+    },
+    {
+      "id": "nuget:System.Configuration.ConfigurationManager",
+      "type": "nuget-package",
+      "versions": [
+        "6.0.1"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: System.Configuration.ConfigurationManager (6.0.1)"
+    },
+    {
+      "id": "nuget:System.Diagnostics.DiagnosticSource",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: System.Diagnostics.DiagnosticSource ([6.0.*,))"
+    },
+    {
+      "id": "nuget:System.Reflection.Emit",
+      "type": "nuget-package",
+      "versions": [
+        "4.7.0"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: System.Reflection.Emit (4.7.0)"
+    },
+    {
+      "id": "nuget:System.Threading.Channels",
+      "type": "nuget-package",
+      "versions": [
+        "[6.0.*,)"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: System.Threading.Channels ([6.0.*,))"
+    },
+    {
+      "id": "nuget:Akka.Analyzers",
+      "type": "nuget-package",
+      "versions": [
+        "0.3.3"
+      ],
+      "consumers": [
+        "akka.net/Akka"
+      ],
+      "description": "NuGet: Akka.Analyzers (0.3.3)"
+    },
+    {
+      "id": "nuget:System.Diagnostics.StackTrace",
+      "type": "nuget-package",
+      "versions": [
+        "4.3.0"
+      ],
+      "consumers": [
+        "akka.net/Akka.Tests.Shared.Internals"
+      ],
+      "description": "NuGet: System.Diagnostics.StackTrace (4.3.0)"
+    },
+    {
+      "id": "datasource:akka.net:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "akka.net",
+      "occurrences": 124,
+      "description": "gRPC in akka.net (124 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:IMessageAdapter",
+      "type": "datasource",
+      "subtype": "connector",
+      "pattern": "IMessageAdapter",
+      "repo": "akka.net",
+      "occurrences": 39,
+      "description": "IMessageAdapter in akka.net (39 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:HttpClient.New",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.New",
+      "repo": "akka.net",
+      "occurrences": 3,
+      "description": "HttpClient.New in akka.net (3 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:HttpClient.Injection",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.Injection",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "HttpClient.Injection in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:RabbitMQ",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "RabbitMQ",
+      "repo": "akka.net",
+      "occurrences": 1,
+      "description": "RabbitMQ in akka.net (1 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Dapper",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper",
+      "repo": "akka.net",
+      "occurrences": 18,
+      "description": "Dapper in akka.net (18 occurrences)"
+    },
+    {
+      "id": "datasource:akka.net:Kafka",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka",
+      "repo": "akka.net",
+      "occurrences": 5,
+      "description": "Kafka in akka.net (5 occurrences)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "akka.net/SerializationBenchmarks",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SerializationBenchmarks",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Benchmarks",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/RemotePingPong",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Cpu.Benchmark",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/PingPong",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SpawnBenchmark",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "akka.net/Akka.DependencyInjection",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.LightningDB",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "akka.net/Akka.DistributedData.LightningDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "akka.net/Akka.Cluster.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "akka.net/Akka.DistributedData.LightningDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "akka.net/Akka.DistributedData.LightningDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.Metrics.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools",
+      "to": "akka.net/Akka.Coordination",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools",
+      "to": "akka.net/Akka.Discovery",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding",
+      "to": "akka.net/Akka.Coordination",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding",
+      "to": "akka.net/Akka.DistributedData.LightningDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory",
+      "to": "akka.net/Akka.Persistence.Query",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "akka.net/Akka.Persistence.TCK",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "akka.net/Akka.Persistence.Query.InMemory",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.TestKit",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "akka.net/Akka.Serialization.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.AspNetCore",
+      "to": "akka.net/Akka.DependencyInjection",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.AspNetCore",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Akka.AspNetCore",
+      "to": "akka.net/Akka.DependencyInjection",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Akka.AspNetCore",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/TimeClient",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/TimeClient",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/TimeServer",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/TimeServer",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System1",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System1",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System1",
+      "to": "akka.net/Shared",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System2",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System2",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/System2",
+      "to": "akka.net/Shared",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Shared",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom.Tests",
+      "to": "akka.net/Akka.Persistence.TCK",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom.Tests",
+      "to": "akka.net/Akka.Persistence.Custom",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Transformation",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Metrics.Common",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Metrics",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Metrics",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Metrics",
+      "to": "akka.net/Samples.Cluster.Metrics.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.AdaptiveGroup",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.AdaptiveGroup",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.AdaptiveGroup",
+      "to": "akka.net/Samples.Cluster.Metrics.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.ConsistentHashRouting",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.ConsistentHashRouting",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.ConsistentHashRouting",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ShoppingCart",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterToolsExample.Shared",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterToolsExample.Seed",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterToolsExample.Seed",
+      "to": "akka.net/ClusterToolsExample.Shared",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterToolsExample.Node",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ClusterToolsExample.Node",
+      "to": "akka.net/ClusterToolsExample.Shared",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Samples.Cluster.Simple",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleDestination",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleDestination",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleDestination",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SamplePublisher",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SamplePublisher",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSubscriber",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSubscriber",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSubscriber",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSubscriber",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSender",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSender",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SampleSender",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/DDataStressTest",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/StreamsExamples",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/StreamsExamples",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/TcpEchoService.Server",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/HelloAkka",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Routing",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/AkkaWindowsService",
+      "to": "akka.net/Akka.DependencyInjection",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/AkkaWindowsService",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/PersistenceExample",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/HelloWorld",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/AkkaHeadlesssService",
+      "to": "akka.net/Akka.DependencyInjection",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/AkkaHeadlesssService",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SymbolLookup",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ChatClient",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ChatClient",
+      "to": "akka.net/ChatMessages",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ChatServer",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ChatServer",
+      "to": "akka.net/ChatMessages",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/ChatMessages",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/AppConfig",
+      "to": "Akka.Persistence.Sqlite",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/FaultTolerance",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Performance",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Performance",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "akka.net/Akka.Remote.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "akka.net/Akka.Cluster.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Discovery",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "akka.net/Akka.Streams.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.TestKit",
+      "to": "akka.net/Akka.Remote.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.TestKit",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.Performance",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster",
+      "to": "akka.net/Akka.Coordination",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka.Streams.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "akka.net/Akka.Discovery",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "akka.net/Akka.Coordination",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "akka.net/Akka.Persistence.Query",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK.Tests",
+      "to": "akka.net/Akka.Persistence.TCK",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Cluster.Metrics",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Cluster.Sharding",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.DistributedData",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Persistence.Query.InMemory",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Coordination",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Discovery",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Persistence.Query",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "akka.net/Akka.Persistence.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "to": "akka.net/Akka.Persistence.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Xunit2",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.Performance",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "akka.net/Akka.Serialization.Hyperion",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "akka.net/Akka.Remote",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "akka.net/Akka.Persistence.Query",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "akka.net/Akka.Streams.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Coordination",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "akka.net/Akka.Streams.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "akka.net/Akka.Cluster",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "akka.net/Akka.Coordination.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.TestKit",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka.Persistence",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka.Cluster.Tools",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.Performance",
+      "to": "akka.net/Akka.Streams",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.Performance",
+      "to": "akka.net/Akka.Streams.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.Performance",
+      "to": "akka.net/Akka.Streams.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "akka.net/Akka.Remote.TestKit",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "akka.net/Akka.Tests.Shared.Internals",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Shared.Internals",
+      "to": "akka.net/Akka.TestKit.Xunit2",
+      "type": "project-reference"
+    },
+    {
+      "from": "akka.net/SerializationBenchmarks",
+      "to": "nuget:BenchmarkDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "nuget:BenchmarkDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Benchmarks",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Benchmarks",
+      "to": "nuget:BenchmarkDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Cpu.Benchmark",
+      "to": "nuget:NDesk.Options.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Cpu.Benchmark",
+      "to": "nuget:Tmds.ExecFunction",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Cpu.Benchmark",
+      "to": "nuget:Universe.CpuUsage",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "nuget:Microsoft.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DependencyInjection",
+      "to": "nuget:Microsoft.Extensions.DependencyInjection.Abstractions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit.Tests",
+      "to": "nuget:xunit.v3",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit.Tests",
+      "to": "nuget:coverlet.collector",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit2.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit",
+      "to": "nuget:xunit.v3.extensibility.core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Xunit",
+      "to": "nuget:xunit.v3.assert",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:Akka.Management",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.LightningDB",
+      "to": "nuget:LightningDB",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics",
+      "to": "nuget:System.Diagnostics.Process",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Sharding.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.DistributedData.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Metrics.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tools",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.InMemory.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion",
+      "to": "nuget:Hyperion",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion",
+      "to": "nuget:System.Reflection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion",
+      "to": "nuget:System.Runtime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Serialization.Hyperion.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.AspNetCore",
+      "to": "nuget:Swashbuckle.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom",
+      "to": "nuget:Microsoft.Data.SQLite",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Custom.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "nuget:Akka.Bootstrap.Docker",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "nuget:Akka.Persistence.Sql",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "nuget:Microsoft.Data.Sqlite",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/ClusterSharding.Node",
+      "to": "nuget:Microsoft.Data.Sqlite.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/ShoppingCart",
+      "to": "nuget:Akka.Bootstrap.Docker",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/AkkaWindowsService",
+      "to": "nuget:Microsoft.Extensions.Hosting.WindowsServices",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/AkkaWindowsService",
+      "to": "nuget:Microsoft.Extensions.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/AkkaHeadlesssService",
+      "to": "nuget:Microsoft.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Performance",
+      "to": "nuget:NBench",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit",
+      "to": "nuget:System.Collections.Specialized",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "nuget:Akka.MultiNode.TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.MultiNode",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:System.Net.Sockets",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests",
+      "to": "nuget:System.Runtime.Extensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit",
+      "to": "nuget:Polyfill",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests.Performance",
+      "to": "nuget:NBench",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "nuget:NUnit3TestAdapter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "nuget:Reactive.Streams.TCK",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.TCK",
+      "to": "nuget:NUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "nuget:FluentDateTime",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Discovery.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Coordination.Tests",
+      "to": "nuget:FsCheck.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.Query.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:PublicApiGenerator",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:Verify.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.API.Tests",
+      "to": "nuget:Verify.DiffPlex",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "nuget:TeamCity.ServiceMessages",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TestKit.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests.Performance",
+      "to": "nuget:NBench",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:FsCheck",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.Tests",
+      "to": "nuget:FsCheck.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence.TCK",
+      "to": "nuget:MathNet.Numerics",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Persistence",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "nuget:System.Reflection.TypeExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "nuget:Microsoft.Bcl.AsyncInterfaces",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "nuget:Reactive.Streams",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote",
+      "to": "nuget:DotNetty.Handlers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.TestKit.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:FsCheck.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:Xunit.SkippableFact",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:FsCheck.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Cluster.Tests",
+      "to": "nuget:Fsharp.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit",
+      "to": "nuget:Microsoft.Bcl.AsyncInterfaces",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit",
+      "to": "nuget:Nito.AsyncEx.Coordination",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit",
+      "to": "nuget:Nito.AsyncEx.Context",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.TestKit",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:Microsoft.Extensions.ObjectPool",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:System.Collections.Immutable",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:System.Configuration.ConfigurationManager",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:Polyfill",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:System.Diagnostics.DiagnosticSource",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:System.Reflection.Emit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:System.Threading.Channels",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka",
+      "to": "nuget:Akka.Analyzers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Docs.Tutorials",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Streams.Tests.Performance",
+      "to": "nuget:NBench",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "nuget:Microsoft.NET.Test.Sdk",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "nuget:xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "nuget:xunit.runner.visualstudio",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Remote.TestKit.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Shared.Internals",
+      "to": "nuget:System.Diagnostics.StackTrace",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Shared.Internals",
+      "to": "nuget:FsCheck.Xunit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "akka.net/Akka.Tests.Shared.Internals",
+      "to": "nuget:Fsharp.Core",
+      "type": "nuget-dependency"
+    }
+  ],
+  "summary": {
+    "totalRepos": 1,
+    "totalProjects": 109,
+    "totalNuGetPackages": 65,
+    "totalProjectRefs": 248,
+    "totalCrossRepoRefs": 0,
+    "totalDataFindings": 225,
+    "totalConfigFiles": 29,
+    "repos": {
+      "akka.net": {
+        "projects": 109,
+        "categories": {
+          "Application": 19,
+          "Test": 48,
+          "Library": 18,
+          "Tool": 3,
+          "WebApp": 1,
+          "Sample": 16,
+          "Service": 3,
+          "DesktopApp": 1
+        }
+      }
+    },
+    "categories": {
+      "Application": 19,
+      "Test": 48,
+      "Library": 18,
+      "Tool": 3,
+      "WebApp": 1,
+      "Sample": 16,
+      "Service": 3,
+      "DesktopApp": 1
+    }
+  }
+}

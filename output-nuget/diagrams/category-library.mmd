@@ -1,0 +1,132 @@
+graph TD
+    subgraph library["Library"]
+        NuGet_Client_NuGet_MSSigning_Extensions["NuGet.MSSigning.Extensions"]
+        NuGet_Client_NuGet_Indexing["NuGet.Indexing"]
+        NuGet_Client_NuGet_VisualStudio_Internal_Contracts["NuGet.VisualStudio.Internal.Contracts"]
+        NuGet_Client_NuGet_VisualStudio_Contracts["NuGet.VisualStudio.Contracts"]
+        NuGet_Client_NuGet_PackageManagement_VisualStudio["NuGet.PackageManagement.VisualStudio"]
+        NuGet_Client_NuGet_SolutionRestoreManager["NuGet.SolutionRestoreManager"]
+        NuGet_Client_NuGet_PackageManagement_UI["NuGet.PackageManagement.UI"]
+        NuGet_Client_NuGet_VisualStudio["NuGet.VisualStudio"]
+        NuGet_Client_NuGet_VisualStudio_Implementation["NuGet.VisualStudio.Implementation"]
+        NuGet_Client_NuGet_VisualStudio_Common["NuGet.VisualStudio.Common"]
+        NuGet_Client_NuGet_VisualStudio_Interop["NuGet.VisualStudio.Interop"]
+        NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets["NuGet.PackageManagement.PowerShellCmdlets"]
+        NuGet_Client_NuGet_PackageManagement["NuGet.PackageManagement"]
+        NuGet_Client_NuGet_DependencyResolver_Core["NuGet.DependencyResolver.Core"]
+        NuGet_Client_NuGet_Credentials["NuGet.Credentials"]
+        NuGet_Client_NuGet_Resolver["NuGet.Resolver"]
+        NuGet_Client_NuGet_Commands["NuGet.Commands"]
+        NuGet_Client_NuGet_ProjectModel["NuGet.ProjectModel"]
+        NuGet_Client_NuGet_Packaging["NuGet.Packaging"]
+        NuGet_Client_NuGet_Frameworks["NuGet.Frameworks"]
+        NuGet_Client_NuGet_Versioning["NuGet.Versioning"]
+        NuGet_Client_NuGet_LibraryModel["NuGet.LibraryModel"]
+        NuGet_Client_Microsoft_Build_NuGetSdkResolver["Microsoft.Build.NuGetSdkResolver"]
+        NuGet_Client_NuGet_Build_Tasks_Pack["NuGet.Build.Tasks.Pack"]
+        NuGet_Client_NuGet_Build_Tasks["NuGet.Build.Tasks"]
+        NuGet_Client_NuGet_Protocol["NuGet.Protocol"]
+        NuGet_Client_NuGet_Configuration["NuGet.Configuration"]
+        NuGet_Client_NuGet_Common["NuGet.Common"]
+        NuGet_Client_doc_tasks["doc.tasks"]
+    end
+    ext_test(["Test (40)"])
+    ext_application(["Application (3)"])
+    ext_tool(["Tool (4)"])
+    NuGet_Client_NuGet_Indexing --> NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_VisualStudio_Internal_Contracts --> NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_PackageManagement_VisualStudio --> NuGet_Client_NuGet_Indexing
+    NuGet_Client_NuGet_PackageManagement_VisualStudio --> NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_SolutionRestoreManager --> NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_SolutionRestoreManager --> NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_SolutionRestoreManager --> NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_PackageManagement_UI --> NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --> NuGet_Client_NuGet_PackageManagement_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --> NuGet_Client_NuGet_VisualStudio_Contracts
+    NuGet_Client_NuGet_VisualStudio_Implementation --> NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Implementation --> NuGet_Client_NuGet_VisualStudio_Common
+    NuGet_Client_NuGet_VisualStudio_Common --> NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_VisualStudio_Common --> NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    NuGet_Client_NuGet_VisualStudio_Common --> NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_VisualStudio_Interop --> NuGet_Client_NuGet_VisualStudio
+    NuGet_Client_NuGet_PackageManagement --> NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_PackageManagement --> NuGet_Client_NuGet_Resolver
+    NuGet_Client_NuGet_DependencyResolver_Core --> NuGet_Client_NuGet_Configuration
+    NuGet_Client_NuGet_DependencyResolver_Core --> NuGet_Client_NuGet_LibraryModel
+    NuGet_Client_NuGet_DependencyResolver_Core --> NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Credentials --> NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Resolver --> NuGet_Client_NuGet_Protocol
+    NuGet_Client_NuGet_Commands --> NuGet_Client_NuGet_Credentials
+    NuGet_Client_NuGet_Commands --> NuGet_Client_NuGet_ProjectModel
+    NuGet_Client_NuGet_ProjectModel --> NuGet_Client_NuGet_DependencyResolver_Core
+    NuGet_Client_NuGet_Packaging --> NuGet_Client_NuGet_Configuration
+    NuGet_Client_NuGet_Packaging --> NuGet_Client_NuGet_Versioning
+    NuGet_Client_NuGet_LibraryModel --> NuGet_Client_NuGet_Common
+    NuGet_Client_NuGet_LibraryModel --> NuGet_Client_NuGet_Versioning
+    NuGet_Client_Microsoft_Build_NuGetSdkResolver --> NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks_Pack --> NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks --> NuGet_Client_NuGet_Commands
+    NuGet_Client_NuGet_Build_Tasks --> NuGet_Client_NuGet_Build_Tasks_Pack
+    NuGet_Client_NuGet_Build_Tasks --> NuGet_Client_NuGet_PackageManagement
+    NuGet_Client_NuGet_Protocol --> NuGet_Client_NuGet_Packaging
+    NuGet_Client_NuGet_Configuration --> NuGet_Client_NuGet_Common
+    NuGet_Client_NuGet_Common --> NuGet_Client_NuGet_Frameworks
+    ext_test -.-> NuGet_Client_NuGet_Build_Tasks_Pack
+    ext_test -.-> NuGet_Client_Microsoft_Build_NuGetSdkResolver
+    ext_test -.-> NuGet_Client_NuGet_Packaging
+    ext_test -.-> NuGet_Client_NuGet_Build_Tasks
+    ext_test -.-> NuGet_Client_NuGet_MSSigning_Extensions
+    ext_test -.-> NuGet_Client_NuGet_Frameworks
+    ext_test -.-> NuGet_Client_NuGet_Common
+    ext_test -.-> NuGet_Client_NuGet_PackageManagement
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio_Common
+    ext_test -.-> NuGet_Client_NuGet_PackageManagement_VisualStudio
+    ext_test -.-> NuGet_Client_NuGet_DependencyResolver_Core
+    ext_test -.-> NuGet_Client_NuGet_ProjectModel
+    ext_test -.-> NuGet_Client_NuGet_Commands
+    ext_test -.-> NuGet_Client_NuGet_Credentials
+    ext_test -.-> NuGet_Client_NuGet_LibraryModel
+    ext_test -.-> NuGet_Client_NuGet_Versioning
+    ext_test -.-> NuGet_Client_NuGet_Resolver
+    ext_test -.-> NuGet_Client_NuGet_Protocol
+    ext_test -.-> NuGet_Client_NuGet_Configuration
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio
+    ext_test -.-> NuGet_Client_NuGet_SolutionRestoreManager
+    ext_test -.-> NuGet_Client_NuGet_PackageManagement_UI
+    ext_test -.-> NuGet_Client_NuGet_Indexing
+    ext_test -.-> NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio_Implementation
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio_Contracts
+    NuGet_Client_NuGet_MSSigning_Extensions -.-> ext_application
+    ext_tool -.-> NuGet_Client_Microsoft_Build_NuGetSdkResolver
+    ext_tool -.-> NuGet_Client_NuGet_Build_Tasks
+    ext_tool -.-> NuGet_Client_NuGet_Common
+    ext_tool -.-> NuGet_Client_NuGet_Configuration
+    ext_tool -.-> NuGet_Client_NuGet_DependencyResolver_Core
+    ext_tool -.-> NuGet_Client_NuGet_Frameworks
+    ext_tool -.-> NuGet_Client_NuGet_LibraryModel
+    ext_tool -.-> NuGet_Client_NuGet_PackageManagement
+    ext_tool -.-> NuGet_Client_NuGet_Packaging
+    ext_tool -.-> NuGet_Client_NuGet_ProjectModel
+    ext_tool -.-> NuGet_Client_NuGet_Protocol
+    ext_tool -.-> NuGet_Client_NuGet_Resolver
+    ext_tool -.-> NuGet_Client_NuGet_Versioning
+    ext_tool -.-> NuGet_Client_NuGet_Indexing
+    ext_tool -.-> NuGet_Client_NuGet_Commands
+    ext_tool -.-> NuGet_Client_NuGet_Credentials
+    ext_tool -.-> NuGet_Client_NuGet_SolutionRestoreManager
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio_Contracts
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio_Implementation
+    ext_tool -.-> NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets
+    ext_tool -.-> NuGet_Client_NuGet_PackageManagement_UI
+    ext_tool -.-> NuGet_Client_NuGet_PackageManagement_VisualStudio
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio_Internal_Contracts
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio_Interop
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio_Common
+    ext_tool -.-> NuGet_Client_NuGet_VisualStudio
+    ext_application -.-> NuGet_Client_NuGet_PackageManagement
+    ext_application -.-> NuGet_Client_NuGet_Build_Tasks
+    NuGet_Client_NuGet_PackageManagement_PowerShellCmdlets -.-> ext_tool
+    ext_application -.-> NuGet_Client_NuGet_Commands
+    ext_application -.-> NuGet_Client_NuGet_Protocol

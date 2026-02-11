@@ -1,0 +1,9 @@
+[
+  {
+    "name": "akka.net",
+    "root": "/home/user/akka.net",
+    "solutions": [
+      "Akka.sln"
+    ]
+  }
+]

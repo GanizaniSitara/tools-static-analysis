@@ -1,0 +1,12 @@
+graph TD
+    subgraph test["Test"]
+        Lean_QuantConnect_Tests["QuantConnect.Tests"]
+    end
+    ext_library(["Library (15)"])
+    ext_webapp(["Webapp (1)"])
+    ext_application(["Application (3)"])
+    ext_tool(["Tool (1)"])
+    Lean_QuantConnect_Tests -.-> ext_library
+    Lean_QuantConnect_Tests -.-> ext_webapp
+    Lean_QuantConnect_Tests -.-> ext_application
+    Lean_QuantConnect_Tests -.-> ext_tool

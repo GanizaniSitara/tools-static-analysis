@@ -61,4 +61,4 @@ Discovered during OrchardCore testing:
 - **Edge limit**: Mermaid v11 defaults to max 500 edges. Manifests as misleading "Syntax error in text" message. Set `maxEdges` in `mermaid.initialize()` to override.
 - **Text size limit**: Default 50,000 chars. Set `maxTextSize` to override.
 - **SVG sizing**: Mermaid sets `width="100%"` on SVGs. For large diagrams this squeezes everything into the container. Must override with natural viewBox width post-render.
-- **Grouped diagram edge filtering**: When a category has >50 projects, we group by name prefix and auto-filter low-count edges to stay under 400 edges. Currently this drops edges silently — TODO: add a visible note showing how many edges were filtered.
+- **Grouped diagram edge filtering**: When a category has >50 projects, we group by name prefix and auto-filter low-count edges to stay under 400 edges. The viewer shows a yellow warning banner indicating how many edges were hidden and the minimum reference count threshold.

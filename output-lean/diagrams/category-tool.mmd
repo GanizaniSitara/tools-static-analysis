@@ -1,0 +1,10 @@
+graph TD
+    subgraph tool["Tool"]
+        Lean_QuantConnect_ToolBox["QuantConnect.ToolBox"]
+    end
+    ext_library(["Library (1)"])
+    ext_test(["Test (1)"])
+    ext_application(["Application (2)"])
+    Lean_QuantConnect_ToolBox -.-> ext_library
+    ext_test -.-> Lean_QuantConnect_ToolBox
+    ext_application -.-> Lean_QuantConnect_ToolBox

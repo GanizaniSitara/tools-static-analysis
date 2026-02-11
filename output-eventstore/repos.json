@@ -1,0 +1,9 @@
+[
+  {
+    "name": "src",
+    "root": "/home/user/EventStore/src",
+    "solutions": [
+      "KurrentDB.sln"
+    ]
+  }
+]

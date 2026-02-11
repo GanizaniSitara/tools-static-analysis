@@ -1,0 +1,236 @@
+[
+  {
+    "file": "src/examples/AspNetCore/Akka.AspNetCore/appsettings.Development.json",
+    "repo": "akka.net",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/examples/AspNetCore/Akka.AspNetCore/appsettings.json",
+    "repo": "akka.net",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\"\n}\n"
+  },
+  {
+    "file": "src/examples/AspNetCore/Samples.Akka.AspNetCore/appsettings.Development.json",
+    "repo": "akka.net",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft\": \"Warning\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/examples/AspNetCore/Samples.Akka.AspNetCore/appsettings.json",
+    "repo": "akka.net",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft\": \"Warning\",\n      \"Microsoft.Hosting.Lifetime\": \"Information\"\n    }\n  },\n  \"AllowedHosts\": \"*\"\n}\n"
+  },
+  {
+    "file": "docs/web.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <system.webServer>\n        <staticContent>\n            <mimeMap fileExtension=\".json\" mimeType=\"application/json\" />\n            <mimeMap fileExtension=\".yml\" mimeType=\"text/yaml\" />\n            <mimeMap fileExtension=\".yaml\" mimeType=\"text/yaml\" />\n        </staticContent>\n        <rewrite>\n            <rules>\n                <rule name=\"rewrite docs to articles\" stopProcessing=\"true\">\n                    <match url=\"docs(.*)\" />\n                    <action type=\"Redirect\" url=\"http://{HTTP_HOST}/articles{R:1}\" />\n                </rule>              \n            </rules>\n        </rewrite>\n    </system.webServer>\n</configuration>"
+  },
+  {
+    "file": "src/benchmark/RemotePingPong/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <runtime>\n    <gcServer enabled=\"true\"/>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/benchmark/PingPong/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n  <runtime>\n    <gcServer enabled=\"true\"/>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/benchmark/SpawnBenchmark/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <runtime>\n    <gcServer enabled=\"true\"/>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/TimeServer/TimeClient/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n  <startup>\n    <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n  </startup>\n  <akka>\n    <hocon>\n      <![CDATA[\n          akka {  \n            log-config-on-start = on\n            stdout-loglevel = DEBUG\n            loglevel = ERROR\n            actor {\n                provider = \"Akka.Remote.RemoteActorRefProvider, Akka.Remote\"\n        \n                debug {  \n                  receive = off \n                  autoreceive = on\n                  lifecycle = on\n                  event-stream = on\n                  unhandled = on\n                }\n            }\n\n            deployment{\n                /user/timeChecker{\n                    router = round-robin-pool\n                    nr-of-instances = 10\n                }\n            }\n\n            remote {\n\t\t        log-received-messages = off\n\t\t        log-sent-messages = off\n\n                #this is the new upcoming remoting support, which enables multiple transports\n               dot-netty.tcp {\n                    transport-class = \"Akka.Remote.Transport.DotNetty.TcpTransport, Akka.Remote\"\n\t\t            applied-adapters = []\n\t\t            transport-protocol = tcp\n\t\t            port = 0 #bind to any available port\n\t\t              hostname = 0.0.0.0 #listens on ALL ips for this machine\n                  public-hostname = localhost #but only accepts connections on localhost (usually 127.0.0.1)\n                  dns-use-ipv6 = true\n                }\n                log-remote-lifecycle-events = INFO\n            }\n\n        }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/TimeServer/TimeServer/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <akka>\n    <hocon>\n      <![CDATA[\n         akka {  \n          log-config-on-start = on\n          stdout-loglevel = DEBUG\n          loglevel = ERROR\n          actor {\n              provider = \"Akka.Remote.RemoteActorRefProvider, Akka.Remote\"\n        \n              debug {  \n                receive = on \n                autoreceive = on\n                lifecycle = on\n                event-stream = on\n                unhandled = on\n              }\n          }\n\n          deployment{\n              /user/time{\n                  router = round-robin-pool\n                  nr-of-instances = 10\n              }\n          }\n\n          remote {\n\t\t      log-received-messages = off\n\t\t      log-sent-messages = off\n\n              #this is the new upcoming remoting support, which enables multiple transports\n             dot-netty.tcp {\n                  transport-class = \"Akka.Remote.Transport.DotNetty.TcpTransport, Akka.Remote\"\n\t\t          applied-adapters = []\n\t\t          transport-protocol = tcp\n\t\t          port = 9391\n\t\t          hostname = 0.0.0.0 #listens on ALL ips for this machine\n                  public-hostname = localhost #but only accepts connections on localhost (usually 127.0.0.1)\n              }\n              log-remote-lifecycle-events = INFO\n          }\n\n      }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/RemoteDeploy/System1/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"Newtonsoft.Json\" publicKeyToken=\"30ad4fe6b2a6aeed\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.5.0.0\" newVersion=\"4.5.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/RemoteDeploy/System2/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"Newtonsoft.Json\" publicKeyToken=\"30ad4fe6b2a6aeed\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.5.0.0\" newVersion=\"4.5.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/FSharp.Deploy.Remote/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"FSharp.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.3.0.0\" newVersion=\"4.3.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Cluster/Roles/Samples.Cluster.Transformation/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n  <startup>\n    <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n  </startup>\n  <akka>\n    <hocon>\n      <![CDATA[\n          akka {\n            actor {\n              provider = cluster\n            }\n            \n            remote {\n              log-remote-lifecycle-events = DEBUG\n              dot-netty.tcp {\n                hostname = \"127.0.0.1\"\n                port = 0\n              }\n            }\n\n            cluster {\n              seed-nodes = [\n                \"akka.tcp://ClusterSystem@127.0.0.1:2551\",\n                \"akka.tcp://ClusterSystem@127.0.0.1:2552\"]\n\n              #auto-down-unreachable-after = 10s\n            }\n          }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Cluster/Routing/Samples.Cluster.ConsistentHashRouting/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n  <startup>\n    <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n  </startup>\n  <akka>\n    <hocon>\n      <![CDATA[\n          akka {\n            actor {\n              provider = \"Akka.Cluster.ClusterActorRefProvider, Akka.Cluster\"\n            }\n            \n            remote {\n              log-remote-lifecycle-events = DEBUG\n              dot-netty.tcp {\n                hostname = \"127.0.0.1\"\n                port = 0\n              }\n            }\n\n            cluster {\n              seed-nodes = [\n                \"akka.tcp://ClusterSystem@127.0.0.1:2551\",\n                \"akka.tcp://ClusterSystem@127.0.0.1:2552\"]\n\n              auto-down-unreachable-after = 10s\n              min-nr-of-members = 4 #both front-ends and at least 2 back-ends\n            }\n          }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Cluster/Samples.Cluster.Simple/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n  <startup>\n    <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n  </startup>\n  <akka>\n    <hocon>\n      <![CDATA[\n          akka {\n            actor {\n              provider = cluster\n            }\n            \n            remote {\n              log-remote-lifecycle-events = DEBUG\n              dot-netty.tcp {\n                hostname = \"localhost\"\n                port = 0\n              }\n            }\n\n            cluster {\n              seed-nodes = [\n                \"akka.tcp://ClusterSystem@localhost:2551\",\n                \"akka.tcp://ClusterSystem@localhost:2552\"]\n\n              #auto-down-unreachable-after = 30s\n            }\n          }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Streams/StreamsExamples/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "src/examples/HelloWorld/HelloAkka/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.8\"/>\n    </startup>\n</configuration>\n"
+  },
+  {
+    "file": "src/examples/HelloWorld/FSharp.HelloAkka/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"FSharp.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.3.0.0\" newVersion=\"4.3.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Routing/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "src/examples/FSharp.Deploy.Local/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"FSharp.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.3.0.0\" newVersion=\"4.3.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/PersistenceExample.FsApi/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"FSharp.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.3.0.0\" newVersion=\"4.3.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/FSharp.Api/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n  <runtime>\n    <assemblyBinding xmlns=\"urn:schemas-microsoft-com:asm.v1\">\n      <dependentAssembly>\n        <assemblyIdentity name=\"FSharp.Core\" publicKeyToken=\"b03f5f7f11d50a3a\" culture=\"neutral\" />\n        <bindingRedirect oldVersion=\"0.0.0.0-4.3.0.0\" newVersion=\"4.3.0.0\" />\n      </dependentAssembly>\n    </assemblyBinding>\n  </runtime>\n</configuration>"
+  },
+  {
+    "file": "src/examples/Stocks/SymbolLookup/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "src/examples/AppConfig/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {
+      "myConnectionString": "myDB://MyConnectionString"
+    },
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n\n  <connectionStrings>\n    <clear/>\n    <add name=\"myConnectionString\" connectionString=\"myDB://MyConnectionString\"/>\n  </connectionStrings>\n\n  <akka>\n    <hocon>\n      <![CDATA[\nakka.persistence.journal.sqlite = {\n  connection-string-name = myConnectionString\n  replay-filter = {\n    mode = off\n  }\n}\n      ]]>\n    </hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/examples/FaultTolerance/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        <supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v4.5\" />\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/app.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\"/>\n  </configSections>\n\n  <akka>\n    <hocon>\n      <![CDATA[\n        akka {\n          actor {\n            default-dispatcher.throughput = 1 // Amplify the effects of fuzzing\n          }\n\n          stream.materializer.debug.fuzzing-mode = on\n          stream.secret-test-fuzzing-warning-disable = 42\n        }\n      ]]>\n    </hocon>\n  </akka>\n</configuration>\n\n"
+  },
+  {
+    "file": "src/core/Akka.FSharp.Tests/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n  <akka>\n    <hocon><![CDATA[\n      akka {\n        test {\n          value = 10\n        }\n      }\n      ]]></hocon>\n  </akka>\n</configuration>"
+  },
+  {
+    "file": "src/core/Akka.Tests/App.config",
+    "repo": "akka.net",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n  <configSections>\n    <section name=\"akka\" type=\"Akka.Configuration.Hocon.AkkaConfigurationSection, Akka\" />\n  </configSections>\n\n  <akka>\n    <hocon>\n      <![CDATA[\n          akka {\n            log-config-on-start = off\n            stdout-loglevel = INFO\n            loglevel = ERROR\n            actor {\n              debug {\n                  receive = on\n                  autoreceive = on\n                  lifecycle = on\n                  event-stream = on\n                  unhandled = on\n              }\n            }          \n          }\n          nonsense.entry = true\n      ]]>\n    </hocon>\n  </akka>\n</configuration>\n\n"
+  }
+]

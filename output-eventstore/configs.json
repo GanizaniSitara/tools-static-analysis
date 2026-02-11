@@ -1,0 +1,48 @@
+[
+  {
+    "file": "src/KurrentDB.Surge.Testing/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Serilog\": {\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft\": \"Warning\",\n        \"Grpc\": \"Information\",\n        \"Grpc.Net.Client.Internal.GrpcCall\": \"Fatal\",\n        \"EventStore.Core.Caching.DynamicCacheManager \": \"Information\",\n        \"EventStore.Core.MetricsBootstrapper\": \"Warning\",\n        \"EventStore.Core.Metrics.QueueTrackers\": \"Warning\",\n        \"EventStore.Projections.Core.Services.Management.ProjectionManager\": \"Information\",\n        \"EventStore.Core.Services.PersistentSubscription.PersistentSubscriptionService\": \"Information\",\n        \"EventStore.Projections.Core.ProjectionsSubsystem\": \"Information\",\n        \"EventStore.Projections.Core.Services.Management.ProjectionCoreCoordinator\": \"Information\",\n        \"EventStore.Core.Services.Gossip.GossipServiceBase\": \"Warning\",\n        \"EventStore.Core.Services.Storage.EpochManager.Epochmanager\": \"Warning\",\n        \"EventStore.Core.Services.ElectionsService\": \"Warning\",\n        \"EventStore.Core.Util.MiniWeb \": \"Information\",\n        \"EventStore.Core.Authorization\": \"Warning\",\n        \"EventStore.Core.Authentication\": \"Warning\",\n        \"EventStore.Core.Telemetry.TelemetrySink\": \"Warning\",\n        \"EventStore.Core.Services.Storage.ReaderIndex.IndexCommitter\": \"Information\",\n        \"EventStore.Core.Hashing.NetMD5Provider\": \"Warning\",\n        \"EventStore.Core.Services.Storage.StorageScavenger\": \"Information\",\n        \"EventStore.Core.Caching.DynamicCacheManager\": \"Warning\"\n      }\n    },\n    \"Enrich\": [\"FromLogContext\", \"WithThreadId\"],\n    \"WriteTo\": [\n      {\n        \"Name\": \"Console\",\n        \"Args\": {\n          \"theme\": \"Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Literate, Serilog.Sinks.Console\",\n          \"outputTemplate\": \"[{Timestamp:mm:ss.fff} {Level:u3}] {TestRunId} ({ThreadId:000}) {SourceContext} {Message}{NewLine}{Exception}\"\n        }\n      }\n    ]\n  },\n  \"KurrentDB\": {\n      \"DataProtection\": {\n          \"Token\": \"secret-dev-token\"\n      }\n  }\n}\n"
+  },
+  {
+    "file": "src/KurrentDB.Ammeter/appsettings.json",
+    "repo": "src",
+    "type": "json-parse-error",
+    "raw": "{\n\t\"ParallelLimit\": -1, // -1 limits to Environment.ProcessorCount\n\t\"Node\": {\n\t\t\"Insecure\": false,\n\t\t\"Username\": \"admin\",\n\t\t\"Password\": \"changeit\", // or via env NODE__PASSWORD\n\t\t\"NodeType\": \"embedded\", // container, embedded, external\n\t\t\"Container\": {\n\t\t\t\"CleanUp\": true,\n\t\t\t\"Registry\": \"docker.kurrent.io/kurrent-latest\",\n\t\t\t\"Repository\": \"kurrentdb\",\n\t\t\t\"Tag\": \"25.1.0\"\n\t\t},\n\t\t\"Embedded\": {\n\t\t\t\"TrustedRootCertificatesPath\": \"D:/Kurrent/cluster/certs/ca\",\n\t\t\t\"CertificateFile\": \"D:/Kurrent/cluster"
+  },
+  {
+    "file": "src/KurrentDB.SecondaryIndexing.LoadTesting/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n\t\"KurrentDBConnectionString\": \"kurrentdb://127.0.0.1:2113?tls=false\",\n\t\"EnvironmentType\": \"gRPC\",\n\t\"DuckDb\": {\n\t\t\"ClientType\": \"Quack\"\n\t},\n\t\"Logging\": {\n\t\t\"LogLevel\": {\n\t\t\t\"Amazon\": \"Warning\",\n\t\t\t\"Default\": \"Debug\",\n\t\t\t\"KurrentDB.Core.Services.Transport.Enumerators\": \"Information\",\n\t\t\t\"Grpc\": \"Critical\",\n\t\t\t\"Microsoft\": \"Warning\",\n\t\t\t\"System\": \"Warning\"\n\t\t}\n\t}\n}\n"
+  },
+  {
+    "file": "src/KurrentDB.UI/wwwroot/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "src/Connectors/KurrentDB.Plugins.Connectors/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"_Kestrel\": {\n    \"EndpointDefaults\": {\n      \"Protocols\": \"Http1AndHttp2\"\n    }\n  },\n  \"Serilog\": {\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft\": \"Warning\",\n        \"Grpc\": \"Information\",\n        \"Grpc.Net.Client.Internal.GrpcCall\": \"Fatal\",\n        \"EventStore.Core.Caching.DynamicCacheManager \": \"Information\",\n        \"EventStore.Core.MetricsBootstrapper\": \"Warning\",\n        \"EventStore.Core.Metrics.QueueTrackers\": \"Warning\",\n        \"EventStore.Core.Metrics.MessageLabelConfigurator\": \"Warning\",\n        \"EventStore.Projections.Core.Services.Management.ProjectionManager\": \"Information\",\n        \"EventStore.Core.Services.PersistentSubscription.PersistentSubscriptionService\": \"Information\",\n        \"EventStore.Projections.Core.ProjectionsSubsystem\": \"Information\",\n        \"EventStore.Projections.Core.Services.Management.ProjectionCoreCoordinator\": \"Information\",\n        \"EventStore.Core.Services.Gossip.GossipServiceBase\": \"Warning\",\n        \"EventStore.Core.Services.Storage.EpochManager.Epochmanager\": \"Warning\",\n        \"EventStore.Core.Services.ElectionsService\": \"Warning\",\n        \"EventStore.Core.Util.MiniWeb \": \"Information\",\n        \"EventStore.Core.Authorization\": \"Warning\",\n        \"EventStore.Core.Authentication\": \"Warning\",\n        \"EventStore.Core.Telemetry.TelemetrySink\": \"Warning\",\n        \"EventStore.Core.Services.Storage.ReaderIndex.IndexCommitter\": \"Information\",\n        \"EventStore.Core.Hashing.NetMD5Provider\": \"Warning\",\n        \"EventStore.Core.Services.Storage.StorageScavenger\": \"Information\",\n        \"EventStore.Core.Caching.DynamicCacheManager\": \"Warning\",\n        \"EventStore.Core.Services.Transport.Enumerators\": \"Warning\"\n      }\n    },\n    \"Enrich\": [\"FromLogContext\", \"WithThreadId\"]\n  }\n}"
+  },
+  {
+    "file": "src/KurrentDB.Testing/appsettings.json",
+    "repo": "src",
+    "type": "json",
+    "connectionStrings": {},
+    "urls": {},
+    "raw": "{\n  \"Serilog\": {\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft\": \"Warning\",\n        \"System\": \"Warning\",\n        \"Grpc\": \"Debug\",\n        \"KurrentDB.Core.Services.Transport.Enumerators\": \"Information\",\n        \"KurrentDB.Core.Caching.DynamicCacheManager \": \"Information\",\n        \"KurrentDB.Core.MetricsBootstrapper\": \"Warning\",\n        \"KurrentDB.Core.Metrics.QueueTrackers\": \"Warning\",\n        \"KurrentDB.Projections.Core.Services.Management.ProjectionManager\": \"Information\",\n        \"KurrentDB.Core.Services.PersistentSubscription.PersistentSubscriptionService\": \"Information\",\n        \"KurrentDB.Projections.Core.ProjectionsSubsystem\": \"Information\",\n        \"KurrentDB.Projections.Core.Services.Management.ProjectionCoreCoordinator\": \"Information\",\n        \"KurrentDB.Core.Services.Gossip.GossipServiceBase\": \"Warning\",\n        \"KurrentDB.Core.Services.Storage.EpochManager.Epochmanager\": \"Warning\",\n        \"KurrentDB.Core.Services.ElectionsService\": \"Warning\",\n        \"KurrentDB.Core.Util.MiniWeb \": \"Information\",\n        \"KurrentDB.Core.Authorization\": \"Warning\",\n        \"KurrentDB.Core.Authentication\": \"Warning\",\n        \"KurrentDB.Core.Telemetry.TelemetrySink\": \"Warning\",\n        \"KurrentDB.Core.Services.Storage.ReaderIndex.IndexCommitter\": \"Information\",\n        \"KurrentDB.Core.Hashing.NetMD5Provider\": \"Warning\",\n        \"KurrentDB.Core.Services.Storage.StorageScavenger\": \"Information\",\n        \"KurrentDB.Core.Caching.DynamicCacheManager\": \"Warning\"\n      }\n    },\n    \"Using\": [\n      \"Serilog.Sinks.Seq\"\n    ],\n    \"WriteTo\": [\n      {\n        \"Name\": \"Seq\",\n        \"Args\": {\n          \"serverUrl\": \"http://localhost:5341\"\n        }\n      }\n    ]\n  }\n}\n"
+  }
+]

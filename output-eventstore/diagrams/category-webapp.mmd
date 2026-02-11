@@ -1,0 +1,20 @@
+graph TD
+    subgraph webapp["Webapp"]
+        src_KurrentDB_Plugins_Api_V2["KurrentDB.Plugins.Api.V2"]
+        src_KurrentDB_Api_V2["KurrentDB.Api.V2"]
+        src_KurrentDB_ClusterNode_Web["KurrentDB.ClusterNode.Web"]
+        src_KurrentDB["KurrentDB"]
+    end
+    ext_test(["Test (5)"])
+    ext_library(["Library (11)"])
+    ext_application(["Application (7)"])
+    ext_connector(["Connector (1)"])
+    src_KurrentDB_Plugins_Api_V2 --> src_KurrentDB_Api_V2
+    src_KurrentDB --> src_KurrentDB_ClusterNode_Web
+    src_KurrentDB --> src_KurrentDB_Plugins_Api_V2
+    ext_test -.-> src_KurrentDB_Api_V2
+    src_KurrentDB_Api_V2 -.-> ext_library
+    ext_test -.-> src_KurrentDB
+    src_KurrentDB -.-> ext_application
+    src_KurrentDB -.-> ext_library
+    src_KurrentDB -.-> ext_connector

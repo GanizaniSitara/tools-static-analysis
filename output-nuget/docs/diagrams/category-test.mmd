@@ -1,0 +1,147 @@
+graph TD
+    subgraph test["Test"]
+        grp_NuGet_PackageManagement["NuGet.PackageManagement (4)"]
+        grp_NuGet_VisualStudio["NuGet.VisualStudio (4)"]
+        grp_NuGet_CommandLine["NuGet.CommandLine (3)"]
+        grp_NuGet_Build["NuGet.Build (3)"]
+        grp_NuGet_Packaging["NuGet.Packaging (2)"]
+        grp_NuGet_Protocol["NuGet.Protocol (2)"]
+        grp_NuGet_Commands["NuGet.Commands (2)"]
+        grp_NuGet_MSSigning["NuGet.MSSigning (2)"]
+        grp_NuGet_Tests["NuGet.Tests (2)"]
+        grp_UAPApp["UAPApp"]
+        grp_ClassLibrary1["ClassLibrary1"]
+        grp_WebApplication["WebApplication"]
+        grp_BuildIntegratedClassLibrary["BuildIntegratedClassLibrary"]
+        grp_EmptyMvcApplication["EmptyMvcApplication"]
+        grp_ConsoleApp["ConsoleApp"]
+        grp_ClassLibrary47["ClassLibrary47"]
+        grp_WPFApplication["WPFApplication"]
+        grp_ConsoleApp10["ConsoleApp10"]
+        grp_classlibrary["classlibrary"]
+        grp_consoleapplication["consoleapplication"]
+        grp_ClassLibrary6["ClassLibrary6"]
+        grp_BuildIntegratedProj["BuildIntegratedProj"]
+        grp_Dotnet_Integration["Dotnet.Integration.Test"]
+        grp_Msbuild_Integration["Msbuild.Integration.Test"]
+        grp_NuGet_XPlat["NuGet.XPlat.FuncTest"]
+        grp_NuGet_Signing["NuGet.Signing.CrossFramework.Test"]
+        grp_Microsoft_Build["Microsoft.Build.NuGetSdkResolver.Test"]
+        grp_NuGet_Frameworks["NuGet.Frameworks.Test"]
+        grp_NuGet_Common["NuGet.Common.Test"]
+        grp_NuGet_DependencyResolver["NuGet.DependencyResolver.Core.Tests"]
+        grp_NuGet_ProjectModel["NuGet.ProjectModel.Test"]
+        grp_NuGet_Credentials["NuGet.Credentials.Test"]
+        grp_NuGet_LibraryModel["NuGet.LibraryModel.Tests"]
+        grp_NuGet_Versioning["NuGet.Versioning.Test"]
+        grp_NuGet_Resolver["NuGet.Resolver.Test"]
+        grp_NuGet_Configuration["NuGet.Configuration.Test"]
+        grp_NuGet_Shared["NuGet.Shared.Tests"]
+        grp_GenerateTestPackages["GenerateTestPackages"]
+        grp_GenerateLicenseList["GenerateLicenseList"]
+        grp_SampleCommandLineExtensions["SampleCommandLineExtensions"]
+        grp_API_Test["API.Test"]
+        grp_TestableCredentialProvider["TestableCredentialProvider"]
+        grp_TestablePlugin["TestablePlugin"]
+        grp_NuGet_SolutionRestoreManager["NuGet.SolutionRestoreManager.Test"]
+        grp_NuGet_Tools["NuGet.Tools.Test"]
+        grp_NuGet_Indexing["NuGet.Indexing.Test"]
+        grp_NuGetConsole_Host["NuGetConsole.Host.PowerShell.Test"]
+        grp_project1["project1"]
+        grp_project2["project2"]
+        grp_Microsoft_Internal["Microsoft.Internal.NuGet.Testing.SignedPackages"]
+        grp_Test_Utility["Test.Utility"]
+        grp_VisualStudio_Test["VisualStudio.Test.Utility"]
+        grp_NuGet_Console["NuGet.Console.TestContract"]
+        grp_PackageReferenceSdk["PackageReferenceSdk"]
+        grp_NuGet_OptProf["NuGet.OptProf"]
+    end
+    ext_library(["Library (27)"])
+    ext_tool(["Tool (4)"])
+    ext_application(["Application (2)"])
+    grp_NuGet_CommandLine -->|3| grp_Test_Utility
+    grp_NuGet_Build -->|3| grp_Test_Utility
+    grp_NuGet_PackageManagement -->|3| grp_VisualStudio_Test
+    grp_NuGet_VisualStudio -->|3| grp_VisualStudio_Test
+    grp_NuGet_Packaging -->|2| grp_NuGet_Configuration
+    grp_NuGet_Packaging -->|2| grp_Test_Utility
+    grp_NuGet_Protocol -->|2| grp_Test_Utility
+    grp_NuGet_Commands -->|2| grp_Test_Utility
+    grp_NuGet_MSSigning -->|2| grp_Test_Utility
+    grp_NuGet_CommandLine -->|2| grp_NuGet_Configuration
+    grp_NuGet_Tests -->|2| grp_Test_Utility
+    grp_NuGet_Tests -->|2| grp_NuGet_Console
+    grp_NuGet_Tests -->|2| grp_NuGet_PackageManagement
+    grp_Dotnet_Integration -->|1| grp_NuGet_XPlat
+    grp_Dotnet_Integration -->|1| grp_Test_Utility
+    grp_NuGet_Protocol -->|1| grp_TestablePlugin
+    grp_Msbuild_Integration -->|1| grp_Test_Utility
+    grp_NuGet_XPlat -->|1| grp_Test_Utility
+    grp_NuGet_XPlat -->|1| grp_NuGet_CommandLine
+    grp_NuGet_XPlat -->|1| grp_NuGet_Configuration
+    grp_NuGet_Signing -->|1| grp_NuGet_Packaging
+    grp_NuGet_Signing -->|1| grp_NuGet_Configuration
+    grp_NuGet_Signing -->|1| grp_Test_Utility
+    grp_NuGet_MSSigning -->|1| grp_NuGet_CommandLine
+    grp_Microsoft_Build -->|1| grp_Test_Utility
+    grp_NuGet_Common -->|1| grp_Test_Utility
+    grp_NuGet_PackageManagement -->|1| grp_Test_Utility
+    grp_NuGet_DependencyResolver -->|1| grp_Test_Utility
+    grp_NuGet_ProjectModel -->|1| grp_Test_Utility
+    grp_NuGet_Commands -->|1| grp_NuGet_Configuration
+    grp_NuGet_Credentials -->|1| grp_Test_Utility
+    grp_NuGet_Versioning -->|1| grp_Test_Utility
+    grp_NuGet_Build -->|1| grp_NuGet_Configuration
+    grp_NuGet_Configuration -->|1| grp_Test_Utility
+    grp_NuGet_Shared -->|1| grp_Test_Utility
+    grp_NuGet_SolutionRestoreManager -->|1| grp_VisualStudio_Test
+    grp_NuGet_Tools -->|1| grp_VisualStudio_Test
+    grp_NuGet_CommandLine -->|1| grp_SampleCommandLineExtensions
+    grp_NuGet_CommandLine -->|1| grp_TestableCredentialProvider
+    grp_NuGetConsole_Host -->|1| grp_VisualStudio_Test
+    grp_NuGet_VisualStudio -->|1| grp_NuGet_PackageManagement
+    grp_Test_Utility -->|1| grp_Microsoft_Internal
+    grp_VisualStudio_Test -->|1| grp_Microsoft_Internal
+    grp_VisualStudio_Test -->|1| grp_Test_Utility
+    grp_Dotnet_Integration -.->|2| ext_library
+    grp_Dotnet_Integration -.->|1| ext_tool
+    grp_NuGet_Packaging -.->|2| ext_library
+    grp_Msbuild_Integration -.->|3| ext_library
+    grp_Msbuild_Integration -.->|1| ext_tool
+    grp_NuGet_XPlat -.->|1| ext_application
+    grp_NuGet_XPlat -.->|1| ext_library
+    grp_NuGet_Signing -.->|1| ext_tool
+    grp_NuGet_Signing -.->|2| ext_library
+    grp_NuGet_Signing -.->|1| ext_application
+    grp_NuGet_MSSigning -.->|2| ext_library
+    grp_NuGet_Build -.->|2| ext_library
+    grp_Microsoft_Build -.->|1| ext_library
+    grp_NuGet_Frameworks -.->|2| ext_library
+    grp_NuGet_CommandLine -.->|2| ext_application
+    grp_NuGet_Common -.->|1| ext_library
+    grp_NuGet_PackageManagement -.->|11| ext_library
+    grp_NuGet_DependencyResolver -.->|1| ext_library
+    grp_NuGet_Build -.->|2| ext_tool
+    grp_NuGet_ProjectModel -.->|1| ext_library
+    grp_NuGet_Commands -.->|1| ext_library
+    grp_NuGet_Credentials -.->|1| ext_library
+    grp_NuGet_LibraryModel -.->|1| ext_library
+    grp_NuGet_Versioning -.->|1| ext_library
+    grp_NuGet_Resolver -.->|1| ext_library
+    grp_NuGet_Protocol -.->|1| ext_library
+    grp_NuGet_Configuration -.->|1| ext_library
+    grp_SampleCommandLineExtensions -.->|1| ext_application
+    grp_API_Test -.->|1| ext_library
+    grp_TestablePlugin -.->|2| ext_library
+    grp_NuGet_VisualStudio -.->|3| ext_library
+    grp_NuGet_SolutionRestoreManager -.->|2| ext_library
+    grp_NuGet_Tools -.->|1| ext_tool
+    grp_NuGet_Indexing -.->|1| ext_library
+    grp_NuGetConsole_Host -.->|1| ext_library
+    grp_Microsoft_Internal -.->|1| ext_library
+    grp_Test_Utility -.->|1| ext_library
+    grp_VisualStudio_Test -.->|2| ext_library
+    grp_NuGet_Tests -.->|4| ext_library
+    grp_NuGet_Tests -.->|2| ext_tool
+    grp_NuGet_Console -.->|1| ext_tool
+    grp_NuGet_OptProf -.->|1| ext_library

@@ -1,0 +1,4079 @@
+[
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 5590,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = File.Create(projectFile))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 5641,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = File.Create(projectFile))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 6205,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 6279,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/PackCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 6347,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 118,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 157,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 220,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 303,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 374,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 449,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 530,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 611,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 672,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 758,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile1, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 913,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile1, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1338,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile1, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1397,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile1, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1555,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFilePath, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1618,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(p2pProjectFilePath, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1628,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFilePath, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1682,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(libraryProjectFilePath, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1704,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(consumerProjectFilePath, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1859,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1916,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1959,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 2466,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 2510,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 2654,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile1, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 2674,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(packagesFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3020,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3088,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3142,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3227,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3309,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3359,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3394,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3432,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3505,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3594,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3683,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(project2File, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3732,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(project1File, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3807,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(project1File, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3883,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(projectFile, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/Dotnet.Integration.Test/DotnetRestoreTests.cs",
+    "repo": "NuGet.Client",
+    "line": 3983,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(project1File, FileMode.Open, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/PrimarySignatureTests.cs",
+    "repo": "NuGet.Client",
+    "line": 161,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var entryStream = signatureFile.Open())"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/RepositoryCountersignatureTests.cs",
+    "repo": "NuGet.Client",
+    "line": 23,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCountersignatureTests",
+    "context": "public class RepositoryCountersignatureTests"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/IntegrityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 141,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/IntegrityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 185,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/IntegrityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 228,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/IntegrityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 269,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/IntegrityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 313,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignatureTrustAndValidityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 841,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryPrimarySignatures",
+    "context": "public class RepositoryPrimarySignatures"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignatureTrustAndValidityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1169,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCountersignatures",
+    "context": "public class RepositoryCountersignatures"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignatureTrustAndValidityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 822,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = test.PackageFile.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignatureTrustAndValidityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1090,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = test.PackageFile.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignatureTrustAndValidityVerificationProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1464,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream stream = test.PackageFile.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignedPackageIntegrityVerificationTests.cs",
+    "repo": "NuGet.Client",
+    "line": 72,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignedPackageIntegrityVerificationTests.cs",
+    "repo": "NuGet.Client",
+    "line": 133,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignedPackageIntegrityVerificationTests.cs",
+    "repo": "NuGet.Client",
+    "line": 167,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Packaging.FuncTest/SigningTests/SignedPackageIntegrityVerificationTests.cs",
+    "repo": "NuGet.Client",
+    "line": 201,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 35,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var httpClient = new HttpClient())"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 82,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 201,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(busyServer);"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 248,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(busyServer);"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 299,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(countingHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Protocol.FuncTest/Helpers/MockSourceRepository.cs",
+    "repo": "NuGet.Client",
+    "line": 12,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class MockSourceRepository",
+    "context": "internal class MockSourceRepository"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatTrustTests.cs",
+    "repo": "NuGet.Client",
+    "line": 122,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "int result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatVerifyTests.cs",
+    "repo": "NuGet.Client",
+    "line": 37,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatVerifyTests.cs",
+    "repo": "NuGet.Client",
+    "line": 59,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Assert.Throws<CommandParsingException>(() => testApp.Execute(args));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatVerifyTests.cs",
+    "repo": "NuGet.Client",
+    "line": 84,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/DotnetCliUtil.cs",
+    "repo": "NuGet.Client",
+    "line": 30,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(Path.Combine(path, fileName)).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 44,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 72,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 106,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 131,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 162,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 188,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 221,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 247,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 278,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 304,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 338,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 381,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 423,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 457,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var ex = Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatSignTests.cs",
+    "repo": "NuGet.Client",
+    "line": 481,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 55,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 74,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Assert.Throws<CommandParsingException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 99,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 116,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 146,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/ListPackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 177,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Assert.Throws<AggregateException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatAddPkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 131,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatAddPkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 231,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var exception = Assert.Throws<ArgumentException>(() => testApp.Execute(argList.ToArray()));"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatAddPkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 65,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectPath).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XPlatAddPkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 165,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectPath).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatRemovePkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 63,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = testApp.Execute(argList.ToArray());"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.XPlat.FuncTest/XplatRemovePkgTests.cs",
+    "repo": "NuGet.Client",
+    "line": 42,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectPath).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.FuncTests/NuGet.Commands.FuncTest/RestoreCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 710,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (File.Create(nupkgPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/Commands/PushCommandTest.cs",
+    "repo": "NuGet.Client",
+    "line": 1102,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "fileSnupkg = File.Create(snupkgFullPath);"
+  },
+  {
+    "file": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/Commands/TrustedSignersCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 58,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "command.Execute();"
+  },
+  {
+    "file": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/Commands/TrustedSignersCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 98,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "command.Execute();"
+  },
+  {
+    "file": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/Caching/CachingTestRunner.cs",
+    "repo": "NuGet.Client",
+    "line": 35,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = tc.Execute(args);"
+  },
+  {
+    "file": "test/NuGet.Clients.FuncTests/NuGet.CommandLine.FuncTest/Caching/CachingTestContext.cs",
+    "repo": "NuGet.Client",
+    "line": 432,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return NuGetExe.Execute(this, args);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Pack.Test/PackTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 50,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = target.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Pack.Test/PackTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 420,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = target.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.CommandLine.Xplat.Tests/Utility/XPlatUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 95,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(filePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.CommandLine.Xplat.Tests/Utility/XPlatUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 122,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(filePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.CommandLine.Xplat.Tests/MSBuildAPIUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 628,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(filePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.PackageManagement.Test/SourceRepositoryProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 12,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryProviderTests",
+    "context": "public class SourceRepositoryProviderTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.PackageManagement.Test/NuGetPackageManagerTests/OtherTests.cs",
+    "repo": "NuGet.Client",
+    "line": 91,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var w = new StreamWriter(File.Create(packagesConfigPath)))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/RuntimePackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 250,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/RuntimePackageTests.cs",
+    "repo": "NuGet.Client",
+    "line": 269,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/PackagesWithResourcesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 40,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/SourceRepositoryDependencyProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 29,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryDependencyProviderTests",
+    "context": "public class SourceRepositoryDependencyProviderTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/SourceRepositoryDependencyProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 954,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryDependencyProviderTest",
+    "context": "private sealed class SourceRepositoryDependencyProviderTest : IDisposable"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 45,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 107,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 169,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 233,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 316,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 408,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 497,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 592,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 662,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 722,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 788,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 851,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 917,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 986,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1057,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1128,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1202,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1273,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1349,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1425,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1501,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1566,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1826,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Commands.Test/ContentFilesTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1860,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 37,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": ".Setup(x => x.Execute(It.IsAny<ProcessStartInfo>(), It.IsAny<CancellationToken>(), out testStdOut))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 68,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "x => x.Execute(It.IsAny<ProcessStartInfo>(), It.IsAny<CancellationToken>(), out _testStdOut),"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 95,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 125,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 155,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 184,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 381,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": ".Setup(x => x.Execute(It.IsAny<ProcessStartInfo>(), It.IsAny<CancellationToken>(), out _testStdOut))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 494,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Setup(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 500,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Setup(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 545,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Setup(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 569,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "x => x.Execute(It.IsAny<ProcessStartInfo>(), It.IsAny<CancellationToken>(), out _testStdOut),"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 609,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Credentials.Test/PluginCredentialProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 638,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "mockProvider.Verify(x => x.Execute("
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 250,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "new NuGet.Packaging.Core.PackageDependency(\"System.Data.SqlClient\", new VersionRange(NuGetVersion.Parse(\"1.0.0-beta1\"))),"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 258,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "new NuGet.Packaging.Core.PackageDependency(\"System.Data.SqlClient\", new VersionRange(NuGetVersion.Parse(\"1.0.0-beta2\"))),"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 971,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "packages.Add(new ResolverPackage(\"System.Data.SqlClient\", NuGetVersion.Parse(\"1.0.0-beta1\"), null, true, false));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 972,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "packages.Add(new ResolverPackage(\"System.Data.SqlClient\", NuGetVersion.Parse(\"1.0.0-beta1\"), null, true, false));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 975,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "packages.Add(new ResolverPackage(\"System.Data.SqlClient\", NuGetVersion.Parse(\"1.0.0-beta1\"), null, true, false));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Resolver.Test/ResolverData.cs",
+    "repo": "NuGet.Client",
+    "line": 976,
+    "pattern": "SqlClient",
+    "type": "database",
+    "match": "System.Data.SqlClient",
+    "context": "packages.Add(new ResolverPackage(\"System.Data.SqlClient\", NuGetVersion.Parse(\"1.0.0-beta1\"), null, true, false));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageExtractorTests.cs",
+    "repo": "NuGet.Client",
+    "line": 279,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(packageFile, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackagesConfigWriterTests.cs",
+    "repo": "NuGet.Client",
+    "line": 351,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = File.Create(path))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageBuilderTest.cs",
+    "repo": "NuGet.Client",
+    "line": 3322,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var nupkgStream = File.Create(packagePath))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/SigningTests/RepositorySignatureInfoUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureInfoUtilityTests",
+    "context": "public class RepositorySignatureInfoUtilityTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/SigningTests/SigningUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 650,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fileStream = signedPackageFile.Create())"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/SigningTests/RepositoryCountersignatureTests.cs",
+    "repo": "NuGet.Client",
+    "line": 17,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCountersignatureTests",
+    "context": "public class RepositoryCountersignatureTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/SigningTests/RepositorySignPackageRequestTests.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignPackageRequestTests",
+    "context": "public class RepositorySignPackageRequestTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageArchiveReaderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1890,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var signedPackage = File.Open(signedPackagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageExtraction/ZipArchiveExtensionsTests.cs",
+    "repo": "NuGet.Client",
+    "line": 47,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "fileStream = File.Open(tempFile, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/PackageExtraction/ZipArchiveExtensionsTests.cs",
+    "repo": "NuGet.Client",
+    "line": 87,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream fileStream = File.Open(tempFile, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/InvalidFrameworkFolderRuleTests.cs",
+    "repo": "NuGet.Client",
+    "line": 45,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var stream = File.Create(Path.Combine(testDirectory, \"lib\", \"random_tfm\", \"test.dll\"));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/InvalidFrameworkFolderRuleTests.cs",
+    "repo": "NuGet.Client",
+    "line": 107,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var stream = File.Create(Path.Combine(testDirectory, \"lib\", \"net46\", \"test.dll\"));"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Packaging.Test/RepositoryMetadataTests.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryMetadataTests",
+    "context": "public class RepositoryMetadataTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 358,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInNuGetPluginPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 359,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 380,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 402,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInNuGetPluginPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 403,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 426,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInNuGetPluginPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 427,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginInPathDirectoryFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 448,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 471,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 493,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(validPluginFile);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 494,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(invalidPluginFile);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 535,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 552,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 569,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(nonPluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 586,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 612,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 633,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Plugins/PluginDiscovererTests.cs",
+    "repo": "NuGet.Client",
+    "line": 654,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(pluginFilePath).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpHandlerResourceV3ProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 223,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(clientHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpHandlerResourceV3ProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 253,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(clientHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/NuGetv3LocalRepositoryTests.cs",
+    "repo": "NuGet.Client",
+    "line": 23,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class NuGetv3LocalRepositoryTests",
+    "context": "public class NuGetv3LocalRepositoryTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpSourceAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 362,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(handler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpSourceAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 444,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using var client = new HttpClient(handler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpSourceAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 563,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var client = new HttpClient(handler))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpSourceAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 922,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var client = new HttpClient(handler))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/ProxyAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 282,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var client = new HttpClient(handler))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/StsAuthenticationHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 216,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var client = new HttpClient(handler))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 45,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "using (var httpClient = new HttpClient(testHandler))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 85,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 124,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 157,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 192,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 226,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 269,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 304,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 339,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 378,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 430,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 477,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(testHandler);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/HttpSource/HttpRetryHandlerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 513,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var client = new HttpClient(busyServer);"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/RepositoryTests.cs",
+    "repo": "NuGet.Client",
+    "line": 12,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryTests",
+    "context": "public class RepositoryTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Providers/RepositorySignatureResourceProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 25,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureResourceProviderTests",
+    "context": "public class RepositorySignatureResourceProviderTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Protocol.Tests/Resources/RepositorySignatureResourceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 21,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureResourceTests",
+    "context": "public class RepositorySignatureResourceTests"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/NuGetMessageTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 27,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/NuGetMessageTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 56,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageDownloadsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 31,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageDownloadsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 66,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageDownloadsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 94,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageDownloadsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 126,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 47,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 88,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 129,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 193,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 245,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 288,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 332,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 377,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/CheckForDuplicateNuGetItemsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 422,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 168,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 200,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 237,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 291,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 319,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 347,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 384,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 545,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 588,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 633,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 672,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreSettingTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 707,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreProjectStyleTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 34,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "task.Execute().Should().BeTrue();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreProjectStyleTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 51,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "task.Execute().Should().BeTrue();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreProjectStyleTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 75,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "task.Execute().Should().BeTrue();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreProjectStyleTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 97,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "task.Execute().Should().BeTrue();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreProjectStyleTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 131,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "task.Execute().Should().BeTrue();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreNuGetAuditSuppressionsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 24,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreNuGetAuditSuppressionsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 52,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestoreNuGetAuditSuppressionsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 77,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageReferencesTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageReferencesTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 75,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageReferencesTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 115,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageReferencesTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 157,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetRestorePackageReferencesTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 186,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetGlobalPropertyValueTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetGlobalPropertyValueTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 53,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 35,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 67,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 97,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 126,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 145,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/WarnForInvalidProjectsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 162,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetCentralPackageVersionsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 36,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetCentralPackageVersionsTaskTests.cs",
+    "repo": "NuGet.Client",
+    "line": 80,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 26,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 53,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 82,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 109,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 138,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 167,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 196,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 226,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 254,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 285,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 318,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 350,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 382,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 415,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 446,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 497,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 533,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 570,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 605,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 644,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 709,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Build.Tasks.Test/GetReferenceNearestTargetFrameworkTaskTest.cs",
+    "repo": "NuGet.Client",
+    "line": 754,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var result = task.Execute();"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Configuration.Test/SettingsTestUtils.cs",
+    "repo": "NuGet.Client",
+    "line": 19,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var file = File.Create(configurationPath))"
+  },
+  {
+    "file": "test/NuGet.Core.Tests/NuGet.Configuration.Test/SettingsFileParsingTests/RepositoryItemTests.cs",
+    "repo": "NuGet.Client",
+    "line": 14,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryItemTests",
+    "context": "public class RepositoryItemTests"
+  },
+  {
+    "file": "test/TestExtensions/GenerateTestPackages/Program.cs",
+    "repo": "NuGet.Client",
+    "line": 86,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var nupkgStream = File.Create(nupkgPath))"
+  },
+  {
+    "file": "test/TestExtensions/GenerateTestPackages/Program.cs",
+    "repo": "NuGet.Client",
+    "line": 190,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var snkStream = File.Create(KeyFileName))"
+  },
+  {
+    "file": "test/TestExtensions/GenerateTestPackages/Program.cs",
+    "repo": "NuGet.Client",
+    "line": 244,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var stream = File.Create(GetPackageFileFullPath(package)))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.SolutionRestoreManager.Test/SolutionUpToDateCheckerTests.cs",
+    "repo": "NuGet.Client",
+    "line": 880,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(path).Dispose();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Feeds/SourceRepositoryCreator.cs",
+    "repo": "NuGet.Client",
+    "line": 22,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryCreator",
+    "context": "public abstract class SourceRepositoryCreator"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Feeds/SourceRepositoryExtensionsTests.cs",
+    "repo": "NuGet.Client",
+    "line": 14,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryExtensionsTests",
+    "context": "public class SourceRepositoryExtensionsTests : SourceRepositoryCreator"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 342,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 432,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 587,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 851,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 986,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/LegacyPackageReferenceRestoreUtilityTests.cs",
+    "repo": "NuGet.Client",
+    "line": 1813,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectLockFilePath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/ProjectSystems/TestVSProjectAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestVSProjectAdapter",
+    "context": "internal class TestVSProjectAdapter : IVsProjectAdapter"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 179,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream readFileStreamBeforeAct = File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 185,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream readFileStreamAfterAct = File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 190,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream writeFileStream = File.Open(uri.LocalPath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 234,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream readFileStreamBeforeAct = File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 240,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream readFileStreamAfterAct = File.Open(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 245,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using FileStream writeFileStream = File.Open(uri.LocalPath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.VisualStudio.Test/Services/NuGetPackageFileServiceTests.cs",
+    "repo": "NuGet.Client",
+    "line": 531,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (FileStream nupkgStream = File.Create(zipPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGetLocalsCommandTest.cs",
+    "repo": "NuGet.Client",
+    "line": 135,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "localsCommand.Execute();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGetLocalsCommandTest.cs",
+    "repo": "NuGet.Client",
+    "line": 180,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "localsCommand.Execute();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/Commands/EulaCommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 23,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "EulaCommand.Execute(writer);"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreLoggingTests.cs",
+    "repo": "NuGet.Client",
+    "line": 2073,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(projectA.NuGetLockFileOutputPath).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 6359,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(packageLockFileName).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 6426,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "File.Create(packageLockFileName).Close();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 8936,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9021,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9096,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9170,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9244,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9326,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9442,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9624,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9797,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9865,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "solution.CentralPackageVersionsManagementFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9923,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "solution.CentralPackageVersionsManagementFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot, managePackageVersionsCentrally: false)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 9995,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/RestoreNETCoreTest.cs",
+    "repo": "NuGet.Client",
+    "line": 10077,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var cpvmFile = CentralPackageVersionsManagementFile.Create(pathContext.SolutionRoot)"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/CommandTests.cs",
+    "repo": "NuGet.Client",
+    "line": 21,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Assert.Throws<DivideByZeroException>(() => command.Execute());"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/NuGetRestoreCommandTest.cs",
+    "repo": "NuGet.Client",
+    "line": 1927,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var zip = new ZipArchive(File.Open(packageFileFullPath, FileMode.Open, FileAccess.ReadWrite), ZipArchiveMode.Update))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/Util.cs",
+    "repo": "NuGet.Client",
+    "line": 156,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fileStream = File.Create(packageFileFullPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/Util.cs",
+    "repo": "NuGet.Client",
+    "line": 202,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fileStream = File.Create(packageFileFullPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.CommandLine.Test/Util.cs",
+    "repo": "NuGet.Client",
+    "line": 257,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var fileStream = File.Create(packageFileFullPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.VisualStudio.Implementation.Test/PreinstalledRepositoryProviderTests.cs",
+    "repo": "NuGet.Client",
+    "line": 18,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class PreinstalledRepositoryProviderTests",
+    "context": "public class PreinstalledRepositoryProviderTests : IDisposable"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/ViewModels/PackageItemViewModelTests.cs",
+    "repo": "NuGet.Client",
+    "line": 552,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (FileStream nupkgStream = File.Create(zipPath))"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/ViewModels/ClearNuGetLocalsViewModelTests.cs",
+    "repo": "NuGet.Client",
+    "line": 32,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await viewModel.Execute();"
+  },
+  {
+    "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/ViewModels/ClearNuGetLocalsViewModelTests.cs",
+    "repo": "NuGet.Client",
+    "line": 41,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await viewModel.Execute();"
+  },
+  {
+    "file": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/TestRepositoryCertificateInfo.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class TestRepositoryCertificateInfo",
+    "context": "public class TestRepositoryCertificateInfo : IRepositoryCertificateInfo"
+  },
+  {
+    "file": "test/TestUtilities/Microsoft.Internal.NuGet.Testing.SignedPackages/CertificateRevocationList.cs",
+    "repo": "NuGet.Client",
+    "line": 58,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (StreamWriter streamWriter = new(File.Open(_crlFilePath, FileMode.Create)))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 60,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(result.File.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 108,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(result.File.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 152,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 181,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 220,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 247,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 274,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 294,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 348,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 374,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 395,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 418,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 462,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 499,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 539,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 590,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 638,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 665,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 692,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 719,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(file), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 779,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(stream), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackagesCore.cs",
+    "repo": "NuGet.Client",
+    "line": 906,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(fileInfo.FullName), ZipArchiveMode.Update))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/TestPackages.cs",
+    "repo": "NuGet.Client",
+    "line": 364,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var zip = new ZipArchive(File.Create(fileInfo.FullName), ZipArchiveMode.Create))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/SourceRepository/TestSourceRepositoryUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 17,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class TestSourceRepositoryUtility",
+    "context": "public class TestSourceRepositoryUtility"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/Signing/SignedArchiveTestUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 100,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (FileStream signedPackage = File.Open(signedPackagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/Signing/SignedArchiveTestUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 147,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var signedPackage = File.Open(signedPackagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/Signing/SignedArchiveTestUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 190,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var signedPackage = File.Open(outputPackagePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))"
+  },
+  {
+    "file": "test/TestUtilities/Test.Utility/Signing/SignedArchiveTestUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 378,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(signedPackagePath, FileMode.Open))"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 83,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute(\"update-package\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 344,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute(\"install-package InstallLatestInPMC\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 375,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute($\"install-package EntityFramework -source {source} -Verbose\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 382,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute($\"install-package jquery -source {source} -Verbose\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 389,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute($\"install-package entityframework.sqlservercompact -source {source} -Verbose\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 414,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute($\"find-package {PackageName} -ExactMatch\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 448,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute(\"get-package -update\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex.Daily/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 467,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute(\"Get-Project\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/Utility/CommonUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 323,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var file = File.Create(configurationPath))"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/NuGetPackageSigningTests/RepositorySignedPackageTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 19,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignedPackageTestCase",
+    "context": "public class RepositorySignedPackageTestCase : SharedVisualStudioHostTestClass"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/NuGetPackageSigningTests/RepositoryCountersignedPackageTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 20,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCountersignedPackageTestCase",
+    "context": "public class RepositoryCountersignedPackageTestCase : SharedVisualStudioHostTestClass"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Tests.Apex/NuGetEndToEndTests/NuGetConsoleTestCase.cs",
+    "repo": "NuGet.Client",
+    "line": 519,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "nugetConsole.Execute(\"Update-Package -Reinstall\");"
+  },
+  {
+    "file": "test/NuGet.Tests.Apex/NuGet.Console.TestContract/ApexTestConsole.cs",
+    "repo": "NuGet.Client",
+    "line": 120,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await Task.Run(() => wpfHost.Execute(_wpfConsole, command, null));"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/VsCredentialProviderAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 19,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class VsCredentialProviderAdapter",
+    "context": "public class VsCredentialProviderAdapter : ICredentialProvider"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/PackageFeeds/SourceRepositoryExtensions.cs",
+    "repo": "NuGet.Client",
+    "line": 24,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryExtensions",
+    "context": "internal static class SourceRepositoryExtensions"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/Projects/VsProjectAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 24,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class VsProjectAdapter",
+    "context": "internal class VsProjectAdapter : IVsProjectAdapter"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/IDE/ExtensibleSourceRepositoryProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 22,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class ExtensibleSourceRepositoryProvider",
+    "context": "public sealed class ExtensibleSourceRepositoryProvider : ISourceRepositoryProvider, IDisposable"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.VisualStudio/Services/NuGetPackageFileService.cs",
+    "repo": "NuGet.Client",
+    "line": 35,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "private HttpClient _httpClient = new HttpClient();"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Program.cs",
+    "repo": "NuGet.Client",
+    "line": 168,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "command.Execute();"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/CommandLineSourceRepositoryProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class CommandLineSourceRepositoryProvider",
+    "context": "public class CommandLineSourceRepositoryProvider : ISourceRepositoryProvider"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Commands/HelpCommandMarkdownTemplate.cs",
+    "repo": "NuGet.Client",
+    "line": 210,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "this.Execute();"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/MsBuildUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 1084,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var filestream = File.Open(_filePath, FileMode.CreateNew))"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Credentials/CredentialServiceAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 18,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CredentialServiceAdapter",
+    "context": "public class CredentialServiceAdapter : CoreV2.NuGet.ICredentialProvider"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Credentials/CredentialProviderAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CredentialProviderAdapter",
+    "context": "public class CredentialProviderAdapter : ICredentialProvider"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Common/CommandLineRepositoryFactory.cs",
+    "repo": "NuGet.Client",
+    "line": 10,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class CommandLineRepositoryFactory",
+    "context": "public class CommandLineRepositoryFactory : CoreV2.NuGet.PackageRepositoryFactory"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.CommandLine/Common/SelfUpdater.cs",
+    "repo": "NuGet.Client",
+    "line": 124,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (Stream fromStream = await downloadResourceResult.PackageReader.GetStreamAsync(nugetExeInPackageFilePath, cancellationToken), toStream = File.Create(exePath))"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.SolutionRestoreManager/Logger/NuGetFileLogger.cs",
+    "repo": "NuGet.Client",
+    "line": 122,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "var stream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.UI/Models/Package/PackageMetadataRetrievalAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class PackageMetadataRetrievalAdapter",
+    "context": "internal class PackageMetadataRetrievalAdapter : IPackageMetadataRetrievalAdapter"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/ClearNuGetLocalResourcesWindow.xaml.cs",
+    "repo": "NuGet.Client",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "((ClearNuGetLocalsViewModel)DataContext).Execute()"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/ScriptExecutor.cs",
+    "repo": "NuGet.Client",
+    "line": 179,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "await Task.Run(() => host.Execute(console, request.BuildCommand(), request.BuildInput()));"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/WpfConsole/WpfConsoleKeyProcessor.cs",
+    "repo": "NuGet.Client",
+    "line": 151,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "OldChain.Execute(idCommand, args);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/WpfConsole/WpfConsoleKeyProcessor.cs",
+    "repo": "NuGet.Client",
+    "line": 488,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "(this).Execute(VSConstants.VSStd2KCmdID.RETURN);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/PowerConsoleToolWindow.cs",
+    "repo": "NuGet.Client",
+    "line": 632,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "return host.Execute(powerShellConsole, command, null);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/Utils/ExtensionMethods.cs",
+    "repo": "NuGet.Client",
+    "line": 79,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "target.Execute(VSConstants.VSStd2K, (uint)idCommand, args);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Console/Console/ConsoleDispatcher.cs",
+    "repo": "NuGet.Client",
+    "line": 317,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "bool isExecuted = WpfConsole.Host.Execute(WpfConsole, command, null);"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.VisualStudio.Implementation/PreinstalledRepositoryProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 20,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class PreinstalledRepositoryProvider",
+    "context": "public sealed class PreinstalledRepositoryProvider : ISourceRepositoryProvider"
+  },
+  {
+    "file": "src/NuGet.Clients/NuGet.Tools/NuGetPackage.cs",
+    "repo": "NuGet.Client",
+    "line": 422,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "if (powerConsoleService.Execute(command, null))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.PackageManagement/Utility/FileSystemUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 149,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "return File.Create(fullPath);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.PackageManagement/Utility/SourceRepositoryComparer.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryComparer",
+    "context": "public class SourceRepositoryComparer : IEqualityComparer<SourceRepository>"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.PackageManagement/LoggerAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 15,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LoggerAdapter",
+    "context": "public class LoggerAdapter : LegacyLoggerAdapter, ILogger"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.PackageManagement/SourceControl/SourceControlManager.cs",
+    "repo": "NuGet.Client",
+    "line": 29,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "/// Calls File.Create which creates a file or opens it if already exists"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Commands/CommandRunners/PackCommandRunner.cs",
+    "repo": "NuGet.Client",
+    "line": 123,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (Stream stream = File.Create(outputPath))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Commands/RestoreCommand/ContentFiles/ContentFileUtils.cs",
+    "repo": "NuGet.Client",
+    "line": 140,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var matchResults = matcher.Execute(globbingDirectory);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Commands/RestoreCommand/SourceRepositoryDependencyProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 27,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryDependencyProvider",
+    "context": "public class SourceRepositoryDependencyProvider : IRemoteDependencyProvider"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/PackagesConfigWriter.cs",
+    "repo": "NuGet.Client",
+    "line": 557,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (var tempConfigStream = File.Create(configFileNewPath))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Core/RepositoryMetadata.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryMetadata",
+    "context": "public class RepositoryMetadata : IEquatable<RepositoryMetadata>"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/GlobalSuppressions.cs",
+    "repo": "NuGet.Client",
+    "line": 42,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "[assembly: SuppressMessage(\"Build\", \"CA1303:Method 'FileStream NuGetExtractionFileIO.DotnetCoreCreateFile(string path)' passes a literal string as parameter 'message' of a call to 'InvalidOperationExc"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Authoring/SigningOptions.cs",
+    "repo": "NuGet.Client",
+    "line": 151,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "new Lazy<Stream>(() => File.Open(outputPackageFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)),"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Authoring/RepositorySignPackageRequest.cs",
+    "repo": "NuGet.Client",
+    "line": 14,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignPackageRequest",
+    "context": "public sealed class RepositorySignPackageRequest : SignPackageRequest"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/RepositorySignatureInfoProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 14,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureInfoProvider",
+    "context": "public class RepositorySignatureInfoProvider"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Utility/SigningUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 234,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "unsignedPackageStream = tempPackageFile.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Utility/RepositorySignatureInfoUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureInfoUtility",
+    "context": "public static class RepositorySignatureInfoUtility"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/RepositorySignatureInfo.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureInfo",
+    "context": "public class RepositorySignatureInfo"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Signatures/RepositoryCountersignature.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCountersignature",
+    "context": "public sealed class RepositoryCountersignature : Signature, IRepositorySignature"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Signatures/RepositoryPrimarySignature.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryPrimarySignature",
+    "context": "public sealed class RepositoryPrimarySignature : PrimarySignature, IRepositorySignature"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/Signing/Timestamp/Rfc3161TimestampRequestNetstandard21Wrapper.cs",
+    "repo": "NuGet.Client",
+    "line": 19,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "private static readonly HttpClient HttpClient = new HttpClient();"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/NuGetExtractionFileIO.cs",
+    "repo": "NuGet.Client",
+    "line": 35,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "return File.Create;"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/NuGetExtractionFileIO.cs",
+    "repo": "NuGet.Client",
+    "line": 67,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (File.Create(path))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/NuGetExtractionFileIO.cs",
+    "repo": "NuGet.Client",
+    "line": 69,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "// File.Create() should have thrown an exception with an appropriate error message"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/NuGetExtractionFileIO.cs",
+    "repo": "NuGet.Client",
+    "line": 72,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "throw new InvalidOperationException(\"libc creat failed, but File.Create did not\");"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Packaging/NuGetExtractionFileIO.cs",
+    "repo": "NuGet.Client",
+    "line": 90,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "var fileStream = File.Create(path);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks.Console/RestoreProjectAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 14,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class RestoreProjectAdapter",
+    "context": "internal class RestoreProjectAdapter : IProject"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks.Console/TargetFrameworkAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 12,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TargetFrameworkAdapter",
+    "context": "internal class TargetFrameworkAdapter : ITargetFramework"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks.Console/ItemAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ItemAdapter",
+    "context": "internal class ItemAdapter : IItem"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.CommandLine.XPlat/Program.cs",
+    "repo": "NuGet.Client",
+    "line": 173,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "exitCode = app.Execute(args);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks.Pack/GlobalSuppressions.cs",
+    "repo": "NuGet.Client",
+    "line": 15,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "[assembly: SuppressMessage(\"Build\", \"CA1303:Method 'bool PackTask.Execute()' passes a literal string as parameter 'value' of a call to 'void Console.WriteLine(string value)'. Retrieve the following st"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks/GlobalSuppressions.cs",
+    "repo": "NuGet.Client",
+    "line": 25,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "[assembly: SuppressMessage(\"Build\", \"CA1303:Method 'bool RestoreTask.Execute()' passes a literal string as parameter 'value' of a call to 'void Console.WriteLine(string value)'. Retrieve the following"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks/GlobalSuppressions.cs",
+    "repo": "NuGet.Client",
+    "line": 27,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "[assembly: SuppressMessage(\"Build\", \"CA1303:Method 'bool WriteRestoreGraphTask.Execute()' passes a literal string as parameter 'message' of a call to 'void TaskLoggingHelper.LogWarning(string message,"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Utility/LocalFolderUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 1300,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using (var stream = File.Open(nupkgPath, FileMode.Open, FileAccess.Read, FileShare.Read))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Utility/GlobalPackagesFolderUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 66,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "stream = File.Open(nupkgPath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Utility/OfflineFeedUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 252,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "using var nupkgStream = File.Open(nupkgFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Plugins/Logging/PluginLogger.cs",
+    "repo": "NuGet.Client",
+    "line": 111,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Open",
+    "context": "var stream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/HttpSource/HttpSource.cs",
+    "repo": "NuGet.Client",
+    "line": 397,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient(httpHandler.MessageHandler)"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/SourceRepository.cs",
+    "repo": "NuGet.Client",
+    "line": 19,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepository",
+    "context": "public class SourceRepository"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Model/RepositoryCertificateInfo.cs",
+    "repo": "NuGet.Client",
+    "line": 12,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryCertificateInfo",
+    "context": "public class RepositoryCertificateInfo : IRepositoryCertificateInfo"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/SourceRepositoryProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 15,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class SourceRepositoryProvider",
+    "context": "public class SourceRepositoryProvider : ISourceRepositoryProvider"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Repository.cs",
+    "repo": "NuGet.Client",
+    "line": 15,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class Repository",
+    "context": "public static class Repository"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Repository.cs",
+    "repo": "NuGet.Client",
+    "line": 38,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryFactory",
+    "context": "public class RepositoryFactory"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/PackagesFolder/NuGetv3LocalRepositoryUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 11,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class NuGetv3LocalRepositoryUtility",
+    "context": "public static class NuGetv3LocalRepositoryUtility"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/PackagesFolder/NuGetv3LocalRepository.cs",
+    "repo": "NuGet.Client",
+    "line": 22,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class NuGetv3LocalRepository",
+    "context": "public class NuGetv3LocalRepository"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Providers/RepositorySignatureResourceProvider.cs",
+    "repo": "NuGet.Client",
+    "line": 16,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureResourceProvider",
+    "context": "public class RepositorySignatureResourceProvider : ResourceProvider"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Protocol/Resources/RepositorySignatureResource.cs",
+    "repo": "NuGet.Client",
+    "line": 17,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositorySignatureResource",
+    "context": "public class RepositorySignatureResource : INuGetResource"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Configuration/Utility/FileSystemUtility.cs",
+    "repo": "NuGet.Client",
+    "line": 34,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "using (Stream outputStream = File.Create(fullPath))"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Configuration/Settings/Items/RepositoryItem.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "Repository",
+    "type": "pattern",
+    "match": "class RepositoryItem",
+    "context": "public sealed class RepositoryItem : TrustedSignerItem"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Common/Logging/LegacyLoggerAdapter.cs",
+    "repo": "NuGet.Client",
+    "line": 13,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LegacyLoggerAdapter",
+    "context": "public abstract class LegacyLoggerAdapter : ILogger"
+  }
+]

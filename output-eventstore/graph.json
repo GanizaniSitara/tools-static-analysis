@@ -1,0 +1,4912 @@
+{
+  "nodes": [
+    {
+      "id": "src/KurrentDB.Core.Tests",
+      "project": "KurrentDB.Core.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.Tests/KurrentDB.Core.Tests.csproj",
+      "globalPath": "src/KurrentDB.Core.Tests/KurrentDB.Core.Tests.csproj",
+      "description": "Test: KurrentDB.Core.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.OtlpExporterPlugin",
+      "project": "KurrentDB.OtlpExporterPlugin",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.OtlpExporterPlugin/KurrentDB.OtlpExporterPlugin.csproj",
+      "globalPath": "src/KurrentDB.OtlpExporterPlugin/KurrentDB.OtlpExporterPlugin.csproj",
+      "description": "Library: KurrentDB.OtlpExporterPlugin (src)"
+    },
+    {
+      "id": "src/FakePlugin",
+      "project": "FakePlugin",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.Testing/FakePlugin/FakePlugin.csproj",
+      "globalPath": "src/KurrentDB.Core.Testing/FakePlugin/FakePlugin.csproj",
+      "description": "Test: FakePlugin (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core.Testing",
+      "project": "KurrentDB.Core.Testing",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.Testing/KurrentDB.Core.Testing.csproj",
+      "globalPath": "src/KurrentDB.Core.Testing/KurrentDB.Core.Testing.csproj",
+      "description": "Test: KurrentDB.Core.Testing (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins.Api.V2",
+      "project": "KurrentDB.Plugins.Api.V2",
+      "repo": "src",
+      "type": "webapp",
+      "path": "KurrentDB.Plugins.Api.V2/KurrentDB.Plugins.Api.V2.csproj",
+      "globalPath": "src/KurrentDB.Plugins.Api.V2/KurrentDB.Plugins.Api.V2.csproj",
+      "description": "WebApp: KurrentDB.Plugins.Api.V2 (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins.Tests",
+      "project": "KurrentDB.Plugins.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Plugins.Tests/KurrentDB.Plugins.Tests.csproj",
+      "globalPath": "src/KurrentDB.Plugins.Tests/KurrentDB.Plugins.Tests.csproj",
+      "description": "Test: KurrentDB.Plugins.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Diagnostics.LogsEndpointPlugin",
+      "project": "KurrentDB.Diagnostics.LogsEndpointPlugin",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Diagnostics.LogsEndpointPlugin/KurrentDB.Diagnostics.LogsEndpointPlugin.csproj",
+      "globalPath": "src/KurrentDB.Diagnostics.LogsEndpointPlugin/KurrentDB.Diagnostics.LogsEndpointPlugin.csproj",
+      "description": "Application: KurrentDB.Diagnostics.LogsEndpointPlugin (src)"
+    },
+    {
+      "id": "src/KurrentDB.SystemRuntime",
+      "project": "KurrentDB.SystemRuntime",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.SystemRuntime/KurrentDB.SystemRuntime.csproj",
+      "globalPath": "src/KurrentDB.SystemRuntime/KurrentDB.SystemRuntime.csproj",
+      "description": "Library: KurrentDB.SystemRuntime (src)"
+    },
+    {
+      "id": "src/KurrentDB.Licensing.Tests",
+      "project": "KurrentDB.Licensing.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Licensing.Tests/KurrentDB.Licensing.Tests.csproj",
+      "globalPath": "src/KurrentDB.Licensing.Tests/KurrentDB.Licensing.Tests.csproj",
+      "description": "Test: KurrentDB.Licensing.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.UserCertificates.Tests",
+      "project": "KurrentDB.Auth.UserCertificates.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Auth.UserCertificates.Tests/KurrentDB.Auth.UserCertificates.Tests.csproj",
+      "globalPath": "src/KurrentDB.Auth.UserCertificates.Tests/KurrentDB.Auth.UserCertificates.Tests.csproj",
+      "description": "Test: KurrentDB.Auth.UserCertificates.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Security.EncryptionAtRest",
+      "project": "KurrentDB.Security.EncryptionAtRest",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Security.EncryptionAtRest/KurrentDB.Security.EncryptionAtRest.csproj",
+      "globalPath": "src/KurrentDB.Security.EncryptionAtRest/KurrentDB.Security.EncryptionAtRest.csproj",
+      "description": "Application: KurrentDB.Security.EncryptionAtRest (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.Ldaps.Tests",
+      "project": "KurrentDB.Auth.Ldaps.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Auth.Ldaps.Tests/KurrentDB.Auth.Ldaps.Tests.csproj",
+      "globalPath": "src/KurrentDB.Auth.Ldaps.Tests/KurrentDB.Auth.Ldaps.Tests.csproj",
+      "description": "Test: KurrentDB.Auth.Ldaps.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Api.V2.Tests",
+      "project": "KurrentDB.Api.V2.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Api.V2.Tests/KurrentDB.Api.V2.Tests.csproj",
+      "globalPath": "src/KurrentDB.Api.V2.Tests/KurrentDB.Api.V2.Tests.csproj",
+      "description": "Test: KurrentDB.Api.V2.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "project": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests.csproj",
+      "globalPath": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests.csproj",
+      "description": "Test: KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Projections.Core.Tests",
+      "project": "KurrentDB.Projections.Core.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Projections.Core.Tests/KurrentDB.Projections.Core.Tests.csproj",
+      "globalPath": "src/KurrentDB.Projections.Core.Tests/KurrentDB.Projections.Core.Tests.csproj",
+      "description": "Test: KurrentDB.Projections.Core.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.StreamPolicyPlugin",
+      "project": "KurrentDB.Auth.StreamPolicyPlugin",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Auth.StreamPolicyPlugin/KurrentDB.Auth.StreamPolicyPlugin.csproj",
+      "globalPath": "src/KurrentDB.Auth.StreamPolicyPlugin/KurrentDB.Auth.StreamPolicyPlugin.csproj",
+      "description": "Library: KurrentDB.Auth.StreamPolicyPlugin (src)"
+    },
+    {
+      "id": "src/KurrentDB.Native",
+      "project": "KurrentDB.Native",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Native/KurrentDB.Native.csproj",
+      "globalPath": "src/KurrentDB.Native/KurrentDB.Native.csproj",
+      "description": "Library: KurrentDB.Native (src)"
+    },
+    {
+      "id": "src/KurrentDB.Api.V2",
+      "project": "KurrentDB.Api.V2",
+      "repo": "src",
+      "type": "webapp",
+      "path": "KurrentDB.Api.V2/KurrentDB.Api.V2.csproj",
+      "globalPath": "src/KurrentDB.Api.V2/KurrentDB.Api.V2.csproj",
+      "description": "WebApp: KurrentDB.Api.V2 (src)"
+    },
+    {
+      "id": "src/KurrentDB.LogCommon",
+      "project": "KurrentDB.LogCommon",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.LogCommon/KurrentDB.LogCommon.csproj",
+      "globalPath": "src/KurrentDB.LogCommon/KurrentDB.LogCommon.csproj",
+      "description": "Library: KurrentDB.LogCommon (src)"
+    },
+    {
+      "id": "src/KurrentDB.Surge.Testing",
+      "project": "KurrentDB.Surge.Testing",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Surge.Testing/KurrentDB.Surge.Testing.csproj",
+      "globalPath": "src/KurrentDB.Surge.Testing/KurrentDB.Surge.Testing.csproj",
+      "description": "Test: KurrentDB.Surge.Testing (src)"
+    },
+    {
+      "id": "src/KurrentDB.Common.Tests",
+      "project": "KurrentDB.Common.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Common.Tests/KurrentDB.Common.Tests.csproj",
+      "globalPath": "src/KurrentDB.Common.Tests/KurrentDB.Common.Tests.csproj",
+      "description": "Test: KurrentDB.Common.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.OAuth",
+      "project": "KurrentDB.Auth.OAuth",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Auth.OAuth/KurrentDB.Auth.OAuth.csproj",
+      "globalPath": "src/KurrentDB.Auth.OAuth/KurrentDB.Auth.OAuth.csproj",
+      "description": "Application: KurrentDB.Auth.OAuth (src)"
+    },
+    {
+      "id": "src/KurrentDB.LogV3",
+      "project": "KurrentDB.LogV3",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.LogV3/KurrentDB.LogV3.csproj",
+      "globalPath": "src/KurrentDB.LogV3/KurrentDB.LogV3.csproj",
+      "description": "Library: KurrentDB.LogV3 (src)"
+    },
+    {
+      "id": "src/KurrentDB.Security.EncryptionAtRest.Tests",
+      "project": "KurrentDB.Security.EncryptionAtRest.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Security.EncryptionAtRest.Tests/KurrentDB.Security.EncryptionAtRest.Tests.csproj",
+      "globalPath": "src/KurrentDB.Security.EncryptionAtRest.Tests/KurrentDB.Security.EncryptionAtRest.Tests.csproj",
+      "description": "Test: KurrentDB.Security.EncryptionAtRest.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core.Testing.NUnit",
+      "project": "KurrentDB.Core.Testing.NUnit",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.Testing.NUnit/KurrentDB.Core.Testing.NUnit.csproj",
+      "globalPath": "src/KurrentDB.Core.Testing.NUnit/KurrentDB.Core.Testing.NUnit.csproj",
+      "description": "Test: KurrentDB.Core.Testing.NUnit (src)"
+    },
+    {
+      "id": "src/KurrentDB.Projections.Core.XUnit.Tests",
+      "project": "KurrentDB.Projections.Core.XUnit.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Projections.Core.XUnit.Tests/KurrentDB.Projections.Core.XUnit.Tests.csproj",
+      "globalPath": "src/KurrentDB.Projections.Core.XUnit.Tests/KurrentDB.Projections.Core.XUnit.Tests.csproj",
+      "description": "Test: KurrentDB.Projections.Core.XUnit.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Surge",
+      "project": "KurrentDB.Surge",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Surge/KurrentDB.Surge.csproj",
+      "globalPath": "src/KurrentDB.Surge/KurrentDB.Surge.csproj",
+      "description": "Library: KurrentDB.Surge (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.StreamPolicyPlugin.Tests",
+      "project": "KurrentDB.Auth.StreamPolicyPlugin.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Auth.StreamPolicyPlugin.Tests/KurrentDB.Auth.StreamPolicyPlugin.Tests.csproj",
+      "globalPath": "src/KurrentDB.Auth.StreamPolicyPlugin.Tests/KurrentDB.Auth.StreamPolicyPlugin.Tests.csproj",
+      "description": "Test: KurrentDB.Auth.StreamPolicyPlugin.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Transport.Http",
+      "project": "KurrentDB.Transport.Http",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Transport.Http/KurrentDB.Transport.Http.csproj",
+      "globalPath": "src/KurrentDB.Transport.Http/KurrentDB.Transport.Http.csproj",
+      "description": "Library: KurrentDB.Transport.Http (src)"
+    },
+    {
+      "id": "src/KurrentDB.Surge.Testing.Messages",
+      "project": "KurrentDB.Surge.Testing.Messages",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Surge.Testing.Messages/KurrentDB.Surge.Testing.Messages.csproj",
+      "globalPath": "src/KurrentDB.Surge.Testing.Messages/KurrentDB.Surge.Testing.Messages.csproj",
+      "description": "Test: KurrentDB.Surge.Testing.Messages (src)"
+    },
+    {
+      "id": "src/KurrentDB.NETCore.Compatibility",
+      "project": "KurrentDB.NETCore.Compatibility",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.NETCore.Compatibility/KurrentDB.NETCore.Compatibility.csproj",
+      "globalPath": "src/KurrentDB.NETCore.Compatibility/KurrentDB.NETCore.Compatibility.csproj",
+      "description": "Library: KurrentDB.NETCore.Compatibility (src)"
+    },
+    {
+      "id": "src/KurrentDB.Projections.Core",
+      "project": "KurrentDB.Projections.Core",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Projections.Core/KurrentDB.Projections.Core.csproj",
+      "globalPath": "src/KurrentDB.Projections.Core/KurrentDB.Projections.Core.csproj",
+      "description": "Library: KurrentDB.Projections.Core (src)"
+    },
+    {
+      "id": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "project": "KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.POC.ConnectedSubsystemsPlugin/KurrentDB.POC.ConnectedSubsystemsPlugin.csproj",
+      "globalPath": "src/KurrentDB.POC.ConnectedSubsystemsPlugin/KurrentDB.POC.ConnectedSubsystemsPlugin.csproj",
+      "description": "Library: KurrentDB.POC.ConnectedSubsystemsPlugin (src)"
+    },
+    {
+      "id": "src/KurrentDB.Licensing",
+      "project": "KurrentDB.Licensing",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Licensing/KurrentDB.Licensing.csproj",
+      "globalPath": "src/KurrentDB.Licensing/KurrentDB.Licensing.csproj",
+      "description": "Library: KurrentDB.Licensing (src)"
+    },
+    {
+      "id": "src/KurrentDB.MicroBenchmarks",
+      "project": "KurrentDB.MicroBenchmarks",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.MicroBenchmarks/KurrentDB.MicroBenchmarks.csproj",
+      "globalPath": "src/KurrentDB.MicroBenchmarks/KurrentDB.MicroBenchmarks.csproj",
+      "description": "Application: KurrentDB.MicroBenchmarks (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core.Testing.XUnit",
+      "project": "KurrentDB.Core.Testing.XUnit",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.Testing.XUnit/KurrentDB.Core.Testing.XUnit.csproj",
+      "globalPath": "src/KurrentDB.Core.Testing.XUnit/KurrentDB.Core.Testing.XUnit.csproj",
+      "description": "Test: KurrentDB.Core.Testing.XUnit (src)"
+    },
+    {
+      "id": "src/KurrentDB.AutoScavenge",
+      "project": "KurrentDB.AutoScavenge",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.AutoScavenge/KurrentDB.AutoScavenge.csproj",
+      "globalPath": "src/KurrentDB.AutoScavenge/KurrentDB.AutoScavenge.csproj",
+      "description": "Library: KurrentDB.AutoScavenge (src)"
+    },
+    {
+      "id": "src/KurrentDB.Common",
+      "project": "KurrentDB.Common",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Common/KurrentDB.Common.csproj",
+      "globalPath": "src/KurrentDB.Common/KurrentDB.Common.csproj",
+      "description": "Library: KurrentDB.Common (src)"
+    },
+    {
+      "id": "src/KurrentDB.SystemRuntime.Tests",
+      "project": "KurrentDB.SystemRuntime.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.SystemRuntime.Tests/KurrentDB.SystemRuntime.Tests.csproj",
+      "globalPath": "src/KurrentDB.SystemRuntime.Tests/KurrentDB.SystemRuntime.Tests.csproj",
+      "description": "Test: KurrentDB.SystemRuntime.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.AutoScavenge.Tests",
+      "project": "KurrentDB.AutoScavenge.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.AutoScavenge.Tests/KurrentDB.AutoScavenge.Tests.csproj",
+      "globalPath": "src/KurrentDB.AutoScavenge.Tests/KurrentDB.AutoScavenge.Tests.csproj",
+      "description": "Test: KurrentDB.AutoScavenge.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Ammeter",
+      "project": "KurrentDB.Ammeter",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Ammeter/KurrentDB.Ammeter.csproj",
+      "globalPath": "src/KurrentDB.Ammeter/KurrentDB.Ammeter.csproj",
+      "description": "Library: KurrentDB.Ammeter (src)"
+    },
+    {
+      "id": "src/KurrentDB.Projections.Core.Javascript.Tests",
+      "project": "KurrentDB.Projections.Core.Javascript.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Projections.Core.Javascript.Tests/KurrentDB.Projections.Core.Javascript.Tests.csproj",
+      "globalPath": "src/KurrentDB.Projections.Core.Javascript.Tests/KurrentDB.Projections.Core.Javascript.Tests.csproj",
+      "description": "Test: KurrentDB.Projections.Core.Javascript.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.SchemaRegistry",
+      "project": "KurrentDB.SchemaRegistry",
+      "repo": "src",
+      "type": "library",
+      "path": "SchemaRegistry/KurrentDB.SchemaRegistry/KurrentDB.SchemaRegistry.csproj",
+      "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry/KurrentDB.SchemaRegistry.csproj",
+      "description": "Library: KurrentDB.SchemaRegistry (src)"
+    },
+    {
+      "id": "src/KurrentDB.SchemaRegistry.Tests",
+      "project": "KurrentDB.SchemaRegistry.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "SchemaRegistry/KurrentDB.SchemaRegistry.Tests/KurrentDB.SchemaRegistry.Tests.csproj",
+      "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/KurrentDB.SchemaRegistry.Tests.csproj",
+      "description": "Test: KurrentDB.SchemaRegistry.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins.SchemaRegistry",
+      "project": "KurrentDB.Plugins.SchemaRegistry",
+      "repo": "src",
+      "type": "application",
+      "path": "SchemaRegistry/KurrentDB.Plugins.SchemaRegistry/KurrentDB.Plugins.SchemaRegistry.csproj",
+      "globalPath": "src/SchemaRegistry/KurrentDB.Plugins.SchemaRegistry/KurrentDB.Plugins.SchemaRegistry.csproj",
+      "description": "Application: KurrentDB.Plugins.SchemaRegistry (src)"
+    },
+    {
+      "id": "src/KurrentDB.SchemaRegistry.Protocol",
+      "project": "KurrentDB.SchemaRegistry.Protocol",
+      "repo": "src",
+      "type": "library",
+      "path": "SchemaRegistry/KurrentDB.SchemaRegistry.Protocol/KurrentDB.SchemaRegistry.Protocol.csproj",
+      "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Protocol/KurrentDB.SchemaRegistry.Protocol.csproj",
+      "description": "Library: KurrentDB.SchemaRegistry.Protocol (src)"
+    },
+    {
+      "id": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "project": "KurrentDB.SecondaryIndexing.LoadTesting",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.SecondaryIndexing.LoadTesting/KurrentDB.SecondaryIndexing.LoadTesting.csproj",
+      "globalPath": "src/KurrentDB.SecondaryIndexing.LoadTesting/KurrentDB.SecondaryIndexing.LoadTesting.csproj",
+      "description": "Test: KurrentDB.SecondaryIndexing.LoadTesting (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.Ldaps",
+      "project": "KurrentDB.Auth.Ldaps",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Auth.Ldaps/KurrentDB.Auth.Ldaps.csproj",
+      "globalPath": "src/KurrentDB.Auth.Ldaps/KurrentDB.Auth.Ldaps.csproj",
+      "description": "Application: KurrentDB.Auth.Ldaps (src)"
+    },
+    {
+      "id": "src/KurrentDB.DuckDB",
+      "project": "KurrentDB.DuckDB",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.DuckDB/KurrentDB.DuckDB.csproj",
+      "globalPath": "src/KurrentDB.DuckDB/KurrentDB.DuckDB.csproj",
+      "description": "Library: KurrentDB.DuckDB (src)"
+    },
+    {
+      "id": "src/KurrentDB.Logging",
+      "project": "KurrentDB.Logging",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Logging/KurrentDB.Logging.csproj",
+      "globalPath": "src/KurrentDB.Logging/KurrentDB.Logging.csproj",
+      "description": "Library: KurrentDB.Logging (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins.TestHelpers",
+      "project": "KurrentDB.Plugins.TestHelpers",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Plugins.TestHelpers/KurrentDB.Plugins.TestHelpers.csproj",
+      "globalPath": "src/KurrentDB.Plugins.TestHelpers/KurrentDB.Plugins.TestHelpers.csproj",
+      "description": "Test: KurrentDB.Plugins.TestHelpers (src)"
+    },
+    {
+      "id": "src/KurrentDB.BufferManagement.Tests",
+      "project": "KurrentDB.BufferManagement.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.BufferManagement.Tests/KurrentDB.BufferManagement.Tests.csproj",
+      "globalPath": "src/KurrentDB.BufferManagement.Tests/KurrentDB.BufferManagement.Tests.csproj",
+      "description": "Test: KurrentDB.BufferManagement.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+      "project": "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests.csproj",
+      "globalPath": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests.csproj",
+      "description": "Test: KurrentDB.Diagnostics.LogsEndpointPlugin.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.LogV3.Tests",
+      "project": "KurrentDB.LogV3.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.LogV3.Tests/KurrentDB.LogV3.Tests.csproj",
+      "globalPath": "src/KurrentDB.LogV3.Tests/KurrentDB.LogV3.Tests.csproj",
+      "description": "Test: KurrentDB.LogV3.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Transport.Tcp",
+      "project": "KurrentDB.Transport.Tcp",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Transport.Tcp/KurrentDB.Transport.Tcp.csproj",
+      "globalPath": "src/KurrentDB.Transport.Tcp/KurrentDB.Transport.Tcp.csproj",
+      "description": "Library: KurrentDB.Transport.Tcp (src)"
+    },
+    {
+      "id": "src/KurrentDB.SourceGenerators.Tests",
+      "project": "KurrentDB.SourceGenerators.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.SourceGenerators.Tests/KurrentDB.SourceGenerators.Tests.csproj",
+      "globalPath": "src/KurrentDB.SourceGenerators.Tests/KurrentDB.SourceGenerators.Tests.csproj",
+      "description": "Test: KurrentDB.SourceGenerators.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.TestClient",
+      "project": "KurrentDB.TestClient",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.TestClient/KurrentDB.TestClient.csproj",
+      "globalPath": "src/KurrentDB.TestClient/KurrentDB.TestClient.csproj",
+      "description": "Test: KurrentDB.TestClient (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core.XUnit.Tests",
+      "project": "KurrentDB.Core.XUnit.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.XUnit.Tests/KurrentDB.Core.XUnit.Tests.csproj",
+      "globalPath": "src/KurrentDB.Core.XUnit.Tests/KurrentDB.Core.XUnit.Tests.csproj",
+      "description": "Test: KurrentDB.Core.XUnit.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.OAuth.Tests",
+      "project": "KurrentDB.Auth.OAuth.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Auth.OAuth.Tests/KurrentDB.Auth.OAuth.Tests.csproj",
+      "globalPath": "src/KurrentDB.Auth.OAuth.Tests/KurrentDB.Auth.OAuth.Tests.csproj",
+      "description": "Test: KurrentDB.Auth.OAuth.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.SecondaryIndexing",
+      "project": "KurrentDB.SecondaryIndexing",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.SecondaryIndexing/KurrentDB.SecondaryIndexing.csproj",
+      "globalPath": "src/KurrentDB.SecondaryIndexing/KurrentDB.SecondaryIndexing.csproj",
+      "description": "Library: KurrentDB.SecondaryIndexing (src)"
+    },
+    {
+      "id": "src/KurrentDB.Surge.Tests",
+      "project": "KurrentDB.Surge.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Surge.Tests/KurrentDB.Surge.Tests.csproj",
+      "globalPath": "src/KurrentDB.Surge.Tests/KurrentDB.Surge.Tests.csproj",
+      "description": "Test: KurrentDB.Surge.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core.TUnit.Tests",
+      "project": "KurrentDB.Core.TUnit.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Core.TUnit.Tests/KurrentDB.Core.TUnit.Tests.csproj",
+      "globalPath": "src/KurrentDB.Core.TUnit.Tests/KurrentDB.Core.TUnit.Tests.csproj",
+      "description": "Test: KurrentDB.Core.TUnit.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.PluginHosting",
+      "project": "KurrentDB.PluginHosting",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.PluginHosting/KurrentDB.PluginHosting.csproj",
+      "globalPath": "src/KurrentDB.PluginHosting/KurrentDB.PluginHosting.csproj",
+      "description": "Library: KurrentDB.PluginHosting (src)"
+    },
+    {
+      "id": "src/KurrentDB.UI",
+      "project": "KurrentDB.UI",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.UI/KurrentDB.UI.csproj",
+      "globalPath": "src/KurrentDB.UI/KurrentDB.UI.csproj",
+      "description": "Library: KurrentDB.UI (src)"
+    },
+    {
+      "id": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "project": "KurrentDB.Testing.ClusterVNodeApp",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Testing.ClusterVNodeApp/KurrentDB.Testing.ClusterVNodeApp.csproj",
+      "globalPath": "src/KurrentDB.Testing.ClusterVNodeApp/KurrentDB.Testing.ClusterVNodeApp.csproj",
+      "description": "Test: KurrentDB.Testing.ClusterVNodeApp (src)"
+    },
+    {
+      "id": "src/KurrentDB.ClusterNode.Web",
+      "project": "KurrentDB.ClusterNode.Web",
+      "repo": "src",
+      "type": "webapp",
+      "path": "KurrentDB.ClusterNode.Web/KurrentDB.ClusterNode.Web.csproj",
+      "globalPath": "src/KurrentDB.ClusterNode.Web/KurrentDB.ClusterNode.Web.csproj",
+      "description": "WebApp: KurrentDB.ClusterNode.Web (src)"
+    },
+    {
+      "id": "src/KurrentDB.Core",
+      "project": "KurrentDB.Core",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Core/KurrentDB.Core.csproj",
+      "globalPath": "src/KurrentDB.Core/KurrentDB.Core.csproj",
+      "description": "Library: KurrentDB.Core (src)"
+    },
+    {
+      "id": "src/KurrentDB.SecondaryIndexing.Tests",
+      "project": "KurrentDB.SecondaryIndexing.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.SecondaryIndexing.Tests/KurrentDB.SecondaryIndexing.Tests.csproj",
+      "globalPath": "src/KurrentDB.SecondaryIndexing.Tests/KurrentDB.SecondaryIndexing.Tests.csproj",
+      "description": "Test: KurrentDB.SecondaryIndexing.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.POC.IO.Core",
+      "project": "KurrentDB.POC.IO.Core",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.POC.IO.Core/KurrentDB.POC.IO.Core.csproj",
+      "globalPath": "src/KurrentDB.POC.IO.Core/KurrentDB.POC.IO.Core.csproj",
+      "description": "Library: KurrentDB.POC.IO.Core (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "project": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.csproj",
+      "globalPath": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.csproj",
+      "description": "Application: KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled (src)"
+    },
+    {
+      "id": "src/KurrentDB.SourceGenerators",
+      "project": "KurrentDB.SourceGenerators",
+      "repo": "src",
+      "type": "tool",
+      "path": "KurrentDB.SourceGenerators/KurrentDB.SourceGenerators.csproj",
+      "globalPath": "src/KurrentDB.SourceGenerators/KurrentDB.SourceGenerators.csproj",
+      "description": "Tool: KurrentDB.SourceGenerators (src)"
+    },
+    {
+      "id": "src/KurrentDB.Auth.UserCertificates",
+      "project": "KurrentDB.Auth.UserCertificates",
+      "repo": "src",
+      "type": "application",
+      "path": "KurrentDB.Auth.UserCertificates/KurrentDB.Auth.UserCertificates.csproj",
+      "globalPath": "src/KurrentDB.Auth.UserCertificates/KurrentDB.Auth.UserCertificates.csproj",
+      "description": "Application: KurrentDB.Auth.UserCertificates (src)"
+    },
+    {
+      "id": "src/KurrentDB.Connectors.Contracts",
+      "project": "KurrentDB.Connectors.Contracts",
+      "repo": "src",
+      "type": "connector",
+      "path": "Connectors/KurrentDB.Connectors.Contracts/KurrentDB.Connectors.Contracts.csproj",
+      "globalPath": "src/Connectors/KurrentDB.Connectors.Contracts/KurrentDB.Connectors.Contracts.csproj",
+      "description": "Connector: KurrentDB.Connectors.Contracts (src)"
+    },
+    {
+      "id": "src/KurrentDB.Connectors.Tests",
+      "project": "KurrentDB.Connectors.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "Connectors/KurrentDB.Connectors.Tests/KurrentDB.Connectors.Tests.csproj",
+      "globalPath": "src/Connectors/KurrentDB.Connectors.Tests/KurrentDB.Connectors.Tests.csproj",
+      "description": "Test: KurrentDB.Connectors.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins.Connectors",
+      "project": "KurrentDB.Plugins.Connectors",
+      "repo": "src",
+      "type": "connector",
+      "path": "Connectors/KurrentDB.Plugins.Connectors/KurrentDB.Plugins.Connectors.csproj",
+      "globalPath": "src/Connectors/KurrentDB.Plugins.Connectors/KurrentDB.Plugins.Connectors.csproj",
+      "description": "Connector: KurrentDB.Plugins.Connectors (src)"
+    },
+    {
+      "id": "src/KurrentDB.Connectors",
+      "project": "KurrentDB.Connectors",
+      "repo": "src",
+      "type": "connector",
+      "path": "Connectors/KurrentDB.Connectors/KurrentDB.Connectors.csproj",
+      "globalPath": "src/Connectors/KurrentDB.Connectors/KurrentDB.Connectors.csproj",
+      "description": "Connector: KurrentDB.Connectors (src)"
+    },
+    {
+      "id": "src/KurrentDB.Connectors.TestServer",
+      "project": "KurrentDB.Connectors.TestServer",
+      "repo": "src",
+      "type": "test",
+      "path": "Connectors/KurrentDB.Connectors.TestServer/KurrentDB.Connectors.TestServer.csproj",
+      "globalPath": "src/Connectors/KurrentDB.Connectors.TestServer/KurrentDB.Connectors.TestServer.csproj",
+      "description": "Test: KurrentDB.Connectors.TestServer (src)"
+    },
+    {
+      "id": "src/KurrentDB.Testing",
+      "project": "KurrentDB.Testing",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.Testing/KurrentDB.Testing.csproj",
+      "globalPath": "src/KurrentDB.Testing/KurrentDB.Testing.csproj",
+      "description": "Test: KurrentDB.Testing (src)"
+    },
+    {
+      "id": "src/KurrentDB.OtlpExporterPlugin.Tests",
+      "project": "KurrentDB.OtlpExporterPlugin.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.OtlpExporterPlugin.Tests/KurrentDB.OtlpExporterPlugin.Tests.csproj",
+      "globalPath": "src/KurrentDB.OtlpExporterPlugin.Tests/KurrentDB.OtlpExporterPlugin.Tests.csproj",
+      "description": "Test: KurrentDB.OtlpExporterPlugin.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.TcpPlugin.Tests",
+      "project": "KurrentDB.TcpPlugin.Tests",
+      "repo": "src",
+      "type": "test",
+      "path": "KurrentDB.TcpPlugin.Tests/KurrentDB.TcpPlugin.Tests.csproj",
+      "globalPath": "src/KurrentDB.TcpPlugin.Tests/KurrentDB.TcpPlugin.Tests.csproj",
+      "description": "Test: KurrentDB.TcpPlugin.Tests (src)"
+    },
+    {
+      "id": "src/KurrentDB.TcpPlugin",
+      "project": "KurrentDB.TcpPlugin",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.TcpPlugin/KurrentDB.TcpPlugin.csproj",
+      "globalPath": "src/KurrentDB.TcpPlugin/KurrentDB.TcpPlugin.csproj",
+      "description": "Library: KurrentDB.TcpPlugin (src)"
+    },
+    {
+      "id": "src/KurrentDB.BufferManagement",
+      "project": "KurrentDB.BufferManagement",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.BufferManagement/KurrentDB.BufferManagement.csproj",
+      "globalPath": "src/KurrentDB.BufferManagement/KurrentDB.BufferManagement.csproj",
+      "description": "Library: KurrentDB.BufferManagement (src)"
+    },
+    {
+      "id": "src/KurrentDB",
+      "project": "KurrentDB",
+      "repo": "src",
+      "type": "webapp",
+      "path": "KurrentDB/KurrentDB.csproj",
+      "globalPath": "src/KurrentDB/KurrentDB.csproj",
+      "description": "WebApp: KurrentDB (src)"
+    },
+    {
+      "id": "src/KurrentDB.Plugins",
+      "project": "KurrentDB.Plugins",
+      "repo": "src",
+      "type": "library",
+      "path": "KurrentDB.Plugins/KurrentDB.Plugins.csproj",
+      "globalPath": "src/KurrentDB.Plugins/KurrentDB.Plugins.csproj",
+      "description": "Library: KurrentDB.Plugins (src)"
+    },
+    {
+      "id": "nuget:Microsoft.OpenApi.Readers",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.Tests"
+      ],
+      "description": "NuGet: Microsoft.OpenApi.Readers ()"
+    },
+    {
+      "id": "nuget:System.Linq.Async",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Api.V2.Tests",
+        "src/KurrentDB.Auth.OAuth.Tests",
+        "src/KurrentDB.AutoScavenge.Tests",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Core",
+        "src/KurrentDB.Core.Tests",
+        "src/KurrentDB.Core.XUnit.Tests",
+        "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+        "src/KurrentDB.SecondaryIndexing",
+        "src/KurrentDB.SecondaryIndexing.Tests",
+        "src/KurrentDB.Surge",
+        "src/KurrentDB.Surge.Tests"
+      ],
+      "description": "NuGet: System.Linq.Async ()"
+    },
+    {
+      "id": "nuget:IgnoresAccessChecksToGenerator",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.Testing",
+        "src/KurrentDB.Core.Tests"
+      ],
+      "description": "NuGet: IgnoresAccessChecksToGenerator ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Logging",
+        "src/KurrentDB.OtlpExporterPlugin",
+        "src/KurrentDB.Testing.ClusterVNodeApp"
+      ],
+      "description": "NuGet: OpenTelemetry.Exporter.OpenTelemetryProtocol ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Extensions.Hosting",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core",
+        "src/KurrentDB.OtlpExporterPlugin"
+      ],
+      "description": "NuGet: OpenTelemetry.Extensions.Hosting ()"
+    },
+    {
+      "id": "nuget:Serilog",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.Ldaps",
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+        "src/KurrentDB.Auth.OAuth",
+        "src/KurrentDB.Auth.UserCertificates",
+        "src/KurrentDB.BufferManagement",
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Diagnostics.LogsEndpointPlugin",
+        "src/KurrentDB.DuckDB",
+        "src/KurrentDB.Licensing",
+        "src/KurrentDB.OtlpExporterPlugin",
+        "src/KurrentDB.Security.EncryptionAtRest",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.SystemRuntime",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.OpenTelemetry",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Logging",
+        "src/KurrentDB.OtlpExporterPlugin",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.OpenTelemetry ()"
+    },
+    {
+      "id": "nuget:EventStore.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.OAuth.Tests",
+        "src/KurrentDB.Core.Testing",
+        "src/KurrentDB.TcpPlugin.Tests",
+        "src/KurrentDB.TestClient"
+      ],
+      "description": "NuGet: EventStore.Client ()"
+    },
+    {
+      "id": "nuget:FluentAssertions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.UserCertificates.Tests",
+        "src/KurrentDB.Core.Testing",
+        "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+        "src/KurrentDB.OtlpExporterPlugin.Tests",
+        "src/KurrentDB.Plugins.Tests",
+        "src/KurrentDB.Security.EncryptionAtRest.Tests",
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: FluentAssertions ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.Ldaps.Tests",
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+        "src/KurrentDB.Auth.OAuth.Tests",
+        "src/KurrentDB.Core.Testing",
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.TestHost ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.InMemory",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.InMemory ()"
+    },
+    {
+      "id": "nuget:Serilog.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.Testing"
+      ],
+      "description": "NuGet: Serilog.AspNetCore ()"
+    },
+    {
+      "id": "nuget:FluentAssertions.Analyzers",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Plugins.Tests"
+      ],
+      "description": "NuGet: FluentAssertions.Analyzers ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Diagnostics.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2.Tests",
+        "src/KurrentDB.Core.TUnit.Tests",
+        "src/KurrentDB.Core.XUnit.Tests",
+        "src/KurrentDB.Plugins.Tests"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Diagnostics.Testing ()"
+    },
+    {
+      "id": "nuget:System.Diagnostics.PerformanceCounter",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core",
+        "src/KurrentDB.SystemRuntime"
+      ],
+      "description": "NuGet: System.Diagnostics.PerformanceCounter ()"
+    },
+    {
+      "id": "nuget:Scrutor",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Auth.UserCertificates",
+        "src/KurrentDB.Core",
+        "src/KurrentDB.Security.EncryptionAtRest"
+      ],
+      "description": "NuGet: Scrutor ()"
+    },
+    {
+      "id": "nuget:Ductus.FluentDocker.XUnit",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.Ldaps.Tests",
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+        "src/KurrentDB.Auth.OAuth.Tests"
+      ],
+      "description": "NuGet: Ductus.FluentDocker.XUnit ()"
+    },
+    {
+      "id": "nuget:EventStore.Client.Grpc.Streams",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.Ldaps.Tests",
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+        "src/KurrentDB.Auth.OAuth.Tests",
+        "src/KurrentDB.TestClient"
+      ],
+      "description": "NuGet: EventStore.Client.Grpc.Streams ()"
+    },
+    {
+      "id": "nuget:Grpc.Net.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2.Tests",
+        "src/KurrentDB.Core.TUnit.Tests",
+        "src/KurrentDB.TestClient",
+        "src/KurrentDB.Testing.ClusterVNodeApp"
+      ],
+      "description": "NuGet: Grpc.Net.Client ()"
+    },
+    {
+      "id": "nuget:Grpc.StatusProto",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Api.V2.Tests",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Core.TUnit.Tests",
+        "src/KurrentDB.SchemaRegistry.Protocol",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Grpc.StatusProto ()"
+    },
+    {
+      "id": "nuget:Polly",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+        "src/KurrentDB.Auth.OAuth.Tests"
+      ],
+      "description": "NuGet: Polly ()"
+    },
+    {
+      "id": "nuget:Newtonsoft.Json",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.OAuth",
+        "src/KurrentDB.BufferManagement.Tests",
+        "src/KurrentDB.Common",
+        "src/KurrentDB.LogV3.Tests",
+        "src/KurrentDB.Projections.Core",
+        "src/KurrentDB.Projections.Core.Tests",
+        "src/KurrentDB.SourceGenerators.Tests"
+      ],
+      "description": "NuGet: Newtonsoft.Json ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.TextWriter",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Projections.Core.Tests"
+      ],
+      "description": "NuGet: Serilog.Sinks.TextWriter ()"
+    },
+    {
+      "id": "nuget:Google.Protobuf",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Connectors.Contracts",
+        "src/KurrentDB.Core",
+        "src/KurrentDB.LogV3",
+        "src/KurrentDB.Projections.Core.Tests",
+        "src/KurrentDB.SchemaRegistry.Protocol",
+        "src/KurrentDB.Surge.Testing.Messages",
+        "src/KurrentDB.TestClient"
+      ],
+      "description": "NuGet: Google.Protobuf ()"
+    },
+    {
+      "id": "nuget:Grpc.Tools",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Core",
+        "src/KurrentDB.LogV3",
+        "src/KurrentDB.OtlpExporterPlugin.Tests",
+        "src/KurrentDB.Projections.Core",
+        "src/KurrentDB.Projections.Core.Tests",
+        "src/KurrentDB.SchemaRegistry.Protocol",
+        "src/KurrentDB.SecondaryIndexing",
+        "src/KurrentDB.Surge.Testing.Messages",
+        "src/KurrentDB.TestClient",
+        "src/KurrentDB.Testing.ClusterVNodeApp"
+      ],
+      "description": "NuGet: Grpc.Tools ()"
+    },
+    {
+      "id": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB",
+        "src/KurrentDB.Auth.Ldaps",
+        "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+        "src/KurrentDB.Auth.OAuth",
+        "src/KurrentDB.Auth.StreamPolicyPlugin"
+      ],
+      "description": "NuGet: System.ComponentModel.Composition ()"
+    },
+    {
+      "id": "nuget:Mono.Posix.NETStandard",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Native"
+      ],
+      "description": "NuGet: Mono.Posix.NETStandard ()"
+    },
+    {
+      "id": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.SchemaRegistry"
+      ],
+      "description": "NuGet: FluentValidation.DependencyInjectionExtensions ()"
+    },
+    {
+      "id": "nuget:Grpc.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Connectors.Contracts",
+        "src/KurrentDB.Core",
+        "src/KurrentDB.OtlpExporterPlugin.Tests",
+        "src/KurrentDB.SchemaRegistry"
+      ],
+      "description": "NuGet: Grpc.AspNetCore ()"
+    },
+    {
+      "id": "nuget:Grpc.AspNetCore.Web",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2"
+      ],
+      "description": "NuGet: Grpc.AspNetCore.Web ()"
+    },
+    {
+      "id": "nuget:Humanizer.Core",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Humanizer.Core ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Grpc.JsonTranscoding",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Api.V2",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.SecondaryIndexing"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Grpc.JsonTranscoding ()"
+    },
+    {
+      "id": "nuget:Bogus",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.AutoScavenge.Tests",
+        "src/KurrentDB.SecondaryIndexing.Tests",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Bogus ()"
+    },
+    {
+      "id": "nuget:DotNext",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: DotNext ()"
+    },
+    {
+      "id": "nuget:Eventuous.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors.Tests",
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: Eventuous.Testing ()"
+    },
+    {
+      "id": "nuget:Kurrent.Surge",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Connectors.Tests",
+        "src/KurrentDB.SchemaRegistry.Tests",
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: Kurrent.Surge ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.TimeProvider.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.TimeProvider.Testing ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Configuration.EnvironmentVariables",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Configuration.EnvironmentVariables ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Hosting.Abstractions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Hosting.Abstractions ()"
+    },
+    {
+      "id": "nuget:Serilog.Enrichers.Thread",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Enrichers.Thread ()"
+    },
+    {
+      "id": "nuget:Serilog.Enrichers.Environment",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Enrichers.Environment ()"
+    },
+    {
+      "id": "nuget:Serilog.Enrichers.Process",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Enrichers.Process ()"
+    },
+    {
+      "id": "nuget:Serilog.Exceptions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Exceptions ()"
+    },
+    {
+      "id": "nuget:Serilog.Expressions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Logging",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Expressions ()"
+    },
+    {
+      "id": "nuget:Serilog.Extensions.Logging",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Extensions.Logging ()"
+    },
+    {
+      "id": "nuget:Serilog.Settings.Configuration",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Settings.Configuration ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Console",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.Console ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Observable",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.Observable ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Seq",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.Seq ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.File",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.File ()"
+    },
+    {
+      "id": "nuget:System.Reactive",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Logging",
+        "src/KurrentDB.Plugins",
+        "src/KurrentDB.Surge.Testing",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: System.Reactive ()"
+    },
+    {
+      "id": "nuget:IdentityModel",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.OAuth"
+      ],
+      "description": "NuGet: IdentityModel ()"
+    },
+    {
+      "id": "nuget:LruCacheNet",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.OAuth"
+      ],
+      "description": "NuGet: LruCacheNet ()"
+    },
+    {
+      "id": "nuget:System.IdentityModel.Tokens.Jwt",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB",
+        "src/KurrentDB.Auth.OAuth"
+      ],
+      "description": "NuGet: System.IdentityModel.Tokens.Jwt ()"
+    },
+    {
+      "id": "nuget:Kurrent.Surge.Core",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.SchemaRegistry",
+        "src/KurrentDB.SecondaryIndexing",
+        "src/KurrentDB.Surge"
+      ],
+      "description": "NuGet: Kurrent.Surge.Core ()"
+    },
+    {
+      "id": "nuget:Eventuous.Application",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.SecondaryIndexing",
+        "src/KurrentDB.Surge"
+      ],
+      "description": "NuGet: Eventuous.Application ()"
+    },
+    {
+      "id": "nuget:Eventuous.Extensions.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Surge"
+      ],
+      "description": "NuGet: Eventuous.Extensions.AspNetCore ()"
+    },
+    {
+      "id": "nuget:Eventuous.Extensions.DependencyInjection",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.SecondaryIndexing",
+        "src/KurrentDB.Surge"
+      ],
+      "description": "NuGet: Eventuous.Extensions.DependencyInjection ()"
+    },
+    {
+      "id": "nuget:System.ServiceModel.Http",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.NETCore.Compatibility"
+      ],
+      "description": "NuGet: System.ServiceModel.Http ()"
+    },
+    {
+      "id": "nuget:System.Security.Cryptography.Pkcs",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.NETCore.Compatibility"
+      ],
+      "description": "NuGet: System.Security.Cryptography.Pkcs ()"
+    },
+    {
+      "id": "nuget:System.Security.Cryptography.Xml",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.NETCore.Compatibility"
+      ],
+      "description": "NuGet: System.Security.Cryptography.Xml ()"
+    },
+    {
+      "id": "nuget:Jint",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Projections.Core",
+        "src/KurrentDB.SecondaryIndexing"
+      ],
+      "description": "NuGet: Jint ()"
+    },
+    {
+      "id": "nuget:RestSharp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Ammeter",
+        "src/KurrentDB.Licensing",
+        "src/KurrentDB.Testing.ClusterVNodeApp"
+      ],
+      "description": "NuGet: RestSharp ()"
+    },
+    {
+      "id": "nuget:BenchmarkDotNet",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.MicroBenchmarks"
+      ],
+      "description": "NuGet: BenchmarkDotNet ()"
+    },
+    {
+      "id": "nuget:xunit.v3.extensibility.core",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.Testing.XUnit"
+      ],
+      "description": "NuGet: xunit.v3.extensibility.core ()"
+    },
+    {
+      "id": "nuget:NCrontab",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.AutoScavenge"
+      ],
+      "description": "NuGet: NCrontab ()"
+    },
+    {
+      "id": "nuget:GitInfo",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common"
+      ],
+      "description": "NuGet: GitInfo ()"
+    },
+    {
+      "id": "nuget:NetEscapades.Configuration.Yaml",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common"
+      ],
+      "description": "NuGet: NetEscapades.Configuration.Yaml ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common"
+      ],
+      "description": "NuGet: OpenTelemetry ()"
+    },
+    {
+      "id": "nuget:Grpc.Net.Common",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common"
+      ],
+      "description": "NuGet: Grpc.Net.Common ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Async",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common",
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Serilog.Sinks.Async ()"
+    },
+    {
+      "id": "nuget:YamlDotnet",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Common"
+      ],
+      "description": "NuGet: YamlDotnet ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.AutoScavenge.Tests",
+        "src/KurrentDB.SecondaryIndexing.Tests"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Mvc.Testing ()"
+    },
+    {
+      "id": "nuget:Testcontainers",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Ammeter",
+        "src/KurrentDB.Testing.ClusterVNodeApp"
+      ],
+      "description": "NuGet: Testcontainers ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Configuration",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Ammeter",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Configuration ()"
+    },
+    {
+      "id": "nuget:Kurrent.Quack",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core",
+        "src/KurrentDB.DuckDB",
+        "src/KurrentDB.SchemaRegistry",
+        "src/KurrentDB.SecondaryIndexing"
+      ],
+      "description": "NuGet: Kurrent.Quack ()"
+    },
+    {
+      "id": "nuget:Kurrent.Surge.DuckDB",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SchemaRegistry",
+        "src/KurrentDB.SchemaRegistry.Tests"
+      ],
+      "description": "NuGet: Kurrent.Surge.DuckDB ()"
+    },
+    {
+      "id": "nuget:NJsonSchema",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SchemaRegistry"
+      ],
+      "description": "NuGet: NJsonSchema ()"
+    },
+    {
+      "id": "nuget:Shouldly",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SchemaRegistry.Tests",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Shouldly ()"
+    },
+    {
+      "id": "nuget:Grpc.Net.ClientFactory",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SchemaRegistry.Protocol"
+      ],
+      "description": "NuGet: Grpc.Net.ClientFactory ()"
+    },
+    {
+      "id": "nuget:Dapper",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SecondaryIndexing.LoadTesting"
+      ],
+      "description": "NuGet: Dapper ()"
+    },
+    {
+      "id": "nuget:KurrentDB.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SecondaryIndexing.LoadTesting"
+      ],
+      "description": "NuGet: KurrentDB.Client ()"
+    },
+    {
+      "id": "nuget:Novell.Directory.Ldap.NETStandard",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Auth.Ldaps"
+      ],
+      "description": "NuGet: Novell.Directory.Ldap.NETStandard ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.DependencyInjection.Abstractions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.DuckDB"
+      ],
+      "description": "NuGet: Microsoft.Extensions.DependencyInjection.Abstractions ()"
+    },
+    {
+      "id": "nuget:ObjectLayoutInspector",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.LogV3.Tests"
+      ],
+      "description": "NuGet: ObjectLayoutInspector ()"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SourceGenerators.Tests"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing ()"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.CSharp.Workspaces",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SourceGenerators.Tests"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.CSharp.Workspaces ()"
+    },
+    {
+      "id": "nuget:NuGet.Protocol",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SourceGenerators.Tests"
+      ],
+      "description": "NuGet: NuGet.Protocol ()"
+    },
+    {
+      "id": "nuget:System.CommandLine.DragonFruit",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.TestClient"
+      ],
+      "description": "NuGet: System.CommandLine.DragonFruit ()"
+    },
+    {
+      "id": "nuget:TestableIO.System.IO.Abstractions",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.XUnit.Tests"
+      ],
+      "description": "NuGet: TestableIO.System.IO.Abstractions ()"
+    },
+    {
+      "id": "nuget:TestableIO.System.IO.Abstractions.TestingHelpers",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core.XUnit.Tests"
+      ],
+      "description": "NuGet: TestableIO.System.IO.Abstractions.TestingHelpers ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.WebAssembly",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.UI"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.WebAssembly ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.WebAssembly.Authentication",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.UI"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.WebAssembly.Authentication ()"
+    },
+    {
+      "id": "nuget:Extensions.MudBlazor.StaticInput",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB",
+        "src/KurrentDB.UI"
+      ],
+      "description": "NuGet: Extensions.MudBlazor.StaticInput ()"
+    },
+    {
+      "id": "nuget:MudBlazor",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB",
+        "src/KurrentDB.UI"
+      ],
+      "description": "NuGet: MudBlazor ()"
+    },
+    {
+      "id": "nuget:FluentStorage",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: FluentStorage ()"
+    },
+    {
+      "id": "nuget:FluentStorage.AWS",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: FluentStorage.AWS ()"
+    },
+    {
+      "id": "nuget:Azure.Storage.Blobs",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Azure.Storage.Blobs ()"
+    },
+    {
+      "id": "nuget:Azure.Identity",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Azure.Identity ()"
+    },
+    {
+      "id": "nuget:Google.Cloud.Storage.V1",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Google.Cloud.Storage.V1 ()"
+    },
+    {
+      "id": "nuget:librdkafka.redist",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: librdkafka.redist ()"
+    },
+    {
+      "id": "nuget:Microsoft.FASTER.Core",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.FASTER.Core ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Authentication.OpenIdConnect",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Authentication.OpenIdConnect ()"
+    },
+    {
+      "id": "nuget:Microsoft.IdentityModel.Protocols.OpenIdConnect",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.IdentityModel.Protocols.OpenIdConnect ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Exporter.Prometheus.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: OpenTelemetry.Exporter.Prometheus.AspNetCore ()"
+    },
+    {
+      "id": "nuget:OpenTelemetry.Instrumentation.AspNetCore",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: OpenTelemetry.Instrumentation.AspNetCore ()"
+    },
+    {
+      "id": "nuget:Polly.Core",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Polly.Core ()"
+    },
+    {
+      "id": "nuget:Quickenshtein",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Quickenshtein ()"
+    },
+    {
+      "id": "nuget:Microsoft.Diagnostics.NETCore.Client",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.Diagnostics.NETCore.Client ()"
+    },
+    {
+      "id": "nuget:Microsoft.Diagnostics.Tracing.TraceEvent",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.Diagnostics.Tracing.TraceEvent ()"
+    },
+    {
+      "id": "nuget:Microsoft.Data.Sqlite",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: Microsoft.Data.Sqlite ()"
+    },
+    {
+      "id": "nuget:DotNext.IO",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: DotNext.IO ()"
+    },
+    {
+      "id": "nuget:DotNext.Threading",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: DotNext.Threading ()"
+    },
+    {
+      "id": "nuget:DotNext.Unsafe",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Core"
+      ],
+      "description": "NuGet: DotNext.Unsafe ()"
+    },
+    {
+      "id": "nuget:NSubstitute",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SecondaryIndexing.Tests"
+      ],
+      "description": "NuGet: NSubstitute ()"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.Analyzers",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SourceGenerators"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.Analyzers ()"
+    },
+    {
+      "id": "nuget:Microsoft.CodeAnalysis.CSharp",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.SourceGenerators"
+      ],
+      "description": "NuGet: Microsoft.CodeAnalysis.CSharp ()"
+    },
+    {
+      "id": "nuget:Google.Api.CommonProtos",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Connectors.Contracts"
+      ],
+      "description": "NuGet: Google.Api.CommonProtos ()"
+    },
+    {
+      "id": "nuget:Kurrent.Surge.DataProtection",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Surge.DataProtection ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.Elasticsearch",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.Elasticsearch ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.Http",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.Http ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.Kafka",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.Kafka ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.MongoDB",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.MongoDB ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.RabbitMQ",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.RabbitMQ ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.Pulsar",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.Pulsar ()"
+    },
+    {
+      "id": "nuget:Kurrent.Connectors.Sql",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Kurrent.Connectors.Sql ()"
+    },
+    {
+      "id": "nuget:Serilog.Formatting.Compact",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Serilog.Formatting.Compact ()"
+    },
+    {
+      "id": "nuget:Serilog.Settings.Reloader",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors"
+      ],
+      "description": "NuGet: Serilog.Settings.Reloader ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Debug",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Connectors",
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.Debug ()"
+    },
+    {
+      "id": "nuget:DiffEngine",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: DiffEngine ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Configuration.Json",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Configuration.Json ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.DependencyInjection",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.DependencyInjection ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Logging",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Logging ()"
+    },
+    {
+      "id": "nuget:Serilog.Enrichers.Demystifier",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Enrichers.Demystifier ()"
+    },
+    {
+      "id": "nuget:Serilog.Extensions.Hosting",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Extensions.Hosting ()"
+    },
+    {
+      "id": "nuget:Serilog.Sinks.Map",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: Serilog.Sinks.Map ()"
+    },
+    {
+      "id": "nuget:TUnit",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: TUnit ()"
+    },
+    {
+      "id": "nuget:WaffleGenerator.Bogus",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Testing"
+      ],
+      "description": "NuGet: WaffleGenerator.Bogus ()"
+    },
+    {
+      "id": "nuget:BlazorMonaco",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: BlazorMonaco ()"
+    },
+    {
+      "id": "nuget:Microsoft.AspNetCore.Components.WebAssembly.Server",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: Microsoft.AspNetCore.Components.WebAssembly.Server ()"
+    },
+    {
+      "id": "nuget:Microsoft.Extensions.Hosting.WindowsServices",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: Microsoft.Extensions.Hosting.WindowsServices ()"
+    },
+    {
+      "id": "nuget:Microsoft.IdentityModel.Tokens",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: Microsoft.IdentityModel.Tokens ()"
+    },
+    {
+      "id": "nuget:MudBlazor.Markdown",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: MudBlazor.Markdown ()"
+    },
+    {
+      "id": "nuget:SharpDotYaml.Extensions.Configuration",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB"
+      ],
+      "description": "NuGet: SharpDotYaml.Extensions.Configuration ()"
+    },
+    {
+      "id": "nuget:Microsoft.IdentityModel.JsonWebTokens",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Plugins"
+      ],
+      "description": "NuGet: Microsoft.IdentityModel.JsonWebTokens ()"
+    },
+    {
+      "id": "nuget:YamlDotNet",
+      "type": "nuget-package",
+      "versions": [
+        ""
+      ],
+      "consumers": [
+        "src/KurrentDB.Plugins"
+      ],
+      "description": "NuGet: YamlDotNet ()"
+    },
+    {
+      "id": "datasource:src:HttpClient.New",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "HttpClient.New",
+      "repo": "src",
+      "occurrences": 25,
+      "description": "HttpClient.New in src (25 occurrences)"
+    },
+    {
+      "id": "datasource:src:gRPC",
+      "type": "datasource",
+      "subtype": "api",
+      "pattern": "gRPC",
+      "repo": "src",
+      "occurrences": 130,
+      "description": "gRPC in src (130 occurrences)"
+    },
+    {
+      "id": "datasource:src:Dapper",
+      "type": "datasource",
+      "subtype": "database",
+      "pattern": "Dapper",
+      "repo": "src",
+      "occurrences": 66,
+      "description": "Dapper in src (66 occurrences)"
+    },
+    {
+      "id": "datasource:src:Kafka",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "Kafka",
+      "repo": "src",
+      "occurrences": 10,
+      "description": "Kafka in src (10 occurrences)"
+    },
+    {
+      "id": "datasource:src:IMessageAdapter",
+      "type": "datasource",
+      "subtype": "connector",
+      "pattern": "IMessageAdapter",
+      "repo": "src",
+      "occurrences": 4,
+      "description": "IMessageAdapter in src (4 occurrences)"
+    },
+    {
+      "id": "datasource:src:RabbitMQ",
+      "type": "datasource",
+      "subtype": "messaging",
+      "pattern": "RabbitMQ",
+      "repo": "src",
+      "occurrences": 3,
+      "description": "RabbitMQ in src (3 occurrences)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "src/KurrentDB.Core.Tests",
+      "to": "src/KurrentDB.Core.Testing.NUnit",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin",
+      "to": "src/KurrentDB.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "src/KurrentDB.PluginHosting",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Api.V2",
+      "to": "src/KurrentDB.Api.V2",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Tests",
+      "to": "src/KurrentDB.Plugins",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Licensing.Tests",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Licensing.Tests",
+      "to": "src/KurrentDB.Licensing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.UserCertificates.Tests",
+      "to": "src/KurrentDB.Auth.UserCertificates",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.UserCertificates.Tests",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps.Tests",
+      "to": "src/KurrentDB.Auth.Ldaps",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "src/KurrentDB.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "src/KurrentDB.Api.V2",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "to": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "src/KurrentDB.Core.Testing.NUnit",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "src/KurrentDB.Projections.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.StreamPolicyPlugin",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Native",
+      "to": "src/KurrentDB.SystemRuntime",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "src/KurrentDB.SecondaryIndexing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "src/KurrentDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Common.Tests",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.LogV3",
+      "to": "src/KurrentDB.LogCommon",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Security.EncryptionAtRest.Tests",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Security.EncryptionAtRest.Tests",
+      "to": "src/KurrentDB.Security.EncryptionAtRest",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing.NUnit",
+      "to": "src/KurrentDB.Core.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.XUnit.Tests",
+      "to": "src/KurrentDB.Core.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.XUnit.Tests",
+      "to": "src/KurrentDB.Projections.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.StreamPolicyPlugin.Tests",
+      "to": "src/KurrentDB.Core.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.StreamPolicyPlugin.Tests",
+      "to": "src/KurrentDB.Auth.StreamPolicyPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Transport.Http",
+      "to": "src/KurrentDB.BufferManagement",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Transport.Http",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "src/KurrentDB.Transport.Http",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "src/KurrentDB.SourceGenerators",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "to": "src/KurrentDB.PluginHosting",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "to": "src/KurrentDB.POC.IO.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.MicroBenchmarks",
+      "to": "src/KurrentDB.Projections.Core.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.MicroBenchmarks",
+      "to": "src/KurrentDB.Projections.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing.XUnit",
+      "to": "src/KurrentDB.Core.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge",
+      "to": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge",
+      "to": "src/KurrentDB.POC.IO.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "src/KurrentDB.SystemRuntime",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SystemRuntime.Tests",
+      "to": "src/KurrentDB.SystemRuntime",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SystemRuntime.Tests",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge.Tests",
+      "to": "src/KurrentDB.AutoScavenge",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Ammeter",
+      "to": "src/KurrentDB.Api.V2.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Ammeter",
+      "to": "src/KurrentDB.Core.TUnit.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Javascript.Tests",
+      "to": "src/KurrentDB.Projections.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "src/KurrentDB.Surge",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "src/KurrentDB.SchemaRegistry.Protocol",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "src/KurrentDB.Surge.Testing.Messages",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "src/KurrentDB.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "src/KurrentDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "src/KurrentDB.SchemaRegistry",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.SchemaRegistry",
+      "to": "src/KurrentDB.SchemaRegistry",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "src/KurrentDB.Connectors.TestServer",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "src/KurrentDB.SecondaryIndexing.Tests",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "src/KurrentDB.SecondaryIndexing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Logging",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.TestHelpers",
+      "to": "src/KurrentDB.Plugins",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.BufferManagement.Tests",
+      "to": "src/KurrentDB.BufferManagement",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+      "to": "src/KurrentDB.Diagnostics.LogsEndpointPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.LogV3.Tests",
+      "to": "src/KurrentDB.LogV3",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Transport.Tcp",
+      "to": "src/KurrentDB.BufferManagement",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Transport.Tcp",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators.Tests",
+      "to": "src/KurrentDB.SourceGenerators",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "src/KurrentDB.BufferManagement",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "src/KurrentDB.Transport.Http",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "src/KurrentDB.Transport.Tcp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "src/KurrentDB.Core.Testing.XUnit",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "src/KurrentDB.SourceGenerators",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "src/KurrentDB.Auth.OAuth",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Tests",
+      "to": "src/KurrentDB.Surge.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.TUnit.Tests",
+      "to": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.TUnit.Tests",
+      "to": "src/KurrentDB.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "src/KurrentDB.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "src/KurrentDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.DuckDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Licensing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Logging",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.LogV3",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Native",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Plugins",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Transport.Http",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.Transport.Tcp",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.NETCore.Compatibility",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "src/KurrentDB.SourceGenerators",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "src/KurrentDB.SecondaryIndexing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "src/KurrentDB.Core.Testing.XUnit",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "src/KurrentDB.Surge.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.POC.IO.Core",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Tests",
+      "to": "src/KurrentDB",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Tests",
+      "to": "src/KurrentDB.Connectors",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Tests",
+      "to": "src/KurrentDB.Surge.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Connectors",
+      "to": "src/KurrentDB.Connectors",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "src/KurrentDB.Surge",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "src/KurrentDB.SystemRuntime",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "src/KurrentDB.Connectors.Contracts",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.TestServer",
+      "to": "src/KurrentDB.Connectors",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin.Tests",
+      "to": "src/KurrentDB.OtlpExporterPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TcpPlugin.Tests",
+      "to": "src/KurrentDB.Core.Testing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TcpPlugin.Tests",
+      "to": "src/KurrentDB.TcpPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.TcpPlugin",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Auth.Ldaps",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Auth.OAuth",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Auth.StreamPolicyPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Auth.UserCertificates",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.ClusterNode.Web",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Common",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Diagnostics.LogsEndpointPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.OtlpExporterPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.PluginHosting",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Projections.Core",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Security.EncryptionAtRest",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.AutoScavenge",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.TcpPlugin",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.SecondaryIndexing",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.UI",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Plugins.Connectors",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Plugins.SchemaRegistry",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "src/KurrentDB.Plugins.Api.V2",
+      "type": "project-reference"
+    },
+    {
+      "from": "src/KurrentDB.Core.Tests",
+      "to": "nuget:Microsoft.OpenApi.Readers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Tests",
+      "to": "nuget:IgnoresAccessChecksToGenerator",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin",
+      "to": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin",
+      "to": "nuget:OpenTelemetry.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin",
+      "to": "nuget:Serilog.Sinks.OpenTelemetry",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:EventStore.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:Serilog.Sinks.InMemory",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:Serilog.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing",
+      "to": "nuget:IgnoresAccessChecksToGenerator",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Tests",
+      "to": "nuget:FluentAssertions.Analyzers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins.Tests",
+      "to": "nuget:Microsoft.Extensions.Diagnostics.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Diagnostics.LogsEndpointPlugin",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SystemRuntime",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SystemRuntime",
+      "to": "nuget:System.Diagnostics.PerformanceCounter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.UserCertificates.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Security.EncryptionAtRest",
+      "to": "nuget:Scrutor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Security.EncryptionAtRest",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps.Tests",
+      "to": "nuget:Ductus.FluentDocker.XUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps.Tests",
+      "to": "nuget:EventStore.Client.Grpc.Streams",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps.Tests",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "nuget:Microsoft.Extensions.Diagnostics.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "to": "nuget:Ductus.FluentDocker.XUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "to": "nuget:EventStore.Client.Grpc.Streams",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+      "to": "nuget:Polly",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "nuget:Serilog.Sinks.TextWriter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core.Tests",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.StreamPolicyPlugin",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Native",
+      "to": "nuget:Mono.Posix.NETStandard",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Grpc.AspNetCore.Web",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Humanizer.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Microsoft.AspNetCore.Grpc.JsonTranscoding",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:Scrutor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Api.V2",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Bogus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:DotNext",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Humanizer.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Eventuous.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Kurrent.Surge",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Microsoft.Extensions.TimeProvider.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Microsoft.Extensions.Configuration.EnvironmentVariables",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Microsoft.Extensions.Hosting.Abstractions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Enrichers.Thread",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Enrichers.Environment",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Enrichers.Process",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Exceptions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Expressions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Extensions.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Settings.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Sinks.Console",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Sinks.Observable",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Sinks.Seq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:Serilog.Sinks.File",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing",
+      "to": "nuget:System.Reactive",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:IdentityModel",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:LruCacheNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:System.IdentityModel.Tokens.Jwt",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.LogV3",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.LogV3",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Security.EncryptionAtRest.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "nuget:Kurrent.Surge.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "nuget:Eventuous.Application",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "nuget:Eventuous.Extensions.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "nuget:Eventuous.Extensions.DependencyInjection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing.Messages",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Testing.Messages",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.NETCore.Compatibility",
+      "to": "nuget:System.ServiceModel.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.NETCore.Compatibility",
+      "to": "nuget:System.Security.Cryptography.Pkcs",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.NETCore.Compatibility",
+      "to": "nuget:System.Security.Cryptography.Xml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Projections.Core",
+      "to": "nuget:Jint",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.POC.ConnectedSubsystemsPlugin",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Licensing",
+      "to": "nuget:RestSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Licensing",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.MicroBenchmarks",
+      "to": "nuget:BenchmarkDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.Testing.XUnit",
+      "to": "nuget:xunit.v3.extensibility.core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge",
+      "to": "nuget:NCrontab",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:GitInfo",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:NetEscapades.Configuration.Yaml",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:OpenTelemetry",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Grpc.Net.Common",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Enrichers.Process",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Enrichers.Thread",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Expressions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Extensions.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Settings.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Sinks.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Sinks.File",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Sinks.Seq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:Serilog.Sinks.Console",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:System.Security.Cryptography.Pkcs",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Common",
+      "to": "nuget:YamlDotnet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge.Tests",
+      "to": "nuget:Bogus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge.Tests",
+      "to": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.AutoScavenge.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Ammeter",
+      "to": "nuget:RestSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Ammeter",
+      "to": "nuget:Testcontainers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Ammeter",
+      "to": "nuget:Microsoft.Extensions.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:Kurrent.Quack",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:Kurrent.Surge.DuckDB",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:Kurrent.Surge.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry",
+      "to": "nuget:NJsonSchema",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "nuget:Kurrent.Surge",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "nuget:Kurrent.Surge.DuckDB",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Tests",
+      "to": "nuget:Shouldly",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Protocol",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Protocol",
+      "to": "nuget:Grpc.Net.ClientFactory",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Protocol",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SchemaRegistry.Protocol",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "nuget:Dapper",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "nuget:KurrentDB.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps",
+      "to": "nuget:Novell.Directory.Ldap.NETStandard",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.Ldaps",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.DuckDB",
+      "to": "nuget:Kurrent.Quack",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.DuckDB",
+      "to": "nuget:Microsoft.Extensions.DependencyInjection.Abstractions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.DuckDB",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Logging",
+      "to": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Logging",
+      "to": "nuget:Serilog.Expressions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Logging",
+      "to": "nuget:Serilog.Sinks.OpenTelemetry",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Logging",
+      "to": "nuget:System.Reactive",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.BufferManagement.Tests",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.LogV3.Tests",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.LogV3.Tests",
+      "to": "nuget:ObjectLayoutInspector",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators.Tests",
+      "to": "nuget:Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators.Tests",
+      "to": "nuget:Microsoft.CodeAnalysis.CSharp.Workspaces",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators.Tests",
+      "to": "nuget:Newtonsoft.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators.Tests",
+      "to": "nuget:NuGet.Protocol",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:EventStore.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:EventStore.Client.Grpc.Streams",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TestClient",
+      "to": "nuget:System.CommandLine.DragonFruit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "nuget:TestableIO.System.IO.Abstractions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "nuget:TestableIO.System.IO.Abstractions.TestingHelpers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "nuget:Microsoft.Extensions.Diagnostics.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.XUnit.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:Ductus.FluentDocker.XUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:EventStore.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:EventStore.Client.Grpc.Streams",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:Microsoft.AspNetCore.TestHost",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:Polly",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.OAuth.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Kurrent.Quack",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Kurrent.Surge.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Eventuous.Application",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Eventuous.Extensions.DependencyInjection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Microsoft.AspNetCore.Grpc.JsonTranscoding",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing",
+      "to": "nuget:Jint",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Surge.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.TUnit.Tests",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.TUnit.Tests",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core.TUnit.Tests",
+      "to": "nuget:Microsoft.Extensions.Diagnostics.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.UI",
+      "to": "nuget:Microsoft.AspNetCore.Components.WebAssembly",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.UI",
+      "to": "nuget:Microsoft.AspNetCore.Components.WebAssembly.Authentication",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.UI",
+      "to": "nuget:Extensions.MudBlazor.StaticInput",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.UI",
+      "to": "nuget:MudBlazor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "nuget:Grpc.Net.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "nuget:OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "nuget:RestSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "nuget:Testcontainers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing.ClusterVNodeApp",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Kurrent.Quack",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:FluentStorage",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:FluentStorage.AWS",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Azure.Storage.Blobs",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Azure.Identity",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Google.Cloud.Storage.V1",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:librdkafka.redist",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.FASTER.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.AspNetCore.Authentication.OpenIdConnect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.IdentityModel.Protocols.OpenIdConnect",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:OpenTelemetry.Exporter.Prometheus.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:OpenTelemetry.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:OpenTelemetry.Instrumentation.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Polly.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Quickenshtein",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:System.Diagnostics.PerformanceCounter",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.Diagnostics.NETCore.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.Diagnostics.Tracing.TraceEvent",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Microsoft.Data.Sqlite",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:DotNext.IO",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:DotNext.Threading",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:DotNext.Unsafe",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Core",
+      "to": "nuget:Scrutor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "nuget:Bogus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "nuget:Microsoft.AspNetCore.Mvc.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "nuget:NSubstitute",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SecondaryIndexing.Tests",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators",
+      "to": "nuget:Microsoft.CodeAnalysis.Analyzers",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.SourceGenerators",
+      "to": "nuget:Microsoft.CodeAnalysis.CSharp",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.UserCertificates",
+      "to": "nuget:Scrutor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Auth.UserCertificates",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Contracts",
+      "to": "nuget:Google.Api.CommonProtos",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Contracts",
+      "to": "nuget:Google.Protobuf",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Contracts",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Tests",
+      "to": "nuget:Kurrent.Surge",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors.Tests",
+      "to": "nuget:Eventuous.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Google.Api.CommonProtos",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Surge",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Surge.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Surge.DataProtection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.Elasticsearch",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.Http",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.Kafka",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.MongoDB",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.RabbitMQ",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.Pulsar",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Kurrent.Connectors.Sql",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Eventuous.Application",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Eventuous.Extensions.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Eventuous.Extensions.DependencyInjection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:FluentValidation.DependencyInjectionExtensions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Microsoft.AspNetCore.Grpc.JsonTranscoding",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Enrichers.Process",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Enrichers.Thread",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Expressions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Extensions.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Settings.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Sinks.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Sinks.File",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Sinks.Console",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Formatting.Compact",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Settings.Reloader",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Sinks.Debug",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Sinks.Seq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:Serilog.Enrichers.Environment",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Connectors",
+      "to": "nuget:System.Linq.Async",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Bogus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:DiffEngine",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:DotNext",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Humanizer.Core",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.Configuration.EnvironmentVariables",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.Configuration.Json",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.DependencyInjection",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Microsoft.Extensions.TimeProvider.Testing",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Enrichers.Demystifier",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Enrichers.Environment",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Enrichers.Process",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Enrichers.Thread",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Exceptions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Expressions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Extensions.Hosting",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Extensions.Logging",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Settings.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.Console",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.Debug",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.Map",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.Observable",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.OpenTelemetry",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Serilog.Sinks.Seq",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Shouldly",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:System.Reactive",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:TUnit",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:WaffleGenerator.Bogus",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Testing",
+      "to": "nuget:Grpc.StatusProto",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin.Tests",
+      "to": "nuget:FluentAssertions",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin.Tests",
+      "to": "nuget:Grpc.AspNetCore",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.OtlpExporterPlugin.Tests",
+      "to": "nuget:Grpc.Tools",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.TcpPlugin.Tests",
+      "to": "nuget:EventStore.Client",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.BufferManagement",
+      "to": "nuget:Serilog",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:BlazorMonaco",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:Extensions.MudBlazor.StaticInput",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:Microsoft.AspNetCore.Components.WebAssembly.Server",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:Microsoft.Extensions.Hosting.WindowsServices",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:Microsoft.IdentityModel.Tokens",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:MudBlazor.Markdown",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:MudBlazor",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:SharpDotYaml.Extensions.Configuration",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:System.ComponentModel.Composition",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB",
+      "to": "nuget:System.IdentityModel.Tokens.Jwt",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins",
+      "to": "nuget:Microsoft.IdentityModel.JsonWebTokens",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins",
+      "to": "nuget:YamlDotNet",
+      "type": "nuget-dependency"
+    },
+    {
+      "from": "src/KurrentDB.Plugins",
+      "to": "nuget:System.Reactive",
+      "type": "nuget-dependency"
+    }
+  ],
+  "summary": {
+    "totalRepos": 1,
+    "totalProjects": 84,
+    "totalNuGetPackages": 146,
+    "totalProjectRefs": 142,
+    "totalCrossRepoRefs": 0,
+    "totalDataFindings": 374,
+    "totalConfigFiles": 6,
+    "repos": {
+      "src": {
+        "projects": 84,
+        "categories": {
+          "Test": 40,
+          "Library": 28,
+          "WebApp": 4,
+          "Application": 8,
+          "Tool": 1,
+          "Connector": 3
+        }
+      }
+    },
+    "categories": {
+      "Test": 40,
+      "Library": 28,
+      "WebApp": 4,
+      "Application": 8,
+      "Tool": 1,
+      "Connector": 3
+    }
+  }
+}

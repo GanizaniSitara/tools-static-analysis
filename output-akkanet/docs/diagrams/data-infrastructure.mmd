@@ -1,0 +1,32 @@
+graph LR
+    subgraph Applications
+        akka_net_SerializationBenchmarks["SerializationBenchmarks"]
+        akka_net_Akka_Benchmarks["Akka.Benchmarks"]
+        akka_net_Akka_Cluster_Benchmarks["Akka.Cluster.Benchmarks"]
+        akka_net_RemotePingPong["RemotePingPong"]
+        akka_net_Akka_Cluster_Cpu_Benchmark["Akka.Cluster.Cpu.Benchmark"]
+        akka_net_PingPong["PingPong"]
+        akka_net_SpawnBenchmark["SpawnBenchmark"]
+        akka_net_Akka_AspNetCore["Akka.AspNetCore"]
+        akka_net_TimeServer["TimeServer"]
+        akka_net_System1["System1"]
+        akka_net_System2["System2"]
+        akka_net_Shared["Shared"]
+        akka_net_ClusterSharding_Node["ClusterSharding.Node"]
+        akka_net_ShoppingCart["ShoppingCart"]
+        akka_net_TcpEchoService_Server["TcpEchoService.Server"]
+        akka_net_HelloAkka["HelloAkka"]
+        akka_net_Routing["Routing"]
+        akka_net_AkkaWindowsService["AkkaWindowsService"]
+        akka_net_HelloWorld["HelloWorld"]
+        akka_net_AkkaHeadlesssService["AkkaHeadlesssService"]
+        akka_net_SymbolLookup["SymbolLookup"]
+        akka_net_ChatServer["ChatServer"]
+        akka_net_AppConfig["AppConfig"]
+        akka_net_FaultTolerance["FaultTolerance"]
+    end
+    subgraph DataSources
+        datasource_akka_net_RabbitMQ[("RabbitMQ")]
+        datasource_akka_net_Dapper[("Dapper")]
+        datasource_akka_net_Kafka[("Kafka")]
+    end

@@ -392,10 +392,14 @@ def _category_detail_grouped(category: str, cat_nodes: list, cat_ids: set, node_
     )
     MAX_EDGES = 400
     min_count = 1
-    if len(all_edge_counts) > MAX_EDGES:
+    total_edges = len(all_edge_counts)
+    if total_edges > MAX_EDGES:
         min_count = 2
         while sum(1 for c in all_edge_counts if c >= min_count) > MAX_EDGES:
             min_count += 1
+        shown = sum(1 for c in all_edge_counts if c >= min_count)
+        hidden = total_edges - shown
+        lines.insert(0, f"%% EDGE_FILTER: total={total_edges} shown={shown} hidden={hidden} min_count={min_count}")
 
     for (from_grp, to_grp), count in sorted(group_edges.items(), key=lambda x: -x[1]):
         if count < min_count:

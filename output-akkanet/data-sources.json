@@ -1,0 +1,2027 @@
+[
+  {
+    "file": "src/benchmark/Akka.Benchmarks/Remoting/AkkaPduCodecBenchmark.cs",
+    "repo": "akka.net",
+    "line": 57,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private Akka.Remote.Serialization.Proto.Msg.Payload _payloadDecoded;"
+  },
+  {
+    "file": "src/benchmark/Akka.Benchmarks/Logging/LoggingBenchmarks.cs",
+    "repo": "akka.net",
+    "line": 19,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BenchmarkLogAdapter",
+    "context": "private sealed class BenchmarkLogAdapter : LoggingAdapterBase"
+  },
+  {
+    "file": "src/benchmark/Akka.Benchmarks/Logging/SemanticLoggingBenchmarks.cs",
+    "repo": "akka.net",
+    "line": 305,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BenchmarkLogAdapter",
+    "context": "private sealed class BenchmarkLogAdapter : LoggingAdapterBase"
+  },
+  {
+    "file": "src/benchmark/Akka.Cluster.Benchmarks/Serialization/DDataSerializationBenchmarks.cs",
+    "repo": "akka.net",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Cluster.Sharding.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/benchmark/Akka.Cluster.Benchmarks/Sharding/ShardingInfrastructure.cs",
+    "repo": "akka.net",
+    "line": 214,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString ="
+  },
+  {
+    "file": "src/benchmark/Akka.Cluster.Benchmarks/Sharding/ShardingInfrastructure.cs",
+    "repo": "akka.net",
+    "line": 225,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"{connectionString}\"\""
+  },
+  {
+    "file": "src/benchmark/Akka.Cluster.Benchmarks/Sharding/ShardingInfrastructure.cs",
+    "repo": "akka.net",
+    "line": 232,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"{connectionString}\"\""
+  },
+  {
+    "file": "src/contrib/testkits/Akka.TestKit.Xunit2/Internals/AkkaAssertEqualityComparerAdapter.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AkkaAssertEqualityComparerAdapter",
+    "context": "internal class AkkaAssertEqualityComparerAdapter<T> : IEqualityComparer"
+  },
+  {
+    "file": "src/contrib/testkits/Akka.TestKit.Xunit/Internals/AkkaAssertEqualityComparerAdapter.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AkkaAssertEqualityComparerAdapter",
+    "context": "internal class AkkaAssertEqualityComparerAdapter<T> : IEqualityComparer"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/WrappedShardBufferedMessageSpec.cs",
+    "repo": "akka.net",
+    "line": 36,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BufferMessageAdapter",
+    "context": "private sealed class BufferMessageAdapter: IShardingBufferMessageAdapter"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/ShardingBufferAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 57,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class TestMessageAdapter",
+    "context": "private class TestMessageAdapter: IShardingBufferMessageAdapter"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/ClusterShardingMessageSerializerSpec.cs",
+    "repo": "akka.net",
+    "line": 132,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var message1 = new Serialization.Proto.Msg.EntityStarted();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding.Tests/ClusterShardingMessageSerializerSpec.cs",
+    "repo": "akka.net",
+    "line": 143,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var message2 = new Serialization.Proto.Msg.EntityStopped();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Metrics/Serialization/ClusterMetricsMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 381,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private IMetricsSelector MetricSelectorFromProto(Serialization.Proto.MetricsSelector selector)"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData/Serialization/ReplicatorMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.DistributedData.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData/Serialization/SerializationSupport.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.DistributedData.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData/Serialization/ReplicatedDataSerializer.cs",
+    "repo": "akka.net",
+    "line": 18,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.DistributedData.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData/Serialization/OtherMessageComparer.cs",
+    "repo": "akka.net",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.DistributedData.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData.Tests/Serialization/ReplicatedDataSerializerBackCompatSpec.cs",
+    "repo": "akka.net",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.DistributedData.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.DistributedData.Tests/WriteAggregatorSpec.cs",
+    "repo": "akka.net",
+    "line": 48,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class WriteAckAdapter",
+    "context": "internal class WriteAckAdapter : ReceiveActor"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/ClusterClientDiscovery.cs",
+    "repo": "akka.net",
+    "line": 102,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "_http = new HttpClient();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 164,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var protoMessage = new PublishSubscribe.Serialization.Proto.Msg.Send();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 173,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var sendProto = PublishSubscribe.Serialization.Proto.Msg.Send.Parser.ParseFrom(bytes);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 179,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var protoMessage = new PublishSubscribe.Serialization.Proto.Msg.SendToAll();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 188,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var sendToAllProto = PublishSubscribe.Serialization.Proto.Msg.SendToAll.Parser.ParseFrom(bytes);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 194,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var protoMessage = new PublishSubscribe.Serialization.Proto.Msg.Publish();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/Client/Serialization/ClusterClientMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 202,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var publishProto = PublishSubscribe.Serialization.Proto.Msg.Publish.Parser.ParseFrom(bytes);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Tools/PublishSubscribe/Serialization/DistributedPubSubMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 19,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using AddressData = Akka.Remote.Serialization.Proto.Msg.AddressData;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/OldCoordinatorStateMigrationEventAdapter.cs",
+    "repo": "akka.net",
+    "line": 18,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OldCoordinatorStateMigrationEventAdapter",
+    "context": "internal sealed class OldCoordinatorStateMigrationEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/IShardingBufferMessageAdapter.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class EmptyBufferMessageAdapter",
+    "context": "internal class EmptyBufferMessageAdapter: IShardingBufferMessageAdapter"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/ClusterShardingMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Cluster.Sharding.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/ClusterShardingMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/ClusterShardingMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using ActorRefMessage = Akka.Remote.Serialization.Proto.Msg.ActorRefData;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 19,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "namespace Akka.Cluster.Sharding.Serialization.Proto.Msg {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 76,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.DurationReflection.Descriptor, global::Akka.Remote.Serialization.Proto.Msg.ContainerFormatsReflection.Descriptor, },"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 78,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Parser, new[]{ \"Sha"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 79,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ActorRefMessage), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ActorRefMessage.Parser, new[]{ \"Ref\" "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 80,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardIdMessage), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardIdMessage.Parser, new[]{ \"Shard\" "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 81,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardHomeAllocated), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardHomeAllocated.Parser, new[]{ "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 82,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardHome), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardHome.Parser, new[]{ \"Shard\", \"Region\" "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 83,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityState.Parser, new[]{ \"Entities\" }, "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 84,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityStarted), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityStarted.Parser, new[]{ \"EntityId\""
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 85,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntitiesStarted), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntitiesStarted.Parser, new[]{ \"Entit"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 86,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityStopped), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntityStopped.Parser, new[]{ \"EntityId\""
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 87,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntitiesStopped), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.EntitiesStopped.Parser, new[]{ \"Entit"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 88,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardStats), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardStats.Parser, new[]{ \"Shard\", \"Entity"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 89,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats.Parser, new[]{ \"Sta"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 90,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.GetClusterShardingStats), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.GetClusterShardingStats.Parse"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 91,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStats), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStats.Parser, new"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 92,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry.P"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 93,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentRegions), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentRegions.Parser, new[]{ \"Regions"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 94,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.StartEntity), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.StartEntity.Parser, new[]{ \"EntityId\" }, "
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 95,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.StartEntityAck), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.StartEntityAck.Parser, new[]{ \"EntityI"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 96,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentShardState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentShardState.Parser, new[]{ \"S"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 97,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState.Parser, new[]{ \"ShardId\", \"Enti"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 98,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentShardRegionState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CurrentShardRegionState.Parse"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 99,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.RememberedShardState), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.RememberedShardState.Parser, new"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 100,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "new pbr::GeneratedClrTypeInfo(typeof(global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardingEnvelope), global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardingEnvelope.Parser, new[]{ \"Ent"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 121,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[0]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 156,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private static readonly pb::FieldCodec<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Types.ShardEntry> _repeated_shards_codec"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 157,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "= pb::FieldCodec.ForMessage(10, global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Types.ShardEntry.Parser);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 158,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private readonly pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Types.ShardEntry> shards_ = new pbc::RepeatedField<global::Akka.Cluster.Sharding.Serializatio"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 161,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Types.ShardEntry> Shards {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 380,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.CoordinatorState.Descriptor.NestedTypes[0]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 611,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[1]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 800,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[2]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 989,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[3]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 1215,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[4]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 1441,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[5]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 1622,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[6]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 1811,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[7]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 1992,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[8]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 2181,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[9]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 2359,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[10]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 2585,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[11]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 2789,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[12]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 2987,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[13]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3019,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private static readonly pb::FieldCodec<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry> _repeated_stats_codec"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3020,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "= pb::FieldCodec.ForMessage(10, global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry.Parser);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3021,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private readonly pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry> stats_ = new pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.M"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3024,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingStatsEntry> Stats {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3165,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[14]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3198,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private global::Akka.Remote.Serialization.Proto.Msg.AddressData address_;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3201,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public global::Akka.Remote.Serialization.Proto.Msg.AddressData Address {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3210,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats stats_;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3213,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats Stats {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3320,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Address = new global::Akka.Remote.Serialization.Proto.Msg.AddressData();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3326,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Stats = new global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3347,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Address = new global::Akka.Remote.Serialization.Proto.Msg.AddressData();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3354,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Stats = new global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3376,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Address = new global::Akka.Remote.Serialization.Proto.Msg.AddressData();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3383,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Stats = new global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardRegionStats();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3409,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[15]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3441,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private static readonly pb::FieldCodec<global::Akka.Remote.Serialization.Proto.Msg.AddressData> _repeated_regions_codec"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3442,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "= pb::FieldCodec.ForMessage(10, global::Akka.Remote.Serialization.Proto.Msg.AddressData.Parser);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3443,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private readonly pbc::RepeatedField<global::Akka.Remote.Serialization.Proto.Msg.AddressData> regions_ = new pbc::RepeatedField<global::Akka.Remote.Serialization.Proto.Msg.AddressData>();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3446,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public pbc::RepeatedField<global::Akka.Remote.Serialization.Proto.Msg.AddressData> Regions {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3587,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[16]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 3776,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[17]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4002,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[18]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4217,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[19]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4432,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[20]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4465,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private static readonly pb::FieldCodec<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState> _repeated_shards_codec"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4466,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "= pb::FieldCodec.ForMessage(10, global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState.Parser);"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4467,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private readonly pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState> shards_ = new pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState>"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4470,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public pbc::RepeatedField<global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ShardState> Shards {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4636,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[21]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4851,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "get { return global::Akka.Cluster.Sharding.Serialization.Proto.Msg.ClusterShardingMessagesReflection.Descriptor.MessageTypes[22]; }"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4896,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private global::Akka.Remote.Serialization.Proto.Msg.Payload message_;"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 4899,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public global::Akka.Remote.Serialization.Proto.Msg.Payload Message {"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 5009,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Message = new global::Akka.Remote.Serialization.Proto.Msg.Payload();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 5034,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Message = new global::Akka.Remote.Serialization.Proto.Msg.Payload();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/Serialization/Proto/ClusterShardingMessages.g.cs",
+    "repo": "akka.net",
+    "line": 5060,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "Message = new global::Akka.Remote.Serialization.Proto.Msg.Payload();"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/ClusterSharding.cs",
+    "repo": "akka.net",
+    "line": 55,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ExtractorAdapter",
+    "context": "internal sealed class ExtractorAdapter : IMessageExtractor"
+  },
+  {
+    "file": "src/contrib/cluster/Akka.Cluster.Sharding/ClusterSharding.cs",
+    "repo": "akka.net",
+    "line": 1560,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class DeprecatedHandlerExtractorAdapter",
+    "context": "internal sealed class DeprecatedHandlerExtractorAdapter : IMessageExtractor"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 83,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private readonly string _connectionString;"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 92,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_connectionString = _settings.ConnectionString;"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 135,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 191,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 242,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 310,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Snapshot/SqliteSnapshotStore.cs",
+    "repo": "akka.net",
+    "line": 355,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 109,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private readonly string _connectionString;"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 119,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "_connectionString = _settings.ConnectionString;"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 187,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 219,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 280,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 309,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Journal/SqliteJournal.cs",
+    "repo": "akka.net",
+    "line": 401,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "using (var connection = new SqliteConnection(_connectionString))"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Settings.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; }"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Settings.cs",
+    "repo": "akka.net",
+    "line": 45,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = config.GetString(\"connection-string\");"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Settings.cs",
+    "repo": "akka.net",
+    "line": 59,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "public string ConnectionString { get; }"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom/Settings.cs",
+    "repo": "akka.net",
+    "line": 89,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "ConnectionString = config.GetString(\"connection-string\");"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteSnapshotStoreSpec.cs",
+    "repo": "akka.net",
+    "line": 25,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private static Config CreateSpecConfig(string connectionString)"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteSnapshotStoreSpec.cs",
+    "repo": "akka.net",
+    "line": 36,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"\" + connectionString + @\"\"\""
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteSnapshotStoreSerializationSpec.cs",
+    "repo": "akka.net",
+    "line": 22,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private static Config CreateSpecConfig(string connectionString)"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteSnapshotStoreSerializationSpec.cs",
+    "repo": "akka.net",
+    "line": 33,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"\" + connectionString + @\"\"\""
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteJournalSpec.cs",
+    "repo": "akka.net",
+    "line": 32,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private static Config CreateSpecConfig(string connectionString)"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteJournalSpec.cs",
+    "repo": "akka.net",
+    "line": 43,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"\" + connectionString + @\"\"\""
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteJournalSerializationSpec.cs",
+    "repo": "akka.net",
+    "line": 23,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "private static Config CreateSpecConfig(string connectionString)"
+  },
+  {
+    "file": "src/examples/Akka.Persistence.Custom.Tests/SqliteJournalSerializationSpec.cs",
+    "repo": "akka.net",
+    "line": 40,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "connection-string = \"\"\" + connectionString + @\"\"\""
+  },
+  {
+    "file": "src/examples/WindowsService/AkkaWindowsService/Program.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "HttpClient.Injection",
+    "type": "api",
+    "match": "AddHttpClient<",
+    "context": "services.AddHttpClient<JokeService>();"
+  },
+  {
+    "file": "src/examples/HeadlessService/AkkaHeadlesssService/HeadlessActor.cs",
+    "repo": "akka.net",
+    "line": 17,
+    "pattern": "RabbitMQ",
+    "type": "messaging",
+    "match": "RabbitMQ",
+    "context": "// Connect to an Apache Kafka, Apache Pulsar, RabbitMQ instance or send/receive messages to/from a remote actor!"
+  },
+  {
+    "file": "src/examples/Stocks/SymbolLookup/Actors/DispatcherActor.cs",
+    "repo": "akka.net",
+    "line": 25,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "private IActorRef stock = Context.ActorOf(Props.Create(() => new StockQuoteActor(new HttpClient())), \"symbolquotes\");"
+  },
+  {
+    "file": "src/examples/AppConfig/Program.cs",
+    "repo": "akka.net",
+    "line": 29,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "Console.WriteLine(\"If running properly, BatchingSqliteJournalSetup.ConnectionString should return 'myDB://MyConnectionString'.\");"
+  },
+  {
+    "file": "src/examples/AppConfig/Program.cs",
+    "repo": "akka.net",
+    "line": 30,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "ConnectionString",
+    "context": "Console.WriteLine($\"Connection string is: {setup.ConnectionString}\");"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/MemoryEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 160,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class UserAgeTaggingAdapter",
+    "context": "public class UserAgeTaggingAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/MemoryEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 184,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ReplayPassThroughAdapter",
+    "context": "public class ReplayPassThroughAdapter : UserAgeTaggingAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/MemoryEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 193,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class LoggingAdapter",
+    "context": "public class LoggingAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 149,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BaseTestAdapter",
+    "context": "public abstract class BaseTestAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 167,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ExampleEventAdapter",
+    "context": "public class ExampleEventAdapter : BaseTestAdapter { }"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 168,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MarkerInterfaceAdapter",
+    "context": "public class MarkerInterfaceAdapter : BaseTestAdapter { }"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 169,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class PreciseAdapter",
+    "context": "public class PreciseAdapter : BaseTestAdapter { }"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 195,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ReaderAdapter",
+    "context": "public class ReaderAdapter : IReadEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 203,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AnotherReaderAdapter",
+    "context": "public class AnotherReaderAdapter : IReadEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/Journal/MemoryEventAdaptersSpec.cs",
+    "repo": "akka.net",
+    "line": 218,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class WriterAdapter",
+    "context": "public class WriterAdapter : IWriteEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/EndToEndEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 101,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AEndToEndAdapter",
+    "context": "public class AEndToEndAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/EndToEndEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 128,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class NewAEndToEndAdapter",
+    "context": "public class NewAEndToEndAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/EndToEndEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 155,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class BEndToEndAdapter",
+    "context": "public class BEndToEndAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Tests/EndToEndEventAdapterSpec.cs",
+    "repo": "akka.net",
+    "line": 182,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class NewBEndToEndAdapter",
+    "context": "public class NewBEndToEndAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Docs.Tests/Streams/RestartDocTests.cs",
+    "repo": "akka.net",
+    "line": 38,
+    "pattern": "HttpClient.New",
+    "type": "api",
+    "match": "new HttpClient(",
+    "context": "var httpClient = new HttpClient();"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/MsgEncoder.cs",
+    "repo": "akka.net",
+    "line": 24,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "private static Serialization.Proto.Msg.AddressData AddressMessageBuilder(Address address)"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/MsgEncoder.cs",
+    "repo": "akka.net",
+    "line": 26,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "var message = new Serialization.Proto.Msg.AddressData();"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/RemoteConnection.cs",
+    "repo": "akka.net",
+    "line": 14,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.TestKit.Proto;"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/Proto/ProtobufEncoder.cs",
+    "repo": "akka.net",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "namespace Akka.Remote.TestKit.Proto"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/Proto/ProtobufDecoder.cs",
+    "repo": "akka.net",
+    "line": 18,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "namespace Akka.Remote.TestKit.Proto"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/MsgDecoder.cs",
+    "repo": "akka.net",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.TestKit.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Remote.TestKit/MsgDecoder.cs",
+    "repo": "akka.net",
+    "line": 25,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "public static Address Proto2Address(Serialization.Proto.Msg.AddressData addr)"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/IO/FileSinkSpec.cs",
+    "repo": "akka.net",
+    "line": 456,
+    "pattern": "FileStorage",
+    "type": "storage",
+    "match": "File.Create",
+    "context": "targetFile.Create().Dispose();"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 39,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "public void StepAll() => Interpreter.Execute(int.MaxValue);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 41,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "public virtual void Step() => Interpreter.Execute(1);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 411,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(eventLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 419,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(eventLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 427,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(eventLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 459,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(eventLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 467,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(eventLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 539,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "public override void Step() => Interpreter.Execute(!_chasing ? 1 : 2);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/Fusing/GraphInterpreterSpecKit.cs",
+    "repo": "akka.net",
+    "line": 944,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "protected sealed override void Run() => Interpreter.Execute(int.MaxValue);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests/Implementation/GraphStageLogicSpec.cs",
+    "repo": "akka.net",
+    "line": 491,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "interpreter.Execute(2);"
+  },
+  {
+    "file": "src/core/Akka.Remote.Tests.Performance/InboundMessageDispatcherSpec.cs",
+    "repo": "akka.net",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using SerializedMessage = Akka.Remote.Serialization.Proto.Msg.Payload;"
+  },
+  {
+    "file": "src/core/Akka.Cluster/Serialization/ReliableDeliverySerializer.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Cluster.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Cluster/Serialization/ReliableDeliverySerializer.cs",
+    "repo": "akka.net",
+    "line": 19,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Cluster/Serialization/ClusterMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 16,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Cluster.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Cluster/Serialization/ClusterMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 21,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using AddressData = Akka.Remote.Serialization.Proto.Msg.AddressData;"
+  },
+  {
+    "file": "src/core/Akka.Remote.Tests/Serialization/ProtobufSerializerSpec.cs",
+    "repo": "akka.net",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Remote.Tests/Transport/AkkaProtocolSpec.cs",
+    "repo": "akka.net",
+    "line": 23,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using SerializedMessage = Akka.Remote.Serialization.Proto.Msg.Payload;"
+  },
+  {
+    "file": "src/core/Akka.Persistence.Query/Interfaces.cs",
+    "repo": "akka.net",
+    "line": 26,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Query(",
+    "context": "/// var events = journal.Query(new EventsByTag(\"mytag\", 0L))"
+  },
+  {
+    "file": "src/core/Akka.Persistence.TCK/Serialization/JournalSerializationSpec.cs",
+    "repo": "akka.net",
+    "line": 219,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class MyWriteAdapter",
+    "context": "public class MyWriteAdapter : IWriteEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Serialization/PersistenceSnapshotSerializer.cs",
+    "repo": "akka.net",
+    "line": 10,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Persistence.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Serialization/PersistenceMessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Persistence.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Journal/EventAdapters.cs",
+    "repo": "akka.net",
+    "line": 96,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class IdentityEventAdapter",
+    "context": "public sealed class IdentityEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Journal/EventAdapters.cs",
+    "repo": "akka.net",
+    "line": 125,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class NoopWriteEventAdapter",
+    "context": "internal class NoopWriteEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Journal/EventAdapters.cs",
+    "repo": "akka.net",
+    "line": 151,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class NoopReadEventAdapter",
+    "context": "internal class NoopReadEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Journal/EventAdapters.cs",
+    "repo": "akka.net",
+    "line": 180,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class CombinedReadEventAdapter",
+    "context": "public sealed class CombinedReadEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Persistence/Journal/EventAdapters.cs",
+    "repo": "akka.net",
+    "line": 234,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ReadWriteEventAdapter",
+    "context": "internal class ReadWriteEventAdapter : IEventAdapter"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/StreamRef/SourceRefImpl.cs",
+    "repo": "akka.net",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Streams.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/IO/InputStreamSinkStage.cs",
+    "repo": "akka.net",
+    "line": 275,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class InputStreamAdapter",
+    "context": "internal sealed class InputStreamAdapter : Stream"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/IO/OutputStreamSourceStage.cs",
+    "repo": "akka.net",
+    "line": 318,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class OutputStreamAdapter",
+    "context": "internal sealed class OutputStreamAdapter : Stream"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/IO/TcpStages.cs",
+    "repo": "akka.net",
+    "line": 686,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "var connectionString = remoteAddress == null ? \"\" : $\" on connection to [{remoteAddress}]\";"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/IO/TcpStages.cs",
+    "repo": "akka.net",
+    "line": 689,
+    "pattern": "ConnectionString",
+    "type": "config",
+    "match": "connectionString",
+    "context": "$\"TCP idle-timeout encountered{connectionString}, no bytes passed in the last {idleTimeout}\","
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/Fusing/ActorGraphInterpreter.cs",
+    "repo": "akka.net",
+    "line": 354,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Interpreter.Execute(_abortLimit);"
+  },
+  {
+    "file": "src/core/Akka.Streams/Implementation/Fusing/ActorGraphInterpreter.cs",
+    "repo": "akka.net",
+    "line": 375,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "var remainingQuota = _interpreter.Execute(Math.Min(actorEventLimit, _shellEventLimit));"
+  },
+  {
+    "file": "src/core/Akka.Streams/Serialization/SerializationTools.cs",
+    "repo": "akka.net",
+    "line": 11,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Streams.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Streams/Serialization/StreamRefSerializer.cs",
+    "repo": "akka.net",
+    "line": 12,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Streams.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Streams/Util/IteratorAdapter.cs",
+    "repo": "akka.net",
+    "line": 37,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class IteratorAdapter",
+    "context": "internal sealed class IteratorAdapter<T> : IIterator<T>"
+  },
+  {
+    "file": "src/core/Akka.Remote/Serialization/ExceptionSupport.cs",
+    "repo": "akka.net",
+    "line": 17,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/FailureInjectorTransportAdapter.cs",
+    "repo": "akka.net",
+    "line": 70,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class FailureInjectorTransportAdapter",
+    "context": "public class FailureInjectorTransportAdapter : AbstractTransportAdapter, IAssociationEventListener"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/TransportAdapters.cs",
+    "repo": "akka.net",
+    "line": 195,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class AbstractTransportAdapter",
+    "context": "public abstract class AbstractTransportAdapter : Transport"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/TransportAdapters.cs",
+    "repo": "akka.net",
+    "line": 493,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ActorTransportAdapter",
+    "context": "public abstract class ActorTransportAdapter : AbstractTransportAdapter"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/ThrottleTransportAdapter.cs",
+    "repo": "akka.net",
+    "line": 38,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ThrottleTransportAdapter",
+    "context": "public class ThrottleTransportAdapter : ActorTransportAdapter"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/AkkaPduCodec.cs",
+    "repo": "akka.net",
+    "line": 14,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using Akka.Remote.Serialization.Proto.Msg;"
+  },
+  {
+    "file": "src/core/Akka.Remote/Transport/AkkaPduCodec.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using SerializedMessage = Akka.Remote.Serialization.Proto.Msg.Payload;"
+  },
+  {
+    "file": "src/core/Akka.Remote/MessageSerializer.cs",
+    "repo": "akka.net",
+    "line": 13,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using SerializedMessage = Akka.Remote.Serialization.Proto.Msg.Payload;"
+  },
+  {
+    "file": "src/core/Akka.Remote/Endpoint.cs",
+    "repo": "akka.net",
+    "line": 28,
+    "pattern": "gRPC",
+    "type": "api",
+    "match": ".Proto",
+    "context": "using SerializedMessage = Akka.Remote.Serialization.Proto.Msg.Payload;"
+  },
+  {
+    "file": "src/core/Akka/Event/ContextLoggingAdapter.cs",
+    "repo": "akka.net",
+    "line": 15,
+    "pattern": "IMessageAdapter",
+    "type": "connector",
+    "match": "class ContextLoggingAdapter",
+    "context": "internal sealed class ContextLoggingAdapter : ILoggingAdapter"
+  },
+  {
+    "file": "src/core/Akka/Delivery/ProducerController.cs",
+    "repo": "akka.net",
+    "line": 164,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public interface IProducerCommand<T>"
+  },
+  {
+    "file": "src/core/Akka/Delivery/ProducerController.cs",
+    "repo": "akka.net",
+    "line": 171,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public sealed class Start<T> : IProducerCommand<T>"
+  },
+  {
+    "file": "src/core/Akka/Delivery/ProducerController.cs",
+    "repo": "akka.net",
+    "line": 184,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public sealed class RequestNext<T> : IProducerCommand<T>, INoSerializationVerificationNeeded"
+  },
+  {
+    "file": "src/core/Akka/Delivery/ProducerController.cs",
+    "repo": "akka.net",
+    "line": 257,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public sealed class MessageWithConfirmation<T> : IProducerCommand<T>"
+  },
+  {
+    "file": "src/core/Akka/Delivery/ProducerController.cs",
+    "repo": "akka.net",
+    "line": 281,
+    "pattern": "Kafka",
+    "type": "messaging",
+    "match": "IProducer",
+    "context": "public sealed record RegisterConsumer<T>(IActorRef ConsumerController) : IProducerCommand<T>, IDeliverySerializable, IRegisterConsumer"
+  },
+  {
+    "file": "src/core/Akka/Actor/Scheduler/HashedWheelTimerScheduler.cs",
+    "repo": "akka.net",
+    "line": 205,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "bucket.Execute(deadline);"
+  },
+  {
+    "file": "src/core/Akka/Actor/Scheduler/HashedWheelTimerScheduler.cs",
+    "repo": "akka.net",
+    "line": 300,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "bucket.Execute(deadline);"
+  },
+  {
+    "file": "src/core/Akka/Dispatch/Dispatcher.cs",
+    "repo": "akka.net",
+    "line": 76,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Executor.Execute(run);"
+  },
+  {
+    "file": "src/core/Akka/Dispatch/Dispatcher.cs",
+    "repo": "akka.net",
+    "line": 82,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "Executor.Execute(run);"
+  },
+  {
+    "file": "src/core/Akka.Streams.Tests.Performance/InterpreterBenchmark.cs",
+    "repo": "akka.net",
+    "line": 69,
+    "pattern": "Dapper",
+    "type": "database",
+    "match": ".Execute(",
+    "context": "setup.Interpreter.Execute(int.MaxValue);"
+  }
+]

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>src — Dependency Map</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', maxTextSize: 200000, maxEdges: 600 });
+  window.mermaidAPI = mermaid;
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh;
+  }
+  a { color: #3b82f6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    border-bottom: 1px solid #334155; padding: 1.5rem 2rem 1rem;
+  }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }
+  .header h1 span { color: #3b82f6; }
+  .search-box { position: relative; width: 280px; }
+  .search-box input {
+    width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.2rem; border-radius: 6px;
+    border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    font-size: 0.875rem; outline: none; transition: border-color .2s;
+  }
+  .search-box input::placeholder { color: #64748b; }
+  .search-box input:focus { border-color: #3b82f6; }
+  .search-box .search-icon {
+    position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+    color: #64748b; font-size: 0.85rem; pointer-events: none;
+  }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }
+  .stat { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8; }
+  .stat-value { font-weight: 700; font-size: 1rem; color: #3b82f6; }
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
+    background: #0f172a; border-bottom: 1px solid #334155;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem; background: transparent; border: none; color: #94a3b8;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: #e2e8f0; }
+  .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+  .content { padding: 1.5rem 2rem 3rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+  }
+  .card-title {
+    font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card-title .icon { color: #3b82f6; }
+  .card-title { justify-content: flex-start; }
+  .zoom-controls { margin-left: auto; display: flex; gap: 0.25rem; }
+  .zoom-btn {
+    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
+  }
+  .zoom-btn:hover { color: #e2e8f0; border-color: #3b82f6; }
+  .edge-filter-warning {
+    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
+  }
+  .mermaid-wrap {
+    background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
+    min-height: 120px; max-height: 80vh;
+  }
+  .mermaid-wrap .loading { color: #64748b; font-size: 0.9rem; text-align: center; }
+  .mermaid-wrap svg { max-width: none !important; height: auto; transform-origin: top left; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead th {
+    background: #1a2438; color: #94a3b8; font-weight: 600; text-transform: uppercase;
+    font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.6rem 0.75rem; text-align: left;
+    border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 1;
+  }
+  tbody td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+  tbody tr:hover { background: rgba(59,130,246,0.06); }
+  .tag {
+    display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .tag-webapp      { background: rgba(26,188,156,.15); color: #1ABC9C; }
+  .tag-library     { background: rgba(74,144,217,.15); color: #4A90D9; }
+  .tag-application { background: rgba(231,76,60,.15);  color: #E74C3C; }
+  .tag-service     { background: rgba(52,152,219,.15); color: #3498DB; }
+  .tag-tool        { background: rgba(243,156,18,.15); color: #F39C12; }
+  .tag-test        { background: rgba(155,89,182,.15); color: #9B59B6; }
+  .tag-connector   { background: rgba(230,126,34,.15); color: #E67E22; }
+  .tag-desktopapp  { background: rgba(233,30,99,.15);  color: #E91E63; }
+  .tag-db       { background: rgba(74,144,217,.15);  color: #4A90D9; }
+  .tag-messaging{ background: rgba(231,76,60,.15);   color: #E74C3C; }
+  .tag-api      { background: rgba(52,152,219,.15);  color: #3498DB; }
+  .tag-cache    { background: rgba(243,156,18,.15);  color: #F39C12; }
+  .tag-config   { background: rgba(155,89,182,.15);  color: #9B59B6; }
+  .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
+  .footer {
+    text-align: center; padding: 1.5rem 2rem; color: #475569;
+    font-size: 0.78rem; font-style: italic; border-top: 1px solid #334155;
+  }
+  @media (max-width: 768px) {
+    .header { padding: 1rem; }
+    .content { padding: 1rem; }
+    .tabs { padding: 0 1rem; }
+    .search-box { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <h1><span>src</span> Dependency Map</h1>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-value">84</span> Projects</div>
+    <div class="stat"><span class="stat-value">146</span> NuGet Packages</div>
+    <div class="stat"><span class="stat-value">142</span> Project References</div>
+    <div class="stat"><span class="stat-value">374</span> Data Patterns</div>
+    <div class="stat"><span class="stat-value">6</span> Config Files</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav">
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="cat_test">Test (40)</button>
+  <button class="tab-btn" data-tab="cat_library">Library (28)</button>
+  <button class="tab-btn" data-tab="cat_application">Application (8)</button>
+  <button class="tab-btn" data-tab="cat_webapp">WebApp (4)</button>
+  <button class="tab-btn" data-tab="cat_connector">Connector (3)</button>
+  <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
+  <button class="tab-btn" data-tab="datasources">Data Sources</button>
+  <button class="tab-btn" data-tab="allprojects">All Projects</button>
+</nav>
+
+<main class="content">
+
+  <section class="tab-panel active" id="panel-overview">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Category Overview
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-overview', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-overview">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph LR
+    test[&quot;Test (40)&quot;]
+    library[&quot;Library (28)&quot;]
+    application[&quot;Application (8)&quot;]
+    webapp[&quot;Webapp (4)&quot;]
+    connector[&quot;Connector (3)&quot;]
+    tool[&quot;Tool (1)&quot;]
+    test --&gt;|33| library
+    webapp --&gt;|13| library
+    webapp --&gt;|7| application
+    test --&gt;|6| application
+    test --&gt;|5| webapp
+    connector --&gt;|4| library
+    library --&gt;|2| tool
+    application --&gt;|2| library
+    library --&gt;|2| test
+    test --&gt;|2| tool
+    test --&gt;|2| connector
+    application --&gt;|1| test
+    webapp --&gt;|1| connector
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_test">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Projects (40)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_test', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_test">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph test[&quot;Test&quot;]
+        src_KurrentDB_Core_Tests[&quot;KurrentDB.Core.Tests&quot;]
+        src_FakePlugin[&quot;FakePlugin&quot;]
+        src_KurrentDB_Core_Testing[&quot;KurrentDB.Core.Testing&quot;]
+        src_KurrentDB_Plugins_Tests[&quot;KurrentDB.Plugins.Tests&quot;]
+        src_KurrentDB_Licensing_Tests[&quot;KurrentDB.Licensing.Tests&quot;]
+        src_KurrentDB_Auth_UserCertificates_Tests[&quot;KurrentDB.Auth.UserCertificates.Tests&quot;]
+        src_KurrentDB_Auth_Ldaps_Tests[&quot;KurrentDB.Auth.Ldaps.Tests&quot;]
+        src_KurrentDB_Api_V2_Tests[&quot;KurrentDB.Api.V2.Tests&quot;]
+        src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled_Tests[&quot;KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests&quot;]
+        src_KurrentDB_Projections_Core_Tests[&quot;KurrentDB.Projections.Core.Tests&quot;]
+        src_KurrentDB_Surge_Testing[&quot;KurrentDB.Surge.Testing&quot;]
+        src_KurrentDB_Common_Tests[&quot;KurrentDB.Common.Tests&quot;]
+        src_KurrentDB_Security_EncryptionAtRest_Tests[&quot;KurrentDB.Security.EncryptionAtRest.Tests&quot;]
+        src_KurrentDB_Core_Testing_NUnit[&quot;KurrentDB.Core.Testing.NUnit&quot;]
+        src_KurrentDB_Projections_Core_XUnit_Tests[&quot;KurrentDB.Projections.Core.XUnit.Tests&quot;]
+        src_KurrentDB_Auth_StreamPolicyPlugin_Tests[&quot;KurrentDB.Auth.StreamPolicyPlugin.Tests&quot;]
+        src_KurrentDB_Surge_Testing_Messages[&quot;KurrentDB.Surge.Testing.Messages&quot;]
+        src_KurrentDB_Core_Testing_XUnit[&quot;KurrentDB.Core.Testing.XUnit&quot;]
+        src_KurrentDB_SystemRuntime_Tests[&quot;KurrentDB.SystemRuntime.Tests&quot;]
+        src_KurrentDB_AutoScavenge_Tests[&quot;KurrentDB.AutoScavenge.Tests&quot;]
+        src_KurrentDB_Projections_Core_Javascript_Tests[&quot;KurrentDB.Projections.Core.Javascript.Tests&quot;]
+        src_KurrentDB_SchemaRegistry_Tests[&quot;KurrentDB.SchemaRegistry.Tests&quot;]
+        src_KurrentDB_SecondaryIndexing_LoadTesting[&quot;KurrentDB.SecondaryIndexing.LoadTesting&quot;]
+        src_KurrentDB_Plugins_TestHelpers[&quot;KurrentDB.Plugins.TestHelpers&quot;]
+        src_KurrentDB_BufferManagement_Tests[&quot;KurrentDB.BufferManagement.Tests&quot;]
+        src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests[&quot;KurrentDB.Diagnostics.LogsEndpointPlugin.Tests&quot;]
+        src_KurrentDB_LogV3_Tests[&quot;KurrentDB.LogV3.Tests&quot;]
+        src_KurrentDB_SourceGenerators_Tests[&quot;KurrentDB.SourceGenerators.Tests&quot;]
+        src_KurrentDB_TestClient[&quot;KurrentDB.TestClient&quot;]
+        src_KurrentDB_Core_XUnit_Tests[&quot;KurrentDB.Core.XUnit.Tests&quot;]
+        src_KurrentDB_Auth_OAuth_Tests[&quot;KurrentDB.Auth.OAuth.Tests&quot;]
+        src_KurrentDB_Surge_Tests[&quot;KurrentDB.Surge.Tests&quot;]
+        src_KurrentDB_Core_TUnit_Tests[&quot;KurrentDB.Core.TUnit.Tests&quot;]
+        src_KurrentDB_Testing_ClusterVNodeApp[&quot;KurrentDB.Testing.ClusterVNodeApp&quot;]
+        src_KurrentDB_SecondaryIndexing_Tests[&quot;KurrentDB.SecondaryIndexing.Tests&quot;]
+        src_KurrentDB_Connectors_Tests[&quot;KurrentDB.Connectors.Tests&quot;]
+        src_KurrentDB_Connectors_TestServer[&quot;KurrentDB.Connectors.TestServer&quot;]
+        src_KurrentDB_Testing[&quot;KurrentDB.Testing&quot;]
+        src_KurrentDB_OtlpExporterPlugin_Tests[&quot;KurrentDB.OtlpExporterPlugin.Tests&quot;]
+        src_KurrentDB_TcpPlugin_Tests[&quot;KurrentDB.TcpPlugin.Tests&quot;]
+    end
+    ext_library([&quot;Library (18)&quot;])
+    ext_application([&quot;Application (7)&quot;])
+    ext_webapp([&quot;Webapp (2)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_connector([&quot;Connector (1)&quot;])
+    src_KurrentDB_Core_Tests --&gt; src_KurrentDB_Core_Testing_NUnit
+    src_KurrentDB_Api_V2_Tests --&gt; src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_Api_V2_Tests --&gt; src_KurrentDB_Testing
+    src_KurrentDB_Projections_Core_Tests --&gt; src_KurrentDB_Core_Testing_NUnit
+    src_KurrentDB_Core_Testing_NUnit --&gt; src_KurrentDB_Core_Testing
+    src_KurrentDB_Projections_Core_XUnit_Tests --&gt; src_KurrentDB_Core_Testing
+    src_KurrentDB_Auth_StreamPolicyPlugin_Tests --&gt; src_KurrentDB_Core_Testing
+    src_KurrentDB_Core_Testing_XUnit --&gt; src_KurrentDB_Core_Testing
+    src_KurrentDB_SchemaRegistry_Tests --&gt; src_KurrentDB_Surge_Testing_Messages
+    src_KurrentDB_SchemaRegistry_Tests --&gt; src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_SchemaRegistry_Tests --&gt; src_KurrentDB_Testing
+    src_KurrentDB_SecondaryIndexing_LoadTesting --&gt; src_KurrentDB_Connectors_TestServer
+    src_KurrentDB_SecondaryIndexing_LoadTesting --&gt; src_KurrentDB_SecondaryIndexing_Tests
+    src_KurrentDB_Core_XUnit_Tests --&gt; src_KurrentDB_Core_Testing_XUnit
+    src_KurrentDB_Surge_Tests --&gt; src_KurrentDB_Surge_Testing
+    src_KurrentDB_Core_TUnit_Tests --&gt; src_KurrentDB_Testing_ClusterVNodeApp
+    src_KurrentDB_Core_TUnit_Tests --&gt; src_KurrentDB_Testing
+    src_KurrentDB_Testing_ClusterVNodeApp --&gt; src_KurrentDB_Testing
+    src_KurrentDB_SecondaryIndexing_Tests --&gt; src_KurrentDB_Core_Testing_XUnit
+    src_KurrentDB_SecondaryIndexing_Tests --&gt; src_KurrentDB_Surge_Testing
+    src_KurrentDB_Connectors_Tests --&gt; src_KurrentDB_Surge_Testing
+    src_KurrentDB_TcpPlugin_Tests --&gt; src_KurrentDB_Core_Testing
+    src_KurrentDB_Core_Testing -.-&gt; ext_library
+    src_KurrentDB_Plugins_Tests -.-&gt; ext_library
+    src_KurrentDB_Licensing_Tests -.-&gt; ext_library
+    src_KurrentDB_Auth_UserCertificates_Tests -.-&gt; ext_application
+    src_KurrentDB_Auth_UserCertificates_Tests -.-&gt; ext_library
+    src_KurrentDB_Auth_Ldaps_Tests -.-&gt; ext_application
+    src_KurrentDB_Api_V2_Tests -.-&gt; ext_webapp
+    src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled_Tests -.-&gt; ext_application
+    src_KurrentDB_Projections_Core_Tests -.-&gt; ext_library
+    src_KurrentDB_Surge_Testing -.-&gt; ext_webapp
+    src_KurrentDB_Common_Tests -.-&gt; ext_library
+    src_KurrentDB_Security_EncryptionAtRest_Tests -.-&gt; ext_library
+    src_KurrentDB_Security_EncryptionAtRest_Tests -.-&gt; ext_application
+    src_KurrentDB_Projections_Core_XUnit_Tests -.-&gt; ext_library
+    src_KurrentDB_Auth_StreamPolicyPlugin_Tests -.-&gt; ext_library
+    ext_application -.-&gt; src_KurrentDB_Projections_Core_Tests
+    src_KurrentDB_SystemRuntime_Tests -.-&gt; ext_library
+    src_KurrentDB_AutoScavenge_Tests -.-&gt; ext_library
+    ext_library -.-&gt; src_KurrentDB_Api_V2_Tests
+    ext_library -.-&gt; src_KurrentDB_Core_TUnit_Tests
+    src_KurrentDB_Projections_Core_Javascript_Tests -.-&gt; ext_library
+    src_KurrentDB_SchemaRegistry_Tests -.-&gt; ext_webapp
+    src_KurrentDB_SchemaRegistry_Tests -.-&gt; ext_library
+    src_KurrentDB_SecondaryIndexing_LoadTesting -.-&gt; ext_library
+    src_KurrentDB_Plugins_TestHelpers -.-&gt; ext_library
+    src_KurrentDB_BufferManagement_Tests -.-&gt; ext_library
+    src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests -.-&gt; ext_library
+    src_KurrentDB_Diagnostics_LogsEndpointPlugin_Tests -.-&gt; ext_application
+    src_KurrentDB_LogV3_Tests -.-&gt; ext_library
+    src_KurrentDB_SourceGenerators_Tests -.-&gt; ext_tool
+    src_KurrentDB_TestClient -.-&gt; ext_library
+    src_KurrentDB_Core_XUnit_Tests -.-&gt; ext_library
+    src_KurrentDB_Core_XUnit_Tests -.-&gt; ext_tool
+    src_KurrentDB_Auth_OAuth_Tests -.-&gt; ext_application
+    src_KurrentDB_Testing_ClusterVNodeApp -.-&gt; ext_webapp
+    src_KurrentDB_SecondaryIndexing_Tests -.-&gt; ext_library
+    src_KurrentDB_Connectors_Tests -.-&gt; ext_webapp
+    src_KurrentDB_Connectors_Tests -.-&gt; ext_connector
+    src_KurrentDB_Connectors_TestServer -.-&gt; ext_connector
+    src_KurrentDB_OtlpExporterPlugin_Tests -.-&gt; ext_library
+    src_KurrentDB_TcpPlugin_Tests -.-&gt; ext_library
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_library">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Library Projects (28)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_library', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_library">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph library[&quot;Library&quot;]
+        src_KurrentDB_OtlpExporterPlugin[&quot;KurrentDB.OtlpExporterPlugin&quot;]
+        src_KurrentDB_SystemRuntime[&quot;KurrentDB.SystemRuntime&quot;]
+        src_KurrentDB_Auth_StreamPolicyPlugin[&quot;KurrentDB.Auth.StreamPolicyPlugin&quot;]
+        src_KurrentDB_Native[&quot;KurrentDB.Native&quot;]
+        src_KurrentDB_LogCommon[&quot;KurrentDB.LogCommon&quot;]
+        src_KurrentDB_LogV3[&quot;KurrentDB.LogV3&quot;]
+        src_KurrentDB_Surge[&quot;KurrentDB.Surge&quot;]
+        src_KurrentDB_Transport_Http[&quot;KurrentDB.Transport.Http&quot;]
+        src_KurrentDB_NETCore_Compatibility[&quot;KurrentDB.NETCore.Compatibility&quot;]
+        src_KurrentDB_Projections_Core[&quot;KurrentDB.Projections.Core&quot;]
+        src_KurrentDB_POC_ConnectedSubsystemsPlugin[&quot;KurrentDB.POC.ConnectedSubsystemsPlugin&quot;]
+        src_KurrentDB_Licensing[&quot;KurrentDB.Licensing&quot;]
+        src_KurrentDB_AutoScavenge[&quot;KurrentDB.AutoScavenge&quot;]
+        src_KurrentDB_Common[&quot;KurrentDB.Common&quot;]
+        src_KurrentDB_Ammeter[&quot;KurrentDB.Ammeter&quot;]
+        src_KurrentDB_SchemaRegistry[&quot;KurrentDB.SchemaRegistry&quot;]
+        src_KurrentDB_SchemaRegistry_Protocol[&quot;KurrentDB.SchemaRegistry.Protocol&quot;]
+        src_KurrentDB_DuckDB[&quot;KurrentDB.DuckDB&quot;]
+        src_KurrentDB_Logging[&quot;KurrentDB.Logging&quot;]
+        src_KurrentDB_Transport_Tcp[&quot;KurrentDB.Transport.Tcp&quot;]
+        src_KurrentDB_SecondaryIndexing[&quot;KurrentDB.SecondaryIndexing&quot;]
+        src_KurrentDB_PluginHosting[&quot;KurrentDB.PluginHosting&quot;]
+        src_KurrentDB_UI[&quot;KurrentDB.UI&quot;]
+        src_KurrentDB_Core[&quot;KurrentDB.Core&quot;]
+        src_KurrentDB_POC_IO_Core[&quot;KurrentDB.POC.IO.Core&quot;]
+        src_KurrentDB_TcpPlugin[&quot;KurrentDB.TcpPlugin&quot;]
+        src_KurrentDB_BufferManagement[&quot;KurrentDB.BufferManagement&quot;]
+        src_KurrentDB_Plugins[&quot;KurrentDB.Plugins&quot;]
+    end
+    ext_test([&quot;Test (25)&quot;])
+    ext_webapp([&quot;Webapp (2)&quot;])
+    ext_tool([&quot;Tool (1)&quot;])
+    ext_application([&quot;Application (2)&quot;])
+    ext_connector([&quot;Connector (1)&quot;])
+    src_KurrentDB_OtlpExporterPlugin --&gt; src_KurrentDB_Logging
+    src_KurrentDB_Auth_StreamPolicyPlugin --&gt; src_KurrentDB_Core
+    src_KurrentDB_Native --&gt; src_KurrentDB_SystemRuntime
+    src_KurrentDB_LogV3 --&gt; src_KurrentDB_LogCommon
+    src_KurrentDB_Surge --&gt; src_KurrentDB_Core
+    src_KurrentDB_Transport_Http --&gt; src_KurrentDB_BufferManagement
+    src_KurrentDB_Transport_Http --&gt; src_KurrentDB_Common
+    src_KurrentDB_Projections_Core --&gt; src_KurrentDB_Common
+    src_KurrentDB_Projections_Core --&gt; src_KurrentDB_Core
+    src_KurrentDB_Projections_Core --&gt; src_KurrentDB_Transport_Http
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --&gt; src_KurrentDB_Core
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --&gt; src_KurrentDB_PluginHosting
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --&gt; src_KurrentDB_POC_IO_Core
+    src_KurrentDB_AutoScavenge --&gt; src_KurrentDB_POC_ConnectedSubsystemsPlugin
+    src_KurrentDB_AutoScavenge --&gt; src_KurrentDB_POC_IO_Core
+    src_KurrentDB_Common --&gt; src_KurrentDB_SystemRuntime
+    src_KurrentDB_SchemaRegistry --&gt; src_KurrentDB_Surge
+    src_KurrentDB_SchemaRegistry --&gt; src_KurrentDB_SchemaRegistry_Protocol
+    src_KurrentDB_Logging --&gt; src_KurrentDB_Common
+    src_KurrentDB_Transport_Tcp --&gt; src_KurrentDB_BufferManagement
+    src_KurrentDB_Transport_Tcp --&gt; src_KurrentDB_Common
+    src_KurrentDB_SecondaryIndexing --&gt; src_KurrentDB_Common
+    src_KurrentDB_SecondaryIndexing --&gt; src_KurrentDB_Core
+    src_KurrentDB_Core --&gt; src_KurrentDB_Common
+    src_KurrentDB_Core --&gt; src_KurrentDB_DuckDB
+    src_KurrentDB_Core --&gt; src_KurrentDB_Licensing
+    src_KurrentDB_Core --&gt; src_KurrentDB_Logging
+    src_KurrentDB_Core --&gt; src_KurrentDB_LogV3
+    src_KurrentDB_Core --&gt; src_KurrentDB_Native
+    src_KurrentDB_Core --&gt; src_KurrentDB_Plugins
+    src_KurrentDB_Core --&gt; src_KurrentDB_Transport_Http
+    src_KurrentDB_Core --&gt; src_KurrentDB_Transport_Tcp
+    src_KurrentDB_Core --&gt; src_KurrentDB_NETCore_Compatibility
+    src_KurrentDB_POC_IO_Core --&gt; src_KurrentDB_Core
+    src_KurrentDB_TcpPlugin --&gt; src_KurrentDB_Core
+    ext_test -.-&gt; src_KurrentDB_Core
+    ext_test -.-&gt; src_KurrentDB_PluginHosting
+    ext_test -.-&gt; src_KurrentDB_Plugins
+    ext_test -.-&gt; src_KurrentDB_Licensing
+    ext_test -.-&gt; src_KurrentDB_Common
+    ext_test -.-&gt; src_KurrentDB_Projections_Core
+    ext_webapp -.-&gt; src_KurrentDB_Core
+    ext_webapp -.-&gt; src_KurrentDB_SecondaryIndexing
+    ext_test -.-&gt; src_KurrentDB_Auth_StreamPolicyPlugin
+    src_KurrentDB_Projections_Core -.-&gt; ext_tool
+    ext_application -.-&gt; src_KurrentDB_Projections_Core
+    ext_test -.-&gt; src_KurrentDB_SystemRuntime
+    ext_test -.-&gt; src_KurrentDB_AutoScavenge
+    src_KurrentDB_Ammeter -.-&gt; ext_test
+    ext_test -.-&gt; src_KurrentDB_SchemaRegistry
+    ext_application -.-&gt; src_KurrentDB_SchemaRegistry
+    ext_test -.-&gt; src_KurrentDB_SecondaryIndexing
+    ext_test -.-&gt; src_KurrentDB_BufferManagement
+    ext_test -.-&gt; src_KurrentDB_LogV3
+    ext_test -.-&gt; src_KurrentDB_Transport_Http
+    ext_test -.-&gt; src_KurrentDB_Transport_Tcp
+    src_KurrentDB_Core -.-&gt; ext_tool
+    ext_connector -.-&gt; src_KurrentDB_Common
+    ext_connector -.-&gt; src_KurrentDB_Core
+    ext_connector -.-&gt; src_KurrentDB_Surge
+    ext_connector -.-&gt; src_KurrentDB_SystemRuntime
+    ext_test -.-&gt; src_KurrentDB_OtlpExporterPlugin
+    ext_test -.-&gt; src_KurrentDB_TcpPlugin
+    ext_webapp -.-&gt; src_KurrentDB_Auth_StreamPolicyPlugin
+    ext_webapp -.-&gt; src_KurrentDB_Common
+    ext_webapp -.-&gt; src_KurrentDB_OtlpExporterPlugin
+    ext_webapp -.-&gt; src_KurrentDB_PluginHosting
+    ext_webapp -.-&gt; src_KurrentDB_POC_ConnectedSubsystemsPlugin
+    ext_webapp -.-&gt; src_KurrentDB_Projections_Core
+    ext_webapp -.-&gt; src_KurrentDB_AutoScavenge
+    ext_webapp -.-&gt; src_KurrentDB_TcpPlugin
+    ext_webapp -.-&gt; src_KurrentDB_UI
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_application">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Application Projects (8)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_application', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_application">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph application[&quot;Application&quot;]
+        src_KurrentDB_Diagnostics_LogsEndpointPlugin[&quot;KurrentDB.Diagnostics.LogsEndpointPlugin&quot;]
+        src_KurrentDB_Security_EncryptionAtRest[&quot;KurrentDB.Security.EncryptionAtRest&quot;]
+        src_KurrentDB_Auth_OAuth[&quot;KurrentDB.Auth.OAuth&quot;]
+        src_KurrentDB_MicroBenchmarks[&quot;KurrentDB.MicroBenchmarks&quot;]
+        src_KurrentDB_Plugins_SchemaRegistry[&quot;KurrentDB.Plugins.SchemaRegistry&quot;]
+        src_KurrentDB_Auth_Ldaps[&quot;KurrentDB.Auth.Ldaps&quot;]
+        src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled[&quot;KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled&quot;]
+        src_KurrentDB_Auth_UserCertificates[&quot;KurrentDB.Auth.UserCertificates&quot;]
+    end
+    ext_test([&quot;Test (7)&quot;])
+    ext_library([&quot;Library (2)&quot;])
+    ext_webapp([&quot;Webapp (1)&quot;])
+    ext_test -.-&gt; src_KurrentDB_Auth_UserCertificates
+    ext_test -.-&gt; src_KurrentDB_Auth_Ldaps
+    ext_test -.-&gt; src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled
+    ext_test -.-&gt; src_KurrentDB_Security_EncryptionAtRest
+    src_KurrentDB_MicroBenchmarks -.-&gt; ext_test
+    src_KurrentDB_MicroBenchmarks -.-&gt; ext_library
+    src_KurrentDB_Plugins_SchemaRegistry -.-&gt; ext_library
+    ext_test -.-&gt; src_KurrentDB_Diagnostics_LogsEndpointPlugin
+    ext_test -.-&gt; src_KurrentDB_Auth_OAuth
+    ext_webapp -.-&gt; src_KurrentDB_Auth_Ldaps
+    ext_webapp -.-&gt; src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled
+    ext_webapp -.-&gt; src_KurrentDB_Auth_OAuth
+    ext_webapp -.-&gt; src_KurrentDB_Auth_UserCertificates
+    ext_webapp -.-&gt; src_KurrentDB_Diagnostics_LogsEndpointPlugin
+    ext_webapp -.-&gt; src_KurrentDB_Security_EncryptionAtRest
+    ext_webapp -.-&gt; src_KurrentDB_Plugins_SchemaRegistry
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_webapp">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> WebApp Projects (4)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_webapp', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_webapp">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph webapp[&quot;Webapp&quot;]
+        src_KurrentDB_Plugins_Api_V2[&quot;KurrentDB.Plugins.Api.V2&quot;]
+        src_KurrentDB_Api_V2[&quot;KurrentDB.Api.V2&quot;]
+        src_KurrentDB_ClusterNode_Web[&quot;KurrentDB.ClusterNode.Web&quot;]
+        src_KurrentDB[&quot;KurrentDB&quot;]
+    end
+    ext_test([&quot;Test (5)&quot;])
+    ext_library([&quot;Library (11)&quot;])
+    ext_application([&quot;Application (7)&quot;])
+    ext_connector([&quot;Connector (1)&quot;])
+    src_KurrentDB_Plugins_Api_V2 --&gt; src_KurrentDB_Api_V2
+    src_KurrentDB --&gt; src_KurrentDB_ClusterNode_Web
+    src_KurrentDB --&gt; src_KurrentDB_Plugins_Api_V2
+    ext_test -.-&gt; src_KurrentDB_Api_V2
+    src_KurrentDB_Api_V2 -.-&gt; ext_library
+    ext_test -.-&gt; src_KurrentDB
+    src_KurrentDB -.-&gt; ext_application
+    src_KurrentDB -.-&gt; ext_library
+    src_KurrentDB -.-&gt; ext_connector
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_connector">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Connector Projects (3)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_connector', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_connector">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph connector[&quot;Connector&quot;]
+        src_KurrentDB_Connectors_Contracts[&quot;KurrentDB.Connectors.Contracts&quot;]
+        src_KurrentDB_Plugins_Connectors[&quot;KurrentDB.Plugins.Connectors&quot;]
+        src_KurrentDB_Connectors[&quot;KurrentDB.Connectors&quot;]
+    end
+    ext_test([&quot;Test (2)&quot;])
+    ext_library([&quot;Library (4)&quot;])
+    ext_webapp([&quot;Webapp (1)&quot;])
+    src_KurrentDB_Plugins_Connectors --&gt; src_KurrentDB_Connectors
+    src_KurrentDB_Connectors --&gt; src_KurrentDB_Connectors_Contracts
+    ext_test -.-&gt; src_KurrentDB_Connectors
+    src_KurrentDB_Connectors -.-&gt; ext_library
+    ext_webapp -.-&gt; src_KurrentDB_Plugins_Connectors
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-cat_tool">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Tool Projects (1)
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-cat_tool', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-cat_tool">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    subgraph tool[&quot;Tool&quot;]
+        src_KurrentDB_SourceGenerators[&quot;KurrentDB.SourceGenerators&quot;]
+    end
+    ext_library([&quot;Library (2)&quot;])
+    ext_test([&quot;Test (2)&quot;])
+    ext_library -.-&gt; src_KurrentDB_SourceGenerators
+    ext_test -.-&gt; src_KurrentDB_SourceGenerators
+        </pre>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="tab-panel" id="panel-datasources">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>gRPC</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>130</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>FileStorage</strong></td>
+              <td><span class="tag tag-config">Storage</span></td>
+              <td>75</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>Dapper</strong></td>
+              <td><span class="tag tag-db">Database</span></td>
+              <td>66</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>ConnectionString</strong></td>
+              <td><span class="tag tag-config">Config</span></td>
+              <td>61</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>HttpClient.New</strong></td>
+              <td><span class="tag tag-api">Api</span></td>
+              <td>25</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>Kafka</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>10</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>IMessageAdapter</strong></td>
+              <td><span class="tag tag-config">Connector</span></td>
+              <td>4</td>
+              <td>src</td>
+            </tr>
+            <tr>
+              <td><strong>RabbitMQ</strong></td>
+              <td><span class="tag tag-messaging">Messaging</span></td>
+              <td>3</td>
+              <td>src</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="tab-panel" id="panel-allprojects">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="table-wrap">
+        <table id="projectsTable">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Repo</th>
+              <th>Category</th>
+              <th>Project Refs</th>
+              <th>NuGet Deps</th>
+              <th>Path</th>
+            </tr>
+          </thead>
+          <tbody id="projectsBody">
+            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Generated by Dependency Mapper (Python) &mdash; 2026-02-11
+</footer>
+
+<script>
+var diagramZoomLevels = {};
+function zoomDiagram(containerId, delta) {
+  if (delta === 0) { diagramZoomLevels[containerId] = 1; }
+  else { diagramZoomLevels[containerId] = Math.max(0.2, Math.min(3, (diagramZoomLevels[containerId] || 1) + delta)); }
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var svg = container.querySelector('svg');
+  if (!svg) return;
+  var scale = diagramZoomLevels[containerId];
+  svg.style.transform = 'scale(' + scale + ')';
+}
+
+(function () {
+  'use strict';
+
+  var categoryClass = {
+    'webapp': 'tag-webapp', 'library': 'tag-library', 'application': 'tag-application',
+    'service': 'tag-service', 'tool': 'tag-tool', 'test': 'tag-test',
+    'connector': 'tag-connector', 'desktopapp': 'tag-desktopapp'
+  };
+
+  function tagHTML(category) {
+    var lower = (category || '').toLowerCase();
+    var cls = categoryClass[lower] || 'tag-service';
+    return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function parseCSV(text) {
+    var lines = text.trim().split('\n');
+    if (lines.length === 0) return [];
+    var headers = lines[0].split(',');
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {
+      var vals = lines[i].split(',');
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h.trim()] = (vals[idx] || '').trim(); });
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels  = document.querySelectorAll('.tab-panel');
+  var renderedTabs = {};
+
+  function activateTab(tabId) {
+    tabButtons.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === tabId); });
+    tabPanels.forEach(function (p)  { p.classList.toggle('active', p.id === 'panel-' + tabId); });
+    lazyRenderMermaid(tabId);
+  }
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
+  });
+
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_test': 'mermaid-cat_test', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_connector': 'mermaid-cat_connector', 'cat_tool': 'mermaid-cat_tool' };
+
+  function lazyRenderMermaid(tabId) {
+    var containerId = mermaidContainers[tabId];
+    if (!containerId || renderedTabs[tabId]) return;
+
+    function doRender() {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      var pre = container.querySelector('pre.mermaid');
+      if (!pre) return;
+      renderedTabs[tabId] = true;
+      var loading = container.querySelector('.loading');
+      pre.style.display = '';
+      if (loading) loading.style.display = 'none';
+      window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+        // Fix SVG sizing: use natural viewBox width instead of 100%
+        var svg = container.querySelector('svg');
+        if (svg) {
+          var vb = svg.getAttribute('viewBox');
+          if (vb) {
+            var parts = vb.split(' ');
+            var naturalWidth = parseFloat(parts[2]);
+            var naturalHeight = parseFloat(parts[3]);
+            svg.style.width = naturalWidth + 'px';
+            svg.style.height = naturalHeight + 'px';
+            svg.style.maxWidth = 'none';
+            svg.removeAttribute('width');
+          }
+        }
+      }).catch(function (err) {
+        console.error('Mermaid render error for ' + tabId + ':', err);
+        if (loading) { loading.textContent = 'Diagram rendering failed.'; loading.style.display = ''; }
+      });
+    }
+
+    if (window.mermaidAPI) { doRender(); }
+    else {
+      var interval = setInterval(function () {
+        if (window.mermaidAPI) { clearInterval(interval); doRender(); }
+      }, 150);
+    }
+  }
+
+  // Render first tab on load
+  var firstTab = document.querySelector('.tab-btn');
+  if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+
+  // Load All Projects data
+  Promise.all([
+    fetch('project-meta.json').then(function (r) { return r.json(); }),
+    fetch('project-refs.csv').then(function (r) { return r.text(); }),
+    fetch('dependencies.csv').then(function (r) { return r.text(); })
+  ]).then(function (results) {
+    var meta = results[0], refs = parseCSV(results[1]), deps = parseCSV(results[2]);
+    var refCounts = {}, depCounts = {};
+    refs.forEach(function (r) { refCounts[r.project] = (refCounts[r.project] || 0) + 1; });
+    deps.forEach(function (d) { depCounts[d.project] = (depCounts[d.project] || 0) + 1; });
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '';
+    meta.forEach(function (p) {
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(p.project) + '</strong></td>' +
+        '<td>' + escHtml(p.repo || '') + '</td>' +
+        '<td>' + tagHTML(p.category) + '</td>' +
+        '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
+        '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
+        '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
+      tbody.appendChild(tr);
+    });
+  }).catch(function (err) {
+    console.error('Failed to load project data:', err);
+    var tbody = document.getElementById('projectsBody');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+  });
+
+  // Search
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {
+    var query = searchInput.value.trim().toLowerCase();
+    if (query.length > 0) activateTab('allprojects');
+    var rows = document.querySelectorAll('#projectsBody tr[data-search]');
+    rows.forEach(function (row) {
+      var text = row.getAttribute('data-search') || '';
+      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

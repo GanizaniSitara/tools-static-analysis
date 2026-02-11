@@ -1,0 +1,11 @@
+graph LR
+    subgraph Applications
+        NuGet_Client_NuGet_CommandLine["NuGet.CommandLine"]
+        NuGet_Client_NuGet_CommandLine_XPlat["NuGet.CommandLine.XPlat"]
+        NuGet_Client_ensure_nupkg_dependencies_on_source["ensure-nupkg-dependencies-on-source"]
+        NuGet_Client_ship_public_apis["ship-public-apis"]
+    end
+    subgraph DataSources
+        datasource_NuGet_Client_Dapper[("Dapper")]
+        datasource_NuGet_Client_SqlClient[("SqlClient")]
+    end

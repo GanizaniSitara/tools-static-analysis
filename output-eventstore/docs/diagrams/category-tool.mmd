@@ -1,0 +1,8 @@
+graph TD
+    subgraph tool["Tool"]
+        src_KurrentDB_SourceGenerators["KurrentDB.SourceGenerators"]
+    end
+    ext_library(["Library (2)"])
+    ext_test(["Test (2)"])
+    ext_library -.-> src_KurrentDB_SourceGenerators
+    ext_test -.-> src_KurrentDB_SourceGenerators

@@ -1,0 +1,6 @@
+graph TD
+    subgraph desktopapp["Desktopapp"]
+        akka_net_SymbolLookup["SymbolLookup"]
+    end
+    ext_library(["Library (1)"])
+    akka_net_SymbolLookup -.-> ext_library

@@ -1,0 +1,10 @@
+graph TD
+    subgraph service["Service"]
+        akka_net_TcpEchoService_Server["TcpEchoService.Server"]
+        akka_net_AkkaWindowsService["AkkaWindowsService"]
+        akka_net_AkkaHeadlesssService["AkkaHeadlesssService"]
+    end
+    ext_library(["Library (2)"])
+    akka_net_TcpEchoService_Server -.-> ext_library
+    akka_net_AkkaWindowsService -.-> ext_library
+    akka_net_AkkaHeadlesssService -.-> ext_library

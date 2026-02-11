@@ -1,0 +1,16 @@
+graph LR
+    library["Library (16)"]
+    application["Application (4)"]
+    webapp["Webapp (1)"]
+    tool["Tool (1)"]
+    test["Test (1)"]
+    application -->|28| library
+    test -->|15| library
+    webapp -->|3| library
+    library -->|3| webapp
+    test -->|3| application
+    application -->|2| webapp
+    application -->|2| tool
+    tool -->|1| library
+    test -->|1| webapp
+    test -->|1| tool

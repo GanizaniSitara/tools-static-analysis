@@ -1,0 +1,15 @@
+graph TD
+    subgraph application["Application"]
+        NuGet_Client_NuGet_CommandLine["NuGet.CommandLine"]
+        NuGet_Client_NuGet_CommandLine_XPlat["NuGet.CommandLine.XPlat"]
+        NuGet_Client_ensure_nupkg_dependencies_on_source["ensure-nupkg-dependencies-on-source"]
+        NuGet_Client_ship_public_apis["ship-public-apis"]
+    end
+    ext_test(["Test (5)"])
+    ext_library(["Library (5)"])
+    ext_test -.-> NuGet_Client_NuGet_CommandLine_XPlat
+    ext_test -.-> NuGet_Client_NuGet_CommandLine
+    ext_library -.-> NuGet_Client_NuGet_CommandLine
+    NuGet_Client_NuGet_CommandLine -.-> ext_library
+    NuGet_Client_NuGet_CommandLine_XPlat -.-> ext_library
+    NuGet_Client_ensure_nupkg_dependencies_on_source -.-> ext_library

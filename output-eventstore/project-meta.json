@@ -1,0 +1,590 @@
+[
+  {
+    "project": "KurrentDB.Core.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Core.Tests/KurrentDB.Core.Tests.csproj",
+    "globalPath": "src/KurrentDB.Core.Tests/KurrentDB.Core.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.OtlpExporterPlugin",
+    "repo": "src",
+    "path": "KurrentDB.OtlpExporterPlugin/KurrentDB.OtlpExporterPlugin.csproj",
+    "globalPath": "src/KurrentDB.OtlpExporterPlugin/KurrentDB.OtlpExporterPlugin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "FakePlugin",
+    "repo": "src",
+    "path": "KurrentDB.Core.Testing/FakePlugin/FakePlugin.csproj",
+    "globalPath": "src/KurrentDB.Core.Testing/FakePlugin/FakePlugin.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Core.Testing",
+    "repo": "src",
+    "path": "KurrentDB.Core.Testing/KurrentDB.Core.Testing.csproj",
+    "globalPath": "src/KurrentDB.Core.Testing/KurrentDB.Core.Testing.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Plugins.Api.V2",
+    "repo": "src",
+    "path": "KurrentDB.Plugins.Api.V2/KurrentDB.Plugins.Api.V2.csproj",
+    "globalPath": "src/KurrentDB.Plugins.Api.V2/KurrentDB.Plugins.Api.V2.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "KurrentDB.Plugins.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Plugins.Tests/KurrentDB.Plugins.Tests.csproj",
+    "globalPath": "src/KurrentDB.Plugins.Tests/KurrentDB.Plugins.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Diagnostics.LogsEndpointPlugin",
+    "repo": "src",
+    "path": "KurrentDB.Diagnostics.LogsEndpointPlugin/KurrentDB.Diagnostics.LogsEndpointPlugin.csproj",
+    "globalPath": "src/KurrentDB.Diagnostics.LogsEndpointPlugin/KurrentDB.Diagnostics.LogsEndpointPlugin.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.SystemRuntime",
+    "repo": "src",
+    "path": "KurrentDB.SystemRuntime/KurrentDB.SystemRuntime.csproj",
+    "globalPath": "src/KurrentDB.SystemRuntime/KurrentDB.SystemRuntime.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Licensing.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Licensing.Tests/KurrentDB.Licensing.Tests.csproj",
+    "globalPath": "src/KurrentDB.Licensing.Tests/KurrentDB.Licensing.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.UserCertificates.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Auth.UserCertificates.Tests/KurrentDB.Auth.UserCertificates.Tests.csproj",
+    "globalPath": "src/KurrentDB.Auth.UserCertificates.Tests/KurrentDB.Auth.UserCertificates.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Security.EncryptionAtRest",
+    "repo": "src",
+    "path": "KurrentDB.Security.EncryptionAtRest/KurrentDB.Security.EncryptionAtRest.csproj",
+    "globalPath": "src/KurrentDB.Security.EncryptionAtRest/KurrentDB.Security.EncryptionAtRest.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.Auth.Ldaps.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Auth.Ldaps.Tests/KurrentDB.Auth.Ldaps.Tests.csproj",
+    "globalPath": "src/KurrentDB.Auth.Ldaps.Tests/KurrentDB.Auth.Ldaps.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Api.V2.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Api.V2.Tests/KurrentDB.Api.V2.Tests.csproj",
+    "globalPath": "src/KurrentDB.Api.V2.Tests/KurrentDB.Api.V2.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests.csproj",
+    "globalPath": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Projections.Core.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Projections.Core.Tests/KurrentDB.Projections.Core.Tests.csproj",
+    "globalPath": "src/KurrentDB.Projections.Core.Tests/KurrentDB.Projections.Core.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.StreamPolicyPlugin",
+    "repo": "src",
+    "path": "KurrentDB.Auth.StreamPolicyPlugin/KurrentDB.Auth.StreamPolicyPlugin.csproj",
+    "globalPath": "src/KurrentDB.Auth.StreamPolicyPlugin/KurrentDB.Auth.StreamPolicyPlugin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Native",
+    "repo": "src",
+    "path": "KurrentDB.Native/KurrentDB.Native.csproj",
+    "globalPath": "src/KurrentDB.Native/KurrentDB.Native.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Api.V2",
+    "repo": "src",
+    "path": "KurrentDB.Api.V2/KurrentDB.Api.V2.csproj",
+    "globalPath": "src/KurrentDB.Api.V2/KurrentDB.Api.V2.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "KurrentDB.LogCommon",
+    "repo": "src",
+    "path": "KurrentDB.LogCommon/KurrentDB.LogCommon.csproj",
+    "globalPath": "src/KurrentDB.LogCommon/KurrentDB.LogCommon.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Surge.Testing",
+    "repo": "src",
+    "path": "KurrentDB.Surge.Testing/KurrentDB.Surge.Testing.csproj",
+    "globalPath": "src/KurrentDB.Surge.Testing/KurrentDB.Surge.Testing.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Common.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Common.Tests/KurrentDB.Common.Tests.csproj",
+    "globalPath": "src/KurrentDB.Common.Tests/KurrentDB.Common.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.OAuth",
+    "repo": "src",
+    "path": "KurrentDB.Auth.OAuth/KurrentDB.Auth.OAuth.csproj",
+    "globalPath": "src/KurrentDB.Auth.OAuth/KurrentDB.Auth.OAuth.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.LogV3",
+    "repo": "src",
+    "path": "KurrentDB.LogV3/KurrentDB.LogV3.csproj",
+    "globalPath": "src/KurrentDB.LogV3/KurrentDB.LogV3.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Security.EncryptionAtRest.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Security.EncryptionAtRest.Tests/KurrentDB.Security.EncryptionAtRest.Tests.csproj",
+    "globalPath": "src/KurrentDB.Security.EncryptionAtRest.Tests/KurrentDB.Security.EncryptionAtRest.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Core.Testing.NUnit",
+    "repo": "src",
+    "path": "KurrentDB.Core.Testing.NUnit/KurrentDB.Core.Testing.NUnit.csproj",
+    "globalPath": "src/KurrentDB.Core.Testing.NUnit/KurrentDB.Core.Testing.NUnit.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Projections.Core.XUnit.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Projections.Core.XUnit.Tests/KurrentDB.Projections.Core.XUnit.Tests.csproj",
+    "globalPath": "src/KurrentDB.Projections.Core.XUnit.Tests/KurrentDB.Projections.Core.XUnit.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Surge",
+    "repo": "src",
+    "path": "KurrentDB.Surge/KurrentDB.Surge.csproj",
+    "globalPath": "src/KurrentDB.Surge/KurrentDB.Surge.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Auth.StreamPolicyPlugin.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Auth.StreamPolicyPlugin.Tests/KurrentDB.Auth.StreamPolicyPlugin.Tests.csproj",
+    "globalPath": "src/KurrentDB.Auth.StreamPolicyPlugin.Tests/KurrentDB.Auth.StreamPolicyPlugin.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Transport.Http",
+    "repo": "src",
+    "path": "KurrentDB.Transport.Http/KurrentDB.Transport.Http.csproj",
+    "globalPath": "src/KurrentDB.Transport.Http/KurrentDB.Transport.Http.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Surge.Testing.Messages",
+    "repo": "src",
+    "path": "KurrentDB.Surge.Testing.Messages/KurrentDB.Surge.Testing.Messages.csproj",
+    "globalPath": "src/KurrentDB.Surge.Testing.Messages/KurrentDB.Surge.Testing.Messages.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.NETCore.Compatibility",
+    "repo": "src",
+    "path": "KurrentDB.NETCore.Compatibility/KurrentDB.NETCore.Compatibility.csproj",
+    "globalPath": "src/KurrentDB.NETCore.Compatibility/KurrentDB.NETCore.Compatibility.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Projections.Core",
+    "repo": "src",
+    "path": "KurrentDB.Projections.Core/KurrentDB.Projections.Core.csproj",
+    "globalPath": "src/KurrentDB.Projections.Core/KurrentDB.Projections.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.POC.ConnectedSubsystemsPlugin",
+    "repo": "src",
+    "path": "KurrentDB.POC.ConnectedSubsystemsPlugin/KurrentDB.POC.ConnectedSubsystemsPlugin.csproj",
+    "globalPath": "src/KurrentDB.POC.ConnectedSubsystemsPlugin/KurrentDB.POC.ConnectedSubsystemsPlugin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Licensing",
+    "repo": "src",
+    "path": "KurrentDB.Licensing/KurrentDB.Licensing.csproj",
+    "globalPath": "src/KurrentDB.Licensing/KurrentDB.Licensing.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.MicroBenchmarks",
+    "repo": "src",
+    "path": "KurrentDB.MicroBenchmarks/KurrentDB.MicroBenchmarks.csproj",
+    "globalPath": "src/KurrentDB.MicroBenchmarks/KurrentDB.MicroBenchmarks.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.Core.Testing.XUnit",
+    "repo": "src",
+    "path": "KurrentDB.Core.Testing.XUnit/KurrentDB.Core.Testing.XUnit.csproj",
+    "globalPath": "src/KurrentDB.Core.Testing.XUnit/KurrentDB.Core.Testing.XUnit.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.AutoScavenge",
+    "repo": "src",
+    "path": "KurrentDB.AutoScavenge/KurrentDB.AutoScavenge.csproj",
+    "globalPath": "src/KurrentDB.AutoScavenge/KurrentDB.AutoScavenge.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Common",
+    "repo": "src",
+    "path": "KurrentDB.Common/KurrentDB.Common.csproj",
+    "globalPath": "src/KurrentDB.Common/KurrentDB.Common.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.SystemRuntime.Tests",
+    "repo": "src",
+    "path": "KurrentDB.SystemRuntime.Tests/KurrentDB.SystemRuntime.Tests.csproj",
+    "globalPath": "src/KurrentDB.SystemRuntime.Tests/KurrentDB.SystemRuntime.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.AutoScavenge.Tests",
+    "repo": "src",
+    "path": "KurrentDB.AutoScavenge.Tests/KurrentDB.AutoScavenge.Tests.csproj",
+    "globalPath": "src/KurrentDB.AutoScavenge.Tests/KurrentDB.AutoScavenge.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Ammeter",
+    "repo": "src",
+    "path": "KurrentDB.Ammeter/KurrentDB.Ammeter.csproj",
+    "globalPath": "src/KurrentDB.Ammeter/KurrentDB.Ammeter.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Projections.Core.Javascript.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Projections.Core.Javascript.Tests/KurrentDB.Projections.Core.Javascript.Tests.csproj",
+    "globalPath": "src/KurrentDB.Projections.Core.Javascript.Tests/KurrentDB.Projections.Core.Javascript.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.SchemaRegistry",
+    "repo": "src",
+    "path": "SchemaRegistry/KurrentDB.SchemaRegistry/KurrentDB.SchemaRegistry.csproj",
+    "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry/KurrentDB.SchemaRegistry.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.SchemaRegistry.Tests",
+    "repo": "src",
+    "path": "SchemaRegistry/KurrentDB.SchemaRegistry.Tests/KurrentDB.SchemaRegistry.Tests.csproj",
+    "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Tests/KurrentDB.SchemaRegistry.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Plugins.SchemaRegistry",
+    "repo": "src",
+    "path": "SchemaRegistry/KurrentDB.Plugins.SchemaRegistry/KurrentDB.Plugins.SchemaRegistry.csproj",
+    "globalPath": "src/SchemaRegistry/KurrentDB.Plugins.SchemaRegistry/KurrentDB.Plugins.SchemaRegistry.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.SchemaRegistry.Protocol",
+    "repo": "src",
+    "path": "SchemaRegistry/KurrentDB.SchemaRegistry.Protocol/KurrentDB.SchemaRegistry.Protocol.csproj",
+    "globalPath": "src/SchemaRegistry/KurrentDB.SchemaRegistry.Protocol/KurrentDB.SchemaRegistry.Protocol.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.SecondaryIndexing.LoadTesting",
+    "repo": "src",
+    "path": "KurrentDB.SecondaryIndexing.LoadTesting/KurrentDB.SecondaryIndexing.LoadTesting.csproj",
+    "globalPath": "src/KurrentDB.SecondaryIndexing.LoadTesting/KurrentDB.SecondaryIndexing.LoadTesting.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.Ldaps",
+    "repo": "src",
+    "path": "KurrentDB.Auth.Ldaps/KurrentDB.Auth.Ldaps.csproj",
+    "globalPath": "src/KurrentDB.Auth.Ldaps/KurrentDB.Auth.Ldaps.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.DuckDB",
+    "repo": "src",
+    "path": "KurrentDB.DuckDB/KurrentDB.DuckDB.csproj",
+    "globalPath": "src/KurrentDB.DuckDB/KurrentDB.DuckDB.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Logging",
+    "repo": "src",
+    "path": "KurrentDB.Logging/KurrentDB.Logging.csproj",
+    "globalPath": "src/KurrentDB.Logging/KurrentDB.Logging.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Plugins.TestHelpers",
+    "repo": "src",
+    "path": "KurrentDB.Plugins.TestHelpers/KurrentDB.Plugins.TestHelpers.csproj",
+    "globalPath": "src/KurrentDB.Plugins.TestHelpers/KurrentDB.Plugins.TestHelpers.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.BufferManagement.Tests",
+    "repo": "src",
+    "path": "KurrentDB.BufferManagement.Tests/KurrentDB.BufferManagement.Tests.csproj",
+    "globalPath": "src/KurrentDB.BufferManagement.Tests/KurrentDB.BufferManagement.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests.csproj",
+    "globalPath": "src/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests/KurrentDB.Diagnostics.LogsEndpointPlugin.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.LogV3.Tests",
+    "repo": "src",
+    "path": "KurrentDB.LogV3.Tests/KurrentDB.LogV3.Tests.csproj",
+    "globalPath": "src/KurrentDB.LogV3.Tests/KurrentDB.LogV3.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Transport.Tcp",
+    "repo": "src",
+    "path": "KurrentDB.Transport.Tcp/KurrentDB.Transport.Tcp.csproj",
+    "globalPath": "src/KurrentDB.Transport.Tcp/KurrentDB.Transport.Tcp.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.SourceGenerators.Tests",
+    "repo": "src",
+    "path": "KurrentDB.SourceGenerators.Tests/KurrentDB.SourceGenerators.Tests.csproj",
+    "globalPath": "src/KurrentDB.SourceGenerators.Tests/KurrentDB.SourceGenerators.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.TestClient",
+    "repo": "src",
+    "path": "KurrentDB.TestClient/KurrentDB.TestClient.csproj",
+    "globalPath": "src/KurrentDB.TestClient/KurrentDB.TestClient.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Core.XUnit.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Core.XUnit.Tests/KurrentDB.Core.XUnit.Tests.csproj",
+    "globalPath": "src/KurrentDB.Core.XUnit.Tests/KurrentDB.Core.XUnit.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Auth.OAuth.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Auth.OAuth.Tests/KurrentDB.Auth.OAuth.Tests.csproj",
+    "globalPath": "src/KurrentDB.Auth.OAuth.Tests/KurrentDB.Auth.OAuth.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.SecondaryIndexing",
+    "repo": "src",
+    "path": "KurrentDB.SecondaryIndexing/KurrentDB.SecondaryIndexing.csproj",
+    "globalPath": "src/KurrentDB.SecondaryIndexing/KurrentDB.SecondaryIndexing.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Surge.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Surge.Tests/KurrentDB.Surge.Tests.csproj",
+    "globalPath": "src/KurrentDB.Surge.Tests/KurrentDB.Surge.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Core.TUnit.Tests",
+    "repo": "src",
+    "path": "KurrentDB.Core.TUnit.Tests/KurrentDB.Core.TUnit.Tests.csproj",
+    "globalPath": "src/KurrentDB.Core.TUnit.Tests/KurrentDB.Core.TUnit.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.PluginHosting",
+    "repo": "src",
+    "path": "KurrentDB.PluginHosting/KurrentDB.PluginHosting.csproj",
+    "globalPath": "src/KurrentDB.PluginHosting/KurrentDB.PluginHosting.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.UI",
+    "repo": "src",
+    "path": "KurrentDB.UI/KurrentDB.UI.csproj",
+    "globalPath": "src/KurrentDB.UI/KurrentDB.UI.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Testing.ClusterVNodeApp",
+    "repo": "src",
+    "path": "KurrentDB.Testing.ClusterVNodeApp/KurrentDB.Testing.ClusterVNodeApp.csproj",
+    "globalPath": "src/KurrentDB.Testing.ClusterVNodeApp/KurrentDB.Testing.ClusterVNodeApp.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.ClusterNode.Web",
+    "repo": "src",
+    "path": "KurrentDB.ClusterNode.Web/KurrentDB.ClusterNode.Web.csproj",
+    "globalPath": "src/KurrentDB.ClusterNode.Web/KurrentDB.ClusterNode.Web.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "KurrentDB.Core",
+    "repo": "src",
+    "path": "KurrentDB.Core/KurrentDB.Core.csproj",
+    "globalPath": "src/KurrentDB.Core/KurrentDB.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.SecondaryIndexing.Tests",
+    "repo": "src",
+    "path": "KurrentDB.SecondaryIndexing.Tests/KurrentDB.SecondaryIndexing.Tests.csproj",
+    "globalPath": "src/KurrentDB.SecondaryIndexing.Tests/KurrentDB.SecondaryIndexing.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.POC.IO.Core",
+    "repo": "src",
+    "path": "KurrentDB.POC.IO.Core/KurrentDB.POC.IO.Core.csproj",
+    "globalPath": "src/KurrentDB.POC.IO.Core/KurrentDB.POC.IO.Core.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+    "repo": "src",
+    "path": "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.csproj",
+    "globalPath": "src/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled/KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.SourceGenerators",
+    "repo": "src",
+    "path": "KurrentDB.SourceGenerators/KurrentDB.SourceGenerators.csproj",
+    "globalPath": "src/KurrentDB.SourceGenerators/KurrentDB.SourceGenerators.csproj",
+    "category": "Tool"
+  },
+  {
+    "project": "KurrentDB.Auth.UserCertificates",
+    "repo": "src",
+    "path": "KurrentDB.Auth.UserCertificates/KurrentDB.Auth.UserCertificates.csproj",
+    "globalPath": "src/KurrentDB.Auth.UserCertificates/KurrentDB.Auth.UserCertificates.csproj",
+    "category": "Application"
+  },
+  {
+    "project": "KurrentDB.Connectors.Contracts",
+    "repo": "src",
+    "path": "Connectors/KurrentDB.Connectors.Contracts/KurrentDB.Connectors.Contracts.csproj",
+    "globalPath": "src/Connectors/KurrentDB.Connectors.Contracts/KurrentDB.Connectors.Contracts.csproj",
+    "category": "Connector"
+  },
+  {
+    "project": "KurrentDB.Connectors.Tests",
+    "repo": "src",
+    "path": "Connectors/KurrentDB.Connectors.Tests/KurrentDB.Connectors.Tests.csproj",
+    "globalPath": "src/Connectors/KurrentDB.Connectors.Tests/KurrentDB.Connectors.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Plugins.Connectors",
+    "repo": "src",
+    "path": "Connectors/KurrentDB.Plugins.Connectors/KurrentDB.Plugins.Connectors.csproj",
+    "globalPath": "src/Connectors/KurrentDB.Plugins.Connectors/KurrentDB.Plugins.Connectors.csproj",
+    "category": "Connector"
+  },
+  {
+    "project": "KurrentDB.Connectors",
+    "repo": "src",
+    "path": "Connectors/KurrentDB.Connectors/KurrentDB.Connectors.csproj",
+    "globalPath": "src/Connectors/KurrentDB.Connectors/KurrentDB.Connectors.csproj",
+    "category": "Connector"
+  },
+  {
+    "project": "KurrentDB.Connectors.TestServer",
+    "repo": "src",
+    "path": "Connectors/KurrentDB.Connectors.TestServer/KurrentDB.Connectors.TestServer.csproj",
+    "globalPath": "src/Connectors/KurrentDB.Connectors.TestServer/KurrentDB.Connectors.TestServer.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.Testing",
+    "repo": "src",
+    "path": "KurrentDB.Testing/KurrentDB.Testing.csproj",
+    "globalPath": "src/KurrentDB.Testing/KurrentDB.Testing.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.OtlpExporterPlugin.Tests",
+    "repo": "src",
+    "path": "KurrentDB.OtlpExporterPlugin.Tests/KurrentDB.OtlpExporterPlugin.Tests.csproj",
+    "globalPath": "src/KurrentDB.OtlpExporterPlugin.Tests/KurrentDB.OtlpExporterPlugin.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.TcpPlugin.Tests",
+    "repo": "src",
+    "path": "KurrentDB.TcpPlugin.Tests/KurrentDB.TcpPlugin.Tests.csproj",
+    "globalPath": "src/KurrentDB.TcpPlugin.Tests/KurrentDB.TcpPlugin.Tests.csproj",
+    "category": "Test"
+  },
+  {
+    "project": "KurrentDB.TcpPlugin",
+    "repo": "src",
+    "path": "KurrentDB.TcpPlugin/KurrentDB.TcpPlugin.csproj",
+    "globalPath": "src/KurrentDB.TcpPlugin/KurrentDB.TcpPlugin.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB.BufferManagement",
+    "repo": "src",
+    "path": "KurrentDB.BufferManagement/KurrentDB.BufferManagement.csproj",
+    "globalPath": "src/KurrentDB.BufferManagement/KurrentDB.BufferManagement.csproj",
+    "category": "Library"
+  },
+  {
+    "project": "KurrentDB",
+    "repo": "src",
+    "path": "KurrentDB/KurrentDB.csproj",
+    "globalPath": "src/KurrentDB/KurrentDB.csproj",
+    "category": "WebApp"
+  },
+  {
+    "project": "KurrentDB.Plugins",
+    "repo": "src",
+    "path": "KurrentDB.Plugins/KurrentDB.Plugins.csproj",
+    "globalPath": "src/KurrentDB.Plugins/KurrentDB.Plugins.csproj",
+    "category": "Library"
+  }
+]

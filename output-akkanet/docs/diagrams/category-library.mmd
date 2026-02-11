@@ -1,0 +1,89 @@
+graph TD
+    subgraph library["Library"]
+        akka_net_Akka_DependencyInjection["Akka.DependencyInjection"]
+        akka_net_Akka_DistributedData_LightningDB["Akka.DistributedData.LightningDB"]
+        akka_net_Akka_Cluster_Metrics["Akka.Cluster.Metrics"]
+        akka_net_Akka_DistributedData["Akka.DistributedData"]
+        akka_net_Akka_Cluster_Sharding["Akka.Cluster.Sharding"]
+        akka_net_Akka_Persistence_Query_InMemory["Akka.Persistence.Query.InMemory"]
+        akka_net_Akka_Serialization_Hyperion["Akka.Serialization.Hyperion"]
+        akka_net_Akka_Persistence_Custom["Akka.Persistence.Custom"]
+        akka_net_ChatMessages["ChatMessages"]
+        akka_net_Akka_Discovery["Akka.Discovery"]
+        akka_net_Akka_Cluster["Akka.Cluster"]
+        akka_net_Akka_Persistence_Query["Akka.Persistence.Query"]
+        akka_net_Akka_Persistence_TCK["Akka.Persistence.TCK"]
+        akka_net_Akka_Persistence["Akka.Persistence"]
+        akka_net_Akka_Streams["Akka.Streams"]
+        akka_net_Akka_Coordination["Akka.Coordination"]
+        akka_net_Akka_Remote["Akka.Remote"]
+        akka_net_Akka["Akka"]
+    end
+    ext_application(["Application (18)"])
+    ext_test(["Test (35)"])
+    ext_tool(["Tool (3)"])
+    ext_webapp(["Webapp (1)"])
+    ext_service(["Service (3)"])
+    ext_desktopapp(["Desktopapp (1)"])
+    akka_net_Akka_DependencyInjection --> akka_net_Akka
+    akka_net_Akka_DistributedData_LightningDB --> akka_net_Akka_DistributedData
+    akka_net_Akka_Cluster_Metrics --> akka_net_Akka_Cluster
+    akka_net_Akka_DistributedData --> akka_net_Akka_Cluster
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_Coordination
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_Persistence
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_DistributedData_LightningDB
+    akka_net_Akka_Cluster_Sharding --> akka_net_Akka_DistributedData
+    akka_net_Akka_Persistence_Query_InMemory --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Serialization_Hyperion --> akka_net_Akka
+    akka_net_Akka_Persistence_Custom --> akka_net_Akka_Persistence
+    akka_net_ChatMessages --> akka_net_Akka
+    akka_net_Akka_Discovery --> akka_net_Akka
+    akka_net_Akka_Cluster --> akka_net_Akka_Coordination
+    akka_net_Akka_Cluster --> akka_net_Akka_Remote
+    akka_net_Akka_Persistence_Query --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence_Query --> akka_net_Akka_Streams
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Persistence_TCK --> akka_net_Akka_Persistence
+    akka_net_Akka_Persistence --> akka_net_Akka
+    akka_net_Akka_Streams --> akka_net_Akka
+    akka_net_Akka_Coordination --> akka_net_Akka
+    akka_net_Akka_Remote --> akka_net_Akka
+    ext_application -.-> akka_net_Akka_Serialization_Hyperion
+    ext_application -.-> akka_net_Akka
+    ext_application -.-> akka_net_Akka_DistributedData
+    ext_application -.-> akka_net_Akka_Cluster
+    ext_application -.-> akka_net_Akka_Persistence
+    ext_application -.-> akka_net_Akka_Remote
+    ext_application -.-> akka_net_Akka_Streams
+    ext_application -.-> akka_net_Akka_Cluster_Sharding
+    ext_test -.-> akka_net_Akka_DependencyInjection
+    ext_test -.-> akka_net_Akka_Cluster_Sharding
+    ext_test -.-> akka_net_Akka_Persistence
+    ext_test -.-> akka_net_Akka_DistributedData_LightningDB
+    ext_test -.-> akka_net_Akka_DistributedData
+    ext_test -.-> akka_net_Akka_Cluster_Metrics
+    ext_test -.-> akka_net_Akka_Serialization_Hyperion
+    ext_tool -.-> akka_net_Akka_Cluster
+    ext_tool -.-> akka_net_Akka_Coordination
+    ext_tool -.-> akka_net_Akka_Discovery
+    akka_net_Akka_Cluster_Sharding -.-> ext_tool
+    ext_test -.-> akka_net_Akka_Persistence_TCK
+    ext_test -.-> akka_net_Akka_Persistence_Query_InMemory
+    ext_webapp -.-> akka_net_Akka_DependencyInjection
+    ext_webapp -.-> akka_net_Akka
+    ext_tool -.-> akka_net_Akka_Remote
+    ext_tool -.-> akka_net_Akka
+    ext_test -.-> akka_net_Akka_Persistence_Custom
+    ext_service -.-> akka_net_Akka
+    ext_service -.-> akka_net_Akka_DependencyInjection
+    ext_desktopapp -.-> akka_net_Akka
+    ext_tool -.-> akka_net_ChatMessages
+    ext_application -.-> akka_net_ChatMessages
+    ext_test -.-> akka_net_Akka_Remote
+    ext_test -.-> akka_net_Akka
+    ext_test -.-> akka_net_Akka_Streams
+    ext_test -.-> akka_net_Akka_Cluster
+    ext_test -.-> akka_net_Akka_Discovery
+    ext_test -.-> akka_net_Akka_Coordination
+    ext_test -.-> akka_net_Akka_Persistence_Query
+    akka_net_Akka_Persistence_TCK -.-> ext_test

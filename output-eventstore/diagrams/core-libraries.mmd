@@ -1,0 +1,64 @@
+graph TD
+    src_KurrentDB_OtlpExporterPlugin["KurrentDB.OtlpExporterPlugin"]
+    src_KurrentDB_SystemRuntime["KurrentDB.SystemRuntime"]
+    src_KurrentDB_Auth_StreamPolicyPlugin["KurrentDB.Auth.StreamPolicyPlugin"]
+    src_KurrentDB_Native["KurrentDB.Native"]
+    src_KurrentDB_LogCommon["KurrentDB.LogCommon"]
+    src_KurrentDB_LogV3["KurrentDB.LogV3"]
+    src_KurrentDB_Surge["KurrentDB.Surge"]
+    src_KurrentDB_Transport_Http["KurrentDB.Transport.Http"]
+    src_KurrentDB_NETCore_Compatibility["KurrentDB.NETCore.Compatibility"]
+    src_KurrentDB_Projections_Core["KurrentDB.Projections.Core"]
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin["KurrentDB.POC.ConnectedSubsystemsPlugin"]
+    src_KurrentDB_Licensing["KurrentDB.Licensing"]
+    src_KurrentDB_AutoScavenge["KurrentDB.AutoScavenge"]
+    src_KurrentDB_Common["KurrentDB.Common"]
+    src_KurrentDB_Ammeter["KurrentDB.Ammeter"]
+    src_KurrentDB_SchemaRegistry["KurrentDB.SchemaRegistry"]
+    src_KurrentDB_SchemaRegistry_Protocol["KurrentDB.SchemaRegistry.Protocol"]
+    src_KurrentDB_DuckDB["KurrentDB.DuckDB"]
+    src_KurrentDB_Logging["KurrentDB.Logging"]
+    src_KurrentDB_Transport_Tcp["KurrentDB.Transport.Tcp"]
+    src_KurrentDB_SecondaryIndexing["KurrentDB.SecondaryIndexing"]
+    src_KurrentDB_PluginHosting["KurrentDB.PluginHosting"]
+    src_KurrentDB_UI["KurrentDB.UI"]
+    src_KurrentDB_Core["KurrentDB.Core"]
+    src_KurrentDB_POC_IO_Core["KurrentDB.POC.IO.Core"]
+    src_KurrentDB_TcpPlugin["KurrentDB.TcpPlugin"]
+    src_KurrentDB_BufferManagement["KurrentDB.BufferManagement"]
+    src_KurrentDB_Plugins["KurrentDB.Plugins"]
+    src_KurrentDB_OtlpExporterPlugin --> src_KurrentDB_Logging
+    src_KurrentDB_Auth_StreamPolicyPlugin --> src_KurrentDB_Core
+    src_KurrentDB_Native --> src_KurrentDB_SystemRuntime
+    src_KurrentDB_LogV3 --> src_KurrentDB_LogCommon
+    src_KurrentDB_Surge --> src_KurrentDB_Core
+    src_KurrentDB_Transport_Http --> src_KurrentDB_BufferManagement
+    src_KurrentDB_Transport_Http --> src_KurrentDB_Common
+    src_KurrentDB_Projections_Core --> src_KurrentDB_Common
+    src_KurrentDB_Projections_Core --> src_KurrentDB_Core
+    src_KurrentDB_Projections_Core --> src_KurrentDB_Transport_Http
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --> src_KurrentDB_Core
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --> src_KurrentDB_PluginHosting
+    src_KurrentDB_POC_ConnectedSubsystemsPlugin --> src_KurrentDB_POC_IO_Core
+    src_KurrentDB_AutoScavenge --> src_KurrentDB_POC_ConnectedSubsystemsPlugin
+    src_KurrentDB_AutoScavenge --> src_KurrentDB_POC_IO_Core
+    src_KurrentDB_Common --> src_KurrentDB_SystemRuntime
+    src_KurrentDB_SchemaRegistry --> src_KurrentDB_Surge
+    src_KurrentDB_SchemaRegistry --> src_KurrentDB_SchemaRegistry_Protocol
+    src_KurrentDB_Logging --> src_KurrentDB_Common
+    src_KurrentDB_Transport_Tcp --> src_KurrentDB_BufferManagement
+    src_KurrentDB_Transport_Tcp --> src_KurrentDB_Common
+    src_KurrentDB_SecondaryIndexing --> src_KurrentDB_Common
+    src_KurrentDB_SecondaryIndexing --> src_KurrentDB_Core
+    src_KurrentDB_Core --> src_KurrentDB_Common
+    src_KurrentDB_Core --> src_KurrentDB_DuckDB
+    src_KurrentDB_Core --> src_KurrentDB_Licensing
+    src_KurrentDB_Core --> src_KurrentDB_Logging
+    src_KurrentDB_Core --> src_KurrentDB_LogV3
+    src_KurrentDB_Core --> src_KurrentDB_Native
+    src_KurrentDB_Core --> src_KurrentDB_Plugins
+    src_KurrentDB_Core --> src_KurrentDB_Transport_Http
+    src_KurrentDB_Core --> src_KurrentDB_Transport_Tcp
+    src_KurrentDB_Core --> src_KurrentDB_NETCore_Compatibility
+    src_KurrentDB_POC_IO_Core --> src_KurrentDB_Core
+    src_KurrentDB_TcpPlugin --> src_KurrentDB_Core

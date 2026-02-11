@@ -1,0 +1,20 @@
+graph LR
+    subgraph Applications
+        src_KurrentDB_Plugins_Api_V2["KurrentDB.Plugins.Api.V2"]
+        src_KurrentDB_Diagnostics_LogsEndpointPlugin["KurrentDB.Diagnostics.LogsEndpointPlugin"]
+        src_KurrentDB_Security_EncryptionAtRest["KurrentDB.Security.EncryptionAtRest"]
+        src_KurrentDB_Api_V2["KurrentDB.Api.V2"]
+        src_KurrentDB_Auth_OAuth["KurrentDB.Auth.OAuth"]
+        src_KurrentDB_MicroBenchmarks["KurrentDB.MicroBenchmarks"]
+        src_KurrentDB_Plugins_SchemaRegistry["KurrentDB.Plugins.SchemaRegistry"]
+        src_KurrentDB_Auth_Ldaps["KurrentDB.Auth.Ldaps"]
+        src_KurrentDB_ClusterNode_Web["KurrentDB.ClusterNode.Web"]
+        src_KurrentDB_Auth_LegacyAuthorizationWithStreamAuthorizationDisabled["KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled"]
+        src_KurrentDB_Auth_UserCertificates["KurrentDB.Auth.UserCertificates"]
+        src_KurrentDB["KurrentDB"]
+    end
+    subgraph DataSources
+        datasource_src_Dapper[("Dapper")]
+        datasource_src_Kafka[("Kafka")]
+        datasource_src_RabbitMQ[("RabbitMQ")]
+    end

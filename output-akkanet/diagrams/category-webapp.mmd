@@ -1,0 +1,6 @@
+graph TD
+    subgraph webapp["Webapp"]
+        akka_net_Akka_AspNetCore["Akka.AspNetCore"]
+    end
+    ext_library(["Library (2)"])
+    akka_net_Akka_AspNetCore -.-> ext_library

@@ -1,0 +1,102 @@
+[
+  {
+    "file": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/appsettings.Development.json",
+    "repo": "NuGet.Client",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"IncludeScopes\": false,\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"System\": \"Information\",\n      \"Microsoft\": \"Information\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/appsettings.json",
+    "repo": "NuGet.Client",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"Logging\": {\n    \"IncludeScopes\": false,\n    \"LogLevel\": {\n      \"Default\": \"Warning\"\n    }\n  }\n}\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/WebApplicationProject40.zip/Account/Web.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n<configuration>\n\n  <location path=\"Register.aspx\">\n    <system.web>\n      <authorization>\n        <allow users=\"*\"/>\n      </authorization>\n    </system.web>\n  </location>\n\n  <system.web>\n    <authorization>\n      <deny users=\"?\"/>\n    </authorization>\n  </system.web>\n\n</configuration>\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/WebApplicationProject40.zip/Web.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {
+      "ApplicationServices": "data source=.\\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\\aspnetdb.mdf;User Instance=true"
+    },
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n\n<!--\n  For more information on how to configure your ASP.NET application, please visit\n  http://go.microsoft.com/fwlink/?LinkId=169433\n  -->\n\n<configuration>\n  <connectionStrings>\n    <add name=\"ApplicationServices\"\n         connectionString=\"data source=.\\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\\aspnetdb.mdf;User Instance=true\"\n         providerName=\"System.Data.SqlClient\" />\n  </connectionStrings>\n\n  <system.web>\n    <compilation debug=\"true\" targetFramework=\"$targetframeworkversion$\" />\n\n    <authentication mode=\"Forms\">\n      <forms loginUrl=\"~/Account/Login.aspx\" timeout=\"2880\" />\n    </authentication>\n\n    <membership>\n      <providers>\n        <clear/>\n        <add name=\"AspNetSqlMembershipProvider\" type=\"System.Web.Security.SqlMembershipProvider\" connectionStringName=\"ApplicationServices\"\n             enablePasswordRetrieval=\"false\" enablePasswordReset=\"true\" requiresQuestionAndAnswer=\"false\" requiresUniqueEmail=\"false\"\n             maxInvalidPasswordAttempts=\"5\" minRequiredPasswordLength=\"6\" minRequiredNonalphanumericCharacters=\"0\" passwordAttemptWindow=\"10\"\n             applicationName=\"/\" />\n      </providers>\n    </membership>\n\n    <profile>\n      <providers>\n        <clear/>\n        <add name=\"AspNetSqlProfileProvider\" type=\"System.Web.Profile.SqlProfileProvider\" connectionStringName=\"ApplicationServices\" applicationName=\"/\"/>\n      </providers>\n    </profile>\n\n    <roleManager enabled=\"false\">\n      <providers>\n        <clear/>\n        <add name=\"AspNetSqlRoleProvider\" type=\"System.Web.Security.SqlRoleProvider\" connectionStringName=\"ApplicationServices\" applicationName=\"/\" />\n        <add name=\"AspNetWindowsTokenRoleProvider\" type=\"System.Web.Security.WindowsTokenRoleProvider\" applicationName=\"/\" />\n      </providers>\n    </roleManager>\n\n  </system.web>\n\n  <system.webServer>\n     <modules runAllManagedModulesForAllRequests=\"true\"/>\n  </system.webServer>\n</configuration>\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/EmptyMvcWebApplicationProjectTemplatev4.0.csaspx.zip/EmptyWeb.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n<!--\n  For more information on how to configure your ASP.NET application, please visit\n  http://go.microsoft.com/fwlink/?LinkId=169433\n  -->\n\n<configuration>\n  <appSettings>\n    <add key=\"webpages:Version\" value=\"2.0.0.0\" />\n    <add key=\"webpages:Enabled\" value=\"false\" />\n    <add key=\"PreserveLoginUrl\" value=\"true\" />\n    <add key=\"ClientValidationEnabled\" value=\"true\" />\n    <add key=\"UnobtrusiveJavaScriptEnabled\" value=\"true\" />\n  </appSettings>\n\n  <system.web>\n    $if$ ($targetframeworkversion$ >= 4.5)\n    <httpRuntime targetFramework=\"$targetframeworkversion$\" />\n    $endif$\n    <compilation debug=\"true\" targetFramework=\"$targetframeworkversion$\" />\n\n    <pages>\n      <namespaces>\n        <add namespace=\"System.Web.Helpers\" />\n        <add namespace=\"System.Web.Mvc\" />\n        <add namespace=\"System.Web.Mvc.Ajax\" />\n        <add namespace=\"System.Web.Mvc.Html\" />\n        <add namespace=\"System.Web.Routing\" />\n        <add namespace=\"System.Web.WebPages\" />\n      </namespaces>\n    </pages>\n  </system.web>\n\n  <system.webServer>\n    <validation validateIntegratedModeConfiguration=\"false\" />\n    $if$ ($targetframeworkversion$ >= 4.5) $else$\n    <modules runAllManagedModulesForAllRequests=\"true\" />\n    $endif$\n  </system.webServer>\n</configuration>\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/EmptyMvcWebApplicationProjectTemplatev4.0.csaspx.zip/Views/EmptyWeb.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n\n<configuration>\n  <configSections>\n    <sectionGroup name=\"system.web.webPages.razor\" type=\"System.Web.WebPages.Razor.Configuration.RazorWebSectionGroup, System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n      <section name=\"host\" type=\"System.Web.WebPages.Razor.Configuration.HostSection, System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" />\n      <section name=\"pages\" type=\"System.Web.WebPages.Razor.Configuration.RazorPagesSection, System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" />\n    </sectionGroup>\n  </configSections>\n\n  <system.web.webPages.razor>\n    <host factoryType=\"System.Web.Mvc.MvcWebRazorHostFactory, System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" />\n    <pages pageBaseType=\"System.Web.Mvc.WebViewPage\">\n      <namespaces>\n        <add namespace=\"System.Web.Mvc\" />\n        <add namespace=\"System.Web.Mvc.Ajax\" />\n        <add namespace=\"System.Web.Mvc.Html\" />\n        <add namespace=\"System.Web.Routing\" />\n      </namespaces>\n    </pages>\n  </system.web.webPages.razor>\n\n  <appSettings>\n    <add key=\"webpages:Enabled\" value=\"false\" />\n  </appSettings>\n\n  <system.web>\n    <httpHandlers>\n      <add path=\"*\" verb=\"*\" type=\"System.Web.HttpNotFoundHandler\"/>\n    </httpHandlers>\n\n    <!--\n        Enabling request validation in view pages would cause validation to occur\n        after the input has already been processed by the controller. By default\n        MVC performs request validation before a controller processes the input.\n        To change this behavior apply the ValidateInputAttribute to a\n        controller or action.\n    -->\n    <pages\n        validateRequest=\"false\"\n        pageParserFilterType=\"System.Web.Mvc.ViewTypeParserFilter, System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35..."
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/web.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n\n  <!--\n  Configure your application settings in appsettings.json. Learn more at https://go.microsoft.com/fwlink/?LinkId=786380\n\n  <appSettings>\n      appSettings in web.config is no longer used in ASP.NET Core, instead use appsettings.json\n  </appSettings>\n  -->\n\n  <system.webServer>\n    <handlers>\n      <add name=\"aspNetCore\" path=\"*\" verb=\"*\" modules=\"AspNetCoreModule\" resourceType=\"Unspecified\"/>\n    </handlers>\n    <aspNetCore processPath=\"%LAUNCHER_PATH%\" arguments=\"%LAUNCHER_ARGS%\" stdoutLogEnabled=\"false\" stdoutLogFile=\".\\logs\\stdout\" forwardWindowsAuthToken=\"false\"/>\n  </system.webServer>\n</configuration>\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/EmptyWeb.zip/Web.Config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n$if$ ($targetframeworkversion$ >= 4.0)\n<!--\n  For more information on how to configure your ASP.NET application, please visit\n  http://go.microsoft.com/fwlink/?LinkId=169433\n  -->\n$else$<!--\n    Note: As an alternative to hand editing this file you can use the \n    web admin tool to configure settings for your application. Use\n    the Website->Asp.Net Configuration option in Visual Studio.\n    A full list of settings and comments can be found in \n    machine.config.comments usually located in \n    \\Windows\\Microsoft.Net\\Framework\\vx.x\\Config \n-->$endif$\n<configuration>\n$if$ ($targetframeworkversion$ >= 4.0)\n    <system.web>\n        <compilation debug=\"false\" targetFramework=\"$targetframeworkversion$\" />\n    </system.web>\n$elseif$ ($targetframeworkversion$ == 3.5)\n    <configSections>\n      <sectionGroup name=\"system.web.extensions\" type=\"System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n        <sectionGroup name=\"scripting\" type=\"System.Web.Configuration.ScriptingSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n          <section name=\"scriptResourceHandler\" type=\"System.Web.Configuration.ScriptingScriptResourceHandlerSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" allowDefinition=\"MachineToApplication\"/>\n          <sectionGroup name=\"webServices\" type=\"System.Web.Configuration.ScriptingWebServicesSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n            <section name=\"jsonSerialization\" type=\"System.Web.Configuration.ScriptingJsonSerializationSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" allowDefinition=\"Everywhere\" />\n            <section name=\"profileService\" type=\"System.Web...."
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/EmptyWebApplicationProject40.zip/Web.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\"?>\n$if$ ($targetframeworkversion$ >= 4.0)\n<!--\n  For more information on how to configure your ASP.NET application, please visit\n  http://go.microsoft.com/fwlink/?LinkId=169433\n  -->\n\n<configuration>\n    <system.web>\n        <compilation debug=\"true\" targetFramework=\"v4.0\" />\n    </system.web>\n$elseif$ ($targetframeworkversion$ == 3.5)\n<configuration>\n    <configSections>\n      <sectionGroup name=\"system.web.extensions\" type=\"System.Web.Configuration.SystemWebExtensionsSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n        <sectionGroup name=\"scripting\" type=\"System.Web.Configuration.ScriptingSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n          <section name=\"scriptResourceHandler\" type=\"System.Web.Configuration.ScriptingScriptResourceHandlerSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" allowDefinition=\"MachineToApplication\"/>\n          <sectionGroup name=\"webServices\" type=\"System.Web.Configuration.ScriptingWebServicesSectionGroup, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\">\n            <section name=\"jsonSerialization\" type=\"System.Web.Configuration.ScriptingJsonSerializationSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" allowDefinition=\"Everywhere\" />\n            <section name=\"profileService\" type=\"System.Web.Configuration.ScriptingProfileServiceSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePermission=\"false\" allowDefinition=\"MachineToApplication\" />\n            <section name=\"authenticationService\" type=\"System.Web.Configuration.ScriptingAuthenticationServiceSection, System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35\" requirePe..."
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/WPFApplication.zip/App.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        $if$ ($targetframeworkversion$ >= 4.0)<supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v$targetframeworkversion$,Profile=Client\" />$endif$$if$ ($targetframeworkversion$ < 4.0)<supportedRuntime version=\"v2.0.50727\" />$endif$\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/ConsoleApplication.zip/App.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n    <startup> \n        $if$ ($targetframeworkversion$ >= 4.0)<supportedRuntime version=\"v4.0\" sku=\".NETFramework,Version=v$targetframeworkversion$,Profile=Client\" />$endif$$if$ ($targetframeworkversion$ < 4.0)<supportedRuntime version=\"v2.0.50727\" />$endif$\n    </startup>\n</configuration>"
+  },
+  {
+    "file": "src/NuGet.Core/NuGet.Build.Tasks.Console/App.config",
+    "repo": "NuGet.Client",
+    "type": "xml",
+    "connectionStrings": {},
+    "endpoints": [],
+    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<configuration>\n  <runtime>\n    <!-- https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/gcserver-element -->\n    <gcServer enabled=\"true\" />\n    <!-- https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/gccpugroup-element -->\n    <GCCpuGroup enabled=\"true\" />\n    <!-- https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/thread-useallcpugroups-element -->\n    <Thread_UseAllCpuGroups enabled=\"true\"/>\n  </runtime>\n</configuration>\n"
+  },
+  {
+    "file": "test/EndToEnd/ProjectTemplates/NetCoreWebApplication1.0.zip/Properties/launchSettings.json",
+    "repo": "NuGet.Client",
+    "type": "json-parse-error",
+    "raw": "\ufeff{\n  \"iisSettings\": {\n    \"windowsAuthentication\": false,\n    \"anonymousAuthentication\": true,\n    \"iisExpress\": {\n      \"applicationUrl\": \"http://localhost:58124/\",\n      \"sslPort\": 0\n    }\n  },\n  \"profiles\": {\n    \"IIS Express\": {\n      \"commandName\": \"IISExpress\",\n      \"launchBrowser\": true,\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"$safeprojectname$\": {\n      \"commandName\": \"Project\",\n      \"launchBrowser\": true,\n      \"environmentVa"
+  }
+]

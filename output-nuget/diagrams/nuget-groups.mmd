@@ -1,0 +1,65 @@
+graph LR
+    subgraph Microsoft["Microsoft"]
+        nuget_Microsoft_ApplicationInsights_AspNetCore["Microsoft.ApplicationInsights.AspNetCore<br/>2.0.0-beta1"]
+        nuget_Microsoft_AspNetCore["Microsoft.AspNetCore<br/>1.0.3"]
+        nuget_Microsoft_AspNetCore_Mvc["Microsoft.AspNetCore.Mvc<br/>1.0.2"]
+        nuget_Microsoft_AspNetCore_StaticFiles["Microsoft.AspNetCore.StaticFiles<br/>1.0.1"]
+        nuget_Microsoft_Extensions_Logging_Debug["Microsoft.Extensions.Logging.Debug<br/>1.0.1"]
+        nuget_Microsoft_VisualStudio_Web_BrowserLink["Microsoft.VisualStudio.Web.BrowserLink<br/>1.0.1"]
+        nuget_Microsoft_NETCore_UniversalWindowsPlatform["Microsoft.NETCore.UniversalWindowsPlatform<br/>"]
+        nuget_Microsoft_Build_Framework["Microsoft.Build.Framework<br/>"]
+        Microsoft_more["... +42 more"]
+    end
+    subgraph System["System"]
+        nuget_System_CommandLine["System.CommandLine<br/>"]
+        nuget_System_Formats_Asn1["System.Formats.Asn1<br/>"]
+        nuget_System_Security_Cryptography_Pkcs["System.Security.Cryptography.Pkcs<br/>"]
+        nuget_System_IdentityModel_Tokens_Jwt["System.IdentityModel.Tokens.Jwt<br/>"]
+        nuget_System_Memory["System.Memory<br/>"]
+        nuget_System_ComponentModel_Composition["System.ComponentModel.Composition<br/>"]
+        nuget_System_Collections_Immutable["System.Collections.Immutable<br/>"]
+        nuget_System_Text_Json["System.Text.Json<br/>"]
+        System_more["... +2 more"]
+    end
+    subgraph NuGet["NuGet"]
+        nuget_NuGet_Versioning["NuGet.Versioning<br/>1.0.7"]
+        nuget_NuGet_Core["NuGet.Core<br/>"]
+    end
+    subgraph Spectre["Spectre"]
+        nuget_Spectre_Console_Testing["Spectre.Console.Testing<br/>"]
+        nuget_Spectre_Console["Spectre.Console<br/>"]
+    end
+    subgraph MSTest["MSTest"]
+        nuget_MSTest_TestAdapter["MSTest.TestAdapter<br/>"]
+        nuget_MSTest_TestFramework["MSTest.TestFramework<br/>"]
+    end
+    subgraph Newtonsoft["Newtonsoft"]
+        nuget_Newtonsoft_Json["Newtonsoft.Json<br/>, *"]
+    end
+    subgraph xunit["xunit"]
+        nuget_xunit["xunit<br/>"]
+    end
+    subgraph Moq["Moq"]
+        nuget_Moq["Moq<br/>"]
+    end
+    subgraph AwesomeAssertions["AwesomeAssertions"]
+        nuget_AwesomeAssertions["AwesomeAssertions<br/>"]
+    end
+    subgraph Xunit["Xunit"]
+        nuget_Xunit_StaFact["Xunit.StaFact<br/>"]
+    end
+    subgraph ILRepack["ILRepack"]
+        nuget_ILRepack["ILRepack<br/>"]
+    end
+    subgraph Lucene["Lucene"]
+        nuget_Lucene_Net["Lucene.Net<br/>"]
+    end
+    subgraph SharpZipLib["SharpZipLib"]
+        nuget_SharpZipLib["SharpZipLib<br/>"]
+    end
+    subgraph VsWebSite["VsWebSite"]
+        nuget_VsWebSite_Interop["VsWebSite.Interop<br/>"]
+    end
+    subgraph Drop["Drop"]
+        nuget_Drop_App["Drop.App<br/>$(DropAppVersion)"]
+    end

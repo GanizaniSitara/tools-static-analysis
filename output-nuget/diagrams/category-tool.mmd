@@ -1,0 +1,23 @@
+graph TD
+    subgraph tool["Tool"]
+        NuGet_Client_NuGet_VisualStudio_Client["NuGet.VisualStudio.Client"]
+        NuGet_Client_NuGet_Console["NuGet.Console"]
+        NuGet_Client_NuGet_Tools["NuGet.Tools"]
+        NuGet_Client_NuGet_Build_Tasks_Console["NuGet.Build.Tasks.Console"]
+        NuGet_Client_Tools["Tools"]
+    end
+    ext_test(["Test (9)"])
+    ext_library(["Library (26)"])
+    NuGet_Client_NuGet_VisualStudio_Client --> NuGet_Client_NuGet_Build_Tasks_Console
+    NuGet_Client_NuGet_VisualStudio_Client --> NuGet_Client_NuGet_Tools
+    NuGet_Client_NuGet_VisualStudio_Client --> NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_Tools --> NuGet_Client_NuGet_Console
+    ext_test -.-> NuGet_Client_NuGet_Build_Tasks_Console
+    ext_test -.-> NuGet_Client_NuGet_Tools
+    ext_test -.-> NuGet_Client_NuGet_VisualStudio_Client
+    ext_test -.-> NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_VisualStudio_Client -.-> ext_library
+    NuGet_Client_NuGet_Console -.-> ext_library
+    NuGet_Client_NuGet_Tools -.-> ext_library
+    ext_library -.-> NuGet_Client_NuGet_Console
+    NuGet_Client_NuGet_Build_Tasks_Console -.-> ext_library
