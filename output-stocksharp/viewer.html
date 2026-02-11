@@ -442,11 +442,7 @@ graph LR
         <pre class="mermaid" style="display:none">
 graph LR
     subgraph Projects[&quot;Services &amp; Projects&quot;]
-        Algo_Analytics[&quot;Algo.Analytics&quot;]
         Tests[&quot;Tests&quot;]
-    end
-    subgraph Database[&quot;Database / Storage&quot;]
-        table_to[(&quot;to&quot;)]
     end
     subgraph APIs[&quot;API Routes&quot;]
         url_delete([&quot;delete&quot;])
@@ -455,7 +451,6 @@ graph LR
         url_test_example_com([&quot;test@example.com&quot;])
         url_TEST_EXAMPLE_COM([&quot;TEST@EXAMPLE.COM&quot;])
     end
-    Algo_Analytics ==&gt;|write| table_to
     url_delete -.-&gt;|consume| Tests
     url_nonexistent -.-&gt;|consume| Tests
     url_TestStorage -.-&gt;|consume| Tests
@@ -702,7 +697,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

@@ -4305,9 +4305,7 @@
     "context": "/// Create table to show analytics result.",
     "project": "Algo.Analytics",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "to",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Algo.Gpu/Indicators/GpuUltimateOscillatorCalculator.cs",

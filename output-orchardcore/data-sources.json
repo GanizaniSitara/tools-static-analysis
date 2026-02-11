@@ -13767,9 +13767,7 @@
     "context": "// Delete from the original collection.",
     "project": "OrchardCore.OpenId.Core",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
@@ -13781,9 +13779,7 @@
     "context": "// Delete from the original collection.",
     "project": "OrchardCore.OpenId.Core",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
@@ -13795,9 +13791,7 @@
     "context": "// Delete from the original collection.",
     "project": "OrchardCore.OpenId.Core",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
@@ -13809,9 +13803,7 @@
     "context": "// Delete from the original collection.",
     "project": "OrchardCore.OpenId.Core",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Migrations/OpenIdMigrations.cs",
@@ -15293,9 +15285,7 @@
     "context": "[InlineData(\"SELECT a FROM t1, t2\", \"SELECT [a] FROM [tp_t1], [tp_t2];\")]",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "t1",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",
@@ -15601,9 +15591,7 @@
     "context": "[InlineData(\"with cte as (select a from t) select * from cte\", \"WITH cte AS (SELECT [a] FROM [tp_t]) SELECT * FROM [cte];\")]",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "cte",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",
@@ -15615,9 +15603,7 @@
     "context": "[InlineData(\"with cte as (select a from t), cte2 as (select b from t) select * from cte2\", \"WITH cte AS (SELECT [a] FROM [tp_t]), cte2 AS (SELECT [b] FROM [tp_t]) SELECT * FROM [cte2];\")]",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "cte2",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",
@@ -15629,9 +15615,7 @@
     "context": "[InlineData(\"with cte as (select a from t union all select b from t) select * from cte\", \"WITH cte AS (SELECT [a] FROM [tp_t] UNION ALL SELECT [b] FROM [tp_t]) SELECT * FROM [cte];\")]",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "cte",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",
@@ -15643,9 +15627,7 @@
     "context": "[InlineData(\"with cte1(abc, def) as (select id as abc, id as def from t), cte2(ghi,jkl) as (select abc as ghi, def as jkl from cte1) select ghi, jkl from cte2\", \"WITH cte1(abc, def) AS (SELECT [id] AS",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "cte1",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",
@@ -15657,9 +15639,7 @@
     "context": "[InlineData(\"with test(test) as (select a as test from t) select test from test\", \"WITH test(test) AS (SELECT [a] AS test FROM [tp_t]) SELECT [test] FROM [test];\")]",
     "project": "OrchardCore.Tests",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "test",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/OrchardCore.Tests/Orchard.Queries/SqlParserTests.cs",

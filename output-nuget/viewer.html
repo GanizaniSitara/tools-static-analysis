@@ -198,7 +198,6 @@
   <button class="tab-btn" data-tab="cat_application">Application (4)</button>
   <button class="tab-btn" data-tab="dataflow">Data Flow</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
-  <button class="tab-btn" data-tab="implieddeps">Implied Dependencies</button>
   <button class="tab-btn" data-tab="connstrings">Connection Strings</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
@@ -633,18 +632,11 @@ graph LR
         <pre class="mermaid" style="display:none">
 graph LR
     subgraph Projects[&quot;Services &amp; Projects&quot;]
-        NuGet_CommandLine[&quot;NuGet.CommandLine&quot;]
-        NuGet_PackageManagement_UI_Test[&quot;NuGet.PackageManagement.UI.Test&quot;]
         NuGet_Packaging_Test[&quot;NuGet.Packaging.Test&quot;]
-    end
-    subgraph Database[&quot;Database / Storage&quot;]
-        table_the[(&quot;the&quot;)]
     end
     subgraph APIs[&quot;API Routes&quot;]
         url_Aa_nuspec([&quot;Aa.nuspec&quot;])
     end
-    NuGet_CommandLine ==&gt;|write| table_the
-    table_the -.-&gt;|read| NuGet_PackageManagement_UI_Test
     url_Aa_nuspec -.-&gt;|consume| NuGet_Packaging_Test
         </pre>
       </div>
@@ -757,32 +749,6 @@ graph LR
     </div>
   </section>
 
-
-  <section class="tab-panel" id="panel-implieddeps">
-    <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Implied Data Dependencies (1)</div>
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
-        Cross-project dependencies derived through shared data infrastructure.
-        Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>NuGet.CommandLine</strong></td>
-              <td><strong>NuGet.PackageManagement.UI.Test</strong></td>
-              <td>the</td>
-              <td><span class="tag tag-db">database</span></td>
-              <td>writes &#8594; reads</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
 
 
   <section class="tab-panel" id="panel-connstrings">
@@ -916,7 +882,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

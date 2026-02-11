@@ -432,13 +432,13 @@
   ],
   "dataEdges": [
     {
-      "from": "KurrentDB.Auth.UserCertificates.Tests",
+      "from": "KurrentDB.Core.Tests",
       "to": "route:/test",
       "direction": "expose",
       "endpointType": "route"
     },
     {
-      "from": "KurrentDB.Core.Tests",
+      "from": "KurrentDB.Auth.UserCertificates.Tests",
       "to": "route:/test",
       "direction": "expose",
       "endpointType": "route"
@@ -559,13 +559,13 @@
     },
     {
       "from": "table:schema_versions",
-      "to": "KurrentDB.SchemaRegistry.Tests",
+      "to": "KurrentDB.SchemaRegistry",
       "direction": "read",
       "endpointType": "table"
     },
     {
       "from": "table:schema_versions",
-      "to": "KurrentDB.SchemaRegistry",
+      "to": "KurrentDB.SchemaRegistry.Tests",
       "direction": "read",
       "endpointType": "table"
     },
@@ -577,19 +577,13 @@
     },
     {
       "from": "table:schemas",
-      "to": "KurrentDB.SchemaRegistry.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:schemas",
       "to": "KurrentDB.SchemaRegistry",
       "direction": "read",
       "endpointType": "table"
     },
     {
-      "from": "table:idx_all",
-      "to": "KurrentDB",
+      "from": "table:schemas",
+      "to": "KurrentDB.SchemaRegistry.Tests",
       "direction": "read",
       "endpointType": "table"
     },
@@ -601,13 +595,19 @@
     },
     {
       "from": "table:idx_all",
-      "to": "KurrentDB.SecondaryIndexing.LoadTesting",
+      "to": "KurrentDB",
       "direction": "read",
       "endpointType": "table"
     },
     {
       "from": "table:idx_all",
       "to": "KurrentDB.SecondaryIndexing.Tests",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
+      "to": "KurrentDB.SecondaryIndexing.LoadTesting",
       "direction": "read",
       "endpointType": "table"
     },

@@ -677,11 +677,11 @@ graph LR
         OrchardCore_Facebook[&quot;OrchardCore.Facebook&quot;]
         OrchardCore_Liquid[&quot;OrchardCore.Liquid&quot;]
         OrchardCore_Notifications[&quot;OrchardCore.Notifications&quot;]
-        OrchardCore_OpenId_Core[&quot;OrchardCore.OpenId.Core&quot;]
         OrchardCore_Queries[&quot;OrchardCore.Queries&quot;]
         OrchardCore_Search[&quot;OrchardCore.Search&quot;]
         OrchardCore_Search_Elasticsearch[&quot;OrchardCore.Search.Elasticsearch&quot;]
         OrchardCore_Search_Lucene[&quot;OrchardCore.Search.Lucene&quot;]
+        OrchardCore_Tenants[&quot;OrchardCore.Tenants&quot;]
         OrchardCore_Tests[&quot;OrchardCore.Tests&quot;]
         OrchardCore_Twitter[&quot;OrchardCore.Twitter&quot;]
         OrchardCore_UrlRewriting[&quot;OrchardCore.UrlRewriting&quot;]
@@ -689,12 +689,9 @@ graph LR
     end
     subgraph Database[&quot;Database / Storage&quot;]
         table_ContentItemIndex[(&quot;ContentItemIndex&quot;)]
-        table_the[(&quot;the&quot;)]
         table_tp_t[(&quot;tp_t&quot;)]
-        table_t1[(&quot;t1&quot;)]
         table_tp_d[(&quot;tp_d&quot;)]
         table_tp_b[(&quot;tp_b&quot;)]
-        table_tp_a[(&quot;tp_a&quot;)]
     end
     subgraph APIs[&quot;API Routes&quot;]
         route_content([&quot;content&quot;])
@@ -719,15 +716,16 @@ graph LR
         route_Demo_About([&quot;Demo/About&quot;])
         route_Demo_Contact([&quot;Demo/Contact&quot;])
         route_api_demo([&quot;api/demo&quot;])
+        route_api_tenants([&quot;api/tenants&quot;])
+        route_create([&quot;create&quot;])
+        route_edit([&quot;edit&quot;])
+        route_disable__tenantName_([&quot;disable/{tenantName}&quot;])
     end
     table_ContentItemIndex -.-&gt;|read| OrchardCore_Queries
     table_ContentItemIndex -.-&gt;|read| OrchardCore_Tests
-    OrchardCore_OpenId_Core ==&gt;|write| table_the
     table_tp_t -.-&gt;|read| OrchardCore_Tests
-    table_t1 -.-&gt;|read| OrchardCore_Tests
     table_tp_d -.-&gt;|read| OrchardCore_Tests
     table_tp_b -.-&gt;|read| OrchardCore_Tests
-    table_tp_a -.-&gt;|read| OrchardCore_Tests
     OrchardCore_Search_Elasticsearch ==&gt;|expose| route_content
     OrchardCore_Search_Lucene ==&gt;|expose| route_content
     OrchardCore_Search_Elasticsearch ==&gt;|expose| route_documents
@@ -752,6 +750,10 @@ graph LR
     OrchardCore_Demo ==&gt;|expose| route_Demo_About
     OrchardCore_Demo ==&gt;|expose| route_Demo_Contact
     OrchardCore_Demo ==&gt;|expose| route_api_demo
+    OrchardCore_Tenants ==&gt;|expose| route_api_tenants
+    OrchardCore_Tenants ==&gt;|expose| route_create
+    OrchardCore_Tenants ==&gt;|expose| route_edit
+    OrchardCore_Tenants ==&gt;|expose| route_disable__tenantName_
         </pre>
       </div>
     </div>
@@ -1047,7 +1049,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

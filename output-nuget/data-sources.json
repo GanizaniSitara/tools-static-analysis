@@ -30253,9 +30253,7 @@
     "context": "//Select a different VM which should clear the Versions list from the previous selection.",
     "project": "NuGet.PackageManagement.UI.Test",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs",
@@ -30267,9 +30265,7 @@
     "context": "//Select a different VM which should clear the Versions list from the previous selection.",
     "project": "NuGet.PackageManagement.UI.Test",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/ViewModels/PackageItemViewModelTests.cs",
@@ -32957,9 +32953,7 @@
     "context": "///   Looks up a localized string similar to Specify the Id and version of the package to delete from the server..",
     "project": "NuGet.CommandLine",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/NuGet.Clients/NuGet.CommandLine/Credentials/CredentialServiceAdapter.cs",

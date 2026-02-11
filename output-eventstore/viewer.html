@@ -1076,7 +1076,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

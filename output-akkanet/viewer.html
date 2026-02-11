@@ -707,7 +707,6 @@ graph LR
         <pre class="mermaid" style="display:none">
 graph LR
     subgraph Projects[&quot;Services &amp; Projects&quot;]
-        Akka[&quot;Akka&quot;]
         Akka_AspNetCore[&quot;Akka.AspNetCore&quot;]
         Akka_Docs_Tests[&quot;Akka.Docs.Tests&quot;]
         Akka_Persistence_Custom[&quot;Akka.Persistence.Custom&quot;]
@@ -717,7 +716,6 @@ graph LR
         table_snapshot[(&quot;snapshot&quot;)]
         table_event_journal[(&quot;event_journal&quot;)]
         table_journal_metadata[(&quot;journal_metadata&quot;)]
-        table_the[(&quot;the&quot;)]
     end
     subgraph APIs[&quot;API Routes&quot;]
         route_api__controller_([&quot;api/[controller]&quot;])
@@ -729,8 +727,6 @@ graph LR
     table_event_journal -.-&gt;|read| Akka_Persistence_Custom
     Akka_Persistence_Custom ==&gt;|write| table_journal_metadata
     table_journal_metadata -.-&gt;|read| Akka_Persistence_Custom
-    Akka ==&gt;|write| table_the
-    table_the -.-&gt;|read| Akka
     Akka_AspNetCore ==&gt;|expose| route_api__controller_
     Samples_Akka_AspNetCore ==&gt;|expose| route__
     url_http___example_com_eventstream -.-&gt;|consume| Akka_Docs_Tests
@@ -1050,7 +1046,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

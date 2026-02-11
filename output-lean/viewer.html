@@ -509,20 +509,10 @@ graph LR
 graph LR
     subgraph Projects[&quot;Services &amp; Projects&quot;]
         QuantConnect[&quot;QuantConnect&quot;]
-        QuantConnect_Algorithm[&quot;QuantConnect.Algorithm&quot;]
-        QuantConnect_ToolBox[&quot;QuantConnect.ToolBox&quot;]
-    end
-    subgraph Database[&quot;Database / Storage&quot;]
-        table_the[(&quot;the&quot;)]
-        table_collection[(&quot;collection&quot;)]
     end
     subgraph APIs[&quot;API Routes&quot;]
         url_https___api_tournament_crunchdao_com_v2_rounds__current([&quot;https://api.tournament.crunchdao.com/v2/rounds/@current&quot;])
     end
-    table_the -.-&gt;|read| QuantConnect
-    table_the -.-&gt;|read| QuantConnect_Algorithm
-    table_the -.-&gt;|read| QuantConnect_ToolBox
-    table_collection -.-&gt;|read| QuantConnect
     url_https___api_tournament_crunchdao_com_v2_rounds__current -.-&gt;|consume| QuantConnect
         </pre>
       </div>
@@ -723,7 +713,12 @@ function attachEdgeTooltips(svg) {
     function onClick(e) {
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
-      if (ep) showEdgeDetail(ep.from, ep.to);
+      if (!ep) return;
+      // Only open detail panel for project-to-project edges
+      var meta = (window._projData || {}).meta || [];
+      var fromIsProject = meta.some(function (m) { return m.project === ep.from; });
+      var toIsProject = meta.some(function (m) { return m.project === ep.to; });
+      if (fromIsProject && toIsProject) showEdgeDetail(ep.from, ep.to);
     }
 
     hitArea.addEventListener('mouseenter', showTip);

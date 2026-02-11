@@ -542,6 +542,9 @@ _SQL_KEYWORDS = {
     "INSERT", "UPDATE", "DELETE", "CREATE", "ALTER", "DROP", "INDEX", "TABLE",
     "VIEW", "EXEC", "DECLARE", "RETURN", "EXISTS", "BETWEEN", "LIKE", "LIMIT",
     "OFFSET", "VALUES", "PRIMARY", "KEY", "FOREIGN", "REFERENCES", "CONSTRAINT",
+    # Common false positives from prose/comments in SQL string literals
+    "THE", "TO", "IT", "AN", "AT", "OF", "CTE", "CTE1", "CTE2",
+    "T1", "T2", "T3", "TP", "COLLECTION", "TEST", "RESULT",
 }
 
 
@@ -579,9 +582,9 @@ def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list
                                 endpoint = match.group(eg)
                             except IndexError:
                                 pass
-                            # Filter out SQL keywords captured as table names
+                            # Filter out SQL keywords and short names as table names
                             if endpoint and pat["endpoint_type"] == "table":
-                                if endpoint.upper() in _SQL_KEYWORDS:
+                                if len(endpoint) <= 3 or endpoint.upper() in _SQL_KEYWORDS:
                                     endpoint = None
 
                         finding = {

@@ -1,18 +1,6 @@
 {
   "dataNodes": [
     {
-      "id": "table:the",
-      "name": "the",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "QuantConnect",
-        "QuantConnect.Algorithm",
-        "QuantConnect.ToolBox"
-      ]
-    },
-    {
       "id": "url:https://api.tournament.crunchdao.com/v2/rounds/@current",
       "name": "https://api.tournament.crunchdao.com/v2/rounds/@current",
       "type": "url",
@@ -22,48 +10,14 @@
       "consumers": [
         "QuantConnect"
       ]
-    },
-    {
-      "id": "table:collection",
-      "name": "collection",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "QuantConnect"
-      ]
     }
   ],
   "dataEdges": [
-    {
-      "from": "table:the",
-      "to": "QuantConnect.Algorithm",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:the",
-      "to": "QuantConnect",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:the",
-      "to": "QuantConnect.ToolBox",
-      "direction": "read",
-      "endpointType": "table"
-    },
     {
       "from": "url:https://api.tournament.crunchdao.com/v2/rounds/@current",
       "to": "QuantConnect",
       "direction": "consume",
       "endpointType": "url"
-    },
-    {
-      "from": "table:collection",
-      "to": "QuantConnect",
-      "direction": "read",
-      "endpointType": "table"
     }
   ],
   "impliedDependencies": [],

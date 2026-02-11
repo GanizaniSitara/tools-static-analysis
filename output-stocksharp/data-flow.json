@@ -56,16 +56,6 @@
       ]
     },
     {
-      "id": "table:to",
-      "name": "to",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [
-        "Algo.Analytics"
-      ],
-      "readers": []
-    },
-    {
       "id": "topic:subscribe",
       "name": "subscribe",
       "type": "topic",
@@ -112,12 +102,6 @@
       "to": "Tests",
       "direction": "consume",
       "endpointType": "url"
-    },
-    {
-      "from": "Algo.Analytics",
-      "to": "table:to",
-      "direction": "write",
-      "endpointType": "table"
     }
   ],
   "impliedDependencies": [],

@@ -194,18 +194,6 @@
       "infrastructure": "messaging",
       "writers": [],
       "readers": []
-    },
-    {
-      "id": "table:the",
-      "name": "the",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [
-        "Akka"
-      ],
-      "readers": [
-        "Akka"
-      ]
     }
   ],
   "dataEdges": [
@@ -256,18 +244,6 @@
       "to": "Akka.Docs.Tests",
       "direction": "consume",
       "endpointType": "url"
-    },
-    {
-      "from": "Akka",
-      "to": "table:the",
-      "direction": "write",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:the",
-      "to": "Akka",
-      "direction": "read",
-      "endpointType": "table"
     }
   ],
   "impliedDependencies": [],

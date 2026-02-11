@@ -352,16 +352,6 @@
       ]
     },
     {
-      "id": "table:the",
-      "name": "the",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [
-        "OrchardCore.OpenId.Core"
-      ],
-      "readers": []
-    },
-    {
       "id": "url:Register",
       "name": "Register",
       "type": "url",
@@ -386,16 +376,6 @@
     {
       "id": "table:tp_t",
       "name": "tp_t",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "OrchardCore.Tests"
-      ]
-    },
-    {
-      "id": "table:t1",
-      "name": "t1",
       "type": "table",
       "infrastructure": "database",
       "writers": [],
@@ -436,46 +416,6 @@
     {
       "id": "table:tp_c",
       "name": "tp_c",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "OrchardCore.Tests"
-      ]
-    },
-    {
-      "id": "table:cte",
-      "name": "cte",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "OrchardCore.Tests"
-      ]
-    },
-    {
-      "id": "table:cte2",
-      "name": "cte2",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "OrchardCore.Tests"
-      ]
-    },
-    {
-      "id": "table:cte1",
-      "name": "cte1",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [],
-      "readers": [
-        "OrchardCore.Tests"
-      ]
-    },
-    {
-      "id": "table:test",
-      "name": "test",
       "type": "table",
       "infrastructure": "database",
       "writers": [],
@@ -611,12 +551,6 @@
       "endpointType": "route"
     },
     {
-      "from": "OrchardCore.Search.Elasticsearch",
-      "to": "route:content",
-      "direction": "expose",
-      "endpointType": "route"
-    },
-    {
       "from": "OrchardCore.Search.Lucene",
       "to": "route:content",
       "direction": "expose",
@@ -624,12 +558,18 @@
     },
     {
       "from": "OrchardCore.Search.Elasticsearch",
+      "to": "route:content",
+      "direction": "expose",
+      "endpointType": "route"
+    },
+    {
+      "from": "OrchardCore.Search.Lucene",
       "to": "route:documents",
       "direction": "expose",
       "endpointType": "route"
     },
     {
-      "from": "OrchardCore.Search.Lucene",
+      "from": "OrchardCore.Search.Elasticsearch",
       "to": "route:documents",
       "direction": "expose",
       "endpointType": "route"
@@ -767,12 +707,6 @@
       "endpointType": "url"
     },
     {
-      "from": "OrchardCore.OpenId.Core",
-      "to": "table:the",
-      "direction": "write",
-      "endpointType": "table"
-    },
-    {
       "from": "url:Register",
       "to": "OrchardCore.Tests",
       "direction": "consume",
@@ -786,12 +720,6 @@
     },
     {
       "from": "table:tp_t",
-      "to": "OrchardCore.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:t1",
       "to": "OrchardCore.Tests",
       "direction": "read",
       "endpointType": "table"
@@ -816,30 +744,6 @@
     },
     {
       "from": "table:tp_c",
-      "to": "OrchardCore.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:cte",
-      "to": "OrchardCore.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:cte2",
-      "to": "OrchardCore.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:cte1",
-      "to": "OrchardCore.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:test",
       "to": "OrchardCore.Tests",
       "direction": "read",
       "endpointType": "table"

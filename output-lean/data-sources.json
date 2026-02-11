@@ -3009,9 +3009,7 @@
     "context": "// Randomly select one expiry from the valid set",
     "project": "QuantConnect.ToolBox",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "ToolBox/CoarseUniverseGenerator/CoarseUniverseGeneratorProgram.cs",
@@ -3923,9 +3921,7 @@
     "context": "/// <param name=\"keySelector\">Delegate used to select a key from the value</param>",
     "project": "QuantConnect",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Common/Data/Slice.cs",
@@ -4179,9 +4175,7 @@
     "context": "/// <param name=\"keySelector\">Delegate used to select a key from the value</param>",
     "project": "QuantConnect",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Common/Util/BaseExtendedDictionary.cs",
@@ -4193,9 +4187,7 @@
     "context": "/// <param name=\"keySelector\">Delegate used to select a key from the value</param>",
     "project": "QuantConnect",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Common/Util/BusyBlockingCollection.cs",
@@ -4267,9 +4259,7 @@
     "context": "/// <param name=\"keySelector\">Delegate used to select a key from the value</param>",
     "project": "QuantConnect",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Common/Util/LinqExtensions.cs",
@@ -4281,9 +4271,7 @@
     "context": "/// <param name=\"selector\">Function used to select a value from collection items</param>",
     "project": "QuantConnect",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "collection",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Common/Util/Composer.cs",
@@ -13835,9 +13823,7 @@
     "context": "/// <param name=\"selector\">Function to select a value from the BaseData to input into the indicator. Defaults to using the 'Value' property of BaseData if null.</param>",
     "project": "QuantConnect.Algorithm",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Algorithm/QCAlgorithm.Indicators.cs",
@@ -13849,9 +13835,7 @@
     "context": "/// <param name=\"selector\">Function to select a value from the BaseData to input into the indicator. Defaults to using the 'Value' property of BaseData if null.</param>",
     "project": "QuantConnect.Algorithm",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Algorithm/QCAlgorithm.Indicators.cs",
@@ -13863,9 +13847,7 @@
     "context": "/// <param name=\"selector\">Optional function to select a value from the BaseData. Defaults to casting the input to a TradeBar.</param>",
     "project": "QuantConnect.Algorithm",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Algorithm/QCAlgorithm.Indicators.cs",
@@ -13877,9 +13859,7 @@
     "context": "/// <param name=\"selector\">Optional function to select a value from the BaseData. Defaults to casting the input to a TradeBar.</param>",
     "project": "QuantConnect.Algorithm",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "Algorithm/QCAlgorithm.Python.cs",

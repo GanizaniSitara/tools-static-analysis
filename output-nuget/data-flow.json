@@ -10,18 +10,6 @@
       "consumers": [
         "NuGet.Packaging.Test"
       ]
-    },
-    {
-      "id": "table:the",
-      "name": "the",
-      "type": "table",
-      "infrastructure": "database",
-      "writers": [
-        "NuGet.CommandLine"
-      ],
-      "readers": [
-        "NuGet.PackageManagement.UI.Test"
-      ]
     }
   ],
   "dataEdges": [
@@ -30,29 +18,9 @@
       "to": "NuGet.Packaging.Test",
       "direction": "consume",
       "endpointType": "url"
-    },
-    {
-      "from": "NuGet.CommandLine",
-      "to": "table:the",
-      "direction": "write",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:the",
-      "to": "NuGet.PackageManagement.UI.Test",
-      "direction": "read",
-      "endpointType": "table"
     }
   ],
-  "impliedDependencies": [
-    {
-      "from": "NuGet.CommandLine",
-      "to": "NuGet.PackageManagement.UI.Test",
-      "via": "the",
-      "viaType": "database",
-      "viaId": "table:the"
-    }
-  ],
+  "impliedDependencies": [],
   "infrastructureGroups": [
     {
       "pattern": "API.Controller",

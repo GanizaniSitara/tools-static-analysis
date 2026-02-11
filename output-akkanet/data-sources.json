@@ -22291,9 +22291,7 @@
     "context": "/// Select all the items in this array from the beginning until (but not including) <paramref name=\"startingItem\"/>",
     "project": "Akka",
     "direction": "read",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/core/Akka/Util/ConcurrentSet.cs",
@@ -22305,9 +22303,7 @@
     "context": "/// <param name=\"concurrencyLevel\">The estimated number of threads that will update the set concurrently.</param>",
     "project": "Akka",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/core/Akka/Util/ConcurrentSet.cs",
@@ -22319,9 +22315,7 @@
     "context": "/// <param name=\"concurrencyLevel\">The estimated number of threads that will update the set concurrently.</param>",
     "project": "Akka",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/core/Akka/Util/ConcurrentSet.cs",
@@ -22333,9 +22327,7 @@
     "context": "/// <param name=\"concurrencyLevel\">The estimated number of threads that will update the set concurrently.</param>",
     "project": "Akka",
     "direction": "write",
-    "confidence": "high",
-    "endpoint": "the",
-    "endpointType": "table"
+    "confidence": "high"
   },
   {
     "file": "src/core/Akka.Streams.Tests.Performance/FusedGraphsBenchmark.cs",
