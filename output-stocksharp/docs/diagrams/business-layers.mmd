@@ -1,0 +1,22 @@
+graph TD
+    layer_Presentation["Presentation (56)"]
+    layer_Engine["Engine (10)"]
+    layer_Service["Service (1)"]
+    layer_DataAccess["DataAccess (13)"]
+    layer_Infrastructure["Infrastructure (5)"]
+    layer_Unclassified["Unclassified (55)"]
+    layer_Presentation -->|55 refs| layer_Engine
+    layer_DataAccess -->|18 refs| layer_Engine
+    layer_Unclassified -->|9 refs| layer_Engine
+    layer_Unclassified -->|7 refs| layer_DataAccess
+    layer_Infrastructure -->|3 refs| layer_DataAccess
+    layer_Unclassified -->|2 refs| layer_Infrastructure
+    layer_Infrastructure -->|2 refs| layer_Engine
+    layer_Engine -->|2 refs| layer_DataAccess
+    layer_Engine -->|2 refs| layer_Infrastructure
+    layer_DataAccess -->|1 refs| layer_Infrastructure
+    layer_DataAccess -->|1 refs| layer_Unclassified
+    layer_Infrastructure -->|1 refs| layer_Unclassified
+    layer_Service -->|1 refs| layer_DataAccess
+    layer_Service -->|1 refs| layer_Unclassified
+    layer_Engine -->|1 refs| layer_Unclassified

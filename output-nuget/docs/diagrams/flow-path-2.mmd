@@ -1,0 +1,6 @@
+graph LR
+    NuGet_PackageManagement_UI_Test["NuGet.PackageManagement.UI.Test\n(Presentation)"]
+    VisualStudio_Test_Utility["VisualStudio.Test.Utility\n(Infrastructure)"]
+    NuGet_PackageManagement_UI_Test --> VisualStudio_Test_Utility
+    Microsoft_Internal_NuGet_Testing_SignedPackages["Microsoft.Internal.NuGet.Testing.SignedPackages\n(DataAccess)"]
+    VisualStudio_Test_Utility --> Microsoft_Internal_NuGet_Testing_SignedPackages

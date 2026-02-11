@@ -11586,6 +11586,18 @@
     "confidence": "medium"
   },
   {
+    "file": "src/KurrentDB.Common/Properties/JetbrainsAnnotations.cs",
+    "repo": "src",
+    "line": 106,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": ": INotifyPropertyChanged",
+    "context": "/// public class Foo : INotifyPropertyChanged {",
+    "project": "KurrentDB.Common",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
     "file": "src/KurrentDB.AutoScavenge.Tests/PluginTests.cs",
     "repo": "src",
     "line": 34,
@@ -19492,6 +19504,18 @@
     "project": "KurrentDB",
     "direction": "read",
     "confidence": "high"
+  },
+  {
+    "file": "src/KurrentDB/Tools/LogObserver.cs",
+    "repo": "src",
+    "line": 14,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "public readonly ObservableCollection<LogEvent> Items = [];",
+    "project": "KurrentDB",
+    "direction": "both",
+    "confidence": "medium"
   },
   {
     "file": "src/KurrentDB/ClusterVNodeHostedService.cs",

@@ -1,0 +1,931 @@
+{
+  "businessLayers": {
+    "SerializationBenchmarks": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Benchmarks": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Benchmarks": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "RemotePingPong": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Cluster.Cpu.Benchmark": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "PingPong": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "SpawnBenchmark": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.DependencyInjection.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.DependencyInjection": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.TestKit.Xunit.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.TestKit.Xunit2": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.TestKit.Xunit2.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.TestKit.Xunit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tools.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Sharding.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.DistributedData.LightningDB": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Metrics": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.DistributedData.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.DistributedData": {
+      "layer": "DataAccess",
+      "confidence": 0.5,
+      "signals": [
+        "name:DataAccess",
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Metrics.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tools.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Sharding.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.DistributedData.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Metrics.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tools": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Sharding": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.Query.InMemory": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "Akka.Persistence.Query.InMemory.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Serialization.TestKit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Serialization.Hyperion": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Serialization.Hyperion.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.AspNetCore": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "Samples.Akka.AspNetCore": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "TimeClient": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "TimeServer": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service"
+      ]
+    },
+    "Akka.Persistence.Custom": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "System1": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "System2": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Shared": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Akka.Persistence.Custom.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.Transformation": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.Metrics.Common": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.Metrics": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.AdaptiveGroup": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.ConsistentHashRouting": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "ClusterSharding.Node": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "ShoppingCart": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "ClusterToolsExample.Shared": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "ClusterToolsExample.Seed": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "ClusterToolsExample.Node": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Samples.Cluster.Simple": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "SampleDestination": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "SamplePublisher": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "SampleSubscriber": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "SampleSender": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "DDataStressTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "StreamsExamples": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "TcpEchoService.Server": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service",
+        "category:Service"
+      ]
+    },
+    "HelloAkka": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Routing": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "AkkaWindowsService": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Presentation",
+        "name:Service",
+        "category:Service"
+      ]
+    },
+    "PersistenceExample": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "HelloWorld": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "AkkaHeadlesssService": {
+      "layer": "Service",
+      "confidence": 0.75,
+      "signals": [
+        "name:Service",
+        "category:Service",
+        "data:DataAccess"
+      ]
+    },
+    "SymbolLookup": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "category:Presentation"
+      ]
+    },
+    "ChatClient": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "ChatServer": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service"
+      ]
+    },
+    "ChatMessages": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "AppConfig": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "FaultTolerance": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Persistence.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Tests.Performance": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Docs.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Remote.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Remote.TestKit": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tests.MultiNode": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Discovery": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Streams.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.TestKit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Streams.TestKit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Remote.Tests.Performance": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.TestKit.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Streams.Tests.TCK": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Discovery.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Coordination.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.Query.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.TCK.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "Akka.API.Tests": {
+      "layer": "Service",
+      "confidence": 0.67,
+      "signals": [
+        "name:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.TestKit.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.TestKit.Xunit2": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tests.Performance": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Remote.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.Query": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.TCK": {
+      "layer": "DataAccess",
+      "confidence": 0.5,
+      "signals": [
+        "name:DataAccess",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence": {
+      "layer": "DataAccess",
+      "confidence": 0.5,
+      "signals": [
+        "name:DataAccess",
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Persistence.TestKit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "Akka.Streams": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Coordination": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Remote": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Streams.TestKit.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Cluster.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.TestKit": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Docs.Tutorials": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Akka.Streams.Tests.Performance": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Akka.Remote.TestKit.Tests": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "data:Service"
+      ]
+    },
+    "Akka.Tests.Shared.Internals": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    }
+  },
+  "flowPaths": [
+    {
+      "source": {
+        "project": "SymbolLookup",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "SymbolLookup",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Akka",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 2,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Akka"
+      ]
+    }
+  ],
+  "layerSummary": {
+    "Unclassified": {
+      "count": 19,
+      "projects": [
+        "SerializationBenchmarks",
+        "RemotePingPong",
+        "PingPong",
+        "SpawnBenchmark",
+        "Akka.DependencyInjection",
+        "Akka.TestKit.Xunit.Tests",
+        "Akka.TestKit.Xunit2.Tests",
+        "Akka.Serialization.Hyperion",
+        "Akka.Serialization.Hyperion.Tests",
+        "System1",
+        "System2",
+        "StreamsExamples",
+        "HelloAkka",
+        "Routing",
+        "HelloWorld",
+        "ChatMessages",
+        "FaultTolerance",
+        "Akka.Coordination",
+        "Akka.Docs.Tutorials"
+      ]
+    },
+    "DataAccess": {
+      "count": 67,
+      "projects": [
+        "Akka.Benchmarks",
+        "Akka.Cluster.Benchmarks",
+        "Akka.Cluster.Cpu.Benchmark",
+        "Akka.DependencyInjection.Tests",
+        "Akka.TestKit.Xunit2",
+        "Akka.TestKit.Xunit",
+        "Akka.Cluster.Tools.Tests.MultiNode",
+        "Akka.Cluster.Sharding.Tests",
+        "Akka.DistributedData.LightningDB",
+        "Akka.DistributedData.Tests.MultiNode",
+        "Akka.DistributedData",
+        "Akka.Cluster.Metrics.Tests",
+        "Akka.Cluster.Tools.Tests",
+        "Akka.Cluster.Sharding.Tests.MultiNode",
+        "Akka.DistributedData.Tests",
+        "Akka.Cluster.Metrics.Tests.MultiNode",
+        "Akka.Cluster.Sharding",
+        "Akka.Persistence.Query.InMemory",
+        "Akka.Persistence.Query.InMemory.Tests",
+        "Akka.Serialization.TestKit",
+        "Akka.Persistence.Custom",
+        "Akka.Persistence.Custom.Tests",
+        "Samples.Cluster.Transformation",
+        "Samples.Cluster.Metrics",
+        "Samples.Cluster.AdaptiveGroup",
+        "Samples.Cluster.ConsistentHashRouting",
+        "ClusterSharding.Node",
+        "ShoppingCart",
+        "ClusterToolsExample.Seed",
+        "ClusterToolsExample.Node",
+        "Samples.Cluster.Simple",
+        "SampleDestination",
+        "SamplePublisher",
+        "SampleSubscriber",
+        "SampleSender",
+        "DDataStressTest",
+        "PersistenceExample",
+        "Akka.Persistence.Tests",
+        "Akka.Tests.Performance",
+        "Akka.Docs.Tests",
+        "Akka.Remote.Tests.MultiNode",
+        "Akka.Cluster.Tests.MultiNode",
+        "Akka.Discovery",
+        "Akka.Streams.Tests",
+        "Akka.Cluster.TestKit",
+        "Akka.Streams.TestKit",
+        "Akka.Remote.Tests.Performance",
+        "Akka.TestKit.Tests",
+        "Akka.Streams.Tests.TCK",
+        "Akka.Discovery.Tests",
+        "Akka.Coordination.Tests",
+        "Akka.Persistence.Query.Tests",
+        "Akka.Persistence.TCK.Tests",
+        "Akka.Persistence.TestKit.Tests",
+        "Akka.Persistence.TestKit.Xunit2",
+        "Akka.Cluster.Tests.Performance",
+        "Akka.Remote.Tests",
+        "Akka.Persistence.Query",
+        "Akka.Persistence.TCK",
+        "Akka.Persistence",
+        "Akka.Persistence.TestKit",
+        "Akka.Streams.TestKit.Tests",
+        "Akka.Tests",
+        "Akka.Cluster.Tests",
+        "Akka.TestKit",
+        "Akka",
+        "Akka.Streams.Tests.Performance"
+      ]
+    },
+    "Service": {
+      "count": 14,
+      "projects": [
+        "Akka.Cluster.Metrics",
+        "Akka.Cluster.Tools",
+        "Akka.AspNetCore",
+        "TimeServer",
+        "TcpEchoService.Server",
+        "AkkaWindowsService",
+        "AkkaHeadlesssService",
+        "ChatServer",
+        "Akka.Remote.TestKit",
+        "Akka.Cluster",
+        "Akka.API.Tests",
+        "Akka.Streams",
+        "Akka.Remote",
+        "Akka.Remote.TestKit.Tests"
+      ]
+    },
+    "Infrastructure": {
+      "count": 8,
+      "projects": [
+        "Samples.Akka.AspNetCore",
+        "TimeClient",
+        "Shared",
+        "Samples.Cluster.Metrics.Common",
+        "ClusterToolsExample.Shared",
+        "ChatClient",
+        "AppConfig",
+        "Akka.Tests.Shared.Internals"
+      ]
+    },
+    "Presentation": {
+      "count": 1,
+      "projects": [
+        "SymbolLookup"
+      ]
+    }
+  }
+}

@@ -11,6 +11,7 @@
 | storage | 147 |
 | config | 61 |
 | connector | 4 |
+| ui | 2 |
 
 ## Api
 
@@ -685,6 +686,17 @@
 | src | `src/KurrentDB.Transport.Http/EntityManagement/HttpListenerRequestAdapter.cs` | 12 | `public class HttpListenerRequestAdapter : IHttpRequest {` |
 | src | `src/KurrentDB.Transport.Http/EntityManagement/CoreHttpResponseAdapter.cs` | 10 | `public class CoreHttpResponseAdapter : IHttpResponse {` |
 | src | `src/KurrentDB.Transport.Http/EntityManagement/HttpListenerResponseAdapter.cs` | 10 | `public class HttpListenerResponseAdapter : IHttpResponse {` |
+
+**Repos:** src
+
+## Ui
+
+### WPF.ViewModel (2 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| src | `src/KurrentDB.Common/Properties/JetbrainsAnnotations.cs` | 106 | `/// public class Foo : INotifyPropertyChanged {` |
+| src | `src/KurrentDB/Tools/LogObserver.cs` | 14 | `public readonly ObservableCollection<LogEvent> Items = [];` |
 
 **Repos:** src
 

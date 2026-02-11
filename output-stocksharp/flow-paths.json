@@ -1,0 +1,5241 @@
+{
+  "businessLayers": {
+    "Algo.Testing": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Media.Names": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Configuration": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Charting.Interfaces": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Algo.Indicators": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Localization.Extractor": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Localization": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Diagram.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "Reporting": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "Algo.Import": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Algo.Analytics.CSharp": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "BusinessEntities": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Messages": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Algo.Strategies": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Algo.Export": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "Media": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:csproj",
+        "category:Presentation"
+      ]
+    },
+    "Alerts.Interfaces": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Localization.Generator": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "Algo.Analytics": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Algo.Compilation": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine",
+        "nuget:Engine"
+      ]
+    },
+    "Media.Generator": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "Algo.Gpu": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "Localization.all": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.my": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.nl": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.he": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.fi": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.el": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.da": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.sv": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.hi": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.no": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ko": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ar": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ta": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.zh": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.pt": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.es": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.jv": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.fa": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.bn": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ro": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ms": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.cs": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.uz": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.hu": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.th": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.pl": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ja": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.pa": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.vi": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.de": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.tl": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.fr": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.uk": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.it": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.sk": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.tr": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.sr": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ru": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Localization.ca": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "01_Candles.Realtime_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Candles.Realtime": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "02_Candles.CombineHistoryRealtime": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Candles.CombineHistoryRealtime_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "04_Testing.HistoryConsole": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "04_Testing.HistoryConsole_fromsrc": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "02_Testing.Optimization": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Testing.Optimization_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Testing.History": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Testing.History_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "03_Testing.RealTime_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Testing.RealTime": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "06_Strategies.HistoryQuoting_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "06_Strategies.HistoryQuoting": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "04_Strategies.HistoryMarketRule": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "04_Strategies.HistoryMarketRule_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "08_Strategies.LiveArbitrage_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "08_Strategies.LiveArbitrage": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Strategies.HistoryTrend_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Strategies.HistoryTrend": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "05_Strategies.HistoryIndex_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "05_Strategies.HistoryIndex": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "10_Strategies.LiveTerminal": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "10_Strategies.LiveTerminal_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "07_Strategies.LiveSpread": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "07_Strategies.LiveSpread_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Strategies.HistoryBollingerBands": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Strategies.HistoryBollingerBands_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Strategies.HistorySMA_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Strategies.HistorySMA": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "09_Strategies.LiveOptionsQuoting_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "09_Strategies.LiveOptionsQuoting": {
+      "layer": "Presentation",
+      "confidence": 0.8,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "05_Storage.HydraServerSaveToLocal_fromsrc": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Service",
+        "name:DataAccess"
+      ]
+    },
+    "05_Storage.HydraServerSaveToLocal": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Service",
+        "name:DataAccess"
+      ]
+    },
+    "04_Storage.HydraServerConnect_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.25,
+      "signals": [
+        "name:Service",
+        "name:DataAccess",
+        "wpf:xaml"
+      ]
+    },
+    "04_Storage.HydraServerConnect": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Service",
+        "name:DataAccess",
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "02_Storage.Local": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "02_Storage.Local_fromsrc": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "01_Storage.Random_fromsrc": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "01_Storage.Random": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "03_Storage.RemoteSource_fromsrc": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess"
+      ]
+    },
+    "03_Storage.RemoteSource": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "01_CrossPlatform.ConsoleApp_fromsrc": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "01_CrossPlatform.ConsoleApp": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "01_Misc.Logging_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.25,
+      "signals": [
+        "name:Infrastructure",
+        "wpf:xaml"
+      ]
+    },
+    "01_Misc.Logging": {
+      "layer": "Presentation",
+      "confidence": 0.25,
+      "signals": [
+        "name:Infrastructure",
+        "wpf:xaml"
+      ]
+    },
+    "02_Misc.Unit": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "02_Misc.Unit_fromsrc": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "01_Advanced.MultiConnect_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Advanced.MultiConnect": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "02_Advanced.SaveDataLocal_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.25,
+      "signals": [
+        "name:DataAccess",
+        "wpf:xaml"
+      ]
+    },
+    "02_Advanced.SaveDataLocal": {
+      "layer": "Presentation",
+      "confidence": 0.25,
+      "signals": [
+        "name:DataAccess",
+        "wpf:xaml"
+      ]
+    },
+    "03_Indicators.CreateOwn": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Indicators.CreateOwn_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Indicators.SimpleSMA": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Indicators.SimpleSMA_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Indicators.ComplexBollinger": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Indicators.ComplexBollinger_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Basic.MarketDepths_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Basic.MarketDepths": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "03_Basic.Orders_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Basic.Orders": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Basic.ConnectAndDownloadInstruments": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Basic.ConnectAndDownloadInstruments_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "02_Chart.ActiveOrders": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "02_Chart.ActiveOrders_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml",
+        "data:Presentation"
+      ]
+    },
+    "01_Chart_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "01_Chart": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "wpf:xaml",
+        "data:DataAccess"
+      ]
+    },
+    "03_Chart.Performance_fromsrc": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "03_Chart.Performance": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml",
+        "data:Presentation"
+      ]
+    },
+    "Coinbase": {
+      "layer": "Infrastructure",
+      "confidence": 0.75,
+      "signals": [
+        "name:Infrastructure",
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Bitexbook": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Tinkoff": {
+      "layer": "Service",
+      "confidence": 0.67,
+      "signals": [
+        "nuget:Service",
+        "category:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "BitStamp": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Bitalong": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Btce": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "FTX": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Algo": {
+      "layer": "Engine",
+      "confidence": 0.8,
+      "signals": [
+        "name:Engine",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    }
+  },
+  "flowPaths": [
+    {
+      "source": {
+        "project": "01_Candles.Realtime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Candles.Realtime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Candles.Realtime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Candles.Realtime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Candles.CombineHistoryRealtime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Candles.CombineHistoryRealtime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Testing.Optimization",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Testing.Optimization",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Testing.Optimization_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Testing.Optimization_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Testing.History",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Testing.History",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Testing.History_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Testing.History_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Testing.RealTime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Testing.RealTime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Testing.RealTime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Testing.RealTime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "06_Strategies.HistoryQuoting_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "06_Strategies.HistoryQuoting_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "06_Strategies.HistoryQuoting",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "06_Strategies.HistoryQuoting",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Strategies.HistoryMarketRule",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Strategies.HistoryMarketRule",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Strategies.HistoryMarketRule_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Strategies.HistoryMarketRule_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "08_Strategies.LiveArbitrage_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "08_Strategies.LiveArbitrage_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "08_Strategies.LiveArbitrage",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "08_Strategies.LiveArbitrage",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Strategies.HistoryTrend_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Strategies.HistoryTrend_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Strategies.HistoryTrend",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Strategies.HistoryTrend",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "05_Strategies.HistoryIndex_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "05_Strategies.HistoryIndex_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "05_Strategies.HistoryIndex",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "05_Strategies.HistoryIndex",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "10_Strategies.LiveTerminal",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "10_Strategies.LiveTerminal",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "10_Strategies.LiveTerminal_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "10_Strategies.LiveTerminal_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "07_Strategies.LiveSpread",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "07_Strategies.LiveSpread",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "07_Strategies.LiveSpread_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "07_Strategies.LiveSpread_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Strategies.HistoryBollingerBands",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Strategies.HistoryBollingerBands",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Strategies.HistorySMA_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Strategies.HistorySMA_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Strategies.HistorySMA",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Strategies.HistorySMA",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "09_Strategies.LiveOptionsQuoting_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "09_Strategies.LiveOptionsQuoting_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "09_Strategies.LiveOptionsQuoting",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "09_Strategies.LiveOptionsQuoting",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Storage.HydraServerConnect_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Storage.HydraServerConnect_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Misc.Logging_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Misc.Logging_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Misc.Logging",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Misc.Logging",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Advanced.MultiConnect_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Advanced.MultiConnect_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Advanced.MultiConnect",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Advanced.MultiConnect",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Advanced.SaveDataLocal_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Advanced.SaveDataLocal_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Advanced.SaveDataLocal",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Advanced.SaveDataLocal",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Indicators.CreateOwn",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Indicators.CreateOwn",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Indicators.CreateOwn_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Indicators.CreateOwn_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Indicators.SimpleSMA",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Indicators.SimpleSMA",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Indicators.SimpleSMA_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Indicators.SimpleSMA_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Indicators.ComplexBollinger",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Indicators.ComplexBollinger",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Indicators.ComplexBollinger_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Indicators.ComplexBollinger_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Basic.MarketDepths_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Basic.MarketDepths_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Basic.MarketDepths",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Basic.MarketDepths",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Basic.Orders_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Basic.Orders_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Basic.Orders",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Basic.Orders",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Basic.ConnectAndDownloadInstruments",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Basic.ConnectAndDownloadInstruments",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Chart.ActiveOrders",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Chart.ActiveOrders",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Chart.ActiveOrders_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Chart.ActiveOrders_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Chart_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Chart_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Chart",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Chart",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Chart.Performance_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Chart.Performance_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Chart.Performance",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Chart.Performance",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Charting.Interfaces",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "BusinessEntities",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:BusinessEntities"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Candles.Realtime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Candles.Realtime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Candles.Realtime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Candles.Realtime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Candles.CombineHistoryRealtime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Candles.CombineHistoryRealtime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Candles.CombineHistoryRealtime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Testing.Optimization",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Testing.Optimization",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Testing.Optimization_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Testing.Optimization_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Testing.History",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Testing.History",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Testing.History_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Testing.History_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Testing.RealTime_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Testing.RealTime_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Testing.RealTime",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Testing.RealTime",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "06_Strategies.HistoryQuoting_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "06_Strategies.HistoryQuoting_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "06_Strategies.HistoryQuoting",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "06_Strategies.HistoryQuoting",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Strategies.HistoryMarketRule",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Strategies.HistoryMarketRule",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Strategies.HistoryMarketRule_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Strategies.HistoryMarketRule_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "08_Strategies.LiveArbitrage_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "08_Strategies.LiveArbitrage_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "08_Strategies.LiveArbitrage",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "08_Strategies.LiveArbitrage",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Strategies.HistoryTrend_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Strategies.HistoryTrend_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Strategies.HistoryTrend",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Strategies.HistoryTrend",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "05_Strategies.HistoryIndex_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "05_Strategies.HistoryIndex_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "05_Strategies.HistoryIndex",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "05_Strategies.HistoryIndex",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "10_Strategies.LiveTerminal",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "10_Strategies.LiveTerminal",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "10_Strategies.LiveTerminal_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "10_Strategies.LiveTerminal_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "07_Strategies.LiveSpread",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "07_Strategies.LiveSpread",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "07_Strategies.LiveSpread_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "07_Strategies.LiveSpread_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Strategies.HistoryBollingerBands",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Strategies.HistoryBollingerBands",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Strategies.HistoryBollingerBands_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Strategies.HistorySMA_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Strategies.HistorySMA_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Strategies.HistorySMA",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Strategies.HistorySMA",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "09_Strategies.LiveOptionsQuoting_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "09_Strategies.LiveOptionsQuoting_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "09_Strategies.LiveOptionsQuoting",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "09_Strategies.LiveOptionsQuoting",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "04_Storage.HydraServerConnect_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "04_Storage.HydraServerConnect_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Misc.Logging_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Misc.Logging_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Misc.Logging",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Misc.Logging",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Advanced.MultiConnect_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Advanced.MultiConnect_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Advanced.MultiConnect",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Advanced.MultiConnect",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Advanced.SaveDataLocal_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Advanced.SaveDataLocal_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Advanced.SaveDataLocal",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Advanced.SaveDataLocal",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Indicators.CreateOwn",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Indicators.CreateOwn",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Indicators.CreateOwn_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Indicators.CreateOwn_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Indicators.SimpleSMA",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Indicators.SimpleSMA",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Indicators.SimpleSMA_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Indicators.SimpleSMA_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Indicators.ComplexBollinger",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Indicators.ComplexBollinger",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Indicators.ComplexBollinger_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Indicators.ComplexBollinger_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Basic.MarketDepths_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Basic.MarketDepths_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Basic.MarketDepths",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Basic.MarketDepths",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Basic.Orders_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Basic.Orders_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Basic.Orders",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Basic.Orders",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Basic.ConnectAndDownloadInstruments",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Basic.ConnectAndDownloadInstruments",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Chart.ActiveOrders",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Chart.ActiveOrders",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "02_Chart.ActiveOrders_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "02_Chart.ActiveOrders_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Chart_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Chart_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "01_Chart",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "01_Chart",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Chart.Performance_fromsrc",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Chart.Performance_fromsrc",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    },
+    {
+      "source": {
+        "project": "03_Chart.Performance",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "03_Chart.Performance",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "Algo",
+          "layer": "Engine",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Reporting",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Messages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Engine",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Messages"
+      ]
+    }
+  ],
+  "layerSummary": {
+    "Engine": {
+      "count": 10,
+      "projects": [
+        "Algo.Testing",
+        "Algo.Indicators",
+        "Algo.Import",
+        "Algo.Analytics.CSharp",
+        "Algo.Strategies",
+        "Algo.Export",
+        "Algo.Analytics",
+        "Algo.Compilation",
+        "Algo.Gpu",
+        "Algo"
+      ]
+    },
+    "Unclassified": {
+      "count": 55,
+      "projects": [
+        "Media.Names",
+        "Charting.Interfaces",
+        "Localization.Extractor",
+        "Localization",
+        "Localization.all",
+        "Localization.my",
+        "Localization.nl",
+        "Localization.he",
+        "Localization.fi",
+        "Localization.el",
+        "Localization.da",
+        "Localization.sv",
+        "Localization.hi",
+        "Localization.no",
+        "Localization.ko",
+        "Localization.ar",
+        "Localization.ta",
+        "Localization.zh",
+        "Localization.pt",
+        "Localization.es",
+        "Localization.jv",
+        "Localization.fa",
+        "Localization.bn",
+        "Localization.ro",
+        "Localization.ms",
+        "Localization.cs",
+        "Localization.uz",
+        "Localization.hu",
+        "Localization.th",
+        "Localization.pl",
+        "Localization.ja",
+        "Localization.pa",
+        "Localization.vi",
+        "Localization.de",
+        "Localization.tl",
+        "Localization.fr",
+        "Localization.uk",
+        "Localization.it",
+        "Localization.sk",
+        "Localization.tr",
+        "Localization.sr",
+        "Localization.ru",
+        "Localization.ca",
+        "04_Testing.HistoryConsole",
+        "05_Storage.HydraServerSaveToLocal_fromsrc",
+        "05_Storage.HydraServerSaveToLocal",
+        "04_Storage.HydraServerConnect",
+        "01_CrossPlatform.ConsoleApp_fromsrc",
+        "02_Misc.Unit",
+        "02_Misc.Unit_fromsrc",
+        "Bitexbook",
+        "BitStamp",
+        "Bitalong",
+        "Btce",
+        "FTX"
+      ]
+    },
+    "Infrastructure": {
+      "count": 5,
+      "projects": [
+        "Configuration",
+        "Diagram.Core",
+        "Localization.Generator",
+        "Media.Generator",
+        "Coinbase"
+      ]
+    },
+    "DataAccess": {
+      "count": 13,
+      "projects": [
+        "Reporting",
+        "Tests",
+        "BusinessEntities",
+        "Messages",
+        "Alerts.Interfaces",
+        "04_Testing.HistoryConsole_fromsrc",
+        "02_Storage.Local",
+        "02_Storage.Local_fromsrc",
+        "01_Storage.Random_fromsrc",
+        "01_Storage.Random",
+        "03_Storage.RemoteSource_fromsrc",
+        "03_Storage.RemoteSource",
+        "01_CrossPlatform.ConsoleApp"
+      ]
+    },
+    "Presentation": {
+      "count": 56,
+      "projects": [
+        "Media",
+        "01_Candles.Realtime_fromsrc",
+        "01_Candles.Realtime",
+        "02_Candles.CombineHistoryRealtime",
+        "02_Candles.CombineHistoryRealtime_fromsrc",
+        "02_Testing.Optimization",
+        "02_Testing.Optimization_fromsrc",
+        "01_Testing.History",
+        "01_Testing.History_fromsrc",
+        "03_Testing.RealTime_fromsrc",
+        "03_Testing.RealTime",
+        "06_Strategies.HistoryQuoting_fromsrc",
+        "06_Strategies.HistoryQuoting",
+        "04_Strategies.HistoryMarketRule",
+        "04_Strategies.HistoryMarketRule_fromsrc",
+        "08_Strategies.LiveArbitrage_fromsrc",
+        "08_Strategies.LiveArbitrage",
+        "03_Strategies.HistoryTrend_fromsrc",
+        "03_Strategies.HistoryTrend",
+        "05_Strategies.HistoryIndex_fromsrc",
+        "05_Strategies.HistoryIndex",
+        "10_Strategies.LiveTerminal",
+        "10_Strategies.LiveTerminal_fromsrc",
+        "07_Strategies.LiveSpread",
+        "07_Strategies.LiveSpread_fromsrc",
+        "02_Strategies.HistoryBollingerBands",
+        "02_Strategies.HistoryBollingerBands_fromsrc",
+        "01_Strategies.HistorySMA_fromsrc",
+        "01_Strategies.HistorySMA",
+        "09_Strategies.LiveOptionsQuoting_fromsrc",
+        "09_Strategies.LiveOptionsQuoting",
+        "04_Storage.HydraServerConnect_fromsrc",
+        "01_Misc.Logging_fromsrc",
+        "01_Misc.Logging",
+        "01_Advanced.MultiConnect_fromsrc",
+        "01_Advanced.MultiConnect",
+        "02_Advanced.SaveDataLocal_fromsrc",
+        "02_Advanced.SaveDataLocal",
+        "03_Indicators.CreateOwn",
+        "03_Indicators.CreateOwn_fromsrc",
+        "01_Indicators.SimpleSMA",
+        "01_Indicators.SimpleSMA_fromsrc",
+        "02_Indicators.ComplexBollinger",
+        "02_Indicators.ComplexBollinger_fromsrc",
+        "02_Basic.MarketDepths_fromsrc",
+        "02_Basic.MarketDepths",
+        "03_Basic.Orders_fromsrc",
+        "03_Basic.Orders",
+        "01_Basic.ConnectAndDownloadInstruments",
+        "01_Basic.ConnectAndDownloadInstruments_fromsrc",
+        "02_Chart.ActiveOrders",
+        "02_Chart.ActiveOrders_fromsrc",
+        "01_Chart_fromsrc",
+        "01_Chart",
+        "03_Chart.Performance_fromsrc",
+        "03_Chart.Performance"
+      ]
+    },
+    "Service": {
+      "count": 1,
+      "projects": [
+        "Tinkoff"
+      ]
+    }
+  }
+}

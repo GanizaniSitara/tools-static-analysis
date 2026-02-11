@@ -3968,7 +3968,7 @@
     "totalNuGetPackages": 76,
     "totalProjectRefs": 213,
     "totalCrossRepoRefs": 0,
-    "totalDataFindings": 3013,
+    "totalDataFindings": 3105,
     "totalConfigFiles": 13,
     "repos": {
       "NuGet.Client": {

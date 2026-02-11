@@ -848,13 +848,13 @@
       "endpointType": "route"
     },
     {
-      "from": "eShop.ServiceDefaults",
+      "from": "Ordering.API",
       "to": "route:/",
       "direction": "expose",
       "endpointType": "route"
     },
     {
-      "from": "Ordering.API",
+      "from": "eShop.ServiceDefaults",
       "to": "route:/",
       "direction": "expose",
       "endpointType": "route"
@@ -1411,6 +1411,18 @@
       "projects": {
         "EventBusRabbitMQ": {
           "unknown": 4
+        }
+      }
+    },
+    {
+      "pattern": "WPF.ViewModel",
+      "type": "ui",
+      "projects": {
+        "ClientApp": {
+          "both": 14
+        },
+        "ClientApp.UnitTests": {
+          "both": 1
         }
       }
     },

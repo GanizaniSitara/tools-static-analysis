@@ -46,6 +46,24 @@ graph TD
 | `src/ClientApp/Views/ProfileView.xaml.cs` | 20 | `_viewModel.RefreshCommand.Execute(null);` |
 | `src/ClientApp/Controls/ToggleButton.cs` | 77 | `Command.Execute(CommandParameter);` |
 
+### WPF.ViewModel
+| File | Line | Context |
+|------|------|---------||
+| `src/ClientApp/Validations/ValidatableObject.cs` | 3 | `public class ValidatableObject<T> : ObservableObject, IValidity` |
+| `src/ClientApp/ViewModels/CheckoutViewModel.cs` | 13 | `public partial class CheckoutViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/Base/ViewModelBase.cs` | 5 | `public abstract partial class ViewModelBase : ObservableObject, IViewM` |
+| `src/ClientApp/ViewModels/ObservableCollectionEx.cs` | 7 | `public class ObservableCollectionEx<T> : ObservableCollection<T>` |
+| `src/ClientApp/ViewModels/LoginViewModel.cs` | 11 | `public partial class LoginViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/CatalogViewModel.cs` | 11 | `public partial class CatalogViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/BasketViewModel.cs` | 9 | `public partial class BasketViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/SettingsViewModel.cs` | 13 | `public class SettingsViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/ProfileViewModel.cs` | 9 | `public partial class ProfileViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/OrderDetailViewModel.cs` | 9 | `public partial class OrderDetailViewModel : ViewModelBase, IQueryAttri` |
+| `src/ClientApp/ViewModels/SelectionViewModel.cs` | 3 | `public partial class SelectionViewModel<T> : ObservableObject` |
+| `src/ClientApp/ViewModels/MapViewModel.cs` | 6 | `public partial class MapViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/MainViewModel.cs` | 6 | `public partial class MainViewModel : ViewModelBase` |
+| `src/ClientApp/ViewModels/CatalogItemViewModel.cs` | 11 | `public partial class CatalogItemViewModel : ViewModelBase` |
+
 ### HttpClient.New
 | File | Line | Context |
 |------|------|---------||

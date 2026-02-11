@@ -32,6 +32,21 @@
       }
     },
     {
+      "pattern": "WPF.Window",
+      "type": "ui",
+      "projects": {
+        "WPFApplication": {
+          "expose": 1
+        },
+        "NuGet.PackageManagement.UI": {
+          "expose": 22
+        },
+        "NuGet.Console": {
+          "expose": 1
+        }
+      }
+    },
+    {
       "pattern": "File.Write",
       "type": "storage",
       "projects": {
@@ -692,11 +707,32 @@
       }
     },
     {
+      "pattern": "WPF.ViewModel",
+      "type": "ui",
+      "projects": {
+        "NuGet.PackageManagement.UI.Test": {
+          "both": 26
+        },
+        "NuGet.PackageManagement.UI": {
+          "both": 25
+        }
+      }
+    },
+    {
       "pattern": "SQL.Delete",
       "type": "database",
       "projects": {
         "NuGet.CommandLine": {
           "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "WPF.Binding",
+      "type": "ui",
+      "projects": {
+        "NuGet.PackageManagement.UI": {
+          "consume": 17
         }
       }
     }

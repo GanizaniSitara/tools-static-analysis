@@ -1,0 +1,714 @@
+{
+  "businessLayers": {
+    "KurrentDB.Core.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.OtlpExporterPlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "FakePlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Core.Testing": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Plugins.Api.V2": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service",
+        "category:Service",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.Plugins.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Diagnostics.LogsEndpointPlugin": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.SystemRuntime": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Licensing.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.UserCertificates.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.Security.EncryptionAtRest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.Ldaps.Tests": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.Api.V2.Tests": {
+      "layer": "Service",
+      "confidence": 0.8,
+      "signals": [
+        "name:Service",
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.Projections.Core.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.33,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.StreamPolicyPlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Native": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Api.V2": {
+      "layer": "Service",
+      "confidence": 0.86,
+      "signals": [
+        "name:Service",
+        "nuget:Service",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.LogCommon": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.Surge.Testing": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Common.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.OAuth": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.LogV3": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.Security.EncryptionAtRest.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Core.Testing.NUnit": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Projections.Core.XUnit.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.Surge": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.StreamPolicyPlugin.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Transport.Http": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Surge.Testing.Messages": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.NETCore.Compatibility": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Projections.Core": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.POC.ConnectedSubsystemsPlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Licensing": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.MicroBenchmarks": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Core.Testing.XUnit": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.AutoScavenge": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.Common": {
+      "layer": "Infrastructure",
+      "confidence": 0.33,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "KurrentDB.SystemRuntime.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.AutoScavenge.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Ammeter": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Projections.Core.Javascript.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.SchemaRegistry": {
+      "layer": "Service",
+      "confidence": 0.67,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.SchemaRegistry.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Plugins.SchemaRegistry": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.SchemaRegistry.Protocol": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.SecondaryIndexing.LoadTesting": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Auth.Ldaps": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.DuckDB": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Logging": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Plugins.TestHelpers": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.BufferManagement.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.LogV3.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Transport.Tcp": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.SourceGenerators.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.TestClient": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Core.XUnit.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.Auth.OAuth.Tests": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.SecondaryIndexing": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Surge.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Core.TUnit.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.33,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service"
+      ]
+    },
+    "KurrentDB.PluginHosting": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service"
+      ]
+    },
+    "KurrentDB.UI": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "name:Presentation"
+      ]
+    },
+    "KurrentDB.Testing.ClusterVNodeApp": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.ClusterNode.Web": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service",
+        "category:Service"
+      ]
+    },
+    "KurrentDB.Core": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.SecondaryIndexing.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.POC.IO.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.SourceGenerators": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "KurrentDB.Auth.UserCertificates": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.Connectors.Contracts": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "category:Infrastructure"
+      ]
+    },
+    "KurrentDB.Connectors.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.Plugins.Connectors": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "KurrentDB.Connectors": {
+      "layer": "Service",
+      "confidence": 0.67,
+      "signals": [
+        "nuget:Service",
+        "category:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.Connectors.TestServer": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service"
+      ]
+    },
+    "KurrentDB.Testing": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.OtlpExporterPlugin.Tests": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service",
+        "data:Service"
+      ]
+    },
+    "KurrentDB.TcpPlugin.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "KurrentDB.TcpPlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB.BufferManagement": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "KurrentDB": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Service",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "KurrentDB.Plugins": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    }
+  },
+  "flowPaths": [],
+  "layerSummary": {
+    "Infrastructure": {
+      "count": 20,
+      "projects": [
+        "KurrentDB.Core.Tests",
+        "KurrentDB.Core.Testing",
+        "KurrentDB.Diagnostics.LogsEndpointPlugin",
+        "KurrentDB.Projections.Core.Tests",
+        "KurrentDB.LogCommon",
+        "KurrentDB.Common.Tests",
+        "KurrentDB.Core.Testing.NUnit",
+        "KurrentDB.Projections.Core.XUnit.Tests",
+        "KurrentDB.NETCore.Compatibility",
+        "KurrentDB.Core.Testing.XUnit",
+        "KurrentDB.Common",
+        "KurrentDB.Projections.Core.Javascript.Tests",
+        "KurrentDB.Logging",
+        "KurrentDB.Plugins.TestHelpers",
+        "KurrentDB.Diagnostics.LogsEndpointPlugin.Tests",
+        "KurrentDB.Core.XUnit.Tests",
+        "KurrentDB.Core.TUnit.Tests",
+        "KurrentDB.POC.IO.Core",
+        "KurrentDB.SourceGenerators",
+        "KurrentDB.Plugins.Connectors"
+      ]
+    },
+    "Unclassified": {
+      "count": 26,
+      "projects": [
+        "KurrentDB.OtlpExporterPlugin",
+        "FakePlugin",
+        "KurrentDB.Plugins.Tests",
+        "KurrentDB.Auth.UserCertificates.Tests",
+        "KurrentDB.Auth.StreamPolicyPlugin",
+        "KurrentDB.Native",
+        "KurrentDB.Auth.OAuth",
+        "KurrentDB.Security.EncryptionAtRest.Tests",
+        "KurrentDB.Projections.Core",
+        "KurrentDB.POC.ConnectedSubsystemsPlugin",
+        "KurrentDB.Licensing",
+        "KurrentDB.MicroBenchmarks",
+        "KurrentDB.AutoScavenge",
+        "KurrentDB.SystemRuntime.Tests",
+        "KurrentDB.Ammeter",
+        "KurrentDB.Plugins.SchemaRegistry",
+        "KurrentDB.Auth.Ldaps",
+        "KurrentDB.DuckDB",
+        "KurrentDB.BufferManagement.Tests",
+        "KurrentDB.LogV3.Tests",
+        "KurrentDB.Core",
+        "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled",
+        "KurrentDB.Auth.UserCertificates",
+        "KurrentDB.TcpPlugin",
+        "KurrentDB.BufferManagement",
+        "KurrentDB"
+      ]
+    },
+    "Service": {
+      "count": 20,
+      "projects": [
+        "KurrentDB.Plugins.Api.V2",
+        "KurrentDB.Auth.Ldaps.Tests",
+        "KurrentDB.Api.V2.Tests",
+        "KurrentDB.Auth.LegacyAuthorizationWithStreamAuthorizationDisabled.Tests",
+        "KurrentDB.Api.V2",
+        "KurrentDB.LogV3",
+        "KurrentDB.Surge.Testing.Messages",
+        "KurrentDB.SchemaRegistry",
+        "KurrentDB.SchemaRegistry.Protocol",
+        "KurrentDB.TestClient",
+        "KurrentDB.Auth.OAuth.Tests",
+        "KurrentDB.SecondaryIndexing",
+        "KurrentDB.PluginHosting",
+        "KurrentDB.Testing.ClusterVNodeApp",
+        "KurrentDB.ClusterNode.Web",
+        "KurrentDB.Connectors.Contracts",
+        "KurrentDB.Connectors",
+        "KurrentDB.Connectors.TestServer",
+        "KurrentDB.Testing",
+        "KurrentDB.OtlpExporterPlugin.Tests"
+      ]
+    },
+    "DataAccess": {
+      "count": 17,
+      "projects": [
+        "KurrentDB.SystemRuntime",
+        "KurrentDB.Licensing.Tests",
+        "KurrentDB.Security.EncryptionAtRest",
+        "KurrentDB.Surge.Testing",
+        "KurrentDB.Surge",
+        "KurrentDB.Auth.StreamPolicyPlugin.Tests",
+        "KurrentDB.Transport.Http",
+        "KurrentDB.AutoScavenge.Tests",
+        "KurrentDB.SchemaRegistry.Tests",
+        "KurrentDB.SecondaryIndexing.LoadTesting",
+        "KurrentDB.Transport.Tcp",
+        "KurrentDB.SourceGenerators.Tests",
+        "KurrentDB.Surge.Tests",
+        "KurrentDB.SecondaryIndexing.Tests",
+        "KurrentDB.Connectors.Tests",
+        "KurrentDB.TcpPlugin.Tests",
+        "KurrentDB.Plugins"
+      ]
+    },
+    "Presentation": {
+      "count": 1,
+      "projects": [
+        "KurrentDB.UI"
+      ]
+    }
+  }
+}

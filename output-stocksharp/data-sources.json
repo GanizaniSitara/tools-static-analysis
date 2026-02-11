@@ -1020,6 +1020,18 @@
     "confidence": "medium"
   },
   {
+    "file": "Diagram.Core/Elements/ChartDiagramElement.cs",
+    "repo": "StockSharp",
+    "line": 30,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private class ObsCollection<T> : ObservableCollection<T>",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
     "file": "Diagram.Core/Elements/CrossingDiagramElement.cs",
     "repo": "StockSharp",
     "line": 97,
@@ -1029,6 +1041,90 @@
     "context": "_currentValues.Set(sock.GetValue<Unit>(true), sock.Socket == _input1);",
     "project": "Diagram.Core",
     "direction": "write",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/DiagramElement.cs",
+    "repo": "StockSharp",
+    "line": 13,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private readonly ObservableCollection<DiagramSocket> _inputSockets = [];",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/DiagramElement.cs",
+    "repo": "StockSharp",
+    "line": 14,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private readonly ObservableCollection<DiagramSocket> _outputSockets = [];",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/DiagramElement.cs",
+    "repo": "StockSharp",
+    "line": 419,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private ObservableCollection<DiagramSocket> GetSockets(DiagramSocketDirection dir)",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/ICompositionModel.cs",
+    "repo": "StockSharp",
+    "line": 595,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "m.Nodes = new ObservableCollection<TNode>(Nodes.Select(n => (TNode)n.Clone()));",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/ICompositionModel.cs",
+    "repo": "StockSharp",
+    "line": 596,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "m.Links = new ObservableCollection<TLink>(Links.Select(l => l.TypedClone()));",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/ICompositionModelBehavior.cs",
+    "repo": "StockSharp",
+    "line": 173,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private IEnumerable<DummyCompositionModelNode> _nodes = new ObservableCollection<DummyCompositionModelNode>();",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/ICompositionModelBehavior.cs",
+    "repo": "StockSharp",
+    "line": 187,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private IEnumerable<DummyCompositionModelLink> _links = new ObservableCollection<DummyCompositionModelLink>();",
+    "project": "Diagram.Core",
+    "direction": "both",
     "confidence": "medium"
   },
   {
@@ -1284,6 +1380,30 @@
     "confidence": "medium"
   },
   {
+    "file": "Diagram.Core/ICompositionRegistry.cs",
+    "repo": "StockSharp",
+    "line": 335,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "m.Nodes = new ObservableCollection<TNode>(storage.GetValue<SettingsStorage[]>(nameof(m.Nodes)).Select(DeserializeNode));",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/ICompositionRegistry.cs",
+    "repo": "StockSharp",
+    "line": 336,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "m.Links = new ObservableCollection<TLink>(storage.GetValue<SettingsStorage[]>(nameof(m.Links)).Select(DeserializeLink));",
+    "project": "Diagram.Core",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
     "file": "Diagram.Core/CompositionDiagramElement.cs",
     "repo": "StockSharp",
     "line": 351,
@@ -1329,6 +1449,18 @@
     "context": "_inputSync.Set();",
     "project": "Diagram.Core",
     "direction": "write",
+    "confidence": "medium"
+  },
+  {
+    "file": "Diagram.Core/DebuggerSyncObject.cs",
+    "repo": "StockSharp",
+    "line": 8,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": ": ViewModelBase",
+    "context": "public class DebuggerSyncObject : ViewModelBase",
+    "project": "Diagram.Core",
+    "direction": "both",
     "confidence": "medium"
   },
   {
@@ -4644,6 +4776,54 @@
     "confidence": "high"
   },
   {
+    "file": "Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 40,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private readonly ObservableCollection<Security> _assets;",
+    "project": "09_Strategies.LiveOptionsQuoting",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 41,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private readonly ObservableCollection<Security> _options;",
+    "project": "09_Strategies.LiveOptionsQuoting",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 64,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "_assets = new ObservableCollection<Security>();",
+    "project": "09_Strategies.LiveOptionsQuoting",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
+    "file": "Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 65,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "_options = new ObservableCollection<Security>();",
+    "project": "09_Strategies.LiveOptionsQuoting",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
     "file": "Samples/03_Storage/04_HydraServerConnect/MainWindow.xaml.cs",
     "repo": "StockSharp",
     "line": 134,
@@ -4872,6 +5052,18 @@
     "confidence": "high"
   },
   {
+    "file": "Samples/05_Chart/02_ActiveOrders/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 32,
+    "pattern": "WPF.ViewModel",
+    "type": "ui",
+    "match": "ObservableCollection<",
+    "context": "private readonly ObservableCollection<Order> _orders = [];",
+    "project": "02_Chart.ActiveOrders_fromsrc",
+    "direction": "both",
+    "confidence": "medium"
+  },
+  {
     "file": "Samples/05_Chart/01_Chart/MainWindow.xaml.cs",
     "repo": "StockSharp",
     "line": 770,
@@ -4893,6 +5085,18 @@
     "context": "_candleBuilder = _builderProvider.Get(msgType);",
     "project": "01_Chart",
     "direction": "read",
+    "confidence": "medium"
+  },
+  {
+    "file": "Samples/05_Chart/03_Performance/MainWindow.xaml.cs",
+    "repo": "StockSharp",
+    "line": 89,
+    "pattern": "WPF.Binding",
+    "type": "ui",
+    "match": "DataContext =",
+    "context": "BusyIndicator.SplashScreenDataContext = _loadingContext;",
+    "project": "03_Chart.Performance",
+    "direction": "consume",
     "confidence": "medium"
   },
   {

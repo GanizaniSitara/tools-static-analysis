@@ -320,6 +320,21 @@
       }
     },
     {
+      "pattern": "WPF.ViewModel",
+      "type": "ui",
+      "projects": {
+        "Diagram.Core": {
+          "both": 11
+        },
+        "09_Strategies.LiveOptionsQuoting": {
+          "both": 4
+        },
+        "02_Chart.ActiveOrders_fromsrc": {
+          "both": 1
+        }
+      }
+    },
+    {
       "pattern": "HttpClient.DeleteAsync",
       "type": "api",
       "projects": {
@@ -361,6 +376,15 @@
       "projects": {
         "Algo.Analytics": {
           "write": 1
+        }
+      }
+    },
+    {
+      "pattern": "WPF.Binding",
+      "type": "ui",
+      "projects": {
+        "03_Chart.Performance": {
+          "consume": 1
         }
       }
     },

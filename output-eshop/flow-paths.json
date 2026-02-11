@@ -1,0 +1,256 @@
+{
+  "businessLayers": {
+    "WebApp": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:Service",
+        "category:Service"
+      ]
+    },
+    "Identity.API": {
+      "layer": "Service",
+      "confidence": 0.6,
+      "signals": [
+        "name:Service",
+        "nuget:DataAccess",
+        "category:Service",
+        "data:Service"
+      ]
+    },
+    "Catalog.API": {
+      "layer": "Service",
+      "confidence": 0.4,
+      "signals": [
+        "name:Service",
+        "nuget:DataAccess",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "Ordering.Domain": {
+      "layer": "Service",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Service",
+        "data:DataAccess"
+      ]
+    },
+    "eShop.AppHost": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service"
+      ]
+    },
+    "WebAppComponents": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "category:Service"
+      ]
+    },
+    "Ordering.Infrastructure": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "PaymentProcessor": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "category:Service"
+      ]
+    },
+    "OrderProcessor": {
+      "layer": "DataAccess",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:DataAccess",
+        "category:Service"
+      ]
+    },
+    "HybridApp": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml",
+        "nuget:Presentation"
+      ]
+    },
+    "Basket.API": {
+      "layer": "Service",
+      "confidence": 0.57,
+      "signals": [
+        "name:Service",
+        "nuget:DataAccess",
+        "nuget:Service",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "IntegrationEventLogEF": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "nuget:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "EventBus": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Ordering.API": {
+      "layer": "Service",
+      "confidence": 0.4,
+      "signals": [
+        "name:Service",
+        "nuget:DataAccess",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "EventBusRabbitMQ": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "eShop.ServiceDefaults": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "name:Service",
+        "nuget:Service",
+        "category:Service",
+        "data:Service"
+      ]
+    },
+    "ClientApp": {
+      "layer": "Presentation",
+      "confidence": 0.71,
+      "signals": [
+        "wpf:xaml",
+        "nuget:Presentation",
+        "nuget:Service",
+        "category:Infrastructure",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "Webhooks.API": {
+      "layer": "Service",
+      "confidence": 0.4,
+      "signals": [
+        "name:Service",
+        "nuget:DataAccess",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "WebhookClient": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "Ordering.UnitTests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Ordering.FunctionalTests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Catalog.FunctionalTests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Basket.UnitTests": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "data:Service"
+      ]
+    },
+    "ClientApp.UnitTests": {
+      "layer": "Presentation",
+      "confidence": 0.67,
+      "signals": [
+        "nuget:Presentation",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    }
+  },
+  "flowPaths": [],
+  "layerSummary": {
+    "Service": {
+      "count": 12,
+      "projects": [
+        "WebApp",
+        "Identity.API",
+        "Catalog.API",
+        "Ordering.Domain",
+        "eShop.AppHost",
+        "WebAppComponents",
+        "PaymentProcessor",
+        "Basket.API",
+        "Ordering.API",
+        "eShop.ServiceDefaults",
+        "Webhooks.API",
+        "Basket.UnitTests"
+      ]
+    },
+    "Unclassified": {
+      "count": 3,
+      "projects": [
+        "Ordering.Infrastructure",
+        "EventBus",
+        "WebhookClient"
+      ]
+    },
+    "DataAccess": {
+      "count": 6,
+      "projects": [
+        "OrderProcessor",
+        "IntegrationEventLogEF",
+        "EventBusRabbitMQ",
+        "Ordering.UnitTests",
+        "Ordering.FunctionalTests",
+        "Catalog.FunctionalTests"
+      ]
+    },
+    "Presentation": {
+      "count": 3,
+      "projects": [
+        "HybridApp",
+        "ClientApp",
+        "ClientApp.UnitTests"
+      ]
+    }
+  }
+}

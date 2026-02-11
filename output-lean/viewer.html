@@ -156,6 +156,15 @@
   .tag-api      { background: rgba(52,152,219,.15);  color: #3498DB; }
   .tag-cache    { background: rgba(243,156,18,.15);  color: #F39C12; }
   .tag-config   { background: rgba(155,89,182,.15);  color: #9B59B6; }
+  .tag-presentation  { background: rgba(233,30,99,.15);  color: #E91E63; }
+  .tag-engine        { background: rgba(255,152,0,.15);  color: #FF9800; }
+  .tag-dataaccess    { background: rgba(74,144,217,.15); color: #4A90D9; }
+  .tag-infrastructure { background: rgba(155,89,182,.15); color: #9B59B6; }
+  .tag-unclassified  { background: rgba(100,116,139,.15); color: #64748b; }
+  .flow-row { cursor: pointer; }
+  .flow-row:hover { background: rgba(59,130,246,0.12) !important; }
+  .flow-step { display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }
+  .flow-arrow { color: #64748b; margin: 0 0.2rem; }
   .mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }
   .footer {
     text-align: center; padding: 1.5rem 2rem; color: #475569;
@@ -198,6 +207,7 @@
   <button class="tab-btn" data-tab="cat_tool">Tool (1)</button>
   <button class="tab-btn" data-tab="cat_test">Test (1)</button>
   <button class="tab-btn" data-tab="dataflow">Data Flow</button>
+  <button class="tab-btn" data-tab="businesslayers">Business Layers</button>
   <button class="tab-btn" data-tab="datasources">Data Sources</button>
   <button class="tab-btn" data-tab="allprojects">All Projects</button>
 </nav>
@@ -519,6 +529,43 @@ graph LR
     </div>
   </section>
 
+  <section class="tab-panel" id="panel-businesslayers">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Business Layer Classification — Presentation / Engine / Service / DataAccess
+        <span class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-businesslayers', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-businesslayers', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-businesslayers', 0.2)" title="Zoom in">&#43;</button>
+        </span>
+      </div>
+      <div class="mermaid-wrap" id="mermaid-businesslayers">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+graph TD
+    layer_Engine[&quot;Engine (9)&quot;]
+    layer_Service[&quot;Service (1)&quot;]
+    layer_DataAccess[&quot;DataAccess (7)&quot;]
+    layer_Infrastructure[&quot;Infrastructure (2)&quot;]
+    layer_Unclassified[&quot;Unclassified (4)&quot;]
+    layer_DataAccess --&gt;|13 refs| layer_Infrastructure
+    layer_Unclassified --&gt;|13 refs| layer_Engine
+    layer_Engine --&gt;|11 refs| layer_Infrastructure
+    layer_DataAccess --&gt;|9 refs| layer_Engine
+    layer_Engine --&gt;|9 refs| layer_DataAccess
+    layer_Unclassified --&gt;|7 refs| layer_DataAccess
+    layer_Unclassified --&gt;|6 refs| layer_Infrastructure
+    layer_Engine --&gt;|4 refs| layer_Unclassified
+    layer_Service --&gt;|2 refs| layer_Infrastructure
+    layer_DataAccess --&gt;|2 refs| layer_Unclassified
+    layer_Unclassified --&gt;|2 refs| layer_Service
+    layer_DataAccess --&gt;|2 refs| layer_Service
+    layer_Engine --&gt;|2 refs| layer_Service
+    layer_Service --&gt;|1 refs| layer_Engine
+        </pre>
+      </div>
+    </div>
+  </section>
+
 
   <section class="tab-panel" id="panel-datasources">
     <div class="card">
@@ -604,6 +651,7 @@ graph LR
 
 
 
+
   <section class="tab-panel" id="panel-allprojects">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
@@ -614,13 +662,14 @@ graph LR
               <th>Project</th>
               <th>Repo</th>
               <th>Category</th>
+              <th>Business Layer</th>
               <th>Project Refs</th>
               <th>NuGet Deps</th>
               <th>Path</th>
             </tr>
           </thead>
           <tbody id="projectsBody">
-            <tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+            <tr><td colspan="7" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -1029,6 +1078,21 @@ function zoomDiagram(containerId, delta) {
     return '<span class="tag ' + cls + '">' + escHtml(category) + '</span>';
   }
 
+  var layerClass = {
+    'presentation': 'tag-presentation', 'engine': 'tag-connector',
+    'service': 'tag-service', 'dataaccess': 'tag-dataaccess',
+    'infrastructure': 'tag-infrastructure', 'unclassified': 'tag-unclassified'
+  };
+
+  function layerTagHTML(layer, confidence) {
+    if (!layer) return '';
+    var lower = layer.toLowerCase();
+    var cls = layerClass[lower] || 'tag-unclassified';
+    var confColor = confidence >= 0.7 ? '#22c55e' : confidence >= 0.4 ? '#eab308' : '#ef4444';
+    var confDot = '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + confColor + ';margin-left:4px;" title="Confidence: ' + (confidence * 100).toFixed(0) + '%"></span>';
+    return '<span class="tag ' + cls + '">' + escHtml(layer) + confDot + '</span>';
+  }
+
   function escHtml(s) {
     var d = document.createElement('div');
     d.textContent = s;
@@ -1063,7 +1127,7 @@ function zoomDiagram(containerId, delta) {
     btn.addEventListener('click', function () { activateTab(btn.dataset.tab); });
   });
 
-  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_test': 'mermaid-cat_test', 'dataflow': 'mermaid-dataflow' };
+  var mermaidContainers = { 'overview': 'mermaid-overview', 'cat_library': 'mermaid-cat_library', 'cat_application': 'mermaid-cat_application', 'cat_webapp': 'mermaid-cat_webapp', 'cat_tool': 'mermaid-cat_tool', 'cat_test': 'mermaid-cat_test', 'dataflow': 'mermaid-dataflow', 'businesslayers': 'mermaid-businesslayers' };
 
   function lazyRenderMermaid(tabId) {
     var containerId = mermaidContainers[tabId];
@@ -1121,7 +1185,13 @@ function zoomDiagram(containerId, delta) {
     window._dataFlow = df;
   }).catch(function () { /* data-flow.json may not exist on older runs */ });
 
-  // Load All Projects data
+  // Load flow-paths.json for E2E flows tab, then load All Projects data
+  window._flowData = { businessLayers: {}, flowPaths: [], layerSummary: {} };
+  fetch('flow-paths.json').then(function (r) { return r.json(); }).then(function (fd) {
+    window._flowData = fd;
+  }).catch(function () { /* flow-paths.json may not exist */ }).finally(function () {
+
+  // Load All Projects data (after flow-paths.json)
   Promise.all([
     fetch('project-meta.json').then(function (r) { return r.json(); }),
     fetch('project-refs.csv').then(function (r) { return r.text(); }),
@@ -1135,13 +1205,18 @@ function zoomDiagram(containerId, delta) {
     deps.forEach(function (d) { depCounts[d.project] = (depCounts[d.project] || 0) + 1; });
     var tbody = document.getElementById('projectsBody');
     tbody.innerHTML = '';
+    var bl = (window._flowData || {}).businessLayers || {};
     meta.forEach(function (p) {
       var tr = document.createElement('tr');
-      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      var layerInfo = bl[p.project] || {};
+      var layerName = layerInfo.layer || '';
+      var layerConf = layerInfo.confidence || 0;
+      tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + layerName + ' ' + (p.globalPath||p.path||'')).toLowerCase());
       tr.innerHTML =
         '<td><strong>' + escHtml(p.project) + '</strong></td>' +
         '<td>' + escHtml(p.repo || '') + '</td>' +
         '<td>' + tagHTML(p.category) + '</td>' +
+        '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
         '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
@@ -1150,8 +1225,10 @@ function zoomDiagram(containerId, delta) {
   }).catch(function (err) {
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
   });
+
+  }); // end finally for flow-paths.json
 
   // Search
   var searchInput = document.getElementById('searchInput');
@@ -1164,6 +1241,128 @@ function zoomDiagram(containerId, delta) {
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
     });
   });
+
+  // Flow paths search
+  var flowSearchInput = document.getElementById('flowSearchInput');
+  if (flowSearchInput) {
+    flowSearchInput.addEventListener('input', function () {
+      var query = flowSearchInput.value.trim().toLowerCase();
+      var rows = document.querySelectorAll('#flowPathsBody .flow-row');
+      rows.forEach(function (row) {
+        var text = row.getAttribute('data-search') || '';
+        row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+      });
+    });
+  }
+
+  // Flow path click-to-expand
+  var flowBody = document.getElementById('flowPathsBody');
+  if (flowBody) {
+    flowBody.addEventListener('click', function (e) {
+      var row = e.target.closest('.flow-row');
+      if (!row) return;
+      var idx = parseInt(row.getAttribute('data-flow-idx'), 10);
+      showFlowDetail(idx);
+    });
+  }
+
+  function showFlowDetail(idx) {
+    var fd = window._flowData || {};
+    var paths = fd.flowPaths || [];
+    if (idx < 0 || idx >= paths.length) return;
+    var fp = paths[idx];
+    var container = document.getElementById('flowDetailContainer');
+    var content = document.getElementById('flowDetailContent');
+    var mermaidDiv = document.getElementById('flowDetailMermaid');
+    if (!container || !content) return;
+
+    // Build step-by-step detail
+    var html = '<div style="margin-bottom:0.5rem;">';
+    if (fp.namedFlow) {
+      html += '<strong style="color:#3b82f6;">' + escHtml(fp.namedFlow) + '</strong><br/>';
+    }
+    if (fp.description) {
+      html += '<span style="color:#94a3b8;font-size:0.85rem;">' + escHtml(fp.description) + '</span><br/>';
+    }
+    html += '<span style="color:#94a3b8;font-size:0.8rem;">Depth: ' + fp.pathLength + ' | Layers: ' + (fp.crossesLayers || []).join(' &rarr; ') + '</span>';
+    html += '</div>';
+
+    // Step-by-step chain with layer badges
+    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;">';
+    var bl = fd.businessLayers || {};
+    (fp.path || []).forEach(function (step, i) {
+      if (i > 0) html += '<span class="flow-arrow">&rarr;</span>';
+      if (step.project) {
+        var li = bl[step.project] || {};
+        html += '<span class="flow-step">' + layerTagHTML(li.layer || step.layer || '', li.confidence || 0) + ' <strong>' + escHtml(step.project) + '</strong></span>';
+      } else if (step.endpoint) {
+        var epName = step.endpoint.indexOf(':') !== -1 ? step.endpoint.split(':').slice(1).join(':') : step.endpoint;
+        var epType = step.type || '';
+        html += '<span class="flow-step"><span class="tag tag-db">' + escHtml(epType) + '</span> <em>' + escHtml(epName) + '</em></span>';
+      }
+    });
+    html += '</div>';
+    content.innerHTML = html;
+
+    // Render inline Mermaid diagram for this path
+    if (mermaidDiv && window.mermaidAPI) {
+      var mermaidSrc = buildFlowPathMermaid(fp, bl);
+      mermaidDiv.innerHTML = '<pre class="mermaid">' + escHtml(mermaidSrc) + '</pre>';
+      var pre = mermaidDiv.querySelector('pre.mermaid');
+      if (pre) {
+        window.mermaidAPI.run({ nodes: [pre] }).then(function () {
+          var svg = mermaidDiv.querySelector('svg');
+          if (svg) {
+            var vb = svg.getAttribute('viewBox');
+            if (vb) {
+              var parts = vb.split(' ');
+              svg.style.width = parseFloat(parts[2]) + 'px';
+              svg.style.height = parseFloat(parts[3]) + 'px';
+              svg.style.maxWidth = 'none';
+              svg.removeAttribute('width');
+            }
+          }
+        }).catch(function (err) { console.error('Flow mermaid error:', err); });
+      }
+    }
+
+    container.style.display = 'block';
+  }
+
+  function buildFlowPathMermaid(fp, bl) {
+    var lines = ['graph LR'];
+    var prevId = null;
+    (fp.path || []).forEach(function (step) {
+      var nid, label;
+      if (step.project) {
+        nid = step.project.replace(/[^a-zA-Z0-9_]/g, '_');
+        var layer = (bl[step.project] || {}).layer || step.layer || '';
+        label = step.project + '\n(' + layer + ')';
+        lines.push('    ' + nid + '["' + label + '"]');
+      } else if (step.endpoint) {
+        nid = step.endpoint.replace(/[^a-zA-Z0-9_]/g, '_');
+        var epName = step.endpoint.indexOf(':') !== -1 ? step.endpoint.split(':').slice(1).join(':') : step.endpoint;
+        var etype = step.type || '';
+        if (etype === 'database') {
+          lines.push('    ' + nid + '[("' + epName + '")]');
+        } else if (etype === 'messaging') {
+          lines.push('    ' + nid + '{' + epName + '}');
+        } else {
+          lines.push('    ' + nid + '(["' + epName + '"])');
+        }
+      } else { return; }
+      if (prevId) {
+        var edgeType = step.edgeType || '';
+        if (edgeType.indexOf('data-flow') !== -1) {
+          lines.push('    ' + prevId + ' ==> ' + nid);
+        } else {
+          lines.push('    ' + prevId + ' --> ' + nid);
+        }
+      }
+      prevId = nid;
+    });
+    return lines.join('\n');
+  }
 })();
 </script>
 </body>

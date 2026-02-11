@@ -1,0 +1,1997 @@
+{
+  "businessLayers": {
+    "OrchardCore.Cms.Web": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Service",
+        "name:Infrastructure",
+        "category:Service"
+      ]
+    },
+    "TheComingSoonTheme": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "TheTheme": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "data:Service"
+      ]
+    },
+    "TheBlogTheme": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "TheAdmin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "TheAgencyTheme": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "SafeMode": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "OrchardCore.Docs": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ProjectTemplates": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Templates.Cms.Web": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Service",
+        "name:Infrastructure",
+        "category:Service"
+      ]
+    },
+    "OrchardCore.Templates.Theme": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Templates.Mvc.Module": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Templates.Mvc.Web": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Service",
+        "name:Infrastructure",
+        "category:Service"
+      ]
+    },
+    "OrchardCore.Templates.Cms.Module": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Resources": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Queries": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.AdminMenu": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Deployment": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Shortcodes": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.AuditTrail": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.ContentPreview": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Email.Azure": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Twitter": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.BackgroundTasks": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Settings": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Navigation": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Features": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Media.Azure": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Taxonomies": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Setup": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Flows": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.XmlRpc": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.PublishLater": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Sms": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Microsoft.Authentication": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.ArchiveLater": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Workflows": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.MiniProfiler": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ResponseCompression": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Google": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Users": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Search.Elasticsearch": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Media.Indexing.Pdf": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Themes": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.DynamicCache": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Mvc.HelloWorld": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.ContentFields": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.OpenId": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Notifications": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Rules": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.AdminDashboard": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Admin": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.ReverseProxy": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.HealthChecks": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.DataLocalization": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Autoroute": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.GitHub": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Menu": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Alias": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Security": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Liquid": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Lists": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Contents": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Media.AmazonS3": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.AutoSetup": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Facebook": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Layers": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Search.Lucene": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Localization": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Deployment.Remote": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Media": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Sitemaps": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Seo": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Media.Indexing.OpenXML": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.DataProtection.Azure": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Html": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Roles": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Diagnostics": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Email": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Https": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Title": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Recipes": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Markdown": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.UrlRewriting": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Search": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Demo": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.HomeRoute": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Apis.GraphQL": {
+      "layer": "Infrastructure",
+      "confidence": 0.33,
+      "signals": [
+        "name:Infrastructure",
+        "category:Service",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.CustomSettings": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Widgets": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Email.Smtp": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Templates": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Sms.Azure": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Scripting": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Redis": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Spatial": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Cors": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Indexing": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.ContentLocalization": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Feeds": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.ReCaptcha": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Forms": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.AzureAI": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentTypes": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Tenants": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Placements": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess",
+        "data:Service"
+      ]
+    },
+    "OrchardCore.Setup.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Shortcodes.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.AdminMenu.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Indexing.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Apis.GraphQL.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "category:Service"
+      ]
+    },
+    "OrchardCore.Module.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.FileStorage.AzureBlob": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Notifications.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.DisplayManagement": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Recipes.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Application.Cms.Core.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.UrlRewriting.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Sitemaps.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Queries.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Data": {
+      "layer": "DataAccess",
+      "confidence": 0.25,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Search.Elasticsearch.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Mvc.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Infrastructure.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.Lucene.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Apis.GraphQL.Client": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure",
+        "category:Infrastructure"
+      ]
+    },
+    "OrchardCore.Email.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Liquid.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Deployment.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Workflows.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Email.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.FileStorage.FileSystem": {
+      "layer": "DataAccess",
+      "confidence": 0.25,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.ResourceManagement.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Redis.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 0.33,
+      "signals": [
+        "name:Infrastructure",
+        "nuget:DataAccess"
+      ]
+    },
+    "OrchardCore.Logging.NLog": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.Lucene.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Indexing.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Recipes.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.MetaWeblog.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.Elasticsearch.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Feeds.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Shells.Azure": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Contents.TagHelpers": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Configuration.KeyVault": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ResourceManagement": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.XmlRpc.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Application.Mvc.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Search.AzureAI.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Localization.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.ContentManagement.GraphQL": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Seo.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Users.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Media.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.DisplayManagement.Abstractions": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Rules.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Infrastructure": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Data.YesSql": {
+      "layer": "DataAccess",
+      "confidence": 0.25,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Application.Cms.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Navigation.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Roles.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.FileStorage.Abstractions": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.HealthChecks.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentPreview.Abstractions": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Media.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Roles.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Queries.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Theme.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Scripting.JavaScript": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.DisplayManagement.Liquid": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Localization.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentManagement.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Contents.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Data.Abstractions": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Flows.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Users.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.FileStorage.AmazonS3": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Taxonomies.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Data.YesSql.Abstractions": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:DataAccess",
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Settings.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Autoroute.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Setup.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Feeds.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Rules.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentManagement.Display": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Application.Targets": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Notifications.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ReCaptcha.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Features.Core": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Deployment.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Markdown.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentManagement": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Sms.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.ResourceManagement.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.OpenId.Core": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.AuditTrail.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.DynamicCache.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Admin.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentLocalization.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Sms.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Logging.Serilog": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.ContentTypes.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.UrlRewriting.Abstractions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Mvc.Web": {
+      "layer": "Service",
+      "confidence": 0.25,
+      "signals": [
+        "name:Service",
+        "name:Infrastructure",
+        "category:Service"
+      ]
+    },
+    "OrchardCore.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "OrchardCore.Benchmarks": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "ModuleSample": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "DerivedThemeSample": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Errors.OrchardCoreModules.TwoPlus": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "BaseThemeSample2": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Examples.Modules.AssyAttrib.Charlie": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Examples.Modules.AssyAttrib.Bravo": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "DerivedThemeSample2": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Examples.Modules.AssyAttrib.Alpha": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "BaseThemeSample": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Examples.OrchardCoreModules.Alpha": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Examples.Features.AssyAttrib": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "OrchardCore.Application.Pages": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Theme.Pages": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Module.Pages": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Examples.Themes.AssyAttrib.Charlie": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Examples.Themes.AssyAttrib.Bravo": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Errors.OrchardCoreThemes.ThemeAndModule": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Examples.Themes.AssyAttrib.Alpha": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Examples.OrchardCoreThemes.Alpha": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "Errors.OrchardCoreThemes.TwoPlus": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Tests.Functional": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "OrchardCore.Abstractions.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    }
+  },
+  "flowPaths": [],
+  "layerSummary": {
+    "Service": {
+      "count": 5,
+      "projects": [
+        "OrchardCore.Cms.Web",
+        "TheTheme",
+        "OrchardCore.Templates.Cms.Web",
+        "OrchardCore.Templates.Mvc.Web",
+        "OrchardCore.Mvc.Web"
+      ]
+    },
+    "Unclassified": {
+      "count": 32,
+      "projects": [
+        "TheComingSoonTheme",
+        "TheBlogTheme",
+        "TheAdmin",
+        "TheAgencyTheme",
+        "SafeMode",
+        "OrchardCore.ContentPreview",
+        "OrchardCore.DataLocalization",
+        "OrchardCore.DataProtection.Azure",
+        "OrchardCore.Forms",
+        "OrchardCore.FileStorage.AzureBlob",
+        "OrchardCore.DisplayManagement",
+        "OrchardCore.Shells.Azure",
+        "OrchardCore.DisplayManagement.Abstractions",
+        "OrchardCore.FileStorage.Abstractions",
+        "OrchardCore.ContentPreview.Abstractions",
+        "OrchardCore.DisplayManagement.Liquid",
+        "OrchardCore.Data.Abstractions",
+        "OrchardCore.FileStorage.AmazonS3",
+        "OrchardCore.Data.YesSql.Abstractions",
+        "OrchardCore.ContentManagement.Display",
+        "ModuleSample",
+        "DerivedThemeSample",
+        "Examples.Modules.AssyAttrib.Charlie",
+        "Examples.Modules.AssyAttrib.Bravo",
+        "DerivedThemeSample2",
+        "Examples.Modules.AssyAttrib.Alpha",
+        "Examples.Features.AssyAttrib",
+        "Theme.Pages",
+        "Module.Pages",
+        "Examples.Themes.AssyAttrib.Charlie",
+        "Examples.Themes.AssyAttrib.Bravo",
+        "Examples.Themes.AssyAttrib.Alpha"
+      ]
+    },
+    "Infrastructure": {
+      "count": 190,
+      "projects": [
+        "OrchardCore.Docs",
+        "OrchardCore.ProjectTemplates",
+        "OrchardCore.Templates.Theme",
+        "OrchardCore.Templates.Mvc.Module",
+        "OrchardCore.Templates.Cms.Module",
+        "OrchardCore.Resources",
+        "OrchardCore.Queries",
+        "OrchardCore.AdminMenu",
+        "OrchardCore.Deployment",
+        "OrchardCore.Shortcodes",
+        "OrchardCore.AuditTrail",
+        "OrchardCore.Email.Azure",
+        "OrchardCore.Twitter",
+        "OrchardCore.BackgroundTasks",
+        "OrchardCore.Settings",
+        "OrchardCore.Navigation",
+        "OrchardCore.Features",
+        "OrchardCore.Media.Azure",
+        "OrchardCore.Taxonomies",
+        "OrchardCore.Setup",
+        "OrchardCore.Flows",
+        "OrchardCore.XmlRpc",
+        "OrchardCore.PublishLater",
+        "OrchardCore.Sms",
+        "OrchardCore.Microsoft.Authentication",
+        "OrchardCore.ArchiveLater",
+        "OrchardCore.Workflows",
+        "OrchardCore.MiniProfiler",
+        "OrchardCore.ResponseCompression",
+        "OrchardCore.Google",
+        "OrchardCore.Users",
+        "OrchardCore.Search.Elasticsearch",
+        "OrchardCore.Media.Indexing.Pdf",
+        "OrchardCore.Themes",
+        "OrchardCore.DynamicCache",
+        "OrchardCore.Mvc.HelloWorld",
+        "OrchardCore.ContentFields",
+        "OrchardCore.OpenId",
+        "OrchardCore.Notifications",
+        "OrchardCore.Rules",
+        "OrchardCore.AdminDashboard",
+        "OrchardCore.Admin",
+        "OrchardCore.ReverseProxy",
+        "OrchardCore.HealthChecks",
+        "OrchardCore.Autoroute",
+        "OrchardCore.GitHub",
+        "OrchardCore.Menu",
+        "OrchardCore.Alias",
+        "OrchardCore.Security",
+        "OrchardCore.Liquid",
+        "OrchardCore.Lists",
+        "OrchardCore.Contents",
+        "OrchardCore.Media.AmazonS3",
+        "OrchardCore.AutoSetup",
+        "OrchardCore.Facebook",
+        "OrchardCore.Layers",
+        "OrchardCore.Search.Lucene",
+        "OrchardCore.Localization",
+        "OrchardCore.Deployment.Remote",
+        "OrchardCore.Media",
+        "OrchardCore.Sitemaps",
+        "OrchardCore.Seo",
+        "OrchardCore.Media.Indexing.OpenXML",
+        "OrchardCore.Html",
+        "OrchardCore.Roles",
+        "OrchardCore.Diagnostics",
+        "OrchardCore.Email",
+        "OrchardCore.Https",
+        "OrchardCore.Title",
+        "OrchardCore.Recipes",
+        "OrchardCore.Markdown",
+        "OrchardCore.UrlRewriting",
+        "OrchardCore.Search",
+        "OrchardCore.Demo",
+        "OrchardCore.HomeRoute",
+        "OrchardCore.Apis.GraphQL",
+        "OrchardCore.CustomSettings",
+        "OrchardCore.Widgets",
+        "OrchardCore.Email.Smtp",
+        "OrchardCore.Templates",
+        "OrchardCore.Sms.Azure",
+        "OrchardCore.Scripting",
+        "OrchardCore.Redis",
+        "OrchardCore.Spatial",
+        "OrchardCore.Cors",
+        "OrchardCore.Indexing",
+        "OrchardCore.ContentLocalization",
+        "OrchardCore.Feeds",
+        "OrchardCore.ReCaptcha",
+        "OrchardCore.Search.AzureAI",
+        "OrchardCore.ContentTypes",
+        "OrchardCore.Tenants",
+        "OrchardCore.Placements",
+        "OrchardCore.Setup.Core",
+        "OrchardCore.Shortcodes.Abstractions",
+        "OrchardCore.AdminMenu.Abstractions",
+        "OrchardCore.Search.Abstractions",
+        "OrchardCore.Indexing.Core",
+        "OrchardCore.Apis.GraphQL.Abstractions",
+        "OrchardCore.Module.Targets",
+        "OrchardCore.Notifications.Core",
+        "OrchardCore.Recipes.Core",
+        "OrchardCore.Application.Cms.Core.Targets",
+        "OrchardCore.UrlRewriting.Core",
+        "OrchardCore.Sitemaps.Abstractions",
+        "OrchardCore.Queries.Abstractions",
+        "OrchardCore.Search.Elasticsearch.Core",
+        "OrchardCore.Mvc.Core",
+        "OrchardCore.Infrastructure.Abstractions",
+        "OrchardCore.Search.Lucene.Abstractions",
+        "OrchardCore.Apis.GraphQL.Client",
+        "OrchardCore.Email.Core",
+        "OrchardCore.Liquid.Abstractions",
+        "OrchardCore.Deployment.Abstractions",
+        "OrchardCore.Workflows.Abstractions",
+        "OrchardCore.Email.Abstractions",
+        "OrchardCore.ResourceManagement.Core",
+        "OrchardCore.Redis.Abstractions",
+        "OrchardCore.Logging.NLog",
+        "OrchardCore.Search.Lucene.Core",
+        "OrchardCore.Indexing.Abstractions",
+        "OrchardCore.Recipes.Abstractions",
+        "OrchardCore.MetaWeblog.Abstractions",
+        "OrchardCore.Search.Elasticsearch.Abstractions",
+        "OrchardCore.Feeds.Abstractions",
+        "OrchardCore.Contents.TagHelpers",
+        "OrchardCore.Configuration.KeyVault",
+        "OrchardCore.ResourceManagement",
+        "OrchardCore.XmlRpc.Abstractions",
+        "OrchardCore.Application.Mvc.Targets",
+        "OrchardCore.Search.AzureAI.Core",
+        "OrchardCore.Localization.Core",
+        "OrchardCore.ContentManagement.GraphQL",
+        "OrchardCore.Seo.Abstractions",
+        "OrchardCore.Users.Abstractions",
+        "OrchardCore.Media.Abstractions",
+        "OrchardCore.Rules.Core",
+        "OrchardCore.Infrastructure",
+        "OrchardCore.Application.Cms.Targets",
+        "OrchardCore.Navigation.Core",
+        "OrchardCore.Roles.Abstractions",
+        "OrchardCore.HealthChecks.Abstractions",
+        "OrchardCore.Media.Core",
+        "OrchardCore.Roles.Core",
+        "OrchardCore.Queries.Core",
+        "OrchardCore.Theme.Targets",
+        "OrchardCore.Scripting.JavaScript",
+        "OrchardCore.Localization.Abstractions",
+        "OrchardCore.ContentManagement.Abstractions",
+        "OrchardCore.Contents.Core",
+        "OrchardCore.Flows.Core",
+        "OrchardCore.Users.Core",
+        "OrchardCore.Taxonomies.Core",
+        "OrchardCore",
+        "OrchardCore.Abstractions",
+        "OrchardCore.Settings.Core",
+        "OrchardCore.Autoroute.Core",
+        "OrchardCore.Setup.Abstractions",
+        "OrchardCore.Feeds.Core",
+        "OrchardCore.Rules.Abstractions",
+        "OrchardCore.Application.Targets",
+        "OrchardCore.Notifications.Abstractions",
+        "OrchardCore.ReCaptcha.Core",
+        "OrchardCore.Features.Core",
+        "OrchardCore.Deployment.Core",
+        "OrchardCore.Markdown.Abstractions",
+        "OrchardCore.ContentManagement",
+        "OrchardCore.Sms.Core",
+        "OrchardCore.ResourceManagement.Abstractions",
+        "OrchardCore.OpenId.Core",
+        "OrchardCore.AuditTrail.Abstractions",
+        "OrchardCore.DynamicCache.Abstractions",
+        "OrchardCore.Admin.Abstractions",
+        "OrchardCore.ContentLocalization.Abstractions",
+        "OrchardCore.Sms.Abstractions",
+        "OrchardCore.Logging.Serilog",
+        "OrchardCore.ContentTypes.Abstractions",
+        "OrchardCore.UrlRewriting.Abstractions",
+        "OrchardCore.Tests",
+        "OrchardCore.Benchmarks",
+        "Errors.OrchardCoreModules.TwoPlus",
+        "BaseThemeSample2",
+        "BaseThemeSample",
+        "Examples.OrchardCoreModules.Alpha",
+        "OrchardCore.Application.Pages",
+        "Errors.OrchardCoreThemes.ThemeAndModule",
+        "Examples.OrchardCoreThemes.Alpha",
+        "Errors.OrchardCoreThemes.TwoPlus",
+        "OrchardCore.Tests.Functional",
+        "OrchardCore.Abstractions.Tests"
+      ]
+    },
+    "DataAccess": {
+      "count": 3,
+      "projects": [
+        "OrchardCore.Data",
+        "OrchardCore.FileStorage.FileSystem",
+        "OrchardCore.Data.YesSql"
+      ]
+    }
+  }
+}

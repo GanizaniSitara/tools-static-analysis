@@ -8,7 +8,7 @@
 | Total Projects | 84 |
 | NuGet Packages | 146 |
 | Project References | 142 |
-| Data Access Findings | 1616 |
+| Data Access Findings | 1618 |
 | Config Files | 6 |
 
 ## Project Categories

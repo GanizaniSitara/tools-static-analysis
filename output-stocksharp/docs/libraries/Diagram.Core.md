@@ -67,6 +67,21 @@ graph TD
 |------|------|---------||
 | `Diagram.Core/Elements/LogicalConditionDiagramElement.cs` | 203 | `result = bools.Aggregate((a, b) => a ^ b);` |
 
+### WPF.ViewModel
+| File | Line | Context |
+|------|------|---------||
+| `Diagram.Core/Elements/ChartDiagramElement.cs` | 30 | `private class ObsCollection<T> : ObservableCollection<T>` |
+| `Diagram.Core/DiagramElement.cs` | 13 | `private readonly ObservableCollection<DiagramSocket> _inputSockets = [` |
+| `Diagram.Core/DiagramElement.cs` | 14 | `private readonly ObservableCollection<DiagramSocket> _outputSockets = ` |
+| `Diagram.Core/DiagramElement.cs` | 419 | `private ObservableCollection<DiagramSocket> GetSockets(DiagramSocketDi` |
+| `Diagram.Core/ICompositionModel.cs` | 595 | `m.Nodes = new ObservableCollection<TNode>(Nodes.Select(n => (TNode)n.C` |
+| `Diagram.Core/ICompositionModel.cs` | 596 | `m.Links = new ObservableCollection<TLink>(Links.Select(l => l.TypedClo` |
+| `Diagram.Core/ICompositionModelBehavior.cs` | 173 | `private IEnumerable<DummyCompositionModelNode> _nodes = new Observable` |
+| `Diagram.Core/ICompositionModelBehavior.cs` | 187 | `private IEnumerable<DummyCompositionModelLink> _links = new Observable` |
+| `Diagram.Core/ICompositionRegistry.cs` | 335 | `m.Nodes = new ObservableCollection<TNode>(storage.GetValue<SettingsSto` |
+| `Diagram.Core/ICompositionRegistry.cs` | 336 | `m.Links = new ObservableCollection<TLink>(storage.GetValue<SettingsSto` |
+| `Diagram.Core/DebuggerSyncObject.cs` | 8 | `public class DebuggerSyncObject : ViewModelBase` |
+
 
 ---
 

@@ -9,6 +9,7 @@
 | messaging | 107 |
 | connector | 104 |
 | storage | 20 |
+| ui | 17 |
 | database | 10 |
 | config | 1 |
 
@@ -321,6 +322,39 @@
 | StockSharp | `Localization.Extractor/Program.cs` | 222 | `File.WriteAllText(file, ordered.ToJson());` |
 | StockSharp | `Tests/StrategyReportTemplateHelper.cs` | 141 | `using var file = File.Create(filePath);` |
 | StockSharp | `Samples/07_Testing/04_HistoryConsole/Program.cs` | 226 | `await using var stream = File.OpenWrite(reportPath);` |
+
+**Repos:** StockSharp
+
+## Ui
+
+### WPF.ViewModel (16 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| StockSharp | `Diagram.Core/Elements/ChartDiagramElement.cs` | 30 | `private class ObsCollection<T> : ObservableCollection<T>` |
+| StockSharp | `Diagram.Core/DiagramElement.cs` | 13 | `private readonly ObservableCollection<DiagramSocket> _inputS` |
+| StockSharp | `Diagram.Core/DiagramElement.cs` | 14 | `private readonly ObservableCollection<DiagramSocket> _output` |
+| StockSharp | `Diagram.Core/DiagramElement.cs` | 419 | `private ObservableCollection<DiagramSocket> GetSockets(Diagr` |
+| StockSharp | `Diagram.Core/ICompositionModel.cs` | 595 | `m.Nodes = new ObservableCollection<TNode>(Nodes.Select(n => ` |
+| StockSharp | `Diagram.Core/ICompositionModel.cs` | 596 | `m.Links = new ObservableCollection<TLink>(Links.Select(l => ` |
+| StockSharp | `Diagram.Core/ICompositionModelBehavior.cs` | 173 | `private IEnumerable<DummyCompositionModelNode> _nodes = new ` |
+| StockSharp | `Diagram.Core/ICompositionModelBehavior.cs` | 187 | `private IEnumerable<DummyCompositionModelLink> _links = new ` |
+| StockSharp | `Diagram.Core/ICompositionRegistry.cs` | 335 | `m.Nodes = new ObservableCollection<TNode>(storage.GetValue<S` |
+| StockSharp | `Diagram.Core/ICompositionRegistry.cs` | 336 | `m.Links = new ObservableCollection<TLink>(storage.GetValue<S` |
+| StockSharp | `Diagram.Core/DebuggerSyncObject.cs` | 8 | `public class DebuggerSyncObject : ViewModelBase` |
+| StockSharp | `Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs` | 40 | `private readonly ObservableCollection<Security> _assets;` |
+| StockSharp | `Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs` | 41 | `private readonly ObservableCollection<Security> _options;` |
+| StockSharp | `Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs` | 64 | `_assets = new ObservableCollection<Security>();` |
+| StockSharp | `Samples/06_Strategies/09_LiveOptionsQuoting/MainWindow.xaml.cs` | 65 | `_options = new ObservableCollection<Security>();` |
+| StockSharp | `Samples/05_Chart/02_ActiveOrders/MainWindow.xaml.cs` | 32 | `private readonly ObservableCollection<Order> _orders = [];` |
+
+**Repos:** StockSharp
+
+### WPF.Binding (1 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| StockSharp | `Samples/05_Chart/03_Performance/MainWindow.xaml.cs` | 89 | `BusyIndicator.SplashScreenDataContext = _loadingContext;` |
 
 **Repos:** StockSharp
 

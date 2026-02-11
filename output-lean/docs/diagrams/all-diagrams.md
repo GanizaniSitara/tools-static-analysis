@@ -327,3 +327,35 @@ graph LR
         nuget_MathNet_Numerics["MathNet.Numerics<br/>5.0.0"]
     end
 ```
+
+## business layers
+
+```mermaid
+graph TD
+    layer_Engine["Engine (9)"]
+    layer_Service["Service (1)"]
+    layer_DataAccess["DataAccess (7)"]
+    layer_Infrastructure["Infrastructure (2)"]
+    layer_Unclassified["Unclassified (4)"]
+    layer_DataAccess -->|13 refs| layer_Infrastructure
+    layer_Unclassified -->|13 refs| layer_Engine
+    layer_Engine -->|11 refs| layer_Infrastructure
+    layer_DataAccess -->|9 refs| layer_Engine
+    layer_Engine -->|9 refs| layer_DataAccess
+    layer_Unclassified -->|7 refs| layer_DataAccess
+    layer_Unclassified -->|6 refs| layer_Infrastructure
+    layer_Engine -->|4 refs| layer_Unclassified
+    layer_Service -->|2 refs| layer_Infrastructure
+    layer_DataAccess -->|2 refs| layer_Unclassified
+    layer_Unclassified -->|2 refs| layer_Service
+    layer_DataAccess -->|2 refs| layer_Service
+    layer_Engine -->|2 refs| layer_Service
+    layer_Service -->|1 refs| layer_Engine
+```
+
+## e2e flows
+
+```mermaid
+graph TD
+    no_data[No end-to-end flow paths found]
+```

@@ -1,0 +1,8 @@
+graph LR
+    01_Candles_Realtime_fromsrc["01_Candles.Realtime_fromsrc\n(Presentation)"]
+    Algo["Algo\n(Engine)"]
+    01_Candles_Realtime_fromsrc --> Algo
+    Charting_Interfaces["Charting.Interfaces\n(Unclassified)"]
+    Algo --> Charting_Interfaces
+    BusinessEntities["BusinessEntities\n(DataAccess)"]
+    Charting_Interfaces --> BusinessEntities

@@ -432,13 +432,13 @@
   ],
   "dataEdges": [
     {
-      "from": "KurrentDB.Core.Tests",
+      "from": "KurrentDB.Auth.UserCertificates.Tests",
       "to": "route:/test",
       "direction": "expose",
       "endpointType": "route"
     },
     {
-      "from": "KurrentDB.Auth.UserCertificates.Tests",
+      "from": "KurrentDB.Core.Tests",
       "to": "route:/test",
       "direction": "expose",
       "endpointType": "route"
@@ -595,6 +595,12 @@
     },
     {
       "from": "table:idx_all",
+      "to": "KurrentDB.SecondaryIndexing.LoadTesting",
+      "direction": "read",
+      "endpointType": "table"
+    },
+    {
+      "from": "table:idx_all",
       "to": "KurrentDB",
       "direction": "read",
       "endpointType": "table"
@@ -602,12 +608,6 @@
     {
       "from": "table:idx_all",
       "to": "KurrentDB.SecondaryIndexing.Tests",
-      "direction": "read",
-      "endpointType": "table"
-    },
-    {
-      "from": "table:idx_all",
-      "to": "KurrentDB.SecondaryIndexing.LoadTesting",
       "direction": "read",
       "endpointType": "table"
     },
@@ -1298,6 +1298,18 @@
         },
         "KurrentDB.Core": {
           "expose": 1
+        }
+      }
+    },
+    {
+      "pattern": "WPF.ViewModel",
+      "type": "ui",
+      "projects": {
+        "KurrentDB.Common": {
+          "both": 1
+        },
+        "KurrentDB": {
+          "both": 1
         }
       }
     },

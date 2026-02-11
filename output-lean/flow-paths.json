@@ -1,0 +1,230 @@
+{
+  "businessLayers": {
+    "QuantConnect.Api": {
+      "layer": "Service",
+      "confidence": 0.75,
+      "signals": [
+        "name:Service",
+        "category:Service",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Configuration": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Compression": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Optimizer.Launcher": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Messaging": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Research": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "QuantConnect.Brokerages": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.DownloaderDataProvider.Launcher": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "name:DataAccess",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Algorithm.CSharp": {
+      "layer": "Engine",
+      "confidence": 0.8,
+      "signals": [
+        "name:Engine",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Algorithm.Framework": {
+      "layer": "Engine",
+      "confidence": 0.4,
+      "signals": [
+        "name:Engine",
+        "name:Infrastructure",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Lean.Engine": {
+      "layer": "Engine",
+      "confidence": 0.8,
+      "signals": [
+        "name:Engine",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Queues": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.AlgorithmFactory": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.ToolBox": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect": {
+      "layer": "Engine",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Tests": {
+      "layer": "Engine",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Indicators": {
+      "layer": "Engine",
+      "confidence": 0.5,
+      "signals": [
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Optimizer": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "QuantConnect.Algorithm.Python": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "QuantConnect.Lean.Launcher": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "QuantConnect.Logging": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "QuantConnect.Report": {
+      "layer": "DataAccess",
+      "confidence": 0.5,
+      "signals": [
+        "name:DataAccess",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "QuantConnect.Algorithm": {
+      "layer": "Engine",
+      "confidence": 0.8,
+      "signals": [
+        "name:Engine",
+        "nuget:Engine",
+        "data:DataAccess"
+      ]
+    }
+  },
+  "flowPaths": [],
+  "layerSummary": {
+    "Service": {
+      "count": 1,
+      "projects": [
+        "QuantConnect.Api"
+      ]
+    },
+    "Infrastructure": {
+      "count": 2,
+      "projects": [
+        "QuantConnect.Configuration",
+        "QuantConnect.Logging"
+      ]
+    },
+    "DataAccess": {
+      "count": 7,
+      "projects": [
+        "QuantConnect.Compression",
+        "QuantConnect.Optimizer.Launcher",
+        "QuantConnect.Messaging",
+        "QuantConnect.Brokerages",
+        "QuantConnect.DownloaderDataProvider.Launcher",
+        "QuantConnect.Queues",
+        "QuantConnect.Report"
+      ]
+    },
+    "Unclassified": {
+      "count": 4,
+      "projects": [
+        "QuantConnect.Research",
+        "QuantConnect.ToolBox",
+        "QuantConnect.Optimizer",
+        "QuantConnect.Lean.Launcher"
+      ]
+    },
+    "Engine": {
+      "count": 9,
+      "projects": [
+        "QuantConnect.Algorithm.CSharp",
+        "QuantConnect.Algorithm.Framework",
+        "QuantConnect.Lean.Engine",
+        "QuantConnect.AlgorithmFactory",
+        "QuantConnect",
+        "QuantConnect.Tests",
+        "QuantConnect.Indicators",
+        "QuantConnect.Algorithm.Python",
+        "QuantConnect.Algorithm"
+      ]
+    }
+  }
+}

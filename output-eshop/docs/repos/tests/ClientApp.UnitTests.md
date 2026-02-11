@@ -31,6 +31,11 @@ graph TD
 | Microsoft.Maui.Controls.Maps | 9.0.40 |
 
 ## Data Access Patterns
+### WPF.ViewModel
+| File | Line | Context |
+|------|------|---------||
+| `tests/ClientApp.UnitTests/Mocks/MockViewModel.cs` | 6 | `public class MockViewModel : ViewModelBase` |
+
 ### Dapper.Execute
 | File | Line | Context |
 |------|------|---------||

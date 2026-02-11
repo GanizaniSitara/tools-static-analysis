@@ -529,3 +529,40 @@ graph LR
         nuget_LightningDB["LightningDB<br/>0.16.0"]
     end
 ```
+
+## business layers
+
+```mermaid
+graph TD
+    layer_Presentation["Presentation (1)"]
+    layer_Service["Service (14)"]
+    layer_DataAccess["DataAccess (67)"]
+    layer_Infrastructure["Infrastructure (8)"]
+    layer_Unclassified["Unclassified (19)"]
+    layer_DataAccess -->|43 refs| layer_Service
+    layer_DataAccess -->|25 refs| layer_Infrastructure
+    layer_Unclassified -->|21 refs| layer_DataAccess
+    layer_Service -->|18 refs| layer_DataAccess
+    layer_DataAccess -->|10 refs| layer_Unclassified
+    layer_Service -->|7 refs| layer_Unclassified
+    layer_Unclassified -->|6 refs| layer_Service
+    layer_Infrastructure -->|4 refs| layer_DataAccess
+    layer_Infrastructure -->|4 refs| layer_Service
+    layer_Unclassified -->|3 refs| layer_Infrastructure
+    layer_Infrastructure -->|2 refs| layer_Unclassified
+    layer_Presentation -->|1 refs| layer_DataAccess
+    layer_Service -->|1 refs| layer_Infrastructure
+```
+
+## e2e flows
+
+```mermaid
+graph TD
+    subgraph sg_Presentation["Presentation"]
+        SymbolLookup["SymbolLookup"]
+    end
+    subgraph sg_DataAccess["DataAccess"]
+        Akka["Akka"]
+    end
+    SymbolLookup --> Akka
+```

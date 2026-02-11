@@ -7,6 +7,7 @@
 | storage | 1472 |
 | cache | 912 |
 | database | 526 |
+| ui | 92 |
 | pattern | 47 |
 | api | 32 |
 | messaging | 13 |
@@ -247,6 +248,97 @@
 | Repo | File | Line | Context |
 |------|------|------|---------||
 | NuGet.Client | `src/NuGet.Clients/NuGet.CommandLine/NuGetCommand.Designer.cs` | 417 | `///   Looks up a localized string similar to Specify the Id ` |
+
+**Repos:** NuGet.Client
+
+## Ui
+
+### WPF.ViewModel (51 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 525 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 527 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 540 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 542 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 554 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 556 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 571 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 573 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 587 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 589 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 731 | `ItemsChangeObservableCollection<DisplayVersion> assertVersio` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 843 | `ItemsChangeObservableCollection<DisplayVersion> assertVersio` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 968 | `ItemsChangeObservableCollection<DisplayVersion> assertVersio` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1014 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1016 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1026 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1028 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1040 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1042 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1056 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1058 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1071 | `private ItemsChangeObservableCollection<DisplayVersion> Vers` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1073 | `return new ItemsChangeObservableCollection<DisplayVersion>()` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1175 | `ItemsChangeObservableCollection<DisplayVersion> assertVersio` |
+| NuGet.Client | `test/NuGet.Clients.Tests/NuGet.PackageManagement.UI.Test/Models/V3DetailControlModelTests.cs` | 1281 | `ItemsChangeObservableCollection<DisplayVersion> assertVersio` |
+
+*... and 26 more*
+
+**Repos:** NuGet.Client
+
+### WPF.Window (24 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `test/EndToEnd/ProjectTemplates/WPFApplication.zip/MainWindow.xaml.cs` | 20 | `public partial class $safeitemrootname$ : Window` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/SolutionView.xaml.cs` | 28 | `public partial class SolutionView : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/ProductUpdateBar.xaml.cs` | 13 | `public partial class ProductUpdateBar : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/Spinner.xaml.cs` | 75 | `internal partial class Spinner : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/InfiniteScrollList.xaml.cs` | 35 | `public partial class InfiniteScrollList : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageManagerTopPanel.xaml.cs` | 21 | `public partial class PackageManagerTopPanel : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageItemControl.xaml.cs` | 16 | `public partial class PackageItemControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/AuthorAndDownloadCount.xaml.cs` | 23 | `public partial class AuthorAndDownloadCount : UserControl, I` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/ProjectView.xaml.cs` | 19 | `public partial class ProjectView : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageSourceMappingActionControl.xaml.cs` | 13 | `public partial class PackageSourceMappingActionControl : Use` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/DeprecationControl.xaml.cs` | 11 | `public partial class DeprecationControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageMetadataControl.xaml.cs` | 21 | `public partial class PackageMetadataControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LoadingStatusBar.xaml.cs` | 12 | `internal partial class LoadingStatusBar : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PRMigratorBar.xaml.cs` | 27 | `public partial class PRMigratorBar : UserControl, INuGetProj` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/OptionsControl.xaml.cs` | 13 | `public partial class OptionsControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/DetailControl.xaml.cs` | 25 | `public partial class DetailControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageDetailsTabControl.xaml.cs` | 16 | `public partial class PackageDetailsTabControl : UserControl,` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageManagerControl.xaml.cs` | 46 | `public partial class PackageManagerControl : UserControl, IV` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/RestartRequestBar.xaml.cs` | 26 | `public partial class RestartRequestBar : UserControl, INuGet` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageRestoreBar.xaml.cs` | 38 | `public partial class PackageRestoreBar : UserControl, INuGet` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageItemDeprecationLabel.xaml.cs` | 16 | `public partial class PackageItemDeprecationLabel : UserContr` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/VulnerabilitiesControl.xaml.cs` | 11 | `public partial class VulnerabilitiesControl : UserControl` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageReadmeControl.xaml.cs` | 25 | `public partial class PackageReadmeControl : UserControl, IDi` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.Console/Xamls/ConsoleContainer.xaml.cs` | 28 | `public sealed partial class ConsoleContainer : UserControl, ` |
+
+**Repos:** NuGet.Client
+
+### WPF.Binding (17 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/UserInterfaceService/NuGetUI.cs` | 174 | `DataContext = dataContext` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/UserInterfaceService/NuGetUI.cs` | 195 | `DataContext = packages` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/UserInterfaceService/NuGetUI.cs` | 214 | `packageFormatWindow.DataContext = selectedFormat;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/UserInterfaceService/NuGetUI.cs` | 327 | `w.DataContext = new PreviewWindowModel(actions);` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/InfiniteScrollList.xaml.cs` | 104 | `DataContext = itemsView;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/NuGetProjectUpgradeWindow.xaml.cs` | 22 | `DataContext = model;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LicenseAcceptanceWindow.xaml.cs` | 45 | `DataContext = licenseFile` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageMetadataControl.xaml.cs` | 43 | `DataContext = new LicenseFileData` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/ClearNuGetLocalResourcesWindow.xaml.cs` | 19 | `DataContext = viewModel;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LoadingStatusBar.xaml.cs` | 82 | `DataContext = new LoadingStatusViewModel` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LoadingStatusBar.xaml.cs` | 91 | `DataContext = new LoadingStatusViewModel` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LoadingStatusBar.xaml.cs` | 99 | `DataContext = new LoadingStatusViewModel` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/LicenseFileWindow.xaml.cs` | 23 | `DataContext = null;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageDetailsTabControl.xaml.cs` | 28 | `DataContext = new PackageDetailsTabViewModel();` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageManagerControl.xaml.cs` | 1167 | `_packageDetail.DataContext = _detailModel;` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageManagerControl.xaml.cs` | 1269 | `_topPanel.SourceToolTip.DataContext = SelectedSource.GetTool` |
+| NuGet.Client | `src/NuGet.Clients/NuGet.PackageManagement.UI/Xamls/PackageRestoreBar.xaml.cs` | 79 | `DataContext = this;` |
 
 **Repos:** NuGet.Client
 

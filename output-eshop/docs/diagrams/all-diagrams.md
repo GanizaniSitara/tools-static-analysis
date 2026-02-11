@@ -312,3 +312,27 @@ graph LR
         nuget_Npgsql_EntityFrameworkCore_PostgreSQL["Npgsql.EntityFrameworkCore.PostgreSQL<br/>"]
     end
 ```
+
+## business layers
+
+```mermaid
+graph TD
+    layer_Presentation["Presentation (3)"]
+    layer_Service["Service (12)"]
+    layer_DataAccess["DataAccess (6)"]
+    layer_Unclassified["Unclassified (3)"]
+    layer_Service -->|10 refs| layer_DataAccess
+    layer_DataAccess -->|7 refs| layer_Service
+    layer_DataAccess -->|4 refs| layer_Unclassified
+    layer_Service -->|2 refs| layer_Unclassified
+    layer_Unclassified -->|2 refs| layer_Service
+    layer_Unclassified -->|1 refs| layer_DataAccess
+    layer_Presentation -->|1 refs| layer_Service
+```
+
+## e2e flows
+
+```mermaid
+graph TD
+    no_data[No end-to-end flow paths found]
+```

@@ -1,0 +1,2249 @@
+{
+  "businessLayers": {
+    "UAPApp": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "wpf:xaml"
+      ]
+    },
+    "ClassLibrary1": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "WebApplication": {
+      "layer": "Service",
+      "confidence": 1.0,
+      "signals": [
+        "data:Service"
+      ]
+    },
+    "BuildIntegratedClassLibrary": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "EmptyMvcApplication": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "ConsoleApp": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "ClassLibrary47": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "WPFApplication": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "name:Presentation",
+        "wpf:xaml",
+        "data:Presentation"
+      ]
+    },
+    "ConsoleApp10": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "classlibrary": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "consoleapplication": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "ClassLibrary6": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "BuildIntegratedProj": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Dotnet.Integration.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Packaging.FuncTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Protocol.FuncTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Msbuild.Integration.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.XPlat.FuncTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Signing.CrossFramework.Test": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "NuGet.Commands.FuncTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.MSSigning.Extensions.FuncTest": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.CommandLine.FuncTest": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Build.Tasks.Pack.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Microsoft.Build.NuGetSdkResolver.Test": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Frameworks.Test": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "NuGet.CommandLine.Xplat.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Common.Test": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.PackageManagement.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.DependencyResolver.Core.Tests": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Engine",
+        "name:Infrastructure"
+      ]
+    },
+    "NuGet.Build.Tasks.Console.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.ProjectModel.Test": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Commands.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Credentials.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.LibraryModel.Tests": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "NuGet.Versioning.Test": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.Resolver.Test": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Packaging.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Protocol.Tests": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Build.Tasks.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Configuration.Test": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Shared.Tests": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "GenerateTestPackages": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "GenerateLicenseList": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "SampleCommandLineExtensions": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "API.Test": {
+      "layer": "Service",
+      "confidence": 0.67,
+      "signals": [
+        "name:Service",
+        "data:DataAccess"
+      ]
+    },
+    "TestableCredentialProvider": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "TestablePlugin": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.VisualStudio.Test": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.SolutionRestoreManager.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Tools.Test": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.PackageManagement.VisualStudio.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.CommandLine.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.MSSigning.Extensions.Test": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "name:Infrastructure"
+      ]
+    },
+    "NuGet.Indexing.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGetConsole.Host.PowerShell.Test": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Presentation",
+        "name:Service",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Internal.Contracts.Test": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.VisualStudio.Common.Test": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Implementation.Test": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.PackageManagement.UI.Test": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "name:Presentation",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "project1": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "project2": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "Microsoft.Internal.NuGet.Testing.SignedPackages": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "Test.Utility": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "VisualStudio.Test.Utility": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Tests.Apex.Daily": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Tests.Apex": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Console.TestContract": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "PackageReferenceSdk": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.OptProf": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.PackageManagement.UI.TestContract": {
+      "layer": "Presentation",
+      "confidence": 1.0,
+      "signals": [
+        "name:Presentation"
+      ]
+    },
+    "NuGet.MSSigning.Extensions": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Client": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "NuGet.Indexing": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Internal.Contracts": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.VisualStudio.Contracts": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.PackageManagement.VisualStudio": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.CommandLine": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.SolutionRestoreManager": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.PackageManagement.UI": {
+      "layer": "Presentation",
+      "confidence": 0.75,
+      "signals": [
+        "name:Presentation",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "NuGet.Console": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess",
+        "data:Presentation"
+      ]
+    },
+    "NuGet.VisualStudio": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.VisualStudio.Implementation": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Tools": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Common": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.VisualStudio.Interop": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.PackageManagement.PowerShellCmdlets": {
+      "layer": "Presentation",
+      "confidence": 0.67,
+      "signals": [
+        "name:Presentation",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.PackageManagement": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.DependencyResolver.Core": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "name:Engine",
+        "name:Infrastructure"
+      ]
+    },
+    "NuGet.Credentials": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Resolver": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "NuGet.Commands": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.ProjectModel": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Packaging": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Frameworks": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Build.Tasks.Console": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": [
+        "category:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Versioning": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Localization": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "NuGet.CommandLine.XPlat": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.LibraryModel": {
+      "layer": "Engine",
+      "confidence": 1.0,
+      "signals": [
+        "name:Engine"
+      ]
+    },
+    "Microsoft.Build.NuGetSdkResolver": {
+      "layer": "Engine",
+      "confidence": 0.67,
+      "signals": [
+        "name:Engine",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Build.Tasks.Pack": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Build.Tasks": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Protocol": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Configuration": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "NuGet.Common": {
+      "layer": "Infrastructure",
+      "confidence": 0.67,
+      "signals": [
+        "name:Infrastructure",
+        "data:DataAccess"
+      ]
+    },
+    "Tools": {
+      "layer": "Infrastructure",
+      "confidence": 1.0,
+      "signals": [
+        "category:Infrastructure"
+      ]
+    },
+    "ensure-nupkg-dependencies-on-source": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "doc.tasks": {
+      "layer": "Unclassified",
+      "confidence": 0.0,
+      "signals": []
+    },
+    "ship-public-apis": {
+      "layer": "DataAccess",
+      "confidence": 1.0,
+      "signals": [
+        "data:DataAccess"
+      ]
+    }
+  },
+  "flowPaths": [
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 2,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement.VisualStudio"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 2,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement.VisualStudio"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Microsoft.Internal.NuGet.Testing.SignedPackages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 3,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:Microsoft.Internal.NuGet.Testing.SignedPackages"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 3,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 3,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Indexing"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 3,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement.VisualStudio"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 3,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Indexing"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Microsoft.Internal.NuGet.Testing.SignedPackages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Packaging"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Commands"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement.VisualStudio"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Protocol"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Indexing"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 4,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Protocol"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "Microsoft.Internal.NuGet.Testing.SignedPackages",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Versioning",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Versioning"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.Test",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.Test",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "VisualStudio.Test.Utility",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Credentials",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "Infrastructure",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Credentials"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Commands"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Indexing"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Protocol"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 5,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Packaging"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.PackageManagement"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Commands"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Credentials",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Credentials"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Protocol"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Packaging"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Versioning",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 6,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Versioning"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 7,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Commands"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Credentials",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 7,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Credentials"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 7,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Packaging"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.UI.TestContract",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.UI.TestContract",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Versioning",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 7,
+      "crossesLayers": [
+        "Presentation",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Versioning"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.VisualStudio.Common",
+          "layer": "Infrastructure",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Commands",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Credentials",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 8,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess",
+        "Infrastructure"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Credentials"
+      ]
+    },
+    {
+      "source": {
+        "project": "NuGet.PackageManagement.PowerShellCmdlets",
+        "layer": "Presentation"
+      },
+      "path": [
+        {
+          "project": "NuGet.PackageManagement.PowerShellCmdlets",
+          "layer": "Presentation",
+          "edgeType": "start"
+        },
+        {
+          "project": "NuGet.Console",
+          "layer": "Unclassified",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.UI",
+          "layer": "Presentation",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.PackageManagement.VisualStudio",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Indexing",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Protocol",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Packaging",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        },
+        {
+          "project": "NuGet.Versioning",
+          "layer": "DataAccess",
+          "edgeType": "project-reference"
+        }
+      ],
+      "pathLength": 8,
+      "crossesLayers": [
+        "Presentation",
+        "Unclassified",
+        "DataAccess"
+      ],
+      "dataEndpoints": [
+        "project:NuGet.Versioning"
+      ]
+    }
+  ],
+  "layerSummary": {
+    "Presentation": {
+      "count": 6,
+      "projects": [
+        "UAPApp",
+        "WPFApplication",
+        "NuGet.PackageManagement.UI.Test",
+        "NuGet.PackageManagement.UI.TestContract",
+        "NuGet.PackageManagement.UI",
+        "NuGet.PackageManagement.PowerShellCmdlets"
+      ]
+    },
+    "Unclassified": {
+      "count": 33,
+      "projects": [
+        "ClassLibrary1",
+        "BuildIntegratedClassLibrary",
+        "EmptyMvcApplication",
+        "ConsoleApp",
+        "ClassLibrary47",
+        "ConsoleApp10",
+        "classlibrary",
+        "consoleapplication",
+        "ClassLibrary6",
+        "BuildIntegratedProj",
+        "NuGet.DependencyResolver.Core.Tests",
+        "NuGet.Versioning.Test",
+        "TestableCredentialProvider",
+        "TestablePlugin",
+        "NuGet.VisualStudio.Test",
+        "NuGet.Tools.Test",
+        "NuGetConsole.Host.PowerShell.Test",
+        "NuGet.VisualStudio.Internal.Contracts.Test",
+        "project1",
+        "project2",
+        "PackageReferenceSdk",
+        "NuGet.OptProf",
+        "NuGet.VisualStudio.Internal.Contracts",
+        "NuGet.VisualStudio.Contracts",
+        "NuGet.Console",
+        "NuGet.VisualStudio",
+        "NuGet.Tools",
+        "NuGet.VisualStudio.Interop",
+        "NuGet.DependencyResolver.Core",
+        "NuGet.Build.Tasks.Console",
+        "NuGet.Localization",
+        "ensure-nupkg-dependencies-on-source",
+        "doc.tasks"
+      ]
+    },
+    "Service": {
+      "count": 2,
+      "projects": [
+        "WebApplication",
+        "API.Test"
+      ]
+    },
+    "DataAccess": {
+      "count": 42,
+      "projects": [
+        "Dotnet.Integration.Test",
+        "NuGet.Packaging.FuncTest",
+        "NuGet.Protocol.FuncTest",
+        "Msbuild.Integration.Test",
+        "NuGet.XPlat.FuncTest",
+        "NuGet.Commands.FuncTest",
+        "NuGet.CommandLine.FuncTest",
+        "NuGet.Build.Tasks.Pack.Test",
+        "NuGet.CommandLine.Xplat.Tests",
+        "NuGet.PackageManagement.Test",
+        "NuGet.Build.Tasks.Console.Test",
+        "NuGet.Commands.Test",
+        "NuGet.Credentials.Test",
+        "NuGet.Packaging.Test",
+        "NuGet.Protocol.Tests",
+        "NuGet.Build.Tasks.Test",
+        "GenerateTestPackages",
+        "GenerateLicenseList",
+        "NuGet.SolutionRestoreManager.Test",
+        "NuGet.PackageManagement.VisualStudio.Test",
+        "NuGet.CommandLine.Test",
+        "NuGet.Indexing.Test",
+        "NuGet.VisualStudio.Implementation.Test",
+        "Microsoft.Internal.NuGet.Testing.SignedPackages",
+        "NuGet.Tests.Apex.Daily",
+        "NuGet.Tests.Apex",
+        "NuGet.Console.TestContract",
+        "NuGet.Indexing",
+        "NuGet.PackageManagement.VisualStudio",
+        "NuGet.CommandLine",
+        "NuGet.SolutionRestoreManager",
+        "NuGet.VisualStudio.Implementation",
+        "NuGet.PackageManagement",
+        "NuGet.Credentials",
+        "NuGet.Commands",
+        "NuGet.Packaging",
+        "NuGet.Versioning",
+        "NuGet.CommandLine.XPlat",
+        "NuGet.Build.Tasks.Pack",
+        "NuGet.Build.Tasks",
+        "NuGet.Protocol",
+        "ship-public-apis"
+      ]
+    },
+    "Infrastructure": {
+      "count": 18,
+      "projects": [
+        "NuGet.Signing.CrossFramework.Test",
+        "NuGet.MSSigning.Extensions.FuncTest",
+        "NuGet.Frameworks.Test",
+        "NuGet.Common.Test",
+        "NuGet.Configuration.Test",
+        "NuGet.Shared.Tests",
+        "SampleCommandLineExtensions",
+        "NuGet.MSSigning.Extensions.Test",
+        "NuGet.VisualStudio.Common.Test",
+        "Test.Utility",
+        "VisualStudio.Test.Utility",
+        "NuGet.MSSigning.Extensions",
+        "NuGet.VisualStudio.Client",
+        "NuGet.VisualStudio.Common",
+        "NuGet.Frameworks",
+        "NuGet.Configuration",
+        "NuGet.Common",
+        "Tools"
+      ]
+    },
+    "Engine": {
+      "count": 8,
+      "projects": [
+        "Microsoft.Build.NuGetSdkResolver.Test",
+        "NuGet.ProjectModel.Test",
+        "NuGet.LibraryModel.Tests",
+        "NuGet.Resolver.Test",
+        "NuGet.Resolver",
+        "NuGet.ProjectModel",
+        "NuGet.LibraryModel",
+        "Microsoft.Build.NuGetSdkResolver"
+      ]
+    }
+  }
+}

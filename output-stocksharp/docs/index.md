@@ -9,7 +9,7 @@
 | NuGet Packages | 50 |
 | Project References | 200 |
 | Cross-Repo References | 70 |
-| Data Access Findings | 1682 |
+| Data Access Findings | 1699 |
 | Config Files | 1 |
 
 ## Project Categories

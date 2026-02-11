@@ -512,3 +512,81 @@ graph LR
         nuget_Drop_App["Drop.App<br/>$(DropAppVersion)"]
     end
 ```
+
+## business layers
+
+```mermaid
+graph TD
+    layer_Presentation["Presentation (6)"]
+    layer_Engine["Engine (8)"]
+    layer_Service["Service (2)"]
+    layer_DataAccess["DataAccess (42)"]
+    layer_Infrastructure["Infrastructure (18)"]
+    layer_Unclassified["Unclassified (33)"]
+    layer_DataAccess -->|39 refs| layer_Infrastructure
+    layer_Infrastructure -->|26 refs| layer_DataAccess
+    layer_DataAccess -->|14 refs| layer_Unclassified
+    layer_Infrastructure -->|11 refs| layer_Unclassified
+    layer_Unclassified -->|8 refs| layer_DataAccess
+    layer_Unclassified -->|6 refs| layer_Infrastructure
+    layer_DataAccess -->|5 refs| layer_Engine
+    layer_Infrastructure -->|4 refs| layer_Engine
+    layer_Engine -->|3 refs| layer_Infrastructure
+    layer_DataAccess -->|3 refs| layer_Presentation
+    layer_Unclassified -->|3 refs| layer_Presentation
+    layer_Engine -->|3 refs| layer_DataAccess
+    layer_Presentation -->|2 refs| layer_DataAccess
+    layer_Presentation -->|2 refs| layer_Unclassified
+    layer_Infrastructure -->|2 refs| layer_Presentation
+    layer_Service -->|1 refs| layer_DataAccess
+    layer_Presentation -->|1 refs| layer_Infrastructure
+    layer_Unclassified -->|1 refs| layer_Engine
+    layer_Engine -->|1 refs| layer_Unclassified
+```
+
+## e2e flows
+
+```mermaid
+graph TD
+    subgraph sg_Presentation["Presentation"]
+        NuGet_PackageManagement_PowerShellCmdlets["NuGet.PackageManagement.PowerShellCmdlets"]
+        NuGet_PackageManagement_UI["NuGet.PackageManagement.UI"]
+        NuGet_PackageManagement_UI_Test["NuGet.PackageManagement.UI.Test"]
+        NuGet_PackageManagement_UI_TestContract["NuGet.PackageManagement.UI.TestContract"]
+    end
+    subgraph sg_DataAccess["DataAccess"]
+        Microsoft_Internal_NuGet_Testing_SignedPackages["Microsoft.Internal.NuGet.Testing.SignedPackages"]
+        NuGet_Commands["NuGet.Commands"]
+        NuGet_Credentials["NuGet.Credentials"]
+        NuGet_Indexing["NuGet.Indexing"]
+        NuGet_PackageManagement["NuGet.PackageManagement"]
+        NuGet_PackageManagement_VisualStudio["NuGet.PackageManagement.VisualStudio"]
+        NuGet_Packaging["NuGet.Packaging"]
+        NuGet_Protocol["NuGet.Protocol"]
+        NuGet_Versioning["NuGet.Versioning"]
+    end
+    subgraph sg_Infrastructure["Infrastructure"]
+        NuGet_VisualStudio_Common["NuGet.VisualStudio.Common"]
+        VisualStudio_Test_Utility["VisualStudio.Test.Utility"]
+    end
+    subgraph sg_Unclassified["Unclassified"]
+        NuGet_Console["NuGet.Console"]
+    end
+    NuGet_PackageManagement_UI_Test --> NuGet_PackageManagement_VisualStudio
+    NuGet_PackageManagement_UI --> NuGet_PackageManagement_VisualStudio
+    NuGet_PackageManagement_UI_Test --> VisualStudio_Test_Utility
+    VisualStudio_Test_Utility --> Microsoft_Internal_NuGet_Testing_SignedPackages
+    VisualStudio_Test_Utility --> NuGet_PackageManagement
+    NuGet_PackageManagement_VisualStudio --> NuGet_Indexing
+    NuGet_PackageManagement_UI_TestContract --> NuGet_PackageManagement_UI
+    Microsoft_Internal_NuGet_Testing_SignedPackages --> NuGet_Packaging
+    NuGet_PackageManagement --> NuGet_Commands
+    NuGet_PackageManagement_VisualStudio --> NuGet_VisualStudio_Common
+    NuGet_VisualStudio_Common --> NuGet_PackageManagement
+    NuGet_PackageManagement_PowerShellCmdlets --> NuGet_Console
+    NuGet_Console --> NuGet_PackageManagement_UI
+    NuGet_Indexing --> NuGet_Protocol
+    NuGet_Packaging --> NuGet_Versioning
+    NuGet_Commands --> NuGet_Credentials
+    NuGet_Protocol --> NuGet_Packaging
+```

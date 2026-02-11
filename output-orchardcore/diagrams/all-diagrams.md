@@ -2834,3 +2834,28 @@ graph LR
         nuget_Jint["Jint<br/>"]
     end
 ```
+
+## business layers
+
+```mermaid
+graph TD
+    layer_Service["Service (5)"]
+    layer_DataAccess["DataAccess (3)"]
+    layer_Infrastructure["Infrastructure (190)"]
+    layer_Unclassified["Unclassified (32)"]
+    layer_Infrastructure -->|199 refs| layer_Unclassified
+    layer_Unclassified -->|62 refs| layer_Infrastructure
+    layer_Service -->|14 refs| layer_Infrastructure
+    layer_Infrastructure -->|11 refs| layer_DataAccess
+    layer_DataAccess -->|3 refs| layer_Unclassified
+    layer_DataAccess -->|2 refs| layer_Infrastructure
+    layer_Infrastructure -->|2 refs| layer_Service
+    layer_Service -->|1 refs| layer_Unclassified
+```
+
+## e2e flows
+
+```mermaid
+graph TD
+    no_data[No end-to-end flow paths found]
+```

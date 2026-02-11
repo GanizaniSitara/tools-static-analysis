@@ -516,13 +516,13 @@
     },
     {
       "from": "table:ContentItemIndex",
-      "to": "OrchardCore.Tests",
+      "to": "OrchardCore.Queries",
       "direction": "read",
       "endpointType": "table"
     },
     {
       "from": "table:ContentItemIndex",
-      "to": "OrchardCore.Queries",
+      "to": "OrchardCore.Tests",
       "direction": "read",
       "endpointType": "table"
     },

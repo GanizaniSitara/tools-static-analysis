@@ -1,0 +1,8 @@
+graph TD
+    subgraph sg_Presentation["Presentation"]
+        SymbolLookup["SymbolLookup"]
+    end
+    subgraph sg_DataAccess["DataAccess"]
+        Akka["Akka"]
+    end
+    SymbolLookup --> Akka

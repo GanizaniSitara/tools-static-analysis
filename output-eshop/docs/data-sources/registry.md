@@ -7,6 +7,7 @@
 | api | 128 |
 | cache | 77 |
 | database | 39 |
+| ui | 15 |
 | config | 14 |
 | pattern | 4 |
 | messaging | 4 |
@@ -420,6 +421,30 @@
 | src | `src/Ordering.Infrastructure/Migrations/20240106121712_UseEnumForOrderStatus.cs` | 76 | `INSERT INTO ordering.orderstatus("Id","Name") VALUES` |
 
 **Repos:** src
+
+## Ui
+
+### WPF.ViewModel (15 occurrences)
+
+| Repo | File | Line | Context |
+|------|------|------|---------||
+| src | `src/ClientApp/Validations/ValidatableObject.cs` | 3 | `public class ValidatableObject<T> : ObservableObject, IValid` |
+| src | `src/ClientApp/ViewModels/CheckoutViewModel.cs` | 13 | `public partial class CheckoutViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/Base/ViewModelBase.cs` | 5 | `public abstract partial class ViewModelBase : ObservableObje` |
+| src | `src/ClientApp/ViewModels/ObservableCollectionEx.cs` | 7 | `public class ObservableCollectionEx<T> : ObservableCollectio` |
+| src | `src/ClientApp/ViewModels/LoginViewModel.cs` | 11 | `public partial class LoginViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/CatalogViewModel.cs` | 11 | `public partial class CatalogViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/BasketViewModel.cs` | 9 | `public partial class BasketViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/SettingsViewModel.cs` | 13 | `public class SettingsViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/ProfileViewModel.cs` | 9 | `public partial class ProfileViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/OrderDetailViewModel.cs` | 9 | `public partial class OrderDetailViewModel : ViewModelBase, I` |
+| src | `src/ClientApp/ViewModels/SelectionViewModel.cs` | 3 | `public partial class SelectionViewModel<T> : ObservableObjec` |
+| src | `src/ClientApp/ViewModels/MapViewModel.cs` | 6 | `public partial class MapViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/MainViewModel.cs` | 6 | `public partial class MainViewModel : ViewModelBase` |
+| src | `src/ClientApp/ViewModels/CatalogItemViewModel.cs` | 11 | `public partial class CatalogItemViewModel : ViewModelBase` |
+| tests | `tests/ClientApp.UnitTests/Mocks/MockViewModel.cs` | 6 | `public class MockViewModel : ViewModelBase` |
+
+**Repos:** src, tests
 
 ## Config
 
