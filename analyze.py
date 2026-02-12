@@ -55,15 +55,14 @@ def _normalize_path(p: str) -> str:
 
     * On Windows, prepends the ``\\\\?\\`` extended-length prefix when
       the absolute path exceeds the legacy MAX_PATH limit (260 chars).
-    * Converts backslashes to forward slashes so downstream code never
-      sees ``\\`` separators (which confuse os.path calls on non-Windows
-      hosts that later consume the stored paths).
+    * Uses ``os.path.normpath`` to produce OS-native separators so that
+      paths work correctly with filesystem APIs on every platform.
     """
     if sys.platform == "win32":
         abs_p = os.path.abspath(p)
         if len(abs_p) >= 260 and not abs_p.startswith("\\\\?\\"):
             p = "\\\\?\\" + abs_p
-    return p.replace("\\", "/")
+    return os.path.normpath(p) if p else p
 
 
 # ─── Find all files recursively ─────────────────────────────────────
@@ -135,7 +134,7 @@ def discover_repos(scan_root: str) -> list[dict]:
         if not sub_csproj:
             continue
 
-        sub_slns = [os.path.relpath(s, sub_dir).replace("\\", "/") for s in find_files(sub_dir, re.compile(r"\.sln$"))]
+        sub_slns = [os.path.normpath(os.path.relpath(s, sub_dir)) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
 
         if sub_dir not in seen:
             repos.append({"name": entry_name, "root": sub_dir, "solutions": sub_slns})
@@ -157,7 +156,7 @@ def load_properties(repo_root: str) -> dict[str, str]:
     # Scan for .props files at repo root (max 2 levels deep)
     props_files = [
         f for f in find_files(repo_root, re.compile(r"\.props$", re.IGNORECASE))
-        if len(os.path.relpath(f, repo_root).replace("\\", "/").split("/")) <= 2
+        if len(os.path.normpath(os.path.relpath(f, repo_root)).split(os.sep)) <= 2
     ]
 
     skip_tags = {"PropertyGroup", "Condition", "Project", "Import", "ItemGroup"}
@@ -222,9 +221,9 @@ def resolve_imports(
         if "$(" in import_path and "RepoGitHubPath" not in import_path and "MSBuildThisFileDirectory" not in import_path:
             continue
 
-        import_path = import_path.replace("$(RepoGitHubPath)", repo_root + "/")
-        import_path = import_path.replace("$(MSBuildThisFileDirectory)", file_dir + "/")
-        import_path = import_path.replace("\\", "/")
+        import_path = import_path.replace("$(RepoGitHubPath)", repo_root + os.sep)
+        import_path = import_path.replace("$(MSBuildThisFileDirectory)", file_dir + os.sep)
+        import_path = import_path.replace("\\", os.sep).replace("/", os.sep)
 
         resolved = os.path.normpath(os.path.join(file_dir, import_path))
         if resolved in visited or not os.path.isfile(resolved):
@@ -254,8 +253,8 @@ def resolve_imports(
         for pr in parse_xml_elements(props_xml, "ProjectReference"):
             if pr["attrs"].get("Include"):
                 ref_path = pr["attrs"]["Include"]
-                ref_path = ref_path.replace("$(RepoGitHubPath)", repo_root + "/")
-                ref_path = ref_path.replace("\\", "/")
+                ref_path = ref_path.replace("$(RepoGitHubPath)", repo_root + os.sep)
+                ref_path = ref_path.replace("\\", os.sep).replace("/", os.sep)
                 all_project_refs.append({"raw_path": ref_path, "resolve_from": props_dir})
 
     return {"package_refs": all_package_refs, "project_refs": all_project_refs}
@@ -324,8 +323,8 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
         # From direct refs
         for r in direct_refs:
             p = r["attrs"].get("Include", "")
-            p = p.replace("$(RepoGitHubPath)", abs_root + "/")
-            p = p.replace("\\", "/")
+            p = p.replace("$(RepoGitHubPath)", abs_root + os.sep)
+            p = p.replace("\\", os.sep).replace("/", os.sep)
             resolved = os.path.normpath(os.path.join(csproj_dir, p))
             all_refs.append(resolved)
 

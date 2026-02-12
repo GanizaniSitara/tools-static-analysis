@@ -115,7 +115,7 @@ for pr in project_refs_csv:
 
 data_by_project: dict[str, list] = {}
 for f in data_findings:
-    parts = f["file"].replace("\\", "/").split("/")
+    parts = os.path.normpath(f["file"]).split(os.sep)
     proj_dir = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
     data_by_project.setdefault(proj_dir, []).append(f)
 
@@ -476,7 +476,7 @@ def generate_viewer_html() -> str:
         pattern_summary[p]["count"] += 1
         proj = f.get("project") or ""
         if not proj:
-            parts = f["file"].replace("\\", "/").split("/")
+            parts = os.path.normpath(f["file"]).split(os.sep)
             proj = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
         pattern_summary[p]["projects"].add(proj)
 

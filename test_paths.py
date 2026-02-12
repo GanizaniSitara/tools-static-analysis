@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for Windows path normalisation in find_files / discover_repos."""
+"""Tests for path normalisation in find_files / discover_repos."""
 
 import os
 import sys
@@ -15,30 +15,28 @@ from analyze import _normalize_path, find_files, discover_repos  # noqa: E402
 
 
 class TestNormalizePath(unittest.TestCase):
-    """Ensure _normalize_path converts backslashes and handles long paths."""
+    """Ensure _normalize_path produces OS-native separators."""
 
-    def test_backslash_replaced(self):
-        self.assertEqual(_normalize_path(r"C:\Users\dev\repo"), "C:/Users/dev/repo")
+    def test_backslash_normalised(self):
+        result = _normalize_path(r"C:\Users\dev\repo")
+        self.assertEqual(result, os.path.normpath(r"C:\Users\dev\repo"))
 
-    def test_double_backslash_replaced(self):
-        result = _normalize_path("C:\\\\foo\\\\bar")
-        self.assertNotIn("\\", result)
-
-    def test_forward_slash_unchanged(self):
-        self.assertEqual(_normalize_path("/home/user/repo"), "/home/user/repo")
+    def test_forward_slash_normalised(self):
+        result = _normalize_path("/home/user/repo")
+        self.assertEqual(result, os.path.normpath("/home/user/repo"))
 
     def test_mixed_slashes(self):
         result = _normalize_path("C:\\repos/sub\\dir")
-        self.assertNotIn("\\", result)
+        self.assertEqual(result, os.path.normpath("C:\\repos/sub\\dir"))
 
     def test_empty_string(self):
         self.assertEqual(_normalize_path(""), "")
 
 
 class TestFindFilesNormalized(unittest.TestCase):
-    """Ensure find_files returns forward-slash paths."""
+    """Ensure find_files returns OS-native paths."""
 
-    def test_results_have_no_backslashes(self):
+    def test_results_use_native_separator(self):
         import re
         with tempfile.TemporaryDirectory() as td:
             # Create a nested structure
@@ -48,12 +46,13 @@ class TestFindFilesNormalized(unittest.TestCase):
 
             results = find_files(td, re.compile(r"\.csproj$"))
             self.assertEqual(len(results), 1)
-            self.assertNotIn("\\", results[0])
             self.assertTrue(results[0].endswith("hello.csproj"))
+            # Path should be normalised (OS-native separators)
+            self.assertEqual(results[0], os.path.normpath(results[0]))
 
 
 class TestDiscoverReposNormalized(unittest.TestCase):
-    """Ensure discover_repos returns forward-slash root paths."""
+    """Ensure discover_repos returns OS-native root paths."""
 
     def test_root_has_sln(self):
         with tempfile.TemporaryDirectory() as td:
@@ -65,7 +64,7 @@ class TestDiscoverReposNormalized(unittest.TestCase):
 
             repos = discover_repos(td)
             self.assertEqual(len(repos), 1)
-            self.assertNotIn("\\", repos[0]["root"])
+            self.assertEqual(repos[0]["root"], os.path.normpath(repos[0]["root"]))
 
     def test_multi_repo_mode(self):
         with tempfile.TemporaryDirectory() as td:
@@ -77,9 +76,9 @@ class TestDiscoverReposNormalized(unittest.TestCase):
             repos = discover_repos(td)
             self.assertEqual(len(repos), 2)
             for r in repos:
-                self.assertNotIn("\\", r["root"])
+                self.assertEqual(r["root"], os.path.normpath(r["root"]))
                 for sln in r["solutions"]:
-                    self.assertNotIn("\\", sln)
+                    self.assertEqual(sln, os.path.normpath(sln))
 
 
 if __name__ == "__main__":
