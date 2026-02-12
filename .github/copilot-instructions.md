@@ -1,0 +1,5 @@
+- Flag hardcoded secrets, API keys, or credentials
+- Flag missing error handling on async operations
+- Flag functions longer than 70 lines
+- Don't flag formatting or style issues handled by linters
+- When suggesting a fix, explain why it's a problem
