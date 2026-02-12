@@ -48,6 +48,25 @@ def parse_xml_elements(xml: str, tag: str) -> list[dict]:
     return results
 
 
+# ─── Path normalisation (Windows compat) ────────────────────────────
+
+def _normalize_path(p: str) -> str:
+    """Normalise a path for cross-platform use.
+
+    * Converts backslashes to forward slashes so downstream code never
+      sees ``\\`` separators (which confuse os.path calls on non-Windows
+      hosts that later consume the stored paths).
+    * On Windows, prepends the ``\\\\?\\`` extended-length prefix when
+      the absolute path exceeds the legacy MAX_PATH limit (260 chars).
+    """
+    p = p.replace("\\", "/")
+    if sys.platform == "win32":
+        abs_p = os.path.abspath(p)
+        if len(abs_p) >= 260 and not abs_p.startswith("\\\\?\\"):
+            p = "\\\\?\\" + abs_p
+    return p
+
+
 # ─── Find all files recursively ─────────────────────────────────────
 
 SKIP_DIRS = {".git", "node_modules", "bin", "obj"}
@@ -57,6 +76,7 @@ def find_files(directory: str, pattern: re.Pattern, results: list | None = None)
     """Recursively find files matching a regex pattern on the filename."""
     if results is None:
         results = []
+    directory = _normalize_path(directory)
     if not os.path.exists(directory):
         return results
     try:
@@ -65,7 +85,7 @@ def find_files(directory: str, pattern: re.Pattern, results: list | None = None)
         return results
 
     for entry in entries:
-        full = entry.path
+        full = _normalize_path(entry.path)
         try:
             is_dir = entry.is_dir(follow_symlinks=True)
         except OSError:
@@ -85,6 +105,7 @@ def find_files(directory: str, pattern: re.Pattern, results: list | None = None)
 
 def discover_repos(scan_root: str) -> list[dict]:
     """Discover .NET repositories under scan_root."""
+    scan_root = _normalize_path(scan_root)
     sln_files = find_files(scan_root, re.compile(r"\.sln$"))
     csproj_files = find_files(scan_root, re.compile(r"\.csproj$"))
 
@@ -104,7 +125,7 @@ def discover_repos(scan_root: str) -> list[dict]:
     for entry_name in sorted(os.listdir(scan_root)):
         if entry_name.startswith("."):
             continue
-        sub_dir = os.path.join(scan_root, entry_name)
+        sub_dir = _normalize_path(os.path.join(scan_root, entry_name))
         try:
             if not os.path.isdir(sub_dir):
                 continue
@@ -115,7 +136,7 @@ def discover_repos(scan_root: str) -> list[dict]:
         if not sub_csproj:
             continue
 
-        sub_slns = [os.path.relpath(s, sub_dir) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
+        sub_slns = [os.path.relpath(s, sub_dir).replace("\\", "/") for s in find_files(sub_dir, re.compile(r"\.sln$"))]
 
         if sub_dir not in seen:
             repos.append({"name": entry_name, "root": sub_dir, "solutions": sub_slns})
