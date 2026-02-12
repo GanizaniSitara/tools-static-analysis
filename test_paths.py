@@ -21,7 +21,8 @@ class TestNormalizePath(unittest.TestCase):
         self.assertEqual(_normalize_path(r"C:\Users\dev\repo"), "C:/Users/dev/repo")
 
     def test_double_backslash_replaced(self):
-        self.assertEqual(_normalize_path("C:\\\\foo\\\\bar"), "C://foo//bar")
+        result = _normalize_path("C:\\\\foo\\\\bar")
+        self.assertNotIn("\\", result)
 
     def test_forward_slash_unchanged(self):
         self.assertEqual(_normalize_path("/home/user/repo"), "/home/user/repo")

@@ -53,18 +53,17 @@ def parse_xml_elements(xml: str, tag: str) -> list[dict]:
 def _normalize_path(p: str) -> str:
     """Normalise a path for cross-platform use.
 
+    * On Windows, prepends the ``\\\\?\\`` extended-length prefix when
+      the absolute path exceeds the legacy MAX_PATH limit (260 chars).
     * Converts backslashes to forward slashes so downstream code never
       sees ``\\`` separators (which confuse os.path calls on non-Windows
       hosts that later consume the stored paths).
-    * On Windows, prepends the ``\\\\?\\`` extended-length prefix when
-      the absolute path exceeds the legacy MAX_PATH limit (260 chars).
     """
-    p = p.replace("\\", "/")
     if sys.platform == "win32":
         abs_p = os.path.abspath(p)
         if len(abs_p) >= 260 and not abs_p.startswith("\\\\?\\"):
             p = "\\\\?\\" + abs_p
-    return p
+    return p.replace("\\", "/")
 
 
 # ─── Find all files recursively ─────────────────────────────────────
