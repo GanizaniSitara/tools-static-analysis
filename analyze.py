@@ -42,14 +42,15 @@ def safe_read_text(filepath: str, max_size: int = _MAX_FILE_SIZE) -> str | None:
     Applies long-path normalisation on Windows and skips files exceeding
     *max_size* to prevent memory issues on very large repos.
     """
+    norm_path = _normalize_path(filepath)
     try:
-        sz = os.path.getsize(filepath)
+        sz = Path(norm_path).stat().st_size
         if sz > max_size:
             return None
     except OSError:
         return None
     try:
-        return Path(_normalize_path(filepath)).read_text(encoding="utf-8", errors="replace")
+        return Path(norm_path).read_text(encoding="utf-8", errors="replace")
     except OSError:
         return None
 
