@@ -17,37 +17,47 @@ from pathlib import Path
 OUT_DIR = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "output")
 DOCS_DIR = os.path.join(OUT_DIR, "docs")
 
+
+def _load_json(path: str, default=None):
+    """Load a JSON file, returning *default* on any read/parse error."""
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        if default is None:
+            raise
+        print(f"  Warning: could not load {path}: {exc}")
+        return default
+
+
+def _read_text(path: str) -> str | None:
+    """Read a text file, returning None on error."""
+    try:
+        return Path(path).read_text(encoding="utf-8")
+    except OSError:
+        return None
+
+
 # Load analysis data
-graph = json.loads(Path(os.path.join(OUT_DIR, "graph.json")).read_text(encoding="utf-8"))
-project_meta = json.loads(Path(os.path.join(OUT_DIR, "project-meta.json")).read_text(encoding="utf-8"))
-data_findings = json.loads(Path(os.path.join(OUT_DIR, "data-sources.json")).read_text(encoding="utf-8"))
-configs = json.loads(Path(os.path.join(OUT_DIR, "configs.json")).read_text(encoding="utf-8"))
+graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
+project_meta = _load_json(os.path.join(OUT_DIR, "project-meta.json"))
+data_findings = _load_json(os.path.join(OUT_DIR, "data-sources.json"))
+configs = _load_json(os.path.join(OUT_DIR, "configs.json"))
 
-# Load data flow (optional — may not exist on older runs)
-data_flow_path = os.path.join(OUT_DIR, "data-flow.json")
-data_flow: dict = {}
-if os.path.isfile(data_flow_path):
-    data_flow = json.loads(Path(data_flow_path).read_text(encoding="utf-8"))
-
-# Load flow paths / business layers (optional)
-flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
-flow_paths_data: dict = {}
-if os.path.isfile(flow_paths_path):
-    flow_paths_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
-
-# Load field traceability (optional)
-field_trace_path = os.path.join(OUT_DIR, "field-traceability.json")
-field_trace_data: dict = {}
-if os.path.isfile(field_trace_path):
-    field_trace_data = json.loads(Path(field_trace_path).read_text(encoding="utf-8"))
+# Load optional data (may not exist on older runs)
+data_flow: dict = _load_json(os.path.join(OUT_DIR, "data-flow.json"), {})
+flow_paths_data: dict = _load_json(os.path.join(OUT_DIR, "flow-paths.json"), {})
+field_trace_data: dict = _load_json(os.path.join(OUT_DIR, "field-traceability.json"), {})
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
 
 def read_csv(filepath: str) -> list[dict]:
     """Read a CSV file, handling quoted values with commas."""
-    content = Path(filepath).read_text(encoding="utf-8")
-    lines = content.strip().split("\n")
+    try:
+        content = Path(filepath).read_text(encoding="utf-8")
+    except OSError:
+        return []
+    lines = content.strip().splitlines()
     if not lines:
         return []
 
@@ -165,25 +175,15 @@ def generate_index() -> str:
         md += f"| {cat} | {count} |\n"
 
     # Diagrams
-    landscape_path = os.path.join(OUT_DIR, "diagrams", "landscape.mmd")
-    if os.path.isfile(landscape_path):
-        content = Path(landscape_path).read_text(encoding="utf-8")
-        md += f"\n## Full Landscape\n\n```mermaid\n{content}\n```\n"
-
-    core_path = os.path.join(OUT_DIR, "diagrams", "core-libraries.mmd")
-    if os.path.isfile(core_path):
-        content = Path(core_path).read_text(encoding="utf-8")
-        md += f"\n## Core Library Hierarchy\n\n```mermaid\n{content}\n```\n"
-
-    data_infra_path = os.path.join(OUT_DIR, "diagrams", "data-infrastructure.mmd")
-    if os.path.isfile(data_infra_path):
-        content = Path(data_infra_path).read_text(encoding="utf-8")
-        md += f"\n## Data Infrastructure\n\n```mermaid\n{content}\n```\n"
-
-    nuget_path = os.path.join(OUT_DIR, "diagrams", "nuget-groups.mmd")
-    if os.path.isfile(nuget_path):
-        content = Path(nuget_path).read_text(encoding="utf-8")
-        md += f"\n## NuGet Package Groups\n\n```mermaid\n{content}\n```\n"
+    for diagram_name, heading in [
+        ("landscape.mmd", "Full Landscape"),
+        ("core-libraries.mmd", "Core Library Hierarchy"),
+        ("data-infrastructure.mmd", "Data Infrastructure"),
+        ("nuget-groups.mmd", "NuGet Package Groups"),
+    ]:
+        content = _read_text(os.path.join(OUT_DIR, "diagrams", diagram_name))
+        if content:
+            md += f"\n## {heading}\n\n```mermaid\n{content}\n```\n"
 
     # Navigation
     md += "\n## Navigation\n\n"
@@ -369,7 +369,12 @@ def generate_viewer_html() -> str:
     categories = summary["categories"]
     repo_count = summary.get("totalRepos", 1)
     repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
-    title = ", ".join(repo_list) if repo_list else "Project"
+    if len(repo_list) > 3:
+        title = f"{len(repo_list)} Repositories"
+    elif repo_list:
+        title = ", ".join(repo_list)
+    else:
+        title = "Project"
 
     # ── Collect two-level diagram tabs: overview + per-category ──
     diagrams_dir = os.path.join(OUT_DIR, "diagrams")
@@ -377,8 +382,8 @@ def generate_viewer_html() -> str:
 
     # Overview tab (category-level diagram)
     overview_path = os.path.join(diagrams_dir, "overview.mmd")
-    if os.path.isfile(overview_path):
-        content = Path(overview_path).read_text(encoding="utf-8")
+    content = _read_text(overview_path)
+    if content:
         diagram_tabs.append({
             "id": "overview",
             "label": "Overview",
@@ -393,9 +398,8 @@ def generate_viewer_html() -> str:
         if cat_name in skip_cats:
             continue
         cat_key = cat_name.lower()
-        mmd_path = os.path.join(diagrams_dir, f"category-{cat_key}.mmd")
-        if os.path.isfile(mmd_path):
-            content = Path(mmd_path).read_text(encoding="utf-8")
+        content = _read_text(os.path.join(diagrams_dir, f"category-{cat_key}.mmd"))
+        if content:
             # Check for edge filter metadata comment
             edge_filter_warning = ""
             for line in content.splitlines():
@@ -418,52 +422,23 @@ def generate_viewer_html() -> str:
                 "warning": edge_filter_warning,
             })
 
-    # ── Data Flow diagram tab ──
-    data_flow_mmd_path = os.path.join(diagrams_dir, "data-flow.mmd")
-    if os.path.isfile(data_flow_mmd_path):
-        content = Path(data_flow_mmd_path).read_text(encoding="utf-8")
-        # Only add if there's real content (not just the "no data" placeholder)
-        if "no_data" not in content:
+    # ── Named diagram tabs (Data Flow, Business Layers, E2E, Field Trace) ──
+    for mmd_name, tab_id, tab_label, tab_title in [
+        ("data-flow.mmd", "dataflow", "Data Flow",
+         "Data Flow — Projects Connected Through Data Infrastructure"),
+        ("business-layers.mmd", "businesslayers", "Business Layers",
+         "Business Layer Classification — Presentation / Engine / Service / DataAccess"),
+        ("e2e-flows.mmd", "e2eflowsdiagram", "E2E Flows Diagram",
+         "End-to-End Flow Paths — Screen to Pricer to Data"),
+        ("field-traceability.mmd", "fieldtracediagram", "Field Trace Diagram",
+         "Field Traceability — XAML Binding to Database Column"),
+    ]:
+        content = _read_text(os.path.join(diagrams_dir, mmd_name))
+        if content and "no_data" not in content:
             diagram_tabs.append({
-                "id": "dataflow",
-                "label": "Data Flow",
-                "title": "Data Flow — Projects Connected Through Data Infrastructure",
-                "mermaid": content,
-            })
-
-    # ── Business Layers diagram tab ──
-    bl_mmd_path = os.path.join(diagrams_dir, "business-layers.mmd")
-    if os.path.isfile(bl_mmd_path):
-        content = Path(bl_mmd_path).read_text(encoding="utf-8")
-        if "no_data" not in content:
-            diagram_tabs.append({
-                "id": "businesslayers",
-                "label": "Business Layers",
-                "title": "Business Layer Classification — Presentation / Engine / Service / DataAccess",
-                "mermaid": content,
-            })
-
-    # ── E2E Flows diagram tab ──
-    e2e_mmd_path = os.path.join(diagrams_dir, "e2e-flows.mmd")
-    if os.path.isfile(e2e_mmd_path):
-        content = Path(e2e_mmd_path).read_text(encoding="utf-8")
-        if "no_data" not in content:
-            diagram_tabs.append({
-                "id": "e2eflowsdiagram",
-                "label": "E2E Flows Diagram",
-                "title": "End-to-End Flow Paths — Screen to Pricer to Data",
-                "mermaid": content,
-            })
-
-    # ── Field Traceability diagram tab ──
-    ft_mmd_path = os.path.join(diagrams_dir, "field-traceability.mmd")
-    if os.path.isfile(ft_mmd_path):
-        content = Path(ft_mmd_path).read_text(encoding="utf-8")
-        if "no_data" not in content:
-            diagram_tabs.append({
-                "id": "fieldtracediagram",
-                "label": "Field Trace Diagram",
-                "title": "Field Traceability — XAML Binding to Database Column",
+                "id": tab_id,
+                "label": tab_label,
+                "title": tab_title,
                 "mermaid": content,
             })
 
