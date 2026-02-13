@@ -176,8 +176,21 @@ def compute_hotspot_metrics() -> list[dict]:
         smells = compute_smell_flags(entry)
         entry["smells"] = smells
         entry["explanation"] = compute_hotspot_explanation(entry, smells)
+
+        # Risk score: discounts expected patterns (Library/Infrastructure fan-in)
+        is_infra = pm["category"] == "Library" or layer_info.get("layer", "") == "Infrastructure"
+        adjusted_fan_in = min(fan_in, 4) if is_infra else fan_in
+        risk_score = (
+            fan_out * 3 + adjusted_fan_in * 2 + data_pattern_count + cross_repo_refs * 4
+        )
+        risk_score += sum(10 for s in smells if s["level"] == "red")
+        risk_score += sum(5 for s in smells if s["level"] == "yellow")
+        risk_score -= sum(5 for s in smells if s["level"] == "green")
+        risk_score = max(0, risk_score)
+        entry["risk_score"] = risk_score
+
         metrics.append(entry)
-    metrics.sort(key=lambda x: -x["hotspot_score"])
+    metrics.sort(key=lambda x: -x["risk_score"])
     return metrics
 
 
@@ -508,10 +521,10 @@ def generate_viewer_html() -> str:
     categories = summary["categories"]
     repo_count = summary.get("totalRepos", 1)
     repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
-    if len(repo_list) > 3:
+    if len(repo_list) > 1:
         title = f"{len(repo_list)} Repositories"
     elif repo_list:
-        title = ", ".join(repo_list)
+        title = repo_list[0]
     else:
         title = "Project"
 
@@ -688,23 +701,18 @@ def generate_viewer_html() -> str:
             side_legend = category_detail_legend_html
         else:
             side_legend = ""
-        if side_legend:
-            diagram_body = f"""
+        diagram_body = f"""
       <div class="diagram-with-legend">
         <div class="mermaid-wrap" id="mermaid-{dt['id']}">
           <span class="loading">Loading diagram...</span>
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
           </pre>
-        </div>{side_legend}
-      </div>"""
-        else:
-            diagram_body = f"""
-      <div class="mermaid-wrap" id="mermaid-{dt['id']}">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-{_esc_html(dt['mermaid'])}
-        </pre>
+        </div>
+        <div class="diagram-sidebar">
+          {side_legend}
+          <div class="edge-detail-panel" id="edgeDetail-{dt['id']}"></div>
+        </div>
       </div>"""
         diagram_panels += f"""
   <section class="tab-panel{active}" id="panel-{dt['id']}">
@@ -1157,7 +1165,8 @@ def generate_viewer_html() -> str:
               <th data-sort-type="num" title="Distinct NuGet packages referenced">NuGet</th>
               <th data-sort-type="num" title="Data access patterns found (SQL, ORM, HTTP, etc.)">Data Patterns</th>
               <th data-sort-type="num" title="References crossing repository boundaries">Cross-Repo</th>
-              <th data-sort-type="num" title="Weighted coupling score: Fan-Out&#215;3 + Fan-In&#215;2 + NuGet + Data Patterns + Cross-Repo&#215;4">Score</th>
+              <th data-sort-type="num" title="Raw weighted coupling score: Fan-Out&#215;3 + Fan-In&#215;2 + NuGet + Data Patterns + Cross-Repo&#215;4">Score</th>
+              <th data-sort-type="num" title="Risk-adjusted score: discounts expected patterns (Library fan-in) and factors in code smells">Risk Score</th>
               <th data-sort-type="risk" title="Risk level based on hotspot score and code smells">Risk</th>
             </tr>
           </thead>
@@ -1252,7 +1261,8 @@ def generate_viewer_html() -> str:
   }}
   .diagram-with-legend {{ display:flex; gap:1rem; align-items:flex-start; }}
   .diagram-with-legend .mermaid-wrap {{ flex:1; min-width:0; }}
-  .diagram-legend {{ width:240px; flex-shrink:0; background:#FFFFFF; border:1px solid #E1E1E1; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.78rem; color:#333333; }}
+  .diagram-sidebar {{ width:320px; flex-shrink:0; display:flex; flex-direction:column; gap:0.75rem; }}
+  .diagram-legend {{ width:100%; background:#FFFFFF; border:1px solid #E1E1E1; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.78rem; color:#333333; }}
   .diagram-legend .legend-title {{ font-weight:600; color:#022D5E; margin-bottom:0.4rem; font-size:0.82rem; }}
   .diagram-legend .legend-item {{ margin-bottom:0.3rem; line-height:1.35; }}
   .diagram-legend .legend-icon {{ display:inline-block; width:1.1rem; color:#005587; text-align:center; }}
@@ -1278,10 +1288,10 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
   .edge-detail-panel {{
-    position: fixed; right: 1rem; top: 50%; transform: translateY(-50%);
+    display: none; margin-top: 0.75rem;
     background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
-    padding: 1.2rem; width: 380px; max-height: 70vh; overflow-y: auto;
-    z-index: 999; box-shadow: 0 8px 32px rgba(0,0,0,0.15); display: none;
+    padding: 1.2rem; width: 100%; max-height: 70vh; overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     font-size: 0.85rem; color: #000000;
   }}
   .edge-detail-panel .detail-header {{
@@ -1378,13 +1388,13 @@ def generate_viewer_html() -> str:
     .tabs {{ padding: 0 1rem; }}
     .search-box {{ width: 100%; }}
     .diagram-with-legend {{ flex-direction:column; }}
+    .diagram-sidebar {{ width:100%; }}
     .diagram-legend {{ width:100%; }}
   }}
 </style>
 </head>
 <body>
 <div class="edge-tooltip" id="edgeTooltip"></div>
-<div class="edge-detail-panel" id="edgeDetailPanel"></div>
 
 <header class="header">
   <div class="header-top">
@@ -1540,7 +1550,7 @@ function attachCategoryNodeClicks(svg) {{
 }}
 
 function showEdgeDetail(fromName, toName) {{
-  var panel = document.getElementById('edgeDetailPanel');
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
   var d = window._projData || {{}};
   var refs = d.refs || [], deps = d.deps || [], meta = d.meta || [], dataSrc = d.dataSources || [];
@@ -1705,12 +1715,12 @@ function showEdgeDetail(fromName, toName) {{
 
   panel.innerHTML = html;
   panel.style.display = 'block';
-  var closeBtn = document.getElementById('detailCloseBtn');
+  var closeBtn = panel.querySelector('.detail-close');
   if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
 }}
 
 function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
-  var panel = document.getElementById('edgeDetailPanel');
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
   var df = window._dataFlow || {{}};
   var nodes = df.dataNodes || [];
@@ -1800,12 +1810,12 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
 
   panel.innerHTML = html;
   panel.style.display = 'block';
-  var closeBtn = document.getElementById('detailCloseBtn');
+  var closeBtn = panel.querySelector('.detail-close');
   if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
 }}
 
 function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
-  var panel = document.getElementById('edgeDetailPanel');
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
   var d = window._projData || {{}};
   var meta = d.meta || [];
@@ -1862,7 +1872,7 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
 
   panel.innerHTML = html;
   panel.style.display = 'block';
-  var closeBtn = document.getElementById('detailCloseBtn');
+  var closeBtn = panel.querySelector('.detail-close');
   if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
   panel.querySelectorAll('.cat-nav-btn').forEach(function (btn) {{
     btn.addEventListener('click', function () {{
@@ -1874,7 +1884,7 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
 }}
 
 function showProjectCategoryDetail(projectName, catInfo, isOutgoing) {{
-  var panel = document.getElementById('edgeDetailPanel');
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
   var d = window._projData || {{}};
   var meta = d.meta || [];
@@ -1938,7 +1948,7 @@ function showProjectCategoryDetail(projectName, catInfo, isOutgoing) {{
 
   panel.innerHTML = html;
   panel.style.display = 'block';
-  var closeBtn = document.getElementById('detailCloseBtn');
+  var closeBtn = panel.querySelector('.detail-close');
   if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
   panel.querySelectorAll('.cat-nav-btn').forEach(function (btn) {{
     btn.addEventListener('click', function () {{
@@ -2087,6 +2097,12 @@ function initSortableTable(table) {{
     return d.innerHTML;
   }}
 
+  function catDir(cat) {{
+    if (cat === 'Connector') return 'connectors';
+    if (cat === 'Library') return 'libraries';
+    return 'applications';
+  }}
+
   function parseCSV(text) {{
     var lines = text.trim().split('\\n');
     if (lines.length === 0) return [];
@@ -2179,6 +2195,7 @@ function initSortableTable(table) {{
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
   window._categoryMap = {{ {cat_map_entries} }};
   window._hotspotData = {hotspot_json};
+  window._isMultiRepo = {str(is_multi_repo).lower()};
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -2218,8 +2235,11 @@ function initSortableTable(table) {{
       var layerName = layerInfo.layer || '';
       var layerConf = layerInfo.confidence || 0;
       tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + layerName + ' ' + (p.globalPath||p.path||'')).toLowerCase());
+      var docPath = window._isMultiRepo
+        ? 'docs/repos/' + encodeURIComponent(p.repo || 'unknown') + '/' + encodeURIComponent(p.project) + '.md'
+        : 'docs/' + catDir(p.category) + '/' + encodeURIComponent(p.project) + '.md';
       tr.innerHTML =
-        '<td><strong>' + escHtml(p.project) + '</strong></td>' +
+        '<td><strong><a href="' + docPath + '" target="_blank" title="Open project docs">' + escHtml(p.project) + '</a></strong></td>' +
         '<td>' + escHtml(p.repo || '') + '</td>' +
         '<td>' + tagHTML(p.category) + '</td>' +
         '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
@@ -2282,6 +2302,7 @@ function initSortableTable(table) {{
         '<td style="text-align:center">' + m.data_patterns + '</td>' +
         '<td style="text-align:center">' + m.cross_repo_refs + '</td>' +
         '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>' +
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor + '">' + (m.risk_score || 0) + '</td>' +
         '<td>' + riskCell + '</td>';
       tbody.appendChild(tr);
     }});
