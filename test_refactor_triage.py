@@ -5,6 +5,7 @@ import os
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 
 # refactor_triage.py runs module-level code (SCAN_ROOT, OUT_DIR, os.makedirs) on import,
 # so we inject a harmless argv and import only the helpers we need.
@@ -30,8 +31,8 @@ class TestInferProjectFromPath(unittest.TestCase):
             csproj_path = os.path.join(proj_dir, "MyProject.csproj")
             cs_file = os.path.join(proj_dir, "File.cs")
             
-            open(csproj_path, "w").close()
-            open(cs_file, "w").close()
+            Path(csproj_path).touch()
+            Path(cs_file).touch()
             
             result = infer_project_from_path(cs_file, td)
             self.assertEqual(result, "MyProject")
@@ -46,8 +47,8 @@ class TestInferProjectFromPath(unittest.TestCase):
             csproj_path = os.path.join(proj_dir, "MyProject.csproj")
             cs_file = os.path.join(src_dir, "File.cs")
             
-            open(csproj_path, "w").close()
-            open(cs_file, "w").close()
+            Path(csproj_path).touch()
+            Path(cs_file).touch()
             
             result = infer_project_from_path(cs_file, td)
             self.assertEqual(result, "MyProject")
@@ -61,8 +62,8 @@ class TestInferProjectFromPath(unittest.TestCase):
             os.makedirs(sub_dir)
             cs_file = os.path.join(sub_dir, "File.cs")
             
-            open(parent_csproj, "w").close()
-            open(cs_file, "w").close()
+            Path(parent_csproj).touch()
+            Path(cs_file).touch()
             
             # Set scan_root to SubDir, so it should NOT find Parent.csproj
             result = infer_project_from_path(cs_file, sub_dir)
@@ -78,7 +79,7 @@ class TestInferProjectFromPath(unittest.TestCase):
             os.makedirs(src_dir)
             cs_file = os.path.join(src_dir, "File.cs")
             
-            open(cs_file, "w").close()
+            Path(cs_file).touch()
             
             result = infer_project_from_path(cs_file, td)
             self.assertEqual(result, "MyFolder")
@@ -87,7 +88,7 @@ class TestInferProjectFromPath(unittest.TestCase):
         """Return _unknown when file is directly under scan root and no .csproj."""
         with tempfile.TemporaryDirectory() as td:
             cs_file = os.path.join(td, "File.cs")
-            open(cs_file, "w").close()
+            Path(cs_file).touch()
             
             result = infer_project_from_path(cs_file, td)
             self.assertEqual(result, "_unknown")
@@ -104,9 +105,9 @@ class TestInferProjectFromPath(unittest.TestCase):
             inner_csproj = os.path.join(inner_dir, "Inner.csproj")
             cs_file = os.path.join(inner_dir, "File.cs")
             
-            open(outer_csproj, "w").close()
-            open(inner_csproj, "w").close()
-            open(cs_file, "w").close()
+            Path(outer_csproj).touch()
+            Path(inner_csproj).touch()
+            Path(cs_file).touch()
             
             result = infer_project_from_path(cs_file, td)
             # Should find Inner.csproj first (nearest)
@@ -120,7 +121,7 @@ class TestFindProjectForFileWithFallback(unittest.TestCase):
         """find_project_for_file returns None when project_meta is empty."""
         with tempfile.TemporaryDirectory() as td:
             cs_file = os.path.join(td, "File.cs")
-            open(cs_file, "w").close()
+            Path(cs_file).touch()
             
             result = find_project_for_file(cs_file, [], td)
             self.assertIsNone(result)
@@ -133,8 +134,8 @@ class TestFindProjectForFileWithFallback(unittest.TestCase):
             csproj_path = os.path.join(proj_dir, "MyProject.csproj")
             cs_file = os.path.join(proj_dir, "File.cs")
             
-            open(csproj_path, "w").close()
-            open(cs_file, "w").close()
+            Path(csproj_path).touch()
+            Path(cs_file).touch()
             
             project_meta = [
                 {
