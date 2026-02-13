@@ -19,6 +19,7 @@ Outputs: output/dependencies.csv, output/project-refs.csv,
 
 import json
 import os
+import platform
 import re
 import sys
 from pathlib import Path
@@ -29,6 +30,29 @@ SCAN_ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else ".")
 OUT_DIR = os.path.abspath(sys.argv[2] if len(sys.argv) > 2 else "output")
 
 os.makedirs(OUT_DIR, exist_ok=True)
+
+_IS_WINDOWS = platform.system() == "Windows"
+_MAX_FILE_SIZE = 2 * 1024 * 1024  # 2 MB — skip files larger than this
+_MAX_SCAN_DEPTH = 30  # max directory nesting depth
+
+
+def safe_read_text(filepath: str, max_size: int = _MAX_FILE_SIZE) -> str | None:
+    """Read a text file, returning None if too large or unreadable.
+
+    Applies long-path normalisation on Windows and skips files exceeding
+    *max_size* to prevent memory issues on very large repos.
+    """
+    norm_path = _normalize_path(filepath)
+    try:
+        sz = Path(norm_path).stat().st_size
+        if sz > max_size:
+            return None
+    except OSError:
+        return None
+    try:
+        return Path(norm_path).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
 
 
 # ─── XML helpers (no external deps — regex-based for .csproj/.props) ──
@@ -67,32 +91,46 @@ def _normalize_path(p: str) -> str:
 
 # ─── Find all files recursively ─────────────────────────────────────
 
-SKIP_DIRS = {".git", "node_modules", "bin", "obj"}
+SKIP_DIRS = {".git", "node_modules", "bin", "obj", ".vs", ".idea", "packages",
+              "TestResults", "artifacts", "__pycache__", ".nuget"}
 
 
-def find_files(directory: str, pattern: re.Pattern, results: list | None = None) -> list[str]:
-    """Recursively find files matching a regex pattern on the filename."""
+def find_files(
+    directory: str,
+    pattern: re.Pattern,
+    results: list | None = None,
+    _depth: int = 0,
+) -> list[str]:
+    """Recursively find files matching a regex pattern on the filename.
+
+    Respects *_MAX_SCAN_DEPTH* to avoid excessively deep trees (common on
+    Windows where junction/symlink loops and deeply nested ``node_modules``
+    can cause MAX_PATH errors).
+    """
     if results is None:
         results = []
+    if _depth > _MAX_SCAN_DEPTH:
+        return results
     directory = _normalize_path(directory)
     if not os.path.exists(directory):
         return results
     try:
-        entries = os.scandir(directory)
-    except PermissionError:
+        with os.scandir(directory) as it:
+            entries = list(it)
+    except OSError:
         return results
 
     for entry in entries:
         full = _normalize_path(entry.path)
         try:
-            is_dir = entry.is_dir(follow_symlinks=True)
+            is_dir = entry.is_dir(follow_symlinks=False)
         except OSError:
             continue
 
         if is_dir:
             if entry.name in SKIP_DIRS:
                 continue
-            find_files(full, pattern, results)
+            find_files(full, pattern, results, _depth + 1)
         elif pattern.search(entry.name):
             results.append(full)
 
@@ -162,9 +200,8 @@ def load_properties(repo_root: str) -> dict[str, str]:
     skip_tags = {"PropertyGroup", "Condition", "Project", "Import", "ItemGroup"}
 
     for pf in props_files:
-        try:
-            xml = Path(pf).read_text(encoding="utf-8", errors="replace")
-        except OSError:
+        xml = safe_read_text(pf)
+        if xml is None:
             continue
         for m in re.finditer(r"<(\w+)>([^<]+)</\1>", xml):
             tag_name, tag_val = m.group(1), m.group(2)
@@ -175,9 +212,8 @@ def load_properties(repo_root: str) -> dict[str, str]:
     for name in ("Directory.Build.props", "Directory.Packages.props"):
         dbp = os.path.join(repo_root, name)
         if os.path.isfile(dbp):
-            try:
-                xml = Path(dbp).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            xml = safe_read_text(dbp)
+            if xml is None:
                 continue
             for m in re.finditer(r"<(\w+)>([^<]+)</\1>", xml):
                 if m.group(1) not in props:
@@ -230,9 +266,8 @@ def resolve_imports(
             continue
         visited.add(resolved)
 
-        try:
-            props_xml = Path(resolved).read_text(encoding="utf-8", errors="replace")
-        except OSError:
+        props_xml = safe_read_text(resolved)
+        if props_xml is None:
             continue
         props_dir = os.path.dirname(resolved)
 
@@ -274,9 +309,8 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
     project_meta = []
 
     for csproj_path in csproj_files:
-        try:
-            xml = Path(csproj_path).read_text(encoding="utf-8", errors="replace")
-        except OSError:
+        xml = safe_read_text(csproj_path)
+        if xml is None:
             continue
 
         csproj_dir = os.path.dirname(csproj_path)
@@ -334,7 +368,13 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             ref_name = os.path.splitext(os.path.basename(resolved_ref))[0]
             ref_rel_path = os.path.relpath(resolved_ref, abs_root)
             ref_global_path = os.path.relpath(resolved_ref, global_scan_root)
-            is_in_same_repo = resolved_ref.startswith(abs_root)
+            resolved_ref_norm = os.path.normcase(os.path.abspath(resolved_ref))
+            abs_root_norm = os.path.normcase(abs_root)
+            try:
+                is_in_same_repo = os.path.commonpath([resolved_ref_norm, abs_root_norm]) == abs_root_norm
+            except ValueError:
+                # Different drives or otherwise incomparable paths are not in the same repo
+                is_in_same_repo = False
             project_refs.append({
                 "project": proj_name,
                 "repo": repo["name"],
@@ -356,7 +396,7 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
 
 def categorize_project(rel_path: str, proj_name: str, xml: str) -> str:
     """Categorize a project based on its path, name, and csproj content."""
-    rp = rel_path.lower()
+    rp = rel_path.replace("\\", "/").lower()
     pn = proj_name.lower()
 
     # Test projects
@@ -436,23 +476,27 @@ def categorize_project(rel_path: str, proj_name: str, xml: str) -> str:
 # ─── Project resolution for .cs files ────────────────────────────────
 
 def build_file_to_project_map(project_meta: list[dict], repo_root: str) -> dict[str, str]:
-    """Map csproj directory paths → project names for a repo."""
+    """Map csproj directory paths → project names for a repo.
+
+    Keys are normalised with ``os.path.normcase`` so lookups are
+    case-insensitive on Windows.
+    """
     dir_to_project: dict[str, str] = {}
     abs_root = os.path.abspath(repo_root)
     for pm in project_meta:
         csproj_path = os.path.join(abs_root, pm["path"])
-        csproj_dir = os.path.dirname(os.path.abspath(csproj_path))
+        csproj_dir = os.path.normcase(os.path.dirname(os.path.abspath(csproj_path)))
         dir_to_project[csproj_dir] = pm["project"]
     return dir_to_project
 
 
 def resolve_project_for_file(filepath: str, dir_to_project: dict[str, str]) -> str | None:
     """Walk up directory tree to find owning project for a source file."""
-    d = os.path.dirname(os.path.abspath(filepath))
+    d = os.path.normcase(os.path.dirname(os.path.abspath(filepath)))
     for _ in range(20):  # safety limit
         if d in dir_to_project:
             return dir_to_project[d]
-        parent = os.path.dirname(d)
+        parent = os.path.normcase(os.path.dirname(d))
         if parent == d:
             break
         d = parent
@@ -745,10 +789,7 @@ def classify_all_projects(
 
         # Read .csproj XML for WPF detection
         csproj_path = os.path.join(SCAN_ROOT, pm.get("globalPath", pm["path"]))
-        try:
-            xml = Path(csproj_path).read_text(encoding="utf-8", errors="replace")
-        except OSError:
-            xml = ""
+        xml = safe_read_text(csproj_path) or ""
 
         project_dir = os.path.dirname(csproj_path)
         packages = pkgs_by_project.get(proj_name, [])
@@ -775,12 +816,11 @@ def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list
         cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
 
         for cs_file in cs_files:
-            try:
-                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(cs_file)
+            if content is None:
                 continue
 
-            lines = content.split("\n")
+            lines = content.splitlines()
             rel_path = os.path.relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
 
@@ -867,9 +907,8 @@ def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list
         xaml_files = find_files(repo["root"], re.compile(r"\.xaml$"))
 
         for xaml_file in xaml_files:
-            try:
-                content = Path(xaml_file).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(xaml_file)
+            if content is None:
                 continue
 
             rel_path = os.path.relpath(xaml_file, abs_root)
@@ -893,7 +932,7 @@ def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list
 
             # Extract all binding paths
             bindings: list[dict] = []
-            lines = content.split("\n")
+            lines = content.splitlines()
             for i, line in enumerate(lines):
                 for bm in _XAML_BINDING_PATH_RE.finditer(line):
                     binding_path = bm.group(1)
@@ -931,9 +970,8 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
         cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
 
         for cs_file in cs_files:
-            try:
-                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(cs_file)
+            if content is None:
                 continue
 
             # Quick check: does this file contain a ViewModel class?
@@ -942,7 +980,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
 
             rel_path = os.path.relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
-            lines = content.split("\n")
+            lines = content.splitlines()
 
             current_class: str | None = None
             properties: list[dict] = []
@@ -1010,9 +1048,8 @@ def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: 
         cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
 
         for cs_file in cs_files:
-            try:
-                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(cs_file)
+            if content is None:
                 continue
 
             # Quick check: does any known entity name appear?
@@ -1021,7 +1058,7 @@ def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: 
 
             rel_path = os.path.relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
-            lines = content.split("\n")
+            lines = content.splitlines()
 
             current_entity: str | None = None
             table_name: str | None = None
@@ -1116,9 +1153,8 @@ def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
         cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
 
         for cs_file in cs_files:
-            try:
-                content = Path(cs_file).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(cs_file)
+            if content is None:
                 continue
 
             # Quick check: file must contain OnModelCreating or ModelBuilder
@@ -1127,7 +1163,7 @@ def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
 
             rel_path = os.path.relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
-            lines = content.split("\n")
+            lines = content.splitlines()
 
             current_entity: str | None = None
             entity_table: str | None = None
@@ -1879,9 +1915,8 @@ def extract_configs(scan_root: str, repos: list[dict]) -> list[dict]:
 
         for f in config_files:
             rel_path = os.path.relpath(f, abs_root)
-            try:
-                content = Path(f).read_text(encoding="utf-8", errors="replace")
-            except OSError:
+            content = safe_read_text(f)
+            if content is None:
                 continue
 
             if f.endswith(".json"):
@@ -2095,7 +2130,7 @@ def main():
     named_flows: list[dict] = []
     if os.path.isfile(business_map_path):
         try:
-            bm = json.loads(Path(business_map_path).read_text(encoding="utf-8"))
+            bm = json.loads(safe_read_text(business_map_path) or "{}")
             business_overrides = bm.get("overrides", {})
             named_flows = bm.get("namedFlows", [])
             print(f"  Loaded business-map.json: {len(business_overrides)} overrides, {len(named_flows)} named flows")

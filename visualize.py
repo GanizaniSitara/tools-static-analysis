@@ -18,7 +18,19 @@ OUT_DIR = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "output")
 DIAGRAMS_DIR = os.path.join(OUT_DIR, "diagrams")
 os.makedirs(DIAGRAMS_DIR, exist_ok=True)
 
-graph = json.loads(Path(os.path.join(OUT_DIR, "graph.json")).read_text(encoding="utf-8"))
+
+def _load_json(path: str, default=None):
+    """Load a JSON file, returning *default* on any read/parse error."""
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        if default is None:
+            raise
+        print(f"  Warning: could not load {path}: {exc}")
+        return default
+
+
+graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
 
 # ─── Helpers ────────────────────────────────────────────────────────
 
@@ -437,7 +449,7 @@ def generate_data_flow_mermaid() -> str:
     if not os.path.isfile(data_flow_path):
         return "graph LR\n    no_data[No data flow information available]"
 
-    data_flow = json.loads(Path(data_flow_path).read_text(encoding="utf-8"))
+    data_flow = _load_json(data_flow_path, {})
     data_nodes = data_flow.get("dataNodes", [])
     data_edges = data_flow.get("dataEdges", [])
 
@@ -583,7 +595,7 @@ def generate_business_layer_mermaid() -> str:
     if not os.path.isfile(flow_paths_path):
         return "graph TD\n    no_data[No business layer data available]"
 
-    flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+    flow_data = _load_json(flow_paths_path, {})
     layers_data = flow_data.get("businessLayers", {})
     layer_summary = flow_data.get("layerSummary", {})
 
@@ -691,7 +703,7 @@ def generate_e2e_flows_mermaid() -> str:
     if not os.path.isfile(flow_paths_path):
         return "graph TD\n    no_data[No flow path data available]"
 
-    flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+    flow_data = _load_json(flow_paths_path, {})
     flow_paths = flow_data.get("flowPaths", [])
     layers_data = flow_data.get("businessLayers", {})
 
@@ -792,7 +804,7 @@ def generate_field_traceability_mermaid() -> str:
     if not os.path.isfile(ft_path):
         return "graph TD\n    no_data[No field traceability data available]"
 
-    ft_data = json.loads(Path(ft_path).read_text(encoding="utf-8"))
+    ft_data = _load_json(ft_path, {})
     chains = ft_data.get("fieldChains", [])
 
     if not chains:
@@ -1052,7 +1064,7 @@ def main():
     # Individual flow path diagrams (top 10)
     flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
     if os.path.isfile(flow_paths_path):
-        flow_data = json.loads(Path(flow_paths_path).read_text(encoding="utf-8"))
+        flow_data = _load_json(flow_paths_path, {})
         flow_paths = flow_data.get("flowPaths", [])
         for i, fp in enumerate(flow_paths[:10]):
             content = generate_flow_path_mermaid(fp)
