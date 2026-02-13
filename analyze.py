@@ -337,6 +337,15 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             for p in direct_pkgs
         ]
 
+        # Also check for packages.config (legacy NuGet format)
+        pkgs_config_path = os.path.join(csproj_dir, "packages.config")
+        pkgs_config_xml = safe_read_text(pkgs_config_path)
+        if pkgs_config_xml:
+            for pc in parse_xml_elements(pkgs_config_xml, "package"):
+                pkg_id = pc["attrs"].get("id", "")
+                if pkg_id:
+                    all_pkgs.append({"name": pkg_id, "version": pc["attrs"].get("version", "")})
+
         for pkg in all_pkgs:
             if pkg["name"]:
                 package_deps.append({
