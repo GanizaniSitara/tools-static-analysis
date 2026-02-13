@@ -1088,6 +1088,14 @@ def generate_viewer_html() -> str:
         Projects ranked by coupling complexity &mdash; where AI help has most impact.
         Score = Fan-Out&times;3 + Fan-In&times;2 + NuGet + Data&nbsp;Patterns + Cross-Repo&times;4
       </p>
+      <div id="hsFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        <button type="button" class="hs-badge" data-filter="red">Risk: 0</button>
+        <button type="button" class="hs-badge" data-filter="yellow">Watch: 0</button>
+        <button type="button" class="hs-badge" data-filter="green">Stable: 0</button>
+        <button type="button" class="hs-badge" data-filter="none">None: 0</button>
+        <select id="hsCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
+        <select id="hsLayerFilter" class="hs-dropdown"><option value="">All Layers</option></select>
+      </div>
       <div class="table-wrap">
         <table id="hotspotsTable">
           <thead>
@@ -1101,7 +1109,7 @@ def generate_viewer_html() -> str:
               <th data-sort-type="num">Data Patterns</th>
               <th data-sort-type="num">Cross-Repo</th>
               <th data-sort-type="num">Score</th>
-              <th data-sort-type="none">Risk</th>
+              <th data-sort-type="risk">Risk</th>
             </tr>
           </thead>
           <tbody id="hotspotsBody">
@@ -1264,6 +1272,22 @@ def generate_viewer_html() -> str:
   thead th[data-sort-type]:not([data-sort-type="none"]) {{ cursor: pointer; user-select: none; }}
   thead th[data-sort-type]:not([data-sort-type="none"]):hover {{ background: #EAEAEA; }}
   .sort-indicator {{ font-size: 0.65em; margin-left: 3px; color: #005587; }}
+  .hs-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+  }}
+  .hs-badge[data-filter="red"]    {{ background:rgba(208,0,43,0.15); color:#D0002B; }}
+  .hs-badge[data-filter="yellow"] {{ background:rgba(158,135,0,0.15); color:#9E8700; }}
+  .hs-badge[data-filter="green"]  {{ background:rgba(0,150,57,0.15); color:#009639; }}
+  .hs-badge[data-filter="none"]   {{ background:rgba(83,86,90,0.15); color:#53565A; }}
+  .hs-badge-active {{ outline:2px solid currentColor; }}
+  .hs-dropdown {{
+    padding:0.35rem 0.6rem; border-radius:6px; border:1px solid #E1E1E1;
+    background:#FFFFFF; color:#333333; font-size:0.82rem; outline:none;
+    cursor:pointer; transition:border-color .2s;
+  }}
+  .hs-dropdown:hover {{ border-color:#005587; }}
+  .hs-dropdown:focus {{ border-color:#005587; box-shadow:0 0 0 2px rgba(0,85,135,0.15); }}
   .tag {{
     display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
     font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
@@ -1952,7 +1976,19 @@ function initSortableTable(table) {{
         var aVal = (aCell.textContent || '').trim();
         var bVal = (bCell.textContent || '').trim();
         var cmp;
-        if (sortType === 'num') {{
+        if (sortType === 'risk') {{
+          var riskWeight = {{ '#D0002B': 300, '#9E8700': 200, '#009639': 100 }};
+          function sumRisk(cell) {{
+            var dots = cell.querySelectorAll('span[style*="border-radius:50%"]');
+            var total = 0;
+            dots.forEach(function (d) {{
+              var bg = d.style.background || d.style.backgroundColor || '';
+              total += riskWeight[bg] || 0;
+            }});
+            return total;
+          }}
+          cmp = sumRisk(aCell) - sumRisk(bCell);
+        }} else if (sortType === 'num') {{
           cmp = (parseFloat(aVal) || 0) - (parseFloat(bVal) || 0);
         }} else {{
           cmp = aVal.localeCompare(bVal, undefined, {{ numeric: true, sensitivity: 'base' }});
@@ -2163,13 +2199,21 @@ function initSortableTable(table) {{
       else if (idx < midThird) {{ scoreColor = '#9E8700'; scoreBg = 'rgba(158,135,0,0.06)'; }}
       else {{ scoreColor = '#009639'; scoreBg = 'rgba(0,150,57,0.06)'; }}
       tr.setAttribute('data-search', (m.project + ' ' + m.category + ' ' + (m.layer || '') + ' ' + (m.repo || '')).toLowerCase());
-      // Build risk cell
+      tr.setAttribute('data-category', (m.category || '').toLowerCase());
+      tr.setAttribute('data-layer', (m.layer || '').toLowerCase());
+      // Build risk cell & determine highest risk level
       var riskDots = '';
       var smellColors = {{ red: '#D0002B', yellow: '#9E8700', green: '#009639' }};
+      var riskPriority = {{ red: 3, yellow: 2, green: 1 }};
+      var highestRisk = 'none';
+      var highestPri = 0;
       (m.smells || []).forEach(function (s) {{
         var c = smellColors[s.level] || '#53565A';
         riskDots += '<span title="' + escHtml(s.label + ': ' + s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+        var pri = riskPriority[s.level] || 0;
+        if (pri > highestPri) {{ highestPri = pri; highestRisk = s.level; }}
       }});
+      tr.setAttribute('data-risk-level', highestRisk);
       var riskTitle = m.explanation ? ' title="' + escHtml(m.explanation) + '"' : '';
       tr.innerHTML =
         '<td><strong>' + escHtml(m.project) + '</strong></td>' +
@@ -2185,7 +2229,87 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('hotspotsTable'));
+
+    // Populate badge counts
+    var riskCounts = {{ red: 0, yellow: 0, green: 0, none: 0 }};
+    var categories = {{}};
+    var layers = {{}};
+    var hsRows = document.querySelectorAll('#hotspotsBody tr');
+    hsRows.forEach(function (row) {{
+      var rl = row.getAttribute('data-risk-level') || 'none';
+      riskCounts[rl] = (riskCounts[rl] || 0) + 1;
+      var cat = row.getAttribute('data-category') || '';
+      if (cat) categories[cat] = true;
+      var lay = row.getAttribute('data-layer') || '';
+      if (lay) layers[lay] = true;
+    }});
+    document.querySelectorAll('.hs-badge').forEach(function (b) {{
+      var f = b.getAttribute('data-filter');
+      var labels = {{ red: 'Risk', yellow: 'Watch', green: 'Stable', none: 'None' }};
+      b.textContent = (labels[f] || f) + ': ' + (riskCounts[f] || 0);
+    }});
+
+    // Populate category dropdown
+    var catSelect = document.getElementById('hsCategoryFilter');
+    if (catSelect) {{
+      Object.keys(categories).sort().forEach(function (c) {{
+        var opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+        catSelect.appendChild(opt);
+      }});
+    }}
+
+    // Populate layer dropdown
+    var laySelect = document.getElementById('hsLayerFilter');
+    if (laySelect) {{
+      Object.keys(layers).sort().forEach(function (l) {{
+        var opt = document.createElement('option');
+        opt.value = l;
+        opt.textContent = l.charAt(0).toUpperCase() + l.slice(1);
+        laySelect.appendChild(opt);
+      }});
+    }}
+
+    // Badge click handlers
+    document.querySelectorAll('.hs-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('hs-badge-active');
+        document.querySelectorAll('.hs-badge').forEach(function (b) {{ b.classList.remove('hs-badge-active'); }});
+        if (!isActive) {{
+          badge.classList.add('hs-badge-active');
+        }}
+        applyHotspotFilters();
+      }});
+    }});
+
+    // Dropdown change handlers
+    if (catSelect) catSelect.addEventListener('change', function () {{ applyHotspotFilters(); }});
+    if (laySelect) laySelect.addEventListener('change', function () {{ applyHotspotFilters(); }});
   }})();
+
+  // Shared hotspot filter function
+  function applyHotspotFilters() {{
+    var activeBadge = document.querySelector('.hs-badge.hs-badge-active');
+    var riskFilter = activeBadge ? activeBadge.getAttribute('data-filter') : '';
+    var catFilter = (document.getElementById('hsCategoryFilter') || {{}}).value || '';
+    var layFilter = (document.getElementById('hsLayerFilter') || {{}}).value || '';
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
+
+    var rows = document.querySelectorAll('#hotspotsBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var show = true;
+      if (riskFilter && row.getAttribute('data-risk-level') !== riskFilter) show = false;
+      if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
+      if (layFilter && row.getAttribute('data-layer') !== layFilter) show = false;
+      if (searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
+    }});
+  }}
 
   // Search
   var searchInput = document.getElementById('searchInput');
@@ -2196,11 +2320,7 @@ function initSortableTable(table) {{
       var text = row.getAttribute('data-search') || '';
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
     }});
-    var hsRows = document.querySelectorAll('#hotspotsBody tr[data-search]');
-    hsRows.forEach(function (row) {{
-      var text = row.getAttribute('data-search') || '';
-      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
-    }});
+    applyHotspotFilters();
   }});
 
   // Flow paths search
