@@ -1977,17 +1977,16 @@ function initSortableTable(table) {{
         var bVal = (bCell.textContent || '').trim();
         var cmp;
         if (sortType === 'risk') {{
-          var riskWeight = {{ '#D0002B': 300, '#9E8700': 200, '#009639': 100 }};
-          function sumRisk(cell) {{
-            var dots = cell.querySelectorAll('span[style*="border-radius:50%"]');
-            var total = 0;
-            dots.forEach(function (d) {{
-              var bg = d.style.background || d.style.backgroundColor || '';
-              total += riskWeight[bg] || 0;
-            }});
-            return total;
+          var riskLevelWeight = {{ red: 300, yellow: 200, green: 100, none: 0 }};
+          var aRisk = a.getAttribute('data-risk-level') || 'none';
+          var bRisk = b.getAttribute('data-risk-level') || 'none';
+          cmp = (riskLevelWeight[aRisk] || 0) - (riskLevelWeight[bRisk] || 0);
+          if (cmp === 0) {{
+            // Secondary sort: count of dots (more smells = higher)
+            var aDots = aCell.querySelectorAll('span[style*="border-radius"]').length;
+            var bDots = bCell.querySelectorAll('span[style*="border-radius"]').length;
+            cmp = aDots - bDots;
           }}
-          cmp = sumRisk(aCell) - sumRisk(bCell);
         }} else if (sortType === 'num') {{
           cmp = (parseFloat(aVal) || 0) - (parseFloat(bVal) || 0);
         }} else {{
@@ -2203,18 +2202,22 @@ function initSortableTable(table) {{
       tr.setAttribute('data-layer', (m.layer || '').toLowerCase());
       // Build risk cell & determine highest risk level
       var riskDots = '';
+      var riskLabels = '';
       var smellColors = {{ red: '#D0002B', yellow: '#9E8700', green: '#009639' }};
       var riskPriority = {{ red: 3, yellow: 2, green: 1 }};
       var highestRisk = 'none';
       var highestPri = 0;
       (m.smells || []).forEach(function (s) {{
         var c = smellColors[s.level] || '#53565A';
-        riskDots += '<span title="' + escHtml(s.label + ': ' + s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+        riskDots += '<span title="' + escHtml(s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+        riskLabels += '<div style="font-size:0.7rem;color:' + c + ';line-height:1.3;" title="' + escHtml(s.explanation) + '">' + escHtml(s.label) + '</div>';
         var pri = riskPriority[s.level] || 0;
         if (pri > highestPri) {{ highestPri = pri; highestRisk = s.level; }}
       }});
       tr.setAttribute('data-risk-level', highestRisk);
-      var riskTitle = m.explanation ? ' title="' + escHtml(m.explanation) + '"' : '';
+      var riskCell = (m.smells || []).length > 0
+        ? '<div style="display:flex;align-items:center;gap:6px;justify-content:center;"><div>' + riskDots + '</div><div style="text-align:left;">' + riskLabels + '</div></div>'
+        : '&mdash;';
       tr.innerHTML =
         '<td><strong>' + escHtml(m.project) + '</strong></td>' +
         '<td>' + tagHTML(m.category) + '</td>' +
@@ -2225,7 +2228,7 @@ function initSortableTable(table) {{
         '<td style="text-align:center">' + m.data_patterns + '</td>' +
         '<td style="text-align:center">' + m.cross_repo_refs + '</td>' +
         '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>' +
-        '<td style="text-align:center"' + riskTitle + '>' + (riskDots || '&mdash;') + '</td>';
+        '<td>' + riskCell + '</td>';
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('hotspotsTable'));

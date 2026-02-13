@@ -42,7 +42,7 @@ def safe_read_text(filepath: str, max_size: int = _MAX_FILE_SIZE) -> str | None:
     Applies long-path normalisation on Windows and skips files exceeding
     *max_size* to prevent memory issues on very large repos.
     """
-    norm_path = _normalize_path(filepath)
+    norm_path = _fs_path(filepath)
     try:
         sz = Path(norm_path).stat().st_size
         if sz > max_size:
@@ -74,19 +74,47 @@ def parse_xml_elements(xml: str, tag: str) -> list[dict]:
 
 # ─── Path normalisation (Windows compat) ────────────────────────────
 
-def _normalize_path(p: str) -> str:
-    """Normalise a path for cross-platform use.
+def _strip_long_prefix(p: str) -> str:
+    """Strip the Windows ``\\\\?\\`` extended-length prefix."""
+    if p.startswith("\\\\?\\"):
+        return p[4:]
+    return p
 
-    * On Windows, prepends the ``\\\\?\\`` extended-length prefix when
-      the absolute path exceeds the legacy MAX_PATH limit (260 chars).
-    * Uses ``os.path.normpath`` to produce OS-native separators so that
-      paths work correctly with filesystem APIs on every platform.
+
+def _fs_path(p: str) -> str:
+    """Return a path suitable for filesystem I/O (scandir, stat, read).
+
+    On Windows, adds the ``\\\\?\\`` extended-length prefix for paths
+    that exceed the legacy 260-char MAX_PATH limit.  The prefix is
+    *only* needed for direct OS calls — never for relpath / comparisons.
     """
     if sys.platform == "win32":
         abs_p = os.path.abspath(p)
         if len(abs_p) >= 260 and not abs_p.startswith("\\\\?\\"):
-            p = "\\\\?\\" + abs_p
+            return "\\\\?\\" + abs_p
     return os.path.normpath(p) if p else p
+
+
+def _normalize_path(p: str) -> str:
+    """Return a clean, absolute, normalised path (no ``\\\\?\\`` prefix).
+
+    Safe for relpath, comparisons, and storage.  Filesystem helpers
+    like ``safe_read_text`` and ``find_files`` call ``_fs_path``
+    internally when they need the long-path prefix.
+    """
+    return _strip_long_prefix(os.path.normpath(os.path.abspath(p))) if p else p
+
+
+def _relpath(path: str, start: str) -> str:
+    """Compute os.path.relpath after stripping any ``\\\\?\\`` prefixes.
+
+    Also normalises both sides with os.path.normcase so that drive
+    letter case (``C:`` vs ``c:``) and separator style never cause a
+    cross-mount ValueError on Windows.
+    """
+    clean_path = _strip_long_prefix(os.path.normpath(path))
+    clean_start = _strip_long_prefix(os.path.normpath(start))
+    return os.path.relpath(clean_path, clean_start)
 
 
 # ─── Find all files recursively ─────────────────────────────────────
@@ -103,6 +131,10 @@ def find_files(
 ) -> list[str]:
     """Recursively find files matching a regex pattern on the filename.
 
+    Returns clean paths (no ``\\\\?\\`` prefix) that are safe for
+    relpath comparisons.  Uses ``_fs_path`` internally for scandir
+    to handle Windows long-path limits.
+
     Respects *_MAX_SCAN_DEPTH* to avoid excessively deep trees (common on
     Windows where junction/symlink loops and deeply nested ``node_modules``
     can cause MAX_PATH errors).
@@ -111,16 +143,17 @@ def find_files(
         results = []
     if _depth > _MAX_SCAN_DEPTH:
         return results
-    directory = _normalize_path(directory)
-    if not os.path.exists(directory):
+    fs_dir = _fs_path(directory)
+    if not os.path.exists(fs_dir):
         return results
     try:
-        with os.scandir(directory) as it:
+        with os.scandir(fs_dir) as it:
             entries = list(it)
     except OSError:
         return results
 
     for entry in entries:
+        # Clean path for storage/comparison; _fs_path used only for scandir
         full = _normalize_path(entry.path)
         try:
             is_dir = entry.is_dir(follow_symlinks=False)
@@ -172,7 +205,7 @@ def discover_repos(scan_root: str) -> list[dict]:
         if not sub_csproj:
             continue
 
-        sub_slns = [os.path.normpath(os.path.relpath(s, sub_dir)) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
+        sub_slns = [os.path.normpath(_relpath(s, sub_dir)) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
 
         if sub_dir not in seen:
             repos.append({"name": entry_name, "root": sub_dir, "solutions": sub_slns})
@@ -194,7 +227,7 @@ def load_properties(repo_root: str) -> dict[str, str]:
     # Scan for .props files at repo root (max 2 levels deep)
     props_files = [
         f for f in find_files(repo_root, re.compile(r"\.props$", re.IGNORECASE))
-        if len(os.path.normpath(os.path.relpath(f, repo_root)).split(os.sep)) <= 2
+        if len(os.path.normpath(_relpath(f, repo_root)).split(os.sep)) <= 2
     ]
 
     skip_tags = {"PropertyGroup", "Condition", "Project", "Import", "ItemGroup"}
@@ -302,7 +335,7 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
     repo_root = repo["root"]
     props = load_properties(repo_root)
     csproj_files = find_files(repo_root, re.compile(r"\.csproj$"))
-    abs_root = os.path.abspath(repo_root)
+    abs_root = _normalize_path(repo_root)
 
     package_deps = []
     project_refs = []
@@ -315,8 +348,8 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
 
         csproj_dir = os.path.dirname(csproj_path)
         proj_name = os.path.splitext(os.path.basename(csproj_path))[0]
-        rel_path = os.path.relpath(csproj_path, abs_root)
-        global_rel_path = os.path.relpath(csproj_path, global_scan_root)
+        rel_path = _relpath(csproj_path, abs_root)
+        global_rel_path = _relpath(csproj_path, global_scan_root)
 
         category = categorize_project(rel_path, proj_name, xml)
         project_meta.append({
@@ -336,6 +369,15 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             {"name": p["attrs"].get("Include", ""), "version": p["attrs"].get("Version", "")}
             for p in direct_pkgs
         ]
+
+        # Also check for packages.config (legacy NuGet format)
+        pkgs_config_path = os.path.join(csproj_dir, "packages.config")
+        pkgs_config_xml = safe_read_text(pkgs_config_path)
+        if pkgs_config_xml:
+            for pc in parse_xml_elements(pkgs_config_xml, "package"):
+                pkg_id = pc["attrs"].get("id", "")
+                if pkg_id:
+                    all_pkgs.append({"name": pkg_id, "version": pc["attrs"].get("version", "")})
 
         for pkg in all_pkgs:
             if pkg["name"]:
@@ -366,9 +408,9 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             if not resolved_ref:
                 continue
             ref_name = os.path.splitext(os.path.basename(resolved_ref))[0]
-            ref_rel_path = os.path.relpath(resolved_ref, abs_root)
-            ref_global_path = os.path.relpath(resolved_ref, global_scan_root)
-            resolved_ref_norm = os.path.normcase(os.path.abspath(resolved_ref))
+            ref_rel_path = _relpath(resolved_ref, abs_root)
+            ref_global_path = _relpath(resolved_ref, global_scan_root)
+            resolved_ref_norm = os.path.normcase(_normalize_path(resolved_ref))
             abs_root_norm = os.path.normcase(abs_root)
             try:
                 is_in_same_repo = os.path.commonpath([resolved_ref_norm, abs_root_norm]) == abs_root_norm
@@ -482,17 +524,17 @@ def build_file_to_project_map(project_meta: list[dict], repo_root: str) -> dict[
     case-insensitive on Windows.
     """
     dir_to_project: dict[str, str] = {}
-    abs_root = os.path.abspath(repo_root)
+    abs_root = _normalize_path(repo_root)
     for pm in project_meta:
         csproj_path = os.path.join(abs_root, pm["path"])
-        csproj_dir = os.path.normcase(os.path.dirname(os.path.abspath(csproj_path)))
+        csproj_dir = os.path.normcase(os.path.dirname(_normalize_path(csproj_path)))
         dir_to_project[csproj_dir] = pm["project"]
     return dir_to_project
 
 
 def resolve_project_for_file(filepath: str, dir_to_project: dict[str, str]) -> str | None:
     """Walk up directory tree to find owning project for a source file."""
-    d = os.path.normcase(os.path.dirname(os.path.abspath(filepath)))
+    d = os.path.normcase(os.path.dirname(_normalize_path(filepath)))
     for _ in range(20):  # safety limit
         if d in dir_to_project:
             return dir_to_project[d]
@@ -806,7 +848,7 @@ def classify_all_projects(
 def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
     """Scan .cs files for data access patterns with direction and endpoint extraction."""
     findings = []
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
 
     for repo in repos:
         # Build project resolution map for this repo
@@ -821,7 +863,7 @@ def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list
                 continue
 
             lines = content.splitlines()
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
 
             for pat in ENHANCED_DATA_PATTERNS:
@@ -899,7 +941,7 @@ _DAPPER_QUERY_TYPE_RE = re.compile(r'\.(Query|QueryAsync|QueryFirst|QuerySingle)
 def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
     """Scan .xaml files for bindings, view types, and DataContext references."""
     views: list[dict] = []
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
 
     for repo in repos:
         repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
@@ -911,7 +953,7 @@ def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list
             if content is None:
                 continue
 
-            rel_path = os.path.relpath(xaml_file, abs_root)
+            rel_path = _relpath(xaml_file, abs_root)
             project_name = resolve_project_for_file(xaml_file, dir_to_project)
 
             # Extract x:Class
@@ -962,7 +1004,7 @@ def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list
 def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta: list[dict] | None = None) -> list[dict]:
     """Extract public properties from ViewModel classes."""
     viewmodels: list[dict] = []
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
 
     for repo in repos:
         repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
@@ -978,7 +1020,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
             if not _VIEWMODEL_CLASS_RE.search(content):
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1040,7 +1082,7 @@ def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: 
         return []
 
     entities: list[dict] = []
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
 
     for repo in repos:
         repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
@@ -1056,7 +1098,7 @@ def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: 
             if not any(ename in content for ename in known_entities):
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1145,7 +1187,7 @@ def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
                                  project_meta: list[dict] | None = None) -> list[dict]:
     """Extract EF Fluent API table/column mappings from DbContext configurations."""
     mappings: list[dict] = []
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
 
     for repo in repos:
         repo_meta = [pm for pm in (project_meta or []) if pm.get("repo") == repo["name"]]
@@ -1161,7 +1203,7 @@ def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
             if "OnModelCreating" not in content and "ModelBuilder" not in content:
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1898,7 +1940,7 @@ def extract_json_paths(obj, key: str):
 
 def extract_configs(scan_root: str, repos: list[dict]) -> list[dict]:
     """Extract configuration files and connection strings."""
-    abs_root = os.path.abspath(scan_root)
+    abs_root = _normalize_path(scan_root)
     configs = []
 
     config_patterns = [
@@ -1914,7 +1956,7 @@ def extract_configs(scan_root: str, repos: list[dict]) -> list[dict]:
             config_files.extend(find_files(repo["root"], pat))
 
         for f in config_files:
-            rel_path = os.path.relpath(f, abs_root)
+            rel_path = _relpath(f, abs_root)
             content = safe_read_text(f)
             if content is None:
                 continue
@@ -2120,6 +2162,8 @@ def write_csv(filepath: str, rows: list[dict], columns: list[str]):
 # ─── Main ───────────────────────────────────────────────────────────
 
 def main():
+    global SCAN_ROOT
+    SCAN_ROOT = _normalize_path(SCAN_ROOT)
     print(f"\n=== Dependency Mapper (Python) ===")
     print(f"Scan root: {SCAN_ROOT}")
     print(f"Output:    {OUT_DIR}\n")
