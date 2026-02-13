@@ -89,6 +89,18 @@ def _normalize_path(p: str) -> str:
     return os.path.normpath(p) if p else p
 
 
+def _strip_long_prefix(p: str) -> str:
+    """Strip the Windows ``\\\\?\\`` extended-length prefix for relpath safety."""
+    if p.startswith("\\\\?\\"):
+        return p[4:]
+    return p
+
+
+def _relpath(path: str, start: str) -> str:
+    """Compute os.path.relpath after stripping any \\\\?\\ prefixes."""
+    return os.path.relpath(_strip_long_prefix(path), _strip_long_prefix(start))
+
+
 # ─── Find all files recursively ─────────────────────────────────────
 
 SKIP_DIRS = {".git", "node_modules", "bin", "obj", ".vs", ".idea", "packages",
@@ -172,7 +184,7 @@ def discover_repos(scan_root: str) -> list[dict]:
         if not sub_csproj:
             continue
 
-        sub_slns = [os.path.normpath(os.path.relpath(s, sub_dir)) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
+        sub_slns = [os.path.normpath(_relpath(s, sub_dir)) for s in find_files(sub_dir, re.compile(r"\.sln$"))]
 
         if sub_dir not in seen:
             repos.append({"name": entry_name, "root": sub_dir, "solutions": sub_slns})
@@ -194,7 +206,7 @@ def load_properties(repo_root: str) -> dict[str, str]:
     # Scan for .props files at repo root (max 2 levels deep)
     props_files = [
         f for f in find_files(repo_root, re.compile(r"\.props$", re.IGNORECASE))
-        if len(os.path.normpath(os.path.relpath(f, repo_root)).split(os.sep)) <= 2
+        if len(os.path.normpath(_relpath(f, repo_root)).split(os.sep)) <= 2
     ]
 
     skip_tags = {"PropertyGroup", "Condition", "Project", "Import", "ItemGroup"}
@@ -315,8 +327,8 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
 
         csproj_dir = os.path.dirname(csproj_path)
         proj_name = os.path.splitext(os.path.basename(csproj_path))[0]
-        rel_path = os.path.relpath(csproj_path, abs_root)
-        global_rel_path = os.path.relpath(csproj_path, global_scan_root)
+        rel_path = _relpath(csproj_path, abs_root)
+        global_rel_path = _relpath(csproj_path, global_scan_root)
 
         category = categorize_project(rel_path, proj_name, xml)
         project_meta.append({
@@ -375,8 +387,8 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             if not resolved_ref:
                 continue
             ref_name = os.path.splitext(os.path.basename(resolved_ref))[0]
-            ref_rel_path = os.path.relpath(resolved_ref, abs_root)
-            ref_global_path = os.path.relpath(resolved_ref, global_scan_root)
+            ref_rel_path = _relpath(resolved_ref, abs_root)
+            ref_global_path = _relpath(resolved_ref, global_scan_root)
             resolved_ref_norm = os.path.normcase(os.path.abspath(resolved_ref))
             abs_root_norm = os.path.normcase(abs_root)
             try:
@@ -830,7 +842,7 @@ def discover_data_patterns(scan_root: str, repos: list[dict], project_meta: list
                 continue
 
             lines = content.splitlines()
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
 
             for pat in ENHANCED_DATA_PATTERNS:
@@ -920,7 +932,7 @@ def discover_xaml_bindings(scan_root: str, repos: list[dict], project_meta: list
             if content is None:
                 continue
 
-            rel_path = os.path.relpath(xaml_file, abs_root)
+            rel_path = _relpath(xaml_file, abs_root)
             project_name = resolve_project_for_file(xaml_file, dir_to_project)
 
             # Extract x:Class
@@ -987,7 +999,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
             if not _VIEWMODEL_CLASS_RE.search(content):
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1065,7 +1077,7 @@ def extract_entity_properties(scan_root: str, repos: list[dict], data_findings: 
             if not any(ename in content for ename in known_entities):
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1170,7 +1182,7 @@ def extract_fluent_api_mappings(scan_root: str, repos: list[dict],
             if "OnModelCreating" not in content and "ModelBuilder" not in content:
                 continue
 
-            rel_path = os.path.relpath(cs_file, abs_root)
+            rel_path = _relpath(cs_file, abs_root)
             project_name = resolve_project_for_file(cs_file, dir_to_project)
             lines = content.splitlines()
 
@@ -1923,7 +1935,7 @@ def extract_configs(scan_root: str, repos: list[dict]) -> list[dict]:
             config_files.extend(find_files(repo["root"], pat))
 
         for f in config_files:
-            rel_path = os.path.relpath(f, abs_root)
+            rel_path = _relpath(f, abs_root)
             content = safe_read_text(f)
             if content is None:
                 continue
