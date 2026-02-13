@@ -157,7 +157,7 @@ def compute_hotspot_metrics() -> list[dict]:
             fan_out * 3 + fan_in * 2 + nuget_deps + data_pattern_count + cross_repo_refs * 4
         )
         layer_info = bl.get(project, {})
-        metrics.append({
+        entry = {
             "project": project,
             "category": pm["category"],
             "repo": pm.get("repo", ""),
@@ -171,9 +171,101 @@ def compute_hotspot_metrics() -> list[dict]:
             "data_types": data_types,
             "cross_repo_refs": cross_repo_refs,
             "hotspot_score": hotspot_score,
-        })
+        }
+        smells = compute_smell_flags(entry)
+        entry["smells"] = smells
+        entry["explanation"] = compute_hotspot_explanation(entry, smells)
+        metrics.append(entry)
     metrics.sort(key=lambda x: -x["hotspot_score"])
     return metrics
+
+
+def compute_smell_flags(m: dict) -> list[dict]:
+    """Return a list of smell flags for a hotspot metric dict."""
+    flags = []
+    cat = m.get("category", "")
+    layer = m.get("layer", "")
+    fan_in = m.get("fan_in", 0)
+    fan_out = m.get("fan_out", 0)
+    data_types = m.get("data_types", [])
+    cross_repo = m.get("cross_repo_refs", 0)
+
+    # Red flags
+    if fan_in >= 3 and fan_out >= 5:
+        flags.append({
+            "id": "hub",
+            "level": "red",
+            "label": "Hub/God Object",
+            "explanation": f"Fan-in {fan_in} + fan-out {fan_out}: heavily depended-upon AND heavily depending",
+        })
+    if cat in ("Application", "DesktopApp", "Test") and fan_in >= 3:
+        flags.append({
+            "id": "upstream_dep",
+            "level": "red",
+            "label": "Upstream Dependency",
+            "explanation": f"{cat} with fan-in {fan_in}: app/test layer should not be reused by others",
+        })
+
+    # Yellow flags
+    if len(data_types) >= 3:
+        flags.append({
+            "id": "mixed_concerns",
+            "level": "yellow",
+            "label": "Mixed Concerns",
+            "explanation": f"{len(data_types)} data types ({', '.join(data_types)}): too many responsibilities",
+        })
+    if cross_repo >= 2:
+        flags.append({
+            "id": "cross_boundary",
+            "level": "yellow",
+            "label": "Cross-Boundary",
+            "explanation": f"{cross_repo} cross-repo refs: heavy coupling across repo boundaries",
+        })
+    if cat != "Library" and layer != "Infrastructure" and fan_in >= 5:
+        flags.append({
+            "id": "widely_used_non_lib",
+            "level": "yellow",
+            "label": "Widely Used Non-Library",
+            "explanation": f"{cat} with fan-in {fan_in}: may be mis-categorized infrastructure",
+        })
+
+    # Green flags
+    if (cat == "Library" or layer == "Infrastructure") and fan_in >= 3:
+        flags.append({
+            "id": "stable_infra",
+            "level": "green",
+            "label": "Stable Infrastructure",
+            "explanation": f"{cat}/{layer} with fan-in {fan_in}: expected healthy shared component",
+        })
+
+    return flags
+
+
+def compute_hotspot_explanation(m: dict, flags: list[dict]) -> str:
+    """Return a one-line human-readable summary of score drivers and smells."""
+    parts = []
+    red_flags = [f for f in flags if f["level"] == "red"]
+    yellow_flags = [f for f in flags if f["level"] == "yellow"]
+    green_flags = [f for f in flags if f["level"] == "green"]
+
+    if red_flags:
+        parts.append("Risk: " + "; ".join(f["label"] for f in red_flags))
+    if yellow_flags:
+        parts.append("Watch: " + "; ".join(f["label"] for f in yellow_flags))
+    if green_flags:
+        parts.append("OK: " + "; ".join(f["label"] for f in green_flags))
+
+    drivers = []
+    if m.get("fan_out", 0) >= 3:
+        drivers.append(f"fan-out={m['fan_out']}")
+    if m.get("fan_in", 0) >= 3:
+        drivers.append(f"fan-in={m['fan_in']}")
+    if m.get("cross_repo_refs", 0) > 0:
+        drivers.append(f"cross-repo={m['cross_repo_refs']}")
+    if drivers:
+        parts.append("Drivers: " + ", ".join(drivers))
+
+    return " | ".join(parts) if parts else "Low coupling"
 
 
 def get_dir_for_category(cat: str) -> str:
@@ -655,9 +747,9 @@ def generate_viewer_html() -> str:
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
       <div class="table-wrap">
-        <table>
+        <table id="datasourcesTable">
           <thead>
-            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+            <tr><th data-sort-type="text">Pattern</th><th data-sort-type="text">Type</th><th data-sort-type="num">Occurrences</th><th data-sort-type="text">Key Projects</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -684,9 +776,9 @@ def generate_viewer_html() -> str:
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Connection Strings</div>
       <div class="table-wrap">
-        <table>
+        <table id="connstringsTable">
           <thead>
-            <tr><th>Config File</th><th>Repo</th><th>Connection Name</th><th>Value</th></tr>
+            <tr><th data-sort-type="text">Config File</th><th data-sort-type="text">Repo</th><th data-sort-type="text">Connection Name</th><th data-sort-type="text">Value</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -718,14 +810,14 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-implieddeps">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Implied Data Dependencies ({len(implied_deps)})</div>
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+      <p style="color:#53565A;font-size:0.85rem;margin-bottom:0.75rem;">
         Cross-project dependencies derived through shared data infrastructure.
         Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
       </p>
       <div class="table-wrap">
-        <table>
+        <table id="impliedDepsTable">
           <thead>
-            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
+            <tr><th data-sort-type="text">From</th><th data-sort-type="text">To</th><th data-sort-type="text">Via (Endpoint)</th><th data-sort-type="text">Infrastructure</th><th data-sort-type="none">Relationship</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -744,8 +836,8 @@ def generate_viewer_html() -> str:
 
         # Layer badges
         layer_colors = {
-            "Presentation": "#E91E63", "Engine": "#FF9800", "Service": "#3498DB",
-            "DataAccess": "#4A90D9", "Infrastructure": "#9B59B6", "Unclassified": "#64748b",
+            "Presentation": "#621244", "Engine": "#36749D", "Service": "#008BCD",
+            "DataAccess": "#005587", "Infrastructure": "#80276C", "Unclassified": "#53565A",
         }
         badges_html = ""
         for layer in ["Presentation", "Engine", "Service", "DataAccess", "Infrastructure", "Unclassified"]:
@@ -753,7 +845,7 @@ def generate_viewer_html() -> str:
             count = info.get("count", 0)
             if count == 0:
                 continue
-            color = layer_colors.get(layer, "#64748b")
+            color = layer_colors.get(layer, "#53565A")
             badges_html += (
                 f'<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;'
                 f'background:rgba({_hex_to_rgb(color)},0.15);color:{color};font-size:0.78rem;'
@@ -791,29 +883,29 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-e2eflows">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> End-to-End Flow Paths ({len(fps)})</div>
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+      <p style="color:#53565A;font-size:0.85rem;margin-bottom:0.75rem;">
         Traces from UI screens through engines/services down to data endpoints.
         Click a row to see the full path detail with inline diagram.
       </p>
       <div style="margin-bottom:0.75rem;">{badges_html}</div>
       <input type="text" id="flowSearchInput" placeholder="Search flows..." style="
         width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
-        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        border:1px solid #E1E1E1;background:#FFFFFF;color:#000000;
         font-size:0.85rem;margin-bottom:0.75rem;outline:none;
       ">
       <div class="table-wrap">
-        <table>
+        <table id="flowPathsTable">
           <thead>
-            <tr><th>Source Screen</th><th>Layers Crossed</th><th>Depth</th><th>Path Chain</th><th>Named Flow</th></tr>
+            <tr><th data-sort-type="text">Source Screen</th><th data-sort-type="text">Layers Crossed</th><th data-sort-type="num">Depth</th><th data-sort-type="none">Path Chain</th><th data-sort-type="text">Named Flow</th></tr>
           </thead>
           <tbody id="flowPathsBody">
 {flow_rows}          </tbody>
         </table>
       </div>
       <div id="flowDetailContainer" style="margin-top:1rem;display:none;">
-        <div class="card" style="border-color:#3b82f6;">
+        <div class="card" style="border-color:#005587;">
           <div class="card-title"><span class="icon">&#9670;</span> Flow Detail
-            <button onclick="document.getElementById('flowDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+            <button onclick="document.getElementById('flowDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
           </div>
           <div id="flowDetailContent"></div>
           <div class="mermaid-wrap" id="flowDetailMermaid" style="margin-top:0.75rem;"></div>
@@ -832,12 +924,12 @@ def generate_viewer_html() -> str:
 
         # Summary badges
         badge_colors = {
-            "full": ("#22c55e", "Full"),
-            "xaml-to-entity": ("#eab308", "XAML→Entity"),
-            "xaml-to-viewmodel": ("#f59e0b", "XAML→VM"),
-            "entity-to-column": ("#3b82f6", "Entity→DB"),
-            "viewmodel-to-column": ("#8b5cf6", "VM→DB"),
-            "xaml-only": ("#64748b", "XAML Only"),
+            "full": ("#009639", "Full"),
+            "xaml-to-entity": ("#9E8700", "XAML→Entity"),
+            "xaml-to-viewmodel": ("#789D4A", "XAML→VM"),
+            "entity-to-column": ("#005587", "Entity→DB"),
+            "viewmodel-to-column": ("#80276C", "VM→DB"),
+            "xaml-only": ("#53565A", "XAML Only"),
         }
         ft_badges_html = ""
         for level, (color, label) in badge_colors.items():
@@ -872,9 +964,9 @@ def generate_viewer_html() -> str:
                 col = _esc_html(db.get("column", ""))
                 db_col = f"{table}.{col}" if table and col else ""
 
-            comp_color = {"full": "#22c55e", "xaml-to-entity": "#eab308", "xaml-to-viewmodel": "#f59e0b",
-                         "entity-to-column": "#3b82f6", "viewmodel-to-column": "#8b5cf6", "xaml-only": "#64748b"}.get(comp, "#64748b")
-            comp_label = badge_colors.get(comp, ("#64748b", comp))[1]
+            comp_color = {"full": "#009639", "xaml-to-entity": "#9E8700", "xaml-to-viewmodel": "#789D4A",
+                         "entity-to-column": "#005587", "viewmodel-to-column": "#80276C", "xaml-only": "#53565A"}.get(comp, "#53565A")
+            comp_label = badge_colors.get(comp, ("#53565A", comp))[1]
 
             search_text = f"{view_type} {binding_path} {vm_class} {vm_prop} {ent_class} {db_col} {comp}".lower()
 
@@ -893,29 +985,29 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-fieldtrace">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Field-Level Traceability ({ft_summary.get('totalChains', 0)} chains)</div>
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+      <p style="color:#53565A;font-size:0.85rem;margin-bottom:0.75rem;">
         Traces XAML bindings through ViewModel properties and entity classes to database columns.
         Click a row to see the full chain detail. Click a badge to filter by completeness level.
       </p>
       <div style="margin-bottom:0.75rem;">{ft_badges_html}</div>
       <input type="text" id="ftSearchInput" placeholder="Search fields..." style="
         width:100%;max-width:400px;padding:0.4rem 0.7rem;border-radius:6px;
-        border:1px solid #334155;background:#1e293b;color:#e2e8f0;
+        border:1px solid #E1E1E1;background:#FFFFFF;color:#000000;
         font-size:0.85rem;margin-bottom:0.75rem;outline:none;
       ">
       <div class="table-wrap">
-        <table>
+        <table id="fieldTraceTable">
           <thead>
-            <tr><th>XAML View</th><th>Binding Path</th><th>ViewModel</th><th>VM Property</th><th>Entity</th><th>DB Table.Column</th><th>Completeness</th></tr>
+            <tr><th data-sort-type="text">XAML View</th><th data-sort-type="text">Binding Path</th><th data-sort-type="text">ViewModel</th><th data-sort-type="text">VM Property</th><th data-sort-type="text">Entity</th><th data-sort-type="text">DB Table.Column</th><th data-sort-type="text">Completeness</th></tr>
           </thead>
           <tbody id="ftBody">
 {ft_rows}          </tbody>
         </table>
       </div>
       <div id="ftDetailContainer" style="margin-top:1rem;display:none;">
-        <div class="card" style="border-color:#22c55e;">
+        <div class="card" style="border-color:#009639;">
           <div class="card-title"><span class="icon">&#9670;</span> Field Chain Detail
-            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #475569;color:#94a3b8;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
           </div>
           <div id="ftDetailContent"></div>
           <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
@@ -946,17 +1038,17 @@ def generate_viewer_html() -> str:
         <table id="projectsTable">
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Repo</th>
-              <th>Category</th>
-              <th>Business Layer</th>
-              <th>Project Refs</th>
-              <th>NuGet Deps</th>
-              <th>Path</th>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Repo</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="text">Business Layer</th>
+              <th data-sort-type="num">Project Refs</th>
+              <th data-sort-type="num">NuGet Deps</th>
+              <th data-sort-type="text">Path</th>
             </tr>
           </thead>
           <tbody id="projectsBody">
-            <tr><td colspan="7" style="text-align:center;color:#64748b;padding:2rem;">Loading project data...</td></tr>
+            <tr><td colspan="7" style="text-align:center;color:#53565A;padding:2rem;">Loading project data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -976,39 +1068,40 @@ def generate_viewer_html() -> str:
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Hotspot Analysis</div>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Top Hotspot</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#ef4444;margin-top:0.2rem;">{hs_top_name}</div>
-          <div style="font-size:0.8rem;color:#64748b;">Score: {hs_top_score}</div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Top Hotspot</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{hs_top_name}</div>
+          <div style="font-size:0.8rem;color:#53565A;">Score: {hs_top_score}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Most Referenced</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#3b82f6;margin-top:0.2rem;">{hs_ref_name}</div>
-          <div style="font-size:0.8rem;color:#64748b;">Fan-in: {hs_ref_val}</div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Most Referenced</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{hs_ref_name}</div>
+          <div style="font-size:0.8rem;color:#53565A;">Fan-in: {hs_ref_val}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Most Cross-Repo</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#f59e0b;margin-top:0.2rem;">{hs_xr_name}</div>
-          <div style="font-size:0.8rem;color:#64748b;">Cross-repo refs: {hs_xr_val}</div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Most Cross-Repo</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#789D4A;margin-top:0.2rem;">{hs_xr_name}</div>
+          <div style="font-size:0.8rem;color:#53565A;">Cross-repo refs: {hs_xr_val}</div>
         </div>
       </div>
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+      <p style="color:#53565A;font-size:0.85rem;margin-bottom:0.75rem;">
         Projects ranked by coupling complexity &mdash; where AI help has most impact.
         Score = Fan-Out&times;3 + Fan-In&times;2 + NuGet + Data&nbsp;Patterns + Cross-Repo&times;4
       </p>
       <div class="table-wrap">
-        <table>
+        <table id="hotspotsTable">
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Category</th>
-              <th>Layer</th>
-              <th>Fan-Out</th>
-              <th>Fan-In</th>
-              <th>NuGet</th>
-              <th>Data Patterns</th>
-              <th>Cross-Repo</th>
-              <th>Score</th>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="text">Layer</th>
+              <th data-sort-type="num">Fan-Out</th>
+              <th data-sort-type="num">Fan-In</th>
+              <th data-sort-type="num">NuGet</th>
+              <th data-sort-type="num">Data Patterns</th>
+              <th data-sort-type="num">Cross-Repo</th>
+              <th data-sort-type="num">Score</th>
+              <th data-sort-type="none">Risk</th>
             </tr>
           </thead>
           <tbody id="hotspotsBody">
@@ -1035,171 +1128,174 @@ def generate_viewer_html() -> str:
   html {{ font-size: 15px; scroll-behavior: smooth; }}
   body {{
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh;
+    background: #FFFFFF; color: #000000; line-height: 1.6; min-height: 100vh;
   }}
-  a {{ color: #3b82f6; text-decoration: none; }}
+  a {{ color: #005587; text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
   .header {{
-    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
-    border-bottom: 1px solid #334155; padding: 1.5rem 2rem 1rem;
+    background: linear-gradient(135deg, #022D5E 0%, #005587 100%);
+    border-bottom: 1px solid #E1E1E1; padding: 1.5rem 2rem 1rem;
   }}
   .header-top {{
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
   }}
-  .header h1 {{ font-size: 1.6rem; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }}
-  .header h1 span {{ color: #3b82f6; }}
+  .header h1 {{ font-size: 1.6rem; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em; }}
+  .header h1 span {{ color: #FFFFFF; }}
   .search-box {{ position: relative; width: 280px; }}
   .search-box input {{
     width: 100%; padding: 0.5rem 0.75rem 0.5rem 2.2rem; border-radius: 6px;
-    border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: #FFFFFF;
     font-size: 0.875rem; outline: none; transition: border-color .2s;
   }}
-  .search-box input::placeholder {{ color: #64748b; }}
-  .search-box input:focus {{ border-color: #3b82f6; }}
+  .search-box input::placeholder {{ color: rgba(255,255,255,0.6); }}
+  .search-box input:focus {{ border-color: #FFFFFF; }}
   .search-box .search-icon {{
     position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
-    color: #64748b; font-size: 0.85rem; pointer-events: none;
+    color: rgba(255,255,255,0.6); font-size: 0.85rem; pointer-events: none;
   }}
   .stats-row {{ display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }}
-  .stat {{ display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8; }}
-  .stat-value {{ font-weight: 700; font-size: 1rem; color: #3b82f6; }}
+  .stat {{ display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: rgba(255,255,255,0.7); }}
+  .stat-value {{ font-weight: 700; font-size: 1rem; color: #FFFFFF; }}
   .tabs {{
     display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
-    background: #0f172a; border-bottom: 1px solid #334155;
+    background: #FFFFFF; border-bottom: 1px solid #E1E1E1;
   }}
   .tab-btn {{
-    padding: 0.6rem 1rem; background: transparent; border: none; color: #94a3b8;
+    padding: 0.6rem 1rem; background: transparent; border: none; color: #53565A;
     font-size: 0.82rem; font-weight: 500; cursor: pointer;
     border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap;
   }}
-  .tab-btn:hover {{ color: #e2e8f0; }}
-  .tab-btn.active {{ color: #3b82f6; border-bottom-color: #3b82f6; }}
+  .tab-btn:hover {{ color: #000000; }}
+  .tab-btn.active {{ color: #005587; border-bottom-color: #005587; }}
   .content {{ padding: 1.5rem 2rem 3rem; }}
   .tab-panel {{ display: none; }}
   .tab-panel.active {{ display: block; }}
   .card {{
-    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
     padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
   }}
   .card-title {{
-    font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.75rem;
+    font-size: 1.05rem; font-weight: 600; color: #022D5E; margin-bottom: 0.75rem;
     display: flex; align-items: center; gap: 0.5rem;
   }}
-  .card-title .icon {{ color: #3b82f6; }}
+  .card-title .icon {{ color: #005587; }}
   .card-title {{ justify-content: flex-start; }}
   .zoom-controls {{ margin-left: auto; display: flex; gap: 0.25rem; }}
   .zoom-btn {{
-    background: #0f172a; border: 1px solid #334155; color: #94a3b8; border-radius: 4px;
+    background: #FFFFFF; border: 1px solid #E1E1E1; color: #53565A; border-radius: 4px;
     padding: 0.15rem 0.5rem; font-size: 0.75rem; cursor: pointer; line-height: 1.2;
   }}
-  .zoom-btn:hover {{ color: #e2e8f0; border-color: #3b82f6; }}
+  .zoom-btn:hover {{ color: #000000; border-color: #005587; }}
   .edge-filter-warning {{
-    background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
+    background: #FFF8E1; color: #9E8700; border: 1px solid #FFD100; border-radius: 6px;
     padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
   }}
   .diagram-with-legend {{ display:flex; gap:1rem; align-items:flex-start; }}
   .diagram-with-legend .mermaid-wrap {{ flex:1; min-width:0; }}
-  .diagram-legend {{ width:240px; flex-shrink:0; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.78rem; color:#cbd5e1; }}
-  .diagram-legend .legend-title {{ font-weight:600; color:#e2e8f0; margin-bottom:0.4rem; font-size:0.82rem; }}
+  .diagram-legend {{ width:240px; flex-shrink:0; background:#FFFFFF; border:1px solid #E1E1E1; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.78rem; color:#333333; }}
+  .diagram-legend .legend-title {{ font-weight:600; color:#022D5E; margin-bottom:0.4rem; font-size:0.82rem; }}
   .diagram-legend .legend-item {{ margin-bottom:0.3rem; line-height:1.35; }}
-  .diagram-legend .legend-icon {{ display:inline-block; width:1.1rem; color:#60a5fa; text-align:center; }}
-  .cat-nav-btn {{ background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:6px; padding:0.3rem 0.7rem; font-size:0.8rem; cursor:pointer; }}
-  .cat-nav-btn:hover {{ background:#475569; }}
+  .diagram-legend .legend-icon {{ display:inline-block; width:1.1rem; color:#005587; text-align:center; }}
+  .cat-nav-btn {{ background:#F5F5F5; border:1px solid #E1E1E1; color:#022D5E; border-radius:6px; padding:0.3rem 0.7rem; font-size:0.8rem; cursor:pointer; }}
+  .cat-nav-btn:hover {{ background:#E1E1E1; }}
   .mermaid-wrap {{
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
     min-height: 120px; max-height: 80vh;
   }}
-  .mermaid-wrap .loading {{ color: #64748b; font-size: 0.9rem; text-align: center; }}
+  .mermaid-wrap .loading {{ color: #53565A; font-size: 0.9rem; text-align: center; }}
   .mermaid-wrap svg {{ max-width: none !important; height: auto; transform-origin: top left; }}
   .flowchart-link {{ transition: stroke 0.15s, stroke-width 0.15s, opacity 0.15s; }}
   .edge-hover-target {{ stroke: transparent; stroke-width: 15px; fill: none; cursor: pointer; pointer-events: stroke; }}
-  .flowchart-link.edge-highlight {{ stroke: #3b82f6 !important; stroke-width: 3px !important; }}
+  .flowchart-link.edge-highlight {{ stroke: #005587 !important; stroke-width: 3px !important; }}
   .edgePaths:has(.flowchart-link:hover) .flowchart-link:not(:hover) {{ opacity: 0.15; }}
   .edge-tooltip {{
-    position: fixed; background: #1e293b; color: #e2e8f0; border: 1px solid #3b82f6;
+    position: fixed; background: #FFFFFF; color: #000000; border: 1px solid #005587;
     border-radius: 6px; padding: 0.4rem 0.7rem; font-size: 0.8rem; pointer-events: none;
-    z-index: 1000; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1000; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     display: none;
   }}
-  .edge-tooltip .edge-from {{ color: #60a5fa; }}
-  .edge-tooltip .edge-to {{ color: #34d399; }}
-  .edge-tooltip .edge-arrow {{ color: #94a3b8; margin: 0 0.3rem; }}
+  .edge-tooltip .edge-from {{ color: #005587; }}
+  .edge-tooltip .edge-to {{ color: #00897B; }}
+  .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
   .edge-detail-panel {{
     position: fixed; right: 1rem; top: 50%; transform: translateY(-50%);
-    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
     padding: 1.2rem; width: 380px; max-height: 70vh; overflow-y: auto;
-    z-index: 999; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: none;
-    font-size: 0.85rem; color: #e2e8f0;
+    z-index: 999; box-shadow: 0 8px 32px rgba(0,0,0,0.15); display: none;
+    font-size: 0.85rem; color: #000000;
   }}
   .edge-detail-panel .detail-header {{
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid #334155;
+    margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid #E1E1E1;
   }}
   .edge-detail-panel .detail-header h3 {{ font-size: 0.95rem; font-weight: 600; margin: 0; }}
   .edge-detail-panel .detail-close {{
-    background: none; border: 1px solid #475569; color: #94a3b8; border-radius: 4px;
+    background: none; border: 1px solid #E1E1E1; color: #53565A; border-radius: 4px;
     cursor: pointer; padding: 0.1rem 0.5rem; font-size: 0.8rem;
   }}
-  .edge-detail-panel .detail-close:hover {{ color: #e2e8f0; border-color: #64748b; }}
+  .edge-detail-panel .detail-close:hover {{ color: #000000; border-color: #53565A; }}
   .edge-detail-panel .detail-section {{ margin-bottom: 0.8rem; }}
   .edge-detail-panel .detail-section h4 {{
-    font-size: 0.75rem; text-transform: uppercase; color: #64748b; letter-spacing: 0.04em;
+    font-size: 0.75rem; text-transform: uppercase; color: #53565A; letter-spacing: 0.04em;
     margin-bottom: 0.3rem;
   }}
   .edge-detail-panel .detail-flow {{
     display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-bottom: 0.3rem;
   }}
-  .edge-detail-panel .detail-flow .from {{ color: #60a5fa; font-weight: 600; }}
-  .edge-detail-panel .detail-flow .to {{ color: #34d399; font-weight: 600; }}
-  .edge-detail-panel .detail-flow .arrow {{ color: #94a3b8; }}
+  .edge-detail-panel .detail-flow .from {{ color: #005587; font-weight: 600; }}
+  .edge-detail-panel .detail-flow .to {{ color: #00897B; font-weight: 600; }}
+  .edge-detail-panel .detail-flow .arrow {{ color: #53565A; }}
   .edge-detail-panel .detail-list {{ list-style: none; padding: 0; }}
   .edge-detail-panel .detail-list li {{
-    padding: 0.25rem 0; border-bottom: 1px solid #1e293b; color: #cbd5e1; font-size: 0.8rem;
+    padding: 0.25rem 0; border-bottom: 1px solid #F5F5F5; color: #333333; font-size: 0.8rem;
   }}
   .edge-detail-panel .detail-list li:last-child {{ border-bottom: none; }}
-  .edge-detail-panel .detail-empty {{ color: #64748b; font-style: italic; font-size: 0.8rem; }}
+  .edge-detail-panel .detail-empty {{ color: #53565A; font-style: italic; font-size: 0.8rem; }}
   .table-wrap {{ overflow-x: auto; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
   thead th {{
-    background: #1a2438; color: #94a3b8; font-weight: 600; text-transform: uppercase;
+    background: #F5F5F5; color: #53565A; font-weight: 600; text-transform: uppercase;
     font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.6rem 0.75rem; text-align: left;
-    border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 1;
+    border-bottom: 1px solid #E1E1E1; position: sticky; top: 0; z-index: 1;
   }}
-  tbody td {{ padding: 0.55rem 0.75rem; border-bottom: 1px solid #1e293b; color: #cbd5e1; }}
-  tbody tr:hover {{ background: rgba(59,130,246,0.06); }}
+  tbody td {{ padding: 0.55rem 0.75rem; border-bottom: 1px solid #F5F5F5; color: #333333; }}
+  tbody tr:hover {{ background: rgba(0,85,135,0.04); }}
+  thead th[data-sort-type]:not([data-sort-type="none"]) {{ cursor: pointer; user-select: none; }}
+  thead th[data-sort-type]:not([data-sort-type="none"]):hover {{ background: #EAEAEA; }}
+  .sort-indicator {{ font-size: 0.65em; margin-left: 3px; color: #005587; }}
   .tag {{
     display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
     font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
   }}
-  .tag-webapp      {{ background: rgba(26,188,156,.15); color: #1ABC9C; }}
-  .tag-library     {{ background: rgba(74,144,217,.15); color: #4A90D9; }}
-  .tag-application {{ background: rgba(231,76,60,.15);  color: #E74C3C; }}
-  .tag-service     {{ background: rgba(52,152,219,.15); color: #3498DB; }}
-  .tag-tool        {{ background: rgba(243,156,18,.15); color: #F39C12; }}
-  .tag-test        {{ background: rgba(155,89,182,.15); color: #9B59B6; }}
-  .tag-connector   {{ background: rgba(230,126,34,.15); color: #E67E22; }}
-  .tag-desktopapp  {{ background: rgba(233,30,99,.15);  color: #E91E63; }}
-  .tag-db       {{ background: rgba(74,144,217,.15);  color: #4A90D9; }}
-  .tag-messaging{{ background: rgba(231,76,60,.15);   color: #E74C3C; }}
-  .tag-api      {{ background: rgba(52,152,219,.15);  color: #3498DB; }}
-  .tag-cache    {{ background: rgba(243,156,18,.15);  color: #F39C12; }}
-  .tag-config   {{ background: rgba(155,89,182,.15);  color: #9B59B6; }}
-  .tag-presentation  {{ background: rgba(233,30,99,.15);  color: #E91E63; }}
-  .tag-engine        {{ background: rgba(255,152,0,.15);  color: #FF9800; }}
-  .tag-dataaccess    {{ background: rgba(74,144,217,.15); color: #4A90D9; }}
-  .tag-infrastructure {{ background: rgba(155,89,182,.15); color: #9B59B6; }}
-  .tag-unclassified  {{ background: rgba(100,116,139,.15); color: #64748b; }}
+  .tag-webapp      {{ background: rgba(0,137,123,.15); color: #00897B; }}
+  .tag-library     {{ background: rgba(0,85,135,.15); color: #005587; }}
+  .tag-application {{ background: rgba(98,18,68,.15);  color: #621244; }}
+  .tag-service     {{ background: rgba(0,139,205,.15); color: #008BCD; }}
+  .tag-tool        {{ background: rgba(120,157,74,.15); color: #789D4A; }}
+  .tag-test        {{ background: rgba(128,39,108,.15); color: #80276C; }}
+  .tag-connector   {{ background: rgba(54,116,157,.15); color: #36749D; }}
+  .tag-desktopapp  {{ background: rgba(0,191,179,.15);  color: #00BFB3; }}
+  .tag-db       {{ background: rgba(0,85,135,.15);  color: #005587; }}
+  .tag-messaging{{ background: rgba(98,18,68,.15);   color: #621244; }}
+  .tag-api      {{ background: rgba(0,139,205,.15);  color: #008BCD; }}
+  .tag-cache    {{ background: rgba(120,157,74,.15);  color: #789D4A; }}
+  .tag-config   {{ background: rgba(128,39,108,.15);  color: #80276C; }}
+  .tag-presentation  {{ background: rgba(98,18,68,.15);  color: #621244; }}
+  .tag-engine        {{ background: rgba(54,116,157,.15);  color: #36749D; }}
+  .tag-dataaccess    {{ background: rgba(0,85,135,.15); color: #005587; }}
+  .tag-infrastructure {{ background: rgba(128,39,108,.15); color: #80276C; }}
+  .tag-unclassified  {{ background: rgba(83,86,90,.15); color: #53565A; }}
   .flow-row {{ cursor: pointer; }}
-  .flow-row:hover {{ background: rgba(59,130,246,0.12) !important; }}
+  .flow-row:hover {{ background: rgba(0,85,135,0.08) !important; }}
   .ft-row {{ cursor: pointer; }}
-  .ft-row:hover {{ background: rgba(34,197,94,0.08) !important; }}
+  .ft-row:hover {{ background: rgba(0,137,123,0.06) !important; }}
   .flow-step {{ display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }}
-  .flow-arrow {{ color: #64748b; margin: 0 0.2rem; }}
-  .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #64748b; }}
+  .flow-arrow {{ color: #53565A; margin: 0 0.2rem; }}
+  .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #53565A; }}
   .footer {{
-    text-align: center; padding: 1.5rem 2rem; color: #475569;
-    font-size: 0.78rem; font-style: italic; border-top: 1px solid #334155;
+    text-align: center; padding: 1.5rem 2rem; color: #53565A;
+    font-size: 0.78rem; font-style: italic; border-top: 1px solid #E1E1E1;
   }}
   @media (max-width: 768px) {{
     .header {{ padding: 1rem; }}
@@ -1419,7 +1515,7 @@ function showEdgeDetail(fromName, toName) {{
     + '<span class="to">' + escHtmlGlobal(toName) + '</span>'
     + '</div>';
   if (fromMeta || toMeta) {{
-    html += '<div style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem;">';
+    html += '<div style="font-size:0.75rem;color:#53565A;margin-top:0.2rem;">';
     if (fromMeta) html += escHtmlGlobal(fromMeta.category);
     html += ' &#8594; ';
     if (toMeta) html += escHtmlGlobal(toMeta.category);
@@ -1432,7 +1528,7 @@ function showEdgeDetail(fromName, toName) {{
   if (directRefs.length > 0) {{
     html += '<ul class="detail-list">';
     directRefs.forEach(function (r) {{
-      var cross = r.crossRepo === 'True' ? ' <span style="color:#f59e0b;">(cross-repo)</span>' : '';
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
       html += '<li>' + escHtmlGlobal(r.project) + ' &#8594; ' + escHtmlGlobal(r.references) + cross + '</li>';
     }});
     html += '</ul>';
@@ -1446,9 +1542,9 @@ function showEdgeDetail(fromName, toName) {{
   if (sharedPkgs.length > 0) {{
     html += '<ul class="detail-list">';
     sharedPkgs.slice(0, 15).forEach(function (d) {{
-      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#94a3b8">' + escHtmlGlobal(d.version) + '</span></li>';
+      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
     }});
-    if (sharedPkgs.length > 15) html += '<li style="color:#64748b">... and ' + (sharedPkgs.length - 15) + ' more</li>';
+    if (sharedPkgs.length > 15) html += '<li style="color:#53565A">... and ' + (sharedPkgs.length - 15) + ' more</li>';
     html += '</ul>';
   }} else {{
     html += '<div class="detail-empty">No shared NuGet packages</div>';
@@ -1459,14 +1555,14 @@ function showEdgeDetail(fromName, toName) {{
   var totalFromPatterns = fromDataPatterns.length;
   var totalToPatterns = toDataPatterns.length;
   html += '<div class="detail-section"><h4>Data Patterns</h4>';
-  html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">'
-    + '<span class="from" style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + totalFromPatterns + ' patterns, '
-    + '<span class="to" style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
+  html += '<div style="font-size:0.78rem;color:#333333;margin-bottom:0.3rem;">'
+    + '<span class="from" style="color:#005587">' + escHtmlGlobal(fromName) + '</span>: ' + totalFromPatterns + ' patterns, '
+    + '<span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
   var sharedKeys = Object.keys(sharedPatternNames);
   if (sharedKeys.length > 0) {{
     html += '<ul class="detail-list">';
     sharedKeys.forEach(function (p) {{
-      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#94a3b8">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
+      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#53565A">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
     }});
     html += '</ul>';
   }} else {{
@@ -1496,7 +1592,7 @@ function showEdgeDetail(fromName, toName) {{
   html += '<div class="detail-section"><h4>Data Flow</h4>';
   if (sharedDataNodes.length > 0 || relevantImplied.length > 0) {{
     if (sharedDataNodes.length > 0) {{
-      html += '<div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
+      html += '<div style="font-size:0.78rem;color:#333333;margin-bottom:0.3rem;">Shared data infrastructure:</div>';
       html += '<ul class="detail-list">';
       sharedDataNodes.slice(0, 10).forEach(function (n) {{
         var fromRole = [];
@@ -1510,16 +1606,16 @@ function showEdgeDetail(fromName, toName) {{
         if ((n.exposers || []).indexOf(toName) !== -1) toRole.push('exposes');
         if ((n.consumers || []).indexOf(toName) !== -1) toRole.push('consumes');
         var infraLabel = n.infrastructure || n.type || '';
-        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#94a3b8">(' + infraLabel + ')</span><br/>'
-          + '<span style="color:#60a5fa">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
-          + '<span style="color:#34d399">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
+        html += '<li><strong>' + escHtmlGlobal(n.name) + '</strong> <span style="color:#53565A">(' + infraLabel + ')</span><br/>'
+          + '<span style="color:#005587">' + escHtmlGlobal(fromName) + '</span>: ' + fromRole.join(', ') + ' &mdash; '
+          + '<span style="color:#00897B">' + escHtmlGlobal(toName) + '</span>: ' + toRole.join(', ')
           + '</li>';
       }});
-      if (sharedDataNodes.length > 10) html += '<li style="color:#64748b">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
+      if (sharedDataNodes.length > 10) html += '<li style="color:#53565A">... and ' + (sharedDataNodes.length - 10) + ' more</li>';
       html += '</ul>';
     }}
     if (relevantImplied.length > 0) {{
-      html += '<div style="font-size:0.78rem;color:#f59e0b;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
+      html += '<div style="font-size:0.78rem;color:#789D4A;margin-top:0.3rem;">&#9888; Implied data dependencies:</div>';
       html += '<ul class="detail-list">';
       relevantImplied.forEach(function (d) {{
         html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to) + ' via <strong>' + escHtmlGlobal(d.via) + '</strong> (' + escHtmlGlobal(d.viaType) + ')</li>';
@@ -1564,14 +1660,14 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
   if (dataNode) {{
     // Data node info
     html += '<div class="detail-section"><h4>' + escHtmlGlobal(dataNode.type) + ': ' + escHtmlGlobal(dataNode.name) + '</h4>';
-    html += '<div style="font-size:0.78rem;color:#94a3b8;margin-bottom:0.4rem;">Infrastructure: ' + escHtmlGlobal(dataNode.infrastructure) + '</div>';
+    html += '<div style="font-size:0.78rem;color:#53565A;margin-bottom:0.4rem;">Infrastructure: ' + escHtmlGlobal(dataNode.infrastructure) + '</div>';
 
     // Writers
     var writers = dataNode.writers || [];
     if (writers.length > 0) {{
-      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#f59e0b;font-size:0.78rem;">&#9654; Writers:</strong> ';
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#789D4A;font-size:0.78rem;">&#9654; Writers:</strong> ';
       html += writers.map(function (w) {{
-        var style = w === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        var style = w === projectName ? 'color:#005587;font-weight:600' : 'color:#333333';
         return '<span style="' + style + '">' + escHtmlGlobal(w) + '</span>';
       }}).join(', ');
       html += '</div>';
@@ -1580,9 +1676,9 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
     // Readers
     var readers = dataNode.readers || [];
     if (readers.length > 0) {{
-      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#3b82f6;font-size:0.78rem;">&#9664; Readers:</strong> ';
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#005587;font-size:0.78rem;">&#9664; Readers:</strong> ';
       html += readers.map(function (r) {{
-        var style = r === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        var style = r === projectName ? 'color:#005587;font-weight:600' : 'color:#333333';
         return '<span style="' + style + '">' + escHtmlGlobal(r) + '</span>';
       }}).join(', ');
       html += '</div>';
@@ -1591,9 +1687,9 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
     // Exposers
     var exposers = dataNode.exposers || [];
     if (exposers.length > 0) {{
-      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#10b981;font-size:0.78rem;">&#9650; Exposes:</strong> ';
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#00897B;font-size:0.78rem;">&#9650; Exposes:</strong> ';
       html += exposers.map(function (x) {{
-        var style = x === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        var style = x === projectName ? 'color:#005587;font-weight:600' : 'color:#333333';
         return '<span style="' + style + '">' + escHtmlGlobal(x) + '</span>';
       }}).join(', ');
       html += '</div>';
@@ -1602,9 +1698,9 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
     // Consumers
     var consumers = dataNode.consumers || [];
     if (consumers.length > 0) {{
-      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#8b5cf6;font-size:0.78rem;">&#9660; Consumers:</strong> ';
+      html += '<div style="margin-bottom:0.3rem;"><strong style="color:#80276C;font-size:0.78rem;">&#9660; Consumers:</strong> ';
       html += consumers.map(function (c) {{
-        var style = c === projectName ? 'color:#60a5fa;font-weight:600' : 'color:#cbd5e1';
+        var style = c === projectName ? 'color:#005587;font-weight:600' : 'color:#333333';
         return '<span style="' + style + '">' + escHtmlGlobal(c) + '</span>';
       }}).join(', ');
       html += '</div>';
@@ -1618,7 +1714,7 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
       html += '<ul class="detail-list">';
       nodeImplied.forEach(function (d) {{
         html += '<li>' + escHtmlGlobal(d.from) + ' &#8594; ' + escHtmlGlobal(d.to)
-          + ' <span style="color:#94a3b8">(' + escHtmlGlobal(d.viaType) + ')</span></li>';
+          + ' <span style="color:#53565A">(' + escHtmlGlobal(d.viaType) + ')</span></li>';
       }});
       html += '</ul></div>';
     }}
@@ -1661,7 +1757,7 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
     + '<span class="arrow">&#8594;</span>'
     + '<span class="to">' + escHtmlGlobal(toCat.name) + '</span>'
     + '</div>';
-  html += '<div style="color:#94a3b8;font-size:0.78rem;margin-top:0.3rem;">'
+  html += '<div style="color:#53565A;font-size:0.78rem;margin-top:0.3rem;">'
     + crossRefs.length + ' project reference' + (crossRefs.length !== 1 ? 's' : '')
     + ' from ' + escHtmlGlobal(fromCat.name) + ' (' + Object.keys(fromProjects).length + ' projects)'
     + ' to ' + escHtmlGlobal(toCat.name) + ' (' + Object.keys(toProjects).length + ' projects)'
@@ -1673,9 +1769,9 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
     html += '<ul class="detail-list">';
     var shown = crossRefs.slice(0, 20);
     shown.forEach(function (r) {{
-      html += '<li><span style="color:#60a5fa">' + escHtmlGlobal(r.project) + '</span>'
-        + ' <span style="color:#94a3b8">&#8594;</span> '
-        + '<span style="color:#34d399">' + escHtmlGlobal(r.references) + '</span></li>';
+      html += '<li><span style="color:#005587">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#53565A">&#8594;</span> '
+        + '<span style="color:#00897B">' + escHtmlGlobal(r.references) + '</span></li>';
     }});
     html += '</ul></div>';
   }} else {{
@@ -1741,7 +1837,7 @@ function showProjectCategoryDetail(projectName, catInfo, isOutgoing) {{
       + '<span class="to">' + escHtmlGlobal(projectName) + '</span>';
   }}
   html += '</div>';
-  html += '<div style="color:#94a3b8;font-size:0.78rem;margin-top:0.3rem;">'
+  html += '<div style="color:#53565A;font-size:0.78rem;margin-top:0.3rem;">'
     + matchedRefs.length + ' reference' + (matchedRefs.length !== 1 ? 's' : '')
     + '</div></div>';
 
@@ -1750,9 +1846,9 @@ function showProjectCategoryDetail(projectName, catInfo, isOutgoing) {{
     html += '<div class="detail-section"><h4>References' + (matchedRefs.length > 20 ? ' (showing 20 of ' + matchedRefs.length + ')' : '') + '</h4>';
     html += '<ul class="detail-list">';
     matchedRefs.slice(0, 20).forEach(function (r) {{
-      html += '<li><span style="color:#60a5fa">' + escHtmlGlobal(r.project) + '</span>'
-        + ' <span style="color:#94a3b8">&#8594;</span> '
-        + '<span style="color:#34d399">' + escHtmlGlobal(r.references) + '</span></li>';
+      html += '<li><span style="color:#005587">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#53565A">&#8594;</span> '
+        + '<span style="color:#00897B">' + escHtmlGlobal(r.references) + '</span></li>';
     }});
     html += '</ul></div>';
   }} else {{
@@ -1807,6 +1903,67 @@ function zoomDiagram(containerId, delta) {{
   svg.style.transform = 'scale(' + scale + ')';
 }}
 
+function initSortableTable(table) {{
+  if (!table) return;
+  var headers = table.querySelectorAll('thead th[data-sort-type]');
+  if (headers.length === 0) return;
+  var tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  var originalOrder = null;
+
+  headers.forEach(function (th, colIdx) {{
+    var sortType = th.getAttribute('data-sort-type');
+    if (sortType === 'none') return;
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', function () {{
+      // Capture original order on first sort
+      if (!originalOrder) {{
+        originalOrder = Array.from(tbody.querySelectorAll('tr'));
+      }}
+      // Determine next state: none -> asc -> desc -> none
+      var currentDir = th.getAttribute('data-sort-dir') || 'none';
+      var nextDir = currentDir === 'none' ? 'asc' : currentDir === 'asc' ? 'desc' : 'none';
+
+      // Clear all other headers
+      headers.forEach(function (h) {{
+        h.setAttribute('data-sort-dir', 'none');
+        var ind = h.querySelector('.sort-indicator');
+        if (ind) ind.remove();
+      }});
+
+      if (nextDir === 'none') {{
+        // Restore original order
+        th.setAttribute('data-sort-dir', 'none');
+        originalOrder.forEach(function (row) {{ tbody.appendChild(row); }});
+        return;
+      }}
+
+      th.setAttribute('data-sort-dir', nextDir);
+      var indicator = document.createElement('span');
+      indicator.className = 'sort-indicator';
+      indicator.textContent = nextDir === 'asc' ? '\u25B2' : '\u25BC';
+      th.appendChild(indicator);
+
+      var rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort(function (a, b) {{
+        var aCell = a.children[colIdx];
+        var bCell = b.children[colIdx];
+        if (!aCell || !bCell) return 0;
+        var aVal = (aCell.textContent || '').trim();
+        var bVal = (bCell.textContent || '').trim();
+        var cmp;
+        if (sortType === 'num') {{
+          cmp = (parseFloat(aVal) || 0) - (parseFloat(bVal) || 0);
+        }} else {{
+          cmp = aVal.localeCompare(bVal, undefined, {{ numeric: true, sensitivity: 'base' }});
+        }}
+        return nextDir === 'desc' ? -cmp : cmp;
+      }});
+      rows.forEach(function (row) {{ tbody.appendChild(row); }});
+    }});
+  }});
+}}
+
 (function () {{
   'use strict';
 
@@ -1832,7 +1989,7 @@ function zoomDiagram(containerId, delta) {{
     if (!layer) return '';
     var lower = layer.toLowerCase();
     var cls = layerClass[lower] || 'tag-unclassified';
-    var confColor = confidence >= 0.7 ? '#22c55e' : confidence >= 0.4 ? '#eab308' : '#ef4444';
+    var confColor = confidence >= 0.7 ? '#009639' : confidence >= 0.4 ? '#9E8700' : '#D0002B';
     var confDot = '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + confColor + ';margin-left:4px;" title="Confidence: ' + (confidence * 100).toFixed(0) + '%"></span>';
     return '<span class="tag ' + cls + '">' + escHtml(layer) + confDot + '</span>';
   }}
@@ -1921,6 +2078,13 @@ function zoomDiagram(containerId, delta) {{
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
+  // Init sorting on static tables
+  initSortableTable(document.getElementById('datasourcesTable'));
+  initSortableTable(document.getElementById('connstringsTable'));
+  initSortableTable(document.getElementById('impliedDepsTable'));
+  initSortableTable(document.getElementById('flowPathsTable'));
+  initSortableTable(document.getElementById('fieldTraceTable'));
+
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
@@ -1975,10 +2139,11 @@ function zoomDiagram(containerId, delta) {{
         '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
       tbody.appendChild(tr);
     }});
+    initSortableTable(document.getElementById('projectsTable'));
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:2rem;">Failed to load project data.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#D0002B;padding:2rem;">Failed to load project data.</td></tr>';
   }});
 
   }}); // end finally for flow-paths.json
@@ -1994,10 +2159,18 @@ function zoomDiagram(containerId, delta) {{
     data.forEach(function (m, idx) {{
       var tr = document.createElement('tr');
       var scoreColor, scoreBg;
-      if (idx < topThird) {{ scoreColor = '#ef4444'; scoreBg = 'rgba(239,68,68,0.12)'; }}
-      else if (idx < midThird) {{ scoreColor = '#eab308'; scoreBg = 'rgba(234,179,8,0.08)'; }}
-      else {{ scoreColor = '#22c55e'; scoreBg = 'rgba(34,197,94,0.08)'; }}
+      if (idx < topThird) {{ scoreColor = '#D0002B'; scoreBg = 'rgba(208,0,43,0.08)'; }}
+      else if (idx < midThird) {{ scoreColor = '#9E8700'; scoreBg = 'rgba(158,135,0,0.06)'; }}
+      else {{ scoreColor = '#009639'; scoreBg = 'rgba(0,150,57,0.06)'; }}
       tr.setAttribute('data-search', (m.project + ' ' + m.category + ' ' + (m.layer || '') + ' ' + (m.repo || '')).toLowerCase());
+      // Build risk cell
+      var riskDots = '';
+      var smellColors = {{ red: '#D0002B', yellow: '#9E8700', green: '#009639' }};
+      (m.smells || []).forEach(function (s) {{
+        var c = smellColors[s.level] || '#53565A';
+        riskDots += '<span title="' + escHtml(s.label + ': ' + s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+      }});
+      var riskTitle = m.explanation ? ' title="' + escHtml(m.explanation) + '"' : '';
       tr.innerHTML =
         '<td><strong>' + escHtml(m.project) + '</strong></td>' +
         '<td>' + tagHTML(m.category) + '</td>' +
@@ -2007,9 +2180,11 @@ function zoomDiagram(containerId, delta) {{
         '<td style="text-align:center">' + m.nuget_deps + '</td>' +
         '<td style="text-align:center">' + m.data_patterns + '</td>' +
         '<td style="text-align:center">' + m.cross_repo_refs + '</td>' +
-        '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>';
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>' +
+        '<td style="text-align:center"' + riskTitle + '>' + (riskDots || '&mdash;') + '</td>';
       tbody.appendChild(tr);
     }});
+    initSortableTable(document.getElementById('hotspotsTable'));
   }})();
 
   // Search
@@ -2065,12 +2240,12 @@ function zoomDiagram(containerId, delta) {{
     // Build step-by-step detail
     var html = '<div style="margin-bottom:0.5rem;">';
     if (fp.namedFlow) {{
-      html += '<strong style="color:#3b82f6;">' + escHtml(fp.namedFlow) + '</strong><br/>';
+      html += '<strong style="color:#005587;">' + escHtml(fp.namedFlow) + '</strong><br/>';
     }}
     if (fp.description) {{
-      html += '<span style="color:#94a3b8;font-size:0.85rem;">' + escHtml(fp.description) + '</span><br/>';
+      html += '<span style="color:#53565A;font-size:0.85rem;">' + escHtml(fp.description) + '</span><br/>';
     }}
-    html += '<span style="color:#94a3b8;font-size:0.8rem;">Depth: ' + fp.pathLength + ' | Layers: ' + (fp.crossesLayers || []).join(' &rarr; ') + '</span>';
+    html += '<span style="color:#53565A;font-size:0.8rem;">Depth: ' + fp.pathLength + ' | Layers: ' + (fp.crossesLayers || []).join(' &rarr; ') + '</span>';
     html += '</div>';
 
     // Step-by-step chain with layer badges
@@ -2216,41 +2391,41 @@ function zoomDiagram(containerId, delta) {{
     var db = ch.dbColumn || {{}};
 
     var html = '<div style="margin-bottom:0.5rem;">';
-    html += '<span style="color:#94a3b8;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#22c55e;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
+    html += '<span style="color:#53565A;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#009639;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
     html += '</div>';
 
     // Step-by-step chain
     html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">';
     if (xaml.viewType) {{
-      html += '<div style="background:#1e293b;border:1px solid #E91E63;border-radius:6px;padding:0.4rem 0.6rem;">';
-      html += '<div style="font-size:0.7rem;color:#E91E63;text-transform:uppercase;">XAML View</div>';
+      html += '<div style="background:#FFFFFF;border:1px solid #621244;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#621244;text-transform:uppercase;">XAML View</div>';
       html += '<strong>' + escHtml(xaml.viewType) + '</strong>';
       html += '<div class="mono" style="font-size:0.75rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
       html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
     }}
     if (vm.className) {{
-      html += '<div style="background:#1e293b;border:1px solid #FF9800;border-radius:6px;padding:0.4rem 0.6rem;">';
-      html += '<div style="font-size:0.7rem;color:#FF9800;text-transform:uppercase;">ViewModel</div>';
+      html += '<div style="background:#FFFFFF;border:1px solid #36749D;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#36749D;text-transform:uppercase;">ViewModel</div>';
       html += '<strong>' + escHtml(vm.className) + '</strong>';
       html += '<div style="font-size:0.8rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
       html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
     }}
     if (ent.className) {{
-      html += '<div style="background:#1e293b;border:1px solid #3b82f6;border-radius:6px;padding:0.4rem 0.6rem;">';
-      html += '<div style="font-size:0.7rem;color:#3b82f6;text-transform:uppercase;">Entity</div>';
+      html += '<div style="background:#FFFFFF;border:1px solid #005587;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#005587;text-transform:uppercase;">Entity</div>';
       html += '<strong>' + escHtml(ent.className) + '</strong>';
       html += '<div style="font-size:0.8rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
       html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#64748b;font-size:1.2rem;">&rarr;</span>';
+      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
     }}
     if (db.table) {{
-      html += '<div style="background:#1e293b;border:1px solid #22c55e;border-radius:6px;padding:0.4rem 0.6rem;">';
-      html += '<div style="font-size:0.7rem;color:#22c55e;text-transform:uppercase;">DB Column</div>';
+      html += '<div style="background:#FFFFFF;border:1px solid #009639;border-radius:6px;padding:0.4rem 0.6rem;">';
+      html += '<div style="font-size:0.7rem;color:#009639;text-transform:uppercase;">DB Column</div>';
       html += '<strong>' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
       html += '<div style="font-size:0.8rem;">Source: ' + escHtml(db.source || '') + '</div>';
       if (db.file) html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
