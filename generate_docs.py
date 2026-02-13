@@ -1414,6 +1414,9 @@ def generate_viewer_html() -> str:
   </div>
   <div class="stats-row">
 {stats_html}
+    <a href="docs/ai-context/CODEBASE_OVERVIEW.md" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
+      <span class="stat-value">AI</span> Context
+    </a>
   </div>
 </header>
 
