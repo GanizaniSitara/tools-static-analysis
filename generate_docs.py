@@ -47,6 +47,7 @@ configs = _load_json(os.path.join(OUT_DIR, "configs.json"))
 data_flow: dict = _load_json(os.path.join(OUT_DIR, "data-flow.json"), {})
 flow_paths_data: dict = _load_json(os.path.join(OUT_DIR, "flow-paths.json"), {})
 field_trace_data: dict = _load_json(os.path.join(OUT_DIR, "field-traceability.json"), {})
+repos_data: list = _load_json(os.path.join(OUT_DIR, "repos.json"), [])
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
@@ -608,18 +609,19 @@ def generate_viewer_html() -> str:
     # ── Build HTML ──
     # Stats bar
     stats_items = [
-        (summary["totalProjects"], "Projects"),
-        (summary["totalNuGetPackages"], "NuGet Packages"),
-        (summary["totalProjectRefs"], "Project References"),
-        (summary["totalDataFindings"], "Data Patterns"),
-        (summary["totalConfigFiles"], "Config Files"),
+        (summary["totalProjects"], "Projects", "allprojects"),
+        (summary["totalNuGetPackages"], "NuGet Packages", "allprojects"),
+        (summary["totalProjectRefs"], "Project References", "allprojects"),
+        (summary["totalDataFindings"], "Data Patterns", "datasources"),
+        (summary["totalConfigFiles"], "Config Files", "connstrings"),
     ]
     if repo_count > 1:
-        stats_items.append((repo_count, f"Repos ({', '.join(repo_list)})"))
+        stats_items.append((repo_count, "Repos", "repos"))
 
     stats_html = "\n".join(
-        f'    <div class="stat"><span class="stat-value">{count}</span> {label}</div>'
-        for count, label in stats_items
+        f'    <div class="stat stat-link" onclick="activateTab(\'{tab}\')">'
+        f'<span class="stat-value">{count}</span> {label}</div>'
+        for count, label, tab in stats_items
     )
 
     # ── Implied dependencies from data flow ──
@@ -648,6 +650,8 @@ def generate_viewer_html() -> str:
     if field_trace_data.get("fieldChains"):
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
     all_tab_ids.append(("hotspots", "Hotspots"))
+    if repo_count > 1:
+        all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
 
     tab_buttons = "\n".join(
@@ -749,7 +753,7 @@ def generate_viewer_html() -> str:
       <div class="table-wrap">
         <table id="datasourcesTable">
           <thead>
-            <tr><th data-sort-type="text">Pattern</th><th data-sort-type="text">Type</th><th data-sort-type="num">Occurrences</th><th data-sort-type="text">Key Projects</th></tr>
+            <tr><th data-sort-type="text" title="Code pattern or API detected (e.g. DbContext, HttpClient)">Pattern</th><th data-sort-type="text" title="Data access type: Database, API, Cache, Messaging, or Config">Type</th><th data-sort-type="num" title="Total times this pattern was found across all files">Occurrences</th><th data-sort-type="text" title="Projects where this pattern was found">Key Projects</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -778,7 +782,7 @@ def generate_viewer_html() -> str:
       <div class="table-wrap">
         <table id="connstringsTable">
           <thead>
-            <tr><th data-sort-type="text">Config File</th><th data-sort-type="text">Repo</th><th data-sort-type="text">Connection Name</th><th data-sort-type="text">Value</th></tr>
+            <tr><th data-sort-type="text" title="Configuration file path (appsettings.json, web.config, etc.)">Config File</th><th data-sort-type="text" title="Repository containing this config file">Repo</th><th data-sort-type="text" title="Name/key of the connection string entry">Connection Name</th><th data-sort-type="text" title="Connection string value (truncated to 80 characters)">Value</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -817,7 +821,7 @@ def generate_viewer_html() -> str:
       <div class="table-wrap">
         <table id="impliedDepsTable">
           <thead>
-            <tr><th data-sort-type="text">From</th><th data-sort-type="text">To</th><th data-sort-type="text">Via (Endpoint)</th><th data-sort-type="text">Infrastructure</th><th data-sort-type="none">Relationship</th></tr>
+            <tr><th data-sort-type="text" title="Source project that writes to the shared endpoint">From</th><th data-sort-type="text" title="Target project that reads from the shared endpoint">To</th><th data-sort-type="text" title="Shared data endpoint creating the implicit dependency">Via (Endpoint)</th><th data-sort-type="text" title="Infrastructure type: Database, Messaging, API, Cache">Infrastructure</th><th data-sort-type="none" title="Direction of data flow: writes &#8594; reads">Relationship</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -896,7 +900,7 @@ def generate_viewer_html() -> str:
       <div class="table-wrap">
         <table id="flowPathsTable">
           <thead>
-            <tr><th data-sort-type="text">Source Screen</th><th data-sort-type="text">Layers Crossed</th><th data-sort-type="num">Depth</th><th data-sort-type="none">Path Chain</th><th data-sort-type="text">Named Flow</th></tr>
+            <tr><th data-sort-type="text" title="Starting UI screen or entry point of the flow">Source Screen</th><th data-sort-type="text" title="Business layers traversed by this flow">Layers Crossed</th><th data-sort-type="num" title="Number of project hops from source to deepest dependency">Depth</th><th data-sort-type="none" title="Visual chain of projects in this end-to-end flow">Path Chain</th><th data-sort-type="text" title="Named business flow grouping related paths">Named Flow</th></tr>
           </thead>
           <tbody id="flowPathsBody">
 {flow_rows}          </tbody>
@@ -998,7 +1002,7 @@ def generate_viewer_html() -> str:
       <div class="table-wrap">
         <table id="fieldTraceTable">
           <thead>
-            <tr><th data-sort-type="text">XAML View</th><th data-sort-type="text">Binding Path</th><th data-sort-type="text">ViewModel</th><th data-sort-type="text">VM Property</th><th data-sort-type="text">Entity</th><th data-sort-type="text">DB Table.Column</th><th data-sort-type="text">Completeness</th></tr>
+            <tr><th data-sort-type="text" title="XAML view/page file where the binding is defined">XAML View</th><th data-sort-type="text" title="Data binding path expression in the XAML markup">Binding Path</th><th data-sort-type="text" title="ViewModel class the XAML view binds to">ViewModel</th><th data-sort-type="text" title="Property on the ViewModel the binding resolves to">VM Property</th><th data-sort-type="text" title="Entity/model class that maps to a database table">Entity</th><th data-sort-type="text" title="Database table and column that stores this field">DB Table.Column</th><th data-sort-type="text" title="How complete the trace chain is (Full &#8594; XAML Only)">Completeness</th></tr>
           </thead>
           <tbody id="ftBody">
 {ft_rows}          </tbody>
@@ -1029,6 +1033,51 @@ def generate_viewer_html() -> str:
         if cat_name not in {"Localization", "Sample"}
     )
 
+    # Repos panel
+    repos_panel = ""
+    if repo_count > 1:
+        summary_repos = summary.get("repos", {})
+        repos_lookup = {r["name"]: r for r in repos_data} if repos_data else {}
+        repos_rows = ""
+        for repo_name in sorted(summary_repos.keys()):
+            info = summary_repos[repo_name]
+            rd = repos_lookup.get(repo_name, {})
+            proj_count = info.get("projects", 0)
+            solutions = rd.get("solutions", [])
+            sol_count = len(solutions)
+            cats = ", ".join(sorted(info.get("categories", {}).keys()))
+            root_path = _esc_html(rd.get("root", ""))
+            repos_rows += f"""            <tr>
+              <td><strong>{_esc_html(repo_name)}</strong></td>
+              <td>{proj_count}</td>
+              <td>{sol_count}</td>
+              <td>{_esc_html(cats)}</td>
+              <td class="mono">{root_path}</td>
+            </tr>
+"""
+        repos_panel = f"""
+  <section class="tab-panel" id="panel-repos">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Repositories ({repo_count})</div>
+      <div class="table-wrap">
+        <table id="reposTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Repository name">Repo Name</th>
+              <th data-sort-type="num" title="Number of .csproj projects in this repository">Projects</th>
+              <th data-sort-type="num" title="Number of .sln solution files found">Solutions</th>
+              <th data-sort-type="text" title="Functional categories of projects in this repo">Categories</th>
+              <th data-sort-type="text" title="Root filesystem path of this repository">Root Path</th>
+            </tr>
+          </thead>
+          <tbody>
+{repos_rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
@@ -1038,13 +1087,13 @@ def generate_viewer_html() -> str:
         <table id="projectsTable">
           <thead>
             <tr>
-              <th data-sort-type="text">Project</th>
-              <th data-sort-type="text">Repo</th>
-              <th data-sort-type="text">Category</th>
-              <th data-sort-type="text">Business Layer</th>
-              <th data-sort-type="num">Project Refs</th>
-              <th data-sort-type="num">NuGet Deps</th>
-              <th data-sort-type="text">Path</th>
+              <th data-sort-type="text" title="Project name (.csproj)">Project</th>
+              <th data-sort-type="text" title="Source repository this project belongs to">Repo</th>
+              <th data-sort-type="text" title="Functional category (Application, Library, Service, etc.)">Category</th>
+              <th data-sort-type="text" title="Architectural layer (Presentation, Engine, DataAccess, etc.)">Business Layer</th>
+              <th data-sort-type="num" title="Other projects this project references via ProjectReference">Project Refs</th>
+              <th data-sort-type="num" title="NuGet packages this project depends on via PackageReference">NuGet Deps</th>
+              <th data-sort-type="text" title="Relative file path to the .csproj file">Path</th>
             </tr>
           </thead>
           <tbody id="projectsBody">
@@ -1100,16 +1149,16 @@ def generate_viewer_html() -> str:
         <table id="hotspotsTable">
           <thead>
             <tr>
-              <th data-sort-type="text">Project</th>
-              <th data-sort-type="text">Category</th>
-              <th data-sort-type="text">Layer</th>
-              <th data-sort-type="num">Fan-Out</th>
-              <th data-sort-type="num">Fan-In</th>
-              <th data-sort-type="num">NuGet</th>
-              <th data-sort-type="num">Data Patterns</th>
-              <th data-sort-type="num">Cross-Repo</th>
-              <th data-sort-type="num">Score</th>
-              <th data-sort-type="risk">Risk</th>
+              <th data-sort-type="text" title="Project name (.csproj)">Project</th>
+              <th data-sort-type="text" title="Functional category (Application, Library, Service, etc.)">Category</th>
+              <th data-sort-type="text" title="Business layer with confidence indicator">Layer</th>
+              <th data-sort-type="num" title="Projects this one depends on (outgoing references)">Fan-Out</th>
+              <th data-sort-type="num" title="Projects that depend on this one (incoming references)">Fan-In</th>
+              <th data-sort-type="num" title="Distinct NuGet packages referenced">NuGet</th>
+              <th data-sort-type="num" title="Data access patterns found (SQL, ORM, HTTP, etc.)">Data Patterns</th>
+              <th data-sort-type="num" title="References crossing repository boundaries">Cross-Repo</th>
+              <th data-sort-type="num" title="Weighted coupling score: Fan-Out&#215;3 + Fan-In&#215;2 + NuGet + Data Patterns + Cross-Repo&#215;4">Score</th>
+              <th data-sort-type="risk" title="Risk level based on hotspot score and code smells">Risk</th>
             </tr>
           </thead>
           <tbody id="hotspotsBody">
@@ -1165,6 +1214,8 @@ def generate_viewer_html() -> str:
   .stats-row {{ display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }}
   .stat {{ display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: rgba(255,255,255,0.7); }}
   .stat-value {{ font-weight: 700; font-size: 1rem; color: #FFFFFF; }}
+  .stat-link {{ cursor: pointer; padding: 0.25rem 0.6rem; border-radius: 6px; transition: background .15s; }}
+  .stat-link:hover {{ background: rgba(255,255,255,0.15); }}
   .tabs {{
     display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0 2rem;
     background: #FFFFFF; border-bottom: 1px solid #E1E1E1;
@@ -1360,6 +1411,7 @@ def generate_viewer_html() -> str:
 {e2eflows_panel}
 {fieldtrace_panel}
 {hotspots_panel}
+{repos_panel}
 {all_projects_panel}
 </main>
 
@@ -2058,6 +2110,7 @@ function initSortableTable(table) {{
     tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
     lazyRenderMermaid(tabId);
   }}
+  window.activateTab = activateTab;
 
   tabButtons.forEach(function (btn) {{
     btn.addEventListener('click', function () {{ activateTab(btn.dataset.tab); }});
@@ -2119,6 +2172,7 @@ function initSortableTable(table) {{
   initSortableTable(document.getElementById('impliedDepsTable'));
   initSortableTable(document.getElementById('flowPathsTable'));
   initSortableTable(document.getElementById('fieldTraceTable'));
+  initSortableTable(document.getElementById('reposTable'));
 
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
