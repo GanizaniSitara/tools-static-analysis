@@ -510,12 +510,36 @@ def generate_viewer_html() -> str:
     )
 
     # Diagram panels
+    legend_html = """
+      <div class="overview-legend">
+        <div class="legend-title">How to read this diagram</div>
+        <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> = project categories (number = project count in that category)</div>
+        <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Arrows</strong> = cross-category project references (number = total reference count)</div>
+        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>arrow</strong> to see which projects reference each other</div>
+        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click a <strong>box</strong> to jump to that category&#39;s detail tab</div>
+      </div>"""
+    category_detail_legend_html = """
+      <div class="overview-legend">
+        <div class="legend-title">How to read this diagram</div>
+        <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes inside rectangle</strong> = projects in this category</div>
+        <div class="legend-item"><span class="legend-icon">&#11044;</span> <strong>Pill nodes outside</strong> = other categories with connections (number = connected project count)</div>
+        <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Solid arrows</strong> = within-category project references</div>
+        <div class="legend-item"><span class="legend-icon">&#8674;</span> <strong>Dashed arrows</strong> = cross-category references</div>
+        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>arrow</strong> to see reference details</div>
+        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>external node</strong> to jump to that category&#39;s tab</div>
+      </div>"""
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
         active = " active" if i == 0 else ""
         warning_html = ""
         if dt.get("warning"):
             warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
+        if dt["id"] == "overview":
+            overview_legend = legend_html
+        elif dt["id"].startswith("cat_"):
+            overview_legend = category_detail_legend_html
+        else:
+            overview_legend = ""
         diagram_panels += f"""
   <section class="tab-panel{active}" id="panel-{dt['id']}">
     <div class="card">
@@ -525,7 +549,7 @@ def generate_viewer_html() -> str:
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
         </span>
-      </div>{warning_html}
+      </div>{warning_html}{overview_legend}
       <div class="mermaid-wrap" id="mermaid-{dt['id']}">
         <span class="loading">Loading diagram...</span>
         <pre class="mermaid" style="display:none">
@@ -842,6 +866,13 @@ def generate_viewer_html() -> str:
     for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
         cat_chart_mermaid += f'    "{cat}" : {count}\n'
 
+    # Category map for JS-side category detection on Overview edges
+    cat_map_entries = ", ".join(
+        f"'{cat_name} ({count})': {{key:'{cat_name.lower()}', name:'{cat_name}', count:{count}, tabId:'cat_{sanitize_id(cat_name.lower())}'}}"
+        for cat_name, count in categories.items()
+        if cat_name not in {"Localization", "Sample"}
+    )
+
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
@@ -948,6 +979,12 @@ def generate_viewer_html() -> str:
     background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
     padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
   }}
+  .overview-legend {{ background:#1e293b; border:1px solid #334155; border-radius:8px; padding:0.6rem 1rem; margin:0.5rem 0; font-size:0.82rem; color:#cbd5e1; }}
+  .overview-legend .legend-title {{ font-weight:600; color:#e2e8f0; margin-bottom:0.4rem; }}
+  .overview-legend .legend-item {{ margin-bottom:0.25rem; line-height:1.4; }}
+  .overview-legend .legend-icon {{ display:inline-block; width:1.2rem; color:#60a5fa; text-align:center; }}
+  .cat-nav-btn {{ background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:6px; padding:0.3rem 0.7rem; font-size:0.8rem; cursor:pointer; }}
+  .cat-nav-btn:hover {{ background:#475569; }}
   .mermaid-wrap {{
     background: #f8fafc; border-radius: 8px; padding: 1rem; overflow: auto;
     min-height: 120px; max-height: 80vh;
@@ -1167,9 +1204,14 @@ function attachEdgeTooltips(svg) {{
       e.stopPropagation();
       var ep = resolveEdgeEndpoints(edge.id);
       if (!ep) return;
+      var fromCat = parseCategoryLabel(ep.from);
+      var toCat = parseCategoryLabel(ep.to);
+      if (fromCat && toCat) {{ showCategoryEdgeDetail(ep.from, ep.to, fromCat, toCat); return; }}
       var meta = (window._projData || {{}}).meta || [];
       var fromIsProject = meta.some(function (m) {{ return m.project === ep.from; }});
       var toIsProject = meta.some(function (m) {{ return m.project === ep.to; }});
+      if (fromIsProject && toCat) {{ showProjectCategoryDetail(ep.from, toCat, true); return; }}
+      if (toIsProject && fromCat) {{ showProjectCategoryDetail(ep.to, fromCat, false); return; }}
       if (fromIsProject && toIsProject) {{ showEdgeDetail(ep.from, ep.to); }}
       else {{ showDataFlowDetail(ep.from, ep.to, fromIsProject, toIsProject); }}
     }}
@@ -1182,6 +1224,22 @@ function attachEdgeTooltips(svg) {{
     edge.addEventListener('mousemove', moveTip);
     edge.addEventListener('mouseleave', hideTip);
     edge.addEventListener('click', onClick);
+  }});
+}}
+
+function attachCategoryNodeClicks(svg) {{
+  svg.querySelectorAll('.node').forEach(function (node) {{
+    var textEl = node.querySelector('span, foreignObject div, text');
+    if (!textEl) return;
+    var label = textEl.textContent.trim();
+    var catInfo = parseCategoryLabel(label);
+    if (!catInfo) return;
+    node.style.cursor = 'pointer';
+    node.addEventListener('click', function (e) {{
+      e.stopPropagation();
+      var tabBtn = document.querySelector('.tab-btn[data-tab="' + catInfo.tabId + '"]');
+      if (tabBtn) tabBtn.click();
+    }});
   }});
 }}
 
@@ -1450,10 +1508,168 @@ function showDataFlowDetail(fromName, toName, fromIsProject, toIsProject) {{
   if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
 }}
 
+function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
+  var panel = document.getElementById('edgeDetailPanel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var meta = d.meta || [];
+  var refs = d.refs || [];
+
+  // Find projects in each category
+  var fromProjects = {{}};
+  var toProjects = {{}};
+  meta.forEach(function (m) {{
+    if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
+    if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
+  }});
+
+  // Filter refs: from-category projects referencing to-category projects
+  var crossRefs = refs.filter(function (r) {{
+    return fromProjects[r.project] && toProjects[r.references];
+  }});
+
+  var html = '<div class="detail-header"><h3>Cross-Category References</h3>'
+    + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
+
+  // Summary flow
+  html += '<div class="detail-section"><div class="detail-flow">'
+    + '<span class="from">' + escHtmlGlobal(fromCat.name) + '</span>'
+    + '<span class="arrow">&#8594;</span>'
+    + '<span class="to">' + escHtmlGlobal(toCat.name) + '</span>'
+    + '</div>';
+  html += '<div style="color:#94a3b8;font-size:0.78rem;margin-top:0.3rem;">'
+    + crossRefs.length + ' project reference' + (crossRefs.length !== 1 ? 's' : '')
+    + ' from ' + escHtmlGlobal(fromCat.name) + ' (' + Object.keys(fromProjects).length + ' projects)'
+    + ' to ' + escHtmlGlobal(toCat.name) + ' (' + Object.keys(toProjects).length + ' projects)'
+    + '</div></div>';
+
+  // Sample references (capped at 20)
+  if (crossRefs.length > 0) {{
+    html += '<div class="detail-section"><h4>References' + (crossRefs.length > 20 ? ' (showing 20 of ' + crossRefs.length + ')' : '') + '</h4>';
+    html += '<ul class="detail-list">';
+    var shown = crossRefs.slice(0, 20);
+    shown.forEach(function (r) {{
+      html += '<li><span style="color:#60a5fa">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#94a3b8">&#8594;</span> '
+        + '<span style="color:#34d399">' + escHtmlGlobal(r.references) + '</span></li>';
+    }});
+    html += '</ul></div>';
+  }} else {{
+    html += '<div class="detail-section"><div class="detail-empty">No direct project references found in this direction</div></div>';
+  }}
+
+  // Navigation buttons
+  html += '<div class="detail-section" style="display:flex;gap:0.5rem;margin-top:0.5rem;">';
+  html += '<button class="cat-nav-btn" data-tab="' + fromCat.tabId + '">Explore ' + escHtmlGlobal(fromCat.name) + '</button>';
+  html += '<button class="cat-nav-btn" data-tab="' + toCat.tabId + '">Explore ' + escHtmlGlobal(toCat.name) + '</button>';
+  html += '</div>';
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = document.getElementById('detailCloseBtn');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+  panel.querySelectorAll('.cat-nav-btn').forEach(function (btn) {{
+    btn.addEventListener('click', function () {{
+      panel.style.display = 'none';
+      var tabBtn = document.querySelector('.tab-btn[data-tab="' + btn.dataset.tab + '"]');
+      if (tabBtn) tabBtn.click();
+    }});
+  }});
+}}
+
+function showProjectCategoryDetail(projectName, catInfo, isOutgoing) {{
+  var panel = document.getElementById('edgeDetailPanel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var meta = d.meta || [];
+  var refs = d.refs || [];
+
+  // Find projects in the target category
+  var catProjects = {{}};
+  meta.forEach(function (m) {{
+    if (m.category && m.category.toLowerCase() === catInfo.key) catProjects[m.project] = true;
+  }});
+
+  // Filter refs between this project and projects in the target category
+  var matchedRefs;
+  if (isOutgoing) {{
+    matchedRefs = refs.filter(function (r) {{
+      return r.project === projectName && catProjects[r.references];
+    }});
+  }} else {{
+    matchedRefs = refs.filter(function (r) {{
+      return catProjects[r.project] && r.references === projectName;
+    }});
+  }}
+
+  var html = '<div class="detail-header"><h3>Project / Category References</h3>'
+    + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
+
+  // Flow direction
+  html += '<div class="detail-section"><div class="detail-flow">';
+  if (isOutgoing) {{
+    html += '<span class="from">' + escHtmlGlobal(projectName) + '</span>'
+      + '<span class="arrow">&#8594;</span>'
+      + '<span class="to">' + escHtmlGlobal(catInfo.name) + '</span>';
+  }} else {{
+    html += '<span class="from">' + escHtmlGlobal(catInfo.name) + '</span>'
+      + '<span class="arrow">&#8594;</span>'
+      + '<span class="to">' + escHtmlGlobal(projectName) + '</span>';
+  }}
+  html += '</div>';
+  html += '<div style="color:#94a3b8;font-size:0.78rem;margin-top:0.3rem;">'
+    + matchedRefs.length + ' reference' + (matchedRefs.length !== 1 ? 's' : '')
+    + '</div></div>';
+
+  // List actual referenced projects
+  if (matchedRefs.length > 0) {{
+    html += '<div class="detail-section"><h4>References' + (matchedRefs.length > 20 ? ' (showing 20 of ' + matchedRefs.length + ')' : '') + '</h4>';
+    html += '<ul class="detail-list">';
+    matchedRefs.slice(0, 20).forEach(function (r) {{
+      html += '<li><span style="color:#60a5fa">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#94a3b8">&#8594;</span> '
+        + '<span style="color:#34d399">' + escHtmlGlobal(r.references) + '</span></li>';
+    }});
+    html += '</ul></div>';
+  }} else {{
+    html += '<div class="detail-section"><div class="detail-empty">No direct project references found</div></div>';
+  }}
+
+  // Navigation button
+  html += '<div class="detail-section" style="margin-top:0.5rem;">';
+  html += '<button class="cat-nav-btn" data-tab="' + catInfo.tabId + '">Explore ' + escHtmlGlobal(catInfo.name) + '</button>';
+  html += '</div>';
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = document.getElementById('detailCloseBtn');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+  panel.querySelectorAll('.cat-nav-btn').forEach(function (btn) {{
+    btn.addEventListener('click', function () {{
+      panel.style.display = 'none';
+      var tabBtn = document.querySelector('.tab-btn[data-tab="' + btn.dataset.tab + '"]');
+      if (tabBtn) tabBtn.click();
+    }});
+  }});
+}}
+
 function escHtmlGlobal(s) {{
   var d = document.createElement('div');
   d.textContent = s || '';
   return d.innerHTML;
+}}
+
+function parseCategoryLabel(label) {{
+  var catMap = window._categoryMap || {{}};
+  if (catMap[label]) return catMap[label];
+  var m = label.match(/^([\\w][\\w\\s]*?)\\s*\\((\\d+)\\)$/);
+  if (!m) return null;
+  var name = m[1];
+  var keys = Object.keys(catMap);
+  for (var i = 0; i < keys.length; i++) {{
+    if (catMap[keys[i]].key === name.toLowerCase()) return catMap[keys[i]];
+  }}
+  return null;
 }}
 
 function zoomDiagram(containerId, delta) {{
@@ -1561,6 +1777,7 @@ function zoomDiagram(containerId, delta) {{
             svg.removeAttribute('width');
           }}
           attachEdgeTooltips(svg);
+          attachCategoryNodeClicks(svg);
         }}
       }}).catch(function (err) {{
         console.error('Mermaid render error for ' + tabId + ':', err);
@@ -1583,6 +1800,7 @@ function zoomDiagram(containerId, delta) {{
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
+  window._categoryMap = {{ {cat_map_entries} }};
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
