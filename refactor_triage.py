@@ -927,7 +927,9 @@ def generate_claude_targets(projects: list) -> dict:
 
 def save_json_output(data: dict, output_path: str):
     """Save JSON output file."""
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    output_dir = os.path.dirname(output_path)
+    if output_dir:  # Only create directory if path has a directory component
+        os.makedirs(output_dir, exist_ok=True)
     try:
         Path(output_path).write_text(
             json.dumps(data, indent=2),
@@ -1067,7 +1069,9 @@ def generate_markdown_report(data: dict, output_path: str):
     for target in claude_targets["tier3_medium"][:5]:
         lines.append(f"- **{target['project']}**: {target['why']}")
     
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    output_dir = os.path.dirname(output_path)
+    if output_dir:  # Only create directory if path has a directory component
+        os.makedirs(output_dir, exist_ok=True)
     try:
         Path(output_path).write_text("\n".join(lines), encoding="utf-8")
         print(f"Saved: {output_path}")
