@@ -33,7 +33,7 @@ def _read_text(path: str) -> str | None:
     """Read a text file, returning None on error."""
     try:
         return Path(path).read_text(encoding="utf-8")
-    except OSError:
+    except (OSError, UnicodeDecodeError):
         return None
 
 
