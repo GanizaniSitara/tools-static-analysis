@@ -7,8 +7,9 @@
 - Use descriptive commit messages summarizing the what and why.
 
 ## Project Overview
-- Static analysis tool for .NET solutions: `analyze.py` -> `visualize.py` -> `generate_docs.py`
+- Static analysis tool for .NET solutions: `analyze.py` -> `refactor_triage.py` -> `visualize.py` -> `generate_docs.py`
 - `analyze.py`: Scans .csproj files, extracts dependencies, project refs, data patterns
+- `refactor_triage.py`: Scans .cs source files for complexity metrics and code smells, generates refactoring prioritization targets for AI-assisted refactoring
 - `visualize.py`: Generates Mermaid (.mmd) and GraphViz (.dot) diagrams
 - `generate_docs.py`: Generates markdown docs and `viewer.html` (interactive HTML viewer)
-- Output directories: `output-{name}/` with JSON, CSV, diagrams/, docs/, viewer.html
+- Output directories: `output-{name}/` with JSON, CSV, diagrams/, docs/, viewer.html, refactoring-targets.json, refactoring-report.md
