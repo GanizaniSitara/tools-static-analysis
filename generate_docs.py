@@ -157,7 +157,7 @@ def compute_hotspot_metrics() -> list[dict]:
             fan_out * 3 + fan_in * 2 + nuget_deps + data_pattern_count + cross_repo_refs * 4
         )
         layer_info = bl.get(project, {})
-        metrics.append({
+        entry = {
             "project": project,
             "category": pm["category"],
             "repo": pm.get("repo", ""),
@@ -171,9 +171,101 @@ def compute_hotspot_metrics() -> list[dict]:
             "data_types": data_types,
             "cross_repo_refs": cross_repo_refs,
             "hotspot_score": hotspot_score,
-        })
+        }
+        smells = compute_smell_flags(entry)
+        entry["smells"] = smells
+        entry["explanation"] = compute_hotspot_explanation(entry, smells)
+        metrics.append(entry)
     metrics.sort(key=lambda x: -x["hotspot_score"])
     return metrics
+
+
+def compute_smell_flags(m: dict) -> list[dict]:
+    """Return a list of smell flags for a hotspot metric dict."""
+    flags = []
+    cat = m.get("category", "")
+    layer = m.get("layer", "")
+    fan_in = m.get("fan_in", 0)
+    fan_out = m.get("fan_out", 0)
+    data_types = m.get("data_types", [])
+    cross_repo = m.get("cross_repo_refs", 0)
+
+    # Red flags
+    if fan_in >= 3 and fan_out >= 5:
+        flags.append({
+            "id": "hub",
+            "level": "red",
+            "label": "Hub/God Object",
+            "explanation": f"Fan-in {fan_in} + fan-out {fan_out}: heavily depended-upon AND heavily depending",
+        })
+    if cat in ("Application", "DesktopApp", "Test") and fan_in >= 3:
+        flags.append({
+            "id": "upstream_dep",
+            "level": "red",
+            "label": "Upstream Dependency",
+            "explanation": f"{cat} with fan-in {fan_in}: app/test layer should not be reused by others",
+        })
+
+    # Yellow flags
+    if len(data_types) >= 3:
+        flags.append({
+            "id": "mixed_concerns",
+            "level": "yellow",
+            "label": "Mixed Concerns",
+            "explanation": f"{len(data_types)} data types ({', '.join(data_types)}): too many responsibilities",
+        })
+    if cross_repo >= 2:
+        flags.append({
+            "id": "cross_boundary",
+            "level": "yellow",
+            "label": "Cross-Boundary",
+            "explanation": f"{cross_repo} cross-repo refs: heavy coupling across repo boundaries",
+        })
+    if cat != "Library" and layer != "Infrastructure" and fan_in >= 5:
+        flags.append({
+            "id": "widely_used_non_lib",
+            "level": "yellow",
+            "label": "Widely Used Non-Library",
+            "explanation": f"{cat} with fan-in {fan_in}: may be mis-categorized infrastructure",
+        })
+
+    # Green flags
+    if (cat == "Library" or layer == "Infrastructure") and fan_in >= 3:
+        flags.append({
+            "id": "stable_infra",
+            "level": "green",
+            "label": "Stable Infrastructure",
+            "explanation": f"{cat}/{layer} with fan-in {fan_in}: expected healthy shared component",
+        })
+
+    return flags
+
+
+def compute_hotspot_explanation(m: dict, flags: list[dict]) -> str:
+    """Return a one-line human-readable summary of score drivers and smells."""
+    parts = []
+    red_flags = [f for f in flags if f["level"] == "red"]
+    yellow_flags = [f for f in flags if f["level"] == "yellow"]
+    green_flags = [f for f in flags if f["level"] == "green"]
+
+    if red_flags:
+        parts.append("Risk: " + "; ".join(f["label"] for f in red_flags))
+    if yellow_flags:
+        parts.append("Watch: " + "; ".join(f["label"] for f in yellow_flags))
+    if green_flags:
+        parts.append("OK: " + "; ".join(f["label"] for f in green_flags))
+
+    drivers = []
+    if m.get("fan_out", 0) >= 3:
+        drivers.append(f"fan-out={m['fan_out']}")
+    if m.get("fan_in", 0) >= 3:
+        drivers.append(f"fan-in={m['fan_in']}")
+    if m.get("cross_repo_refs", 0) > 0:
+        drivers.append(f"cross-repo={m['cross_repo_refs']}")
+    if drivers:
+        parts.append("Drivers: " + ", ".join(drivers))
+
+    return " | ".join(parts) if parts else "Low coupling"
 
 
 def get_dir_for_category(cat: str) -> str:
@@ -655,9 +747,9 @@ def generate_viewer_html() -> str:
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Data Access Patterns</div>
       <div class="table-wrap">
-        <table>
+        <table id="datasourcesTable">
           <thead>
-            <tr><th>Pattern</th><th>Type</th><th>Occurrences</th><th>Key Projects</th></tr>
+            <tr><th data-sort-type="text">Pattern</th><th data-sort-type="text">Type</th><th data-sort-type="num">Occurrences</th><th data-sort-type="text">Key Projects</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -684,9 +776,9 @@ def generate_viewer_html() -> str:
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Connection Strings</div>
       <div class="table-wrap">
-        <table>
+        <table id="connstringsTable">
           <thead>
-            <tr><th>Config File</th><th>Repo</th><th>Connection Name</th><th>Value</th></tr>
+            <tr><th data-sort-type="text">Config File</th><th data-sort-type="text">Repo</th><th data-sort-type="text">Connection Name</th><th data-sort-type="text">Value</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -723,9 +815,9 @@ def generate_viewer_html() -> str:
         Project A writes to a data node, Project B reads from it &mdash; implying a data dependency A &rarr; B.
       </p>
       <div class="table-wrap">
-        <table>
+        <table id="impliedDepsTable">
           <thead>
-            <tr><th>From</th><th>To</th><th>Via (Endpoint)</th><th>Infrastructure</th><th>Relationship</th></tr>
+            <tr><th data-sort-type="text">From</th><th data-sort-type="text">To</th><th data-sort-type="text">Via (Endpoint)</th><th data-sort-type="text">Infrastructure</th><th data-sort-type="none">Relationship</th></tr>
           </thead>
           <tbody>
 {rows}          </tbody>
@@ -802,9 +894,9 @@ def generate_viewer_html() -> str:
         font-size:0.85rem;margin-bottom:0.75rem;outline:none;
       ">
       <div class="table-wrap">
-        <table>
+        <table id="flowPathsTable">
           <thead>
-            <tr><th>Source Screen</th><th>Layers Crossed</th><th>Depth</th><th>Path Chain</th><th>Named Flow</th></tr>
+            <tr><th data-sort-type="text">Source Screen</th><th data-sort-type="text">Layers Crossed</th><th data-sort-type="num">Depth</th><th data-sort-type="none">Path Chain</th><th data-sort-type="text">Named Flow</th></tr>
           </thead>
           <tbody id="flowPathsBody">
 {flow_rows}          </tbody>
@@ -904,9 +996,9 @@ def generate_viewer_html() -> str:
         font-size:0.85rem;margin-bottom:0.75rem;outline:none;
       ">
       <div class="table-wrap">
-        <table>
+        <table id="fieldTraceTable">
           <thead>
-            <tr><th>XAML View</th><th>Binding Path</th><th>ViewModel</th><th>VM Property</th><th>Entity</th><th>DB Table.Column</th><th>Completeness</th></tr>
+            <tr><th data-sort-type="text">XAML View</th><th data-sort-type="text">Binding Path</th><th data-sort-type="text">ViewModel</th><th data-sort-type="text">VM Property</th><th data-sort-type="text">Entity</th><th data-sort-type="text">DB Table.Column</th><th data-sort-type="text">Completeness</th></tr>
           </thead>
           <tbody id="ftBody">
 {ft_rows}          </tbody>
@@ -946,13 +1038,13 @@ def generate_viewer_html() -> str:
         <table id="projectsTable">
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Repo</th>
-              <th>Category</th>
-              <th>Business Layer</th>
-              <th>Project Refs</th>
-              <th>NuGet Deps</th>
-              <th>Path</th>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Repo</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="text">Business Layer</th>
+              <th data-sort-type="num">Project Refs</th>
+              <th data-sort-type="num">NuGet Deps</th>
+              <th data-sort-type="text">Path</th>
             </tr>
           </thead>
           <tbody id="projectsBody">
@@ -997,18 +1089,19 @@ def generate_viewer_html() -> str:
         Score = Fan-Out&times;3 + Fan-In&times;2 + NuGet + Data&nbsp;Patterns + Cross-Repo&times;4
       </p>
       <div class="table-wrap">
-        <table>
+        <table id="hotspotsTable">
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Category</th>
-              <th>Layer</th>
-              <th>Fan-Out</th>
-              <th>Fan-In</th>
-              <th>NuGet</th>
-              <th>Data Patterns</th>
-              <th>Cross-Repo</th>
-              <th>Score</th>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="text">Layer</th>
+              <th data-sort-type="num">Fan-Out</th>
+              <th data-sort-type="num">Fan-In</th>
+              <th data-sort-type="num">NuGet</th>
+              <th data-sort-type="num">Data Patterns</th>
+              <th data-sort-type="num">Cross-Repo</th>
+              <th data-sort-type="num">Score</th>
+              <th data-sort-type="none">Risk</th>
             </tr>
           </thead>
           <tbody id="hotspotsBody">
@@ -1168,6 +1261,9 @@ def generate_viewer_html() -> str:
   }}
   tbody td {{ padding: 0.55rem 0.75rem; border-bottom: 1px solid #F5F5F5; color: #333333; }}
   tbody tr:hover {{ background: rgba(0,85,135,0.04); }}
+  thead th[data-sort-type]:not([data-sort-type="none"]) {{ cursor: pointer; user-select: none; }}
+  thead th[data-sort-type]:not([data-sort-type="none"]):hover {{ background: #EAEAEA; }}
+  .sort-indicator {{ font-size: 0.65em; margin-left: 3px; color: #005587; }}
   .tag {{
     display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
     font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
@@ -1807,6 +1903,67 @@ function zoomDiagram(containerId, delta) {{
   svg.style.transform = 'scale(' + scale + ')';
 }}
 
+function initSortableTable(table) {{
+  if (!table) return;
+  var headers = table.querySelectorAll('thead th[data-sort-type]');
+  if (headers.length === 0) return;
+  var tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  var originalOrder = null;
+
+  headers.forEach(function (th, colIdx) {{
+    var sortType = th.getAttribute('data-sort-type');
+    if (sortType === 'none') return;
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', function () {{
+      // Capture original order on first sort
+      if (!originalOrder) {{
+        originalOrder = Array.from(tbody.querySelectorAll('tr'));
+      }}
+      // Determine next state: none -> asc -> desc -> none
+      var currentDir = th.getAttribute('data-sort-dir') || 'none';
+      var nextDir = currentDir === 'none' ? 'asc' : currentDir === 'asc' ? 'desc' : 'none';
+
+      // Clear all other headers
+      headers.forEach(function (h) {{
+        h.setAttribute('data-sort-dir', 'none');
+        var ind = h.querySelector('.sort-indicator');
+        if (ind) ind.remove();
+      }});
+
+      if (nextDir === 'none') {{
+        // Restore original order
+        th.setAttribute('data-sort-dir', 'none');
+        originalOrder.forEach(function (row) {{ tbody.appendChild(row); }});
+        return;
+      }}
+
+      th.setAttribute('data-sort-dir', nextDir);
+      var indicator = document.createElement('span');
+      indicator.className = 'sort-indicator';
+      indicator.textContent = nextDir === 'asc' ? '\u25B2' : '\u25BC';
+      th.appendChild(indicator);
+
+      var rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort(function (a, b) {{
+        var aCell = a.children[colIdx];
+        var bCell = b.children[colIdx];
+        if (!aCell || !bCell) return 0;
+        var aVal = (aCell.textContent || '').trim();
+        var bVal = (bCell.textContent || '').trim();
+        var cmp;
+        if (sortType === 'num') {{
+          cmp = (parseFloat(aVal) || 0) - (parseFloat(bVal) || 0);
+        }} else {{
+          cmp = aVal.localeCompare(bVal, undefined, {{ numeric: true, sensitivity: 'base' }});
+        }}
+        return nextDir === 'desc' ? -cmp : cmp;
+      }});
+      rows.forEach(function (row) {{ tbody.appendChild(row); }});
+    }});
+  }});
+}}
+
 (function () {{
   'use strict';
 
@@ -1921,6 +2078,13 @@ function zoomDiagram(containerId, delta) {{
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
+  // Init sorting on static tables
+  initSortableTable(document.getElementById('datasourcesTable'));
+  initSortableTable(document.getElementById('connstringsTable'));
+  initSortableTable(document.getElementById('impliedDepsTable'));
+  initSortableTable(document.getElementById('flowPathsTable'));
+  initSortableTable(document.getElementById('fieldTraceTable'));
+
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
@@ -1975,6 +2139,7 @@ function zoomDiagram(containerId, delta) {{
         '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
       tbody.appendChild(tr);
     }});
+    initSortableTable(document.getElementById('projectsTable'));
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
@@ -1998,6 +2163,14 @@ function zoomDiagram(containerId, delta) {{
       else if (idx < midThird) {{ scoreColor = '#9E8700'; scoreBg = 'rgba(158,135,0,0.06)'; }}
       else {{ scoreColor = '#009639'; scoreBg = 'rgba(0,150,57,0.06)'; }}
       tr.setAttribute('data-search', (m.project + ' ' + m.category + ' ' + (m.layer || '') + ' ' + (m.repo || '')).toLowerCase());
+      // Build risk cell
+      var riskDots = '';
+      var smellColors = {{ red: '#D0002B', yellow: '#9E8700', green: '#009639' }};
+      (m.smells || []).forEach(function (s) {{
+        var c = smellColors[s.level] || '#53565A';
+        riskDots += '<span title="' + escHtml(s.label + ': ' + s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+      }});
+      var riskTitle = m.explanation ? ' title="' + escHtml(m.explanation) + '"' : '';
       tr.innerHTML =
         '<td><strong>' + escHtml(m.project) + '</strong></td>' +
         '<td>' + tagHTML(m.category) + '</td>' +
@@ -2007,9 +2180,11 @@ function zoomDiagram(containerId, delta) {{
         '<td style="text-align:center">' + m.nuget_deps + '</td>' +
         '<td style="text-align:center">' + m.data_patterns + '</td>' +
         '<td style="text-align:center">' + m.cross_repo_refs + '</td>' +
-        '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>';
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>' +
+        '<td style="text-align:center"' + riskTitle + '>' + (riskDots || '&mdash;') + '</td>';
       tbody.appendChild(tr);
     }});
+    initSortableTable(document.getElementById('hotspotsTable'));
   }})();
 
   // Search
