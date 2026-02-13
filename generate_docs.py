@@ -511,23 +511,23 @@ def generate_viewer_html() -> str:
 
     # Diagram panels
     legend_html = """
-      <div class="overview-legend">
-        <div class="legend-title">How to read this diagram</div>
-        <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> = project categories (number = project count in that category)</div>
-        <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Arrows</strong> = cross-category project references (number = total reference count)</div>
-        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>arrow</strong> to see which projects reference each other</div>
-        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click a <strong>box</strong> to jump to that category&#39;s detail tab</div>
-      </div>"""
+        <div class="diagram-legend">
+          <div class="legend-title">Legend</div>
+          <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> = project categories (number = project count)</div>
+          <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Arrows</strong> = cross-category references (number = reference count)</div>
+          <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see which projects reference each other</div>
+          <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>box</strong> &rarr; jump to that category&#39;s detail tab</div>
+        </div>"""
     category_detail_legend_html = """
-      <div class="overview-legend">
-        <div class="legend-title">How to read this diagram</div>
-        <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes inside rectangle</strong> = projects in this category</div>
-        <div class="legend-item"><span class="legend-icon">&#11044;</span> <strong>Pill nodes outside</strong> = other categories with connections (number = connected project count)</div>
-        <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Solid arrows</strong> = within-category project references</div>
-        <div class="legend-item"><span class="legend-icon">&#8674;</span> <strong>Dashed arrows</strong> = cross-category references</div>
-        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>arrow</strong> to see reference details</div>
-        <div class="legend-item"><span class="legend-icon">&#9755;</span> Click an <strong>external node</strong> to jump to that category&#39;s tab</div>
-      </div>"""
+        <div class="diagram-legend">
+          <div class="legend-title">Legend</div>
+          <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> in the colored rectangle are individual projects in this category</div>
+          <div class="legend-item"><span class="legend-icon">&#9899;</span> <strong>Outside rounded nodes</strong> like &ldquo;Library (5)&rdquo; mean 5 Library projects have references to/from projects shown here</div>
+          <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Solid arrow</strong> = direct project reference within this category</div>
+          <div class="legend-item"><span class="legend-icon">&#8674;</span> <strong>Dashed arrow</strong> = project depends on (or is used by) projects in that outside group</div>
+          <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
+          <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>outside node</strong> &rarr; navigate to that category</div>
+        </div>"""
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
         active = " active" if i == 0 else ""
@@ -535,11 +535,29 @@ def generate_viewer_html() -> str:
         if dt.get("warning"):
             warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
         if dt["id"] == "overview":
-            overview_legend = legend_html
+            side_legend = legend_html
         elif dt["id"].startswith("cat_"):
-            overview_legend = category_detail_legend_html
+            side_legend = category_detail_legend_html
         else:
-            overview_legend = ""
+            side_legend = ""
+        if side_legend:
+            diagram_body = f"""
+      <div class="diagram-with-legend">
+        <div class="mermaid-wrap" id="mermaid-{dt['id']}">
+          <span class="loading">Loading diagram...</span>
+          <pre class="mermaid" style="display:none">
+{_esc_html(dt['mermaid'])}
+          </pre>
+        </div>{side_legend}
+      </div>"""
+        else:
+            diagram_body = f"""
+      <div class="mermaid-wrap" id="mermaid-{dt['id']}">
+        <span class="loading">Loading diagram...</span>
+        <pre class="mermaid" style="display:none">
+{_esc_html(dt['mermaid'])}
+        </pre>
+      </div>"""
         diagram_panels += f"""
   <section class="tab-panel{active}" id="panel-{dt['id']}">
     <div class="card">
@@ -549,13 +567,7 @@ def generate_viewer_html() -> str:
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
           <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
         </span>
-      </div>{warning_html}{overview_legend}
-      <div class="mermaid-wrap" id="mermaid-{dt['id']}">
-        <span class="loading">Loading diagram...</span>
-        <pre class="mermaid" style="display:none">
-{_esc_html(dt['mermaid'])}
-        </pre>
-      </div>
+      </div>{warning_html}{diagram_body}
     </div>
   </section>
 """
@@ -979,10 +991,12 @@ def generate_viewer_html() -> str:
     background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; border-radius: 6px;
     padding: 0.5rem 0.75rem; margin: 0.5rem 0; font-size: 0.85rem;
   }}
-  .overview-legend {{ background:#1e293b; border:1px solid #334155; border-radius:8px; padding:0.6rem 1rem; margin:0.5rem 0; font-size:0.82rem; color:#cbd5e1; }}
-  .overview-legend .legend-title {{ font-weight:600; color:#e2e8f0; margin-bottom:0.4rem; }}
-  .overview-legend .legend-item {{ margin-bottom:0.25rem; line-height:1.4; }}
-  .overview-legend .legend-icon {{ display:inline-block; width:1.2rem; color:#60a5fa; text-align:center; }}
+  .diagram-with-legend {{ display:flex; gap:1rem; align-items:flex-start; }}
+  .diagram-with-legend .mermaid-wrap {{ flex:1; min-width:0; }}
+  .diagram-legend {{ width:240px; flex-shrink:0; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.78rem; color:#cbd5e1; }}
+  .diagram-legend .legend-title {{ font-weight:600; color:#e2e8f0; margin-bottom:0.4rem; font-size:0.82rem; }}
+  .diagram-legend .legend-item {{ margin-bottom:0.3rem; line-height:1.35; }}
+  .diagram-legend .legend-icon {{ display:inline-block; width:1.1rem; color:#60a5fa; text-align:center; }}
   .cat-nav-btn {{ background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:6px; padding:0.3rem 0.7rem; font-size:0.8rem; cursor:pointer; }}
   .cat-nav-btn:hover {{ background:#475569; }}
   .mermaid-wrap {{
@@ -1085,6 +1099,8 @@ def generate_viewer_html() -> str:
     .content {{ padding: 1rem; }}
     .tabs {{ padding: 0 1rem; }}
     .search-box {{ width: 100%; }}
+    .diagram-with-legend {{ flex-direction:column; }}
+    .diagram-legend {{ width:100%; }}
   }}
 </style>
 </head>
