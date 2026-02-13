@@ -191,7 +191,9 @@ def compute_cyclomatic_complexity(content: str) -> int:
     count += len(re.findall(r'\bfor\s*\(', content))
     count += len(re.findall(r'\bforeach\s*\(', content))
     count += len(re.findall(r'\bcatch\s*\(', content))
-    count += len(re.findall(r'\?[^:]*:', content))  # ternary
+    # Ternary operator - match ? followed by : but avoid nullable types
+    # Look for ? not followed by > or . to avoid matching nullable types and member access
+    count += len(re.findall(r'\?[^>.\s][^:]*:', content))
     count += len(re.findall(r'&&', content))
     count += len(re.findall(r'\|\|', content))
     return count
@@ -365,8 +367,9 @@ def detect_magic_numbers(content: str) -> list[dict]:
     exclude_numbers = {0, 1, -1, 2, 10, 100, 1000}
     
     for i, line in enumerate(lines):
-        # Skip comments and strings
-        if '//' in line or '/*' in line or '"' in line:
+        # Skip lines that are purely comments (but not inline comments)
+        stripped = line.strip()
+        if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
             continue
         
         # Skip lines that look like test data or example assignments
@@ -377,10 +380,15 @@ def detect_magic_numbers(content: str) -> list[dict]:
         if '{' in line and '}' in line:
             continue
         
+        # Remove string literals and comments for analysis
+        # This is a simplified approach - remove quoted strings
+        cleaned_line = re.sub(r'"[^"]*"', '', line)
+        cleaned_line = re.sub(r'//.*$', '', cleaned_line)
+        
         # Find numeric literals in actual logic (not declarations)
         # Look for numbers in expressions, method calls, comparisons
-        if any(op in line for op in ['if', 'while', 'for', 'return', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', '%']):
-            numbers = re.findall(r'\b(\d+(?:\.\d+)?)\b', line)
+        if any(op in cleaned_line for op in ['if', 'while', 'for', 'return', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', '%']):
+            numbers = re.findall(r'\b(\d+(?:\.\d+)?)\b', cleaned_line)
             for num_str in numbers:
                 try:
                     num = float(num_str) if '.' in num_str else int(num_str)
@@ -432,10 +440,13 @@ def detect_mutable_shared_state(content: str) -> list[dict]:
     lines = content.split('\n')
     
     for i, line in enumerate(lines):
-        # Match static fields that are not readonly or const
-        if re.search(r'\bstatic\s+(?!readonly|const)\w+', line):
-            # Make sure it's a field declaration (has an assignment or semicolon)
-            if '=' in line or ';' in line:
+        # Check if line contains 'static' and is a field declaration
+        if 'static' in line and ('=' in line or ';' in line):
+            # Skip if line contains readonly or const
+            if 'readonly' in line or 'const' in line:
+                continue
+            # Match static field declarations
+            if re.search(r'\bstatic\b', line):
                 smells.append({
                     "type": "mutable_shared_state",
                     "line": i + 1,
@@ -451,18 +462,28 @@ def detect_missing_null_checks(content: str) -> list[dict]:
     lines = content.split('\n')
     
     for i, line in enumerate(lines):
-        # Find public method signatures
-        if re.search(r'\bpublic\s+\w+\s+\w+\s*\([^)]*\w+\s+\w+', line):
-            # Extract parameter names (simple heuristic)
-            params = re.findall(r'\w+\s+(\w+)(?:\s*,|\s*\))', line)
+        # Find public method signatures - including methods with no parameters or generic types
+        if re.search(r'\bpublic\s+\w+\s+\w+\s*\(', line):
+            # Extract parameter names (simple heuristic) - handle zero or more parameters
+            params = re.findall(r'\w+\s+(\w+)(?:\s*[,\)])', line)
             
             if params:
                 # Check if method body checks for null (within next 10 lines)
                 method_body = '\n'.join(lines[i:min(i + 10, len(lines))])
                 
                 for param in params:
-                    # Check for null checks
-                    if not re.search(rf'\b{param}\s*==\s*null|\bnull\s*==\s*{param}|\b{param}\s*is\s*null', method_body):
+                    # Check for various null check patterns including modern C# patterns
+                    null_check_patterns = [
+                        rf'\b{param}\s*==\s*null',
+                        rf'\bnull\s*==\s*{param}',
+                        rf'\b{param}\s*is\s*null',
+                        rf'ArgumentNullException\.ThrowIfNull\s*\(\s*{param}',
+                        rf'\b{param}\s*\?\?',
+                    ]
+                    
+                    has_null_check = any(re.search(pattern, method_body) for pattern in null_check_patterns)
+                    
+                    if not has_null_check:
                         smells.append({
                             "type": "missing_null_check",
                             "line": i + 1,
@@ -475,18 +496,24 @@ def detect_missing_null_checks(content: str) -> list[dict]:
 
 
 def detect_deep_inheritance(content: str) -> list[dict]:
-    """Detect class declarations with deep inheritance (>3 levels - heuristic)."""
+    """Detect class declarations with multiple interfaces/base classes (>3 - heuristic).
+    
+    Note: This is a simplified heuristic that counts interfaces + base class.
+    True deep inheritance analysis would require full type resolution across files.
+    """
     smells = []
     lines = content.split('\n')
     
     for i, line in enumerate(lines):
-        # Match class declarations with base classes
+        # Match class declarations with base classes/interfaces
         if re.search(r'\bclass\s+\w+\s*:', line):
-            # Count number of base classes/interfaces (simple heuristic)
+            # Count number of items after the colon (base classes + interfaces)
             bases = line.split(':')[1] if ':' in line else ''
+            # Count commas to get number of items
             base_count = len([b for b in bases.split(',') if b.strip()])
             
-            # This is a simplified check - in reality would need full type resolution
+            # Flag if inheriting from many types (likely indicates complex inheritance)
+            # This is a heuristic - not true depth but complexity indicator
             if base_count > 3:
                 smells.append({
                     "type": "deep_inheritance",
@@ -794,6 +821,7 @@ def analyze_all_files(scan_root: str) -> dict:
             "complexity_score": total_complexity,
             "smell_count": total_smells,
             "top_smells": [s[0] for s in top_smells],
+            "smell_counts": dict(smell_types),  # Store full smell counts for later use
             "files": files,
         }
         
@@ -844,10 +872,10 @@ def generate_claude_targets(projects: list) -> dict:
         why_parts = [f"Refactoring value: {score}"]
         
         if project["smell_count"] > 0:
-            smell_summary = ", ".join(
-                f"{count} {smell}" 
-                for smell, count in [(s, sum(1 for f in project["files"] for sm in f["smells"] if sm["type"] == s)) for s in project["top_smells"]][:3]
-            )
+            # Use precomputed smell counts for efficiency
+            smell_counts = project.get("smell_counts", {})
+            top_3_smells = sorted(smell_counts.items(), key=lambda x: -x[1])[:3]
+            smell_summary = ", ".join(f"{count} {smell}" for smell, count in top_3_smells)
             why_parts.append(smell_summary)
         
         if not project["has_tests"]:
@@ -867,13 +895,13 @@ def generate_claude_targets(projects: list) -> dict:
         
         # Build suggested prompt
         focus_areas = []
-        if any("precision_unsafe_math" in f["smells"] for f in project["files"] for s in [f["smells"]]):
+        if any(smell["type"] == "precision_unsafe_math" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("precision-unsafe math (double used for financial calculations)")
-        if any("sync_over_async" in str(f["smells"]) for f in project["files"]):
+        if any(smell["type"] == "sync_over_async" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("sync-over-async patterns")
-        if any("god_method" in str(f["smells"]) for f in project["files"]):
+        if any(smell["type"] == "god_method" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("god methods (>100 lines)")
-        if any("exception_swallowing" in str(f["smells"]) for f in project["files"]):
+        if any(smell["type"] == "exception_swallowing" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("exception swallowing")
         
         prompt = f"Review {project['project']} for refactoring."
@@ -1079,6 +1107,11 @@ def main():
     
     # Generate Claude Code targets
     claude_targets = generate_claude_targets(projects)
+    
+    # Clean up internal fields before output
+    for project in projects:
+        # Remove smell_counts (internal use only)
+        project.pop("smell_counts", None)
     
     # Prepare output
     output_data = {
