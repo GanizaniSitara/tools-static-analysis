@@ -927,11 +927,18 @@ def generate_claude_targets(projects: list) -> dict:
 
 def save_json_output(data: dict, output_path: str):
     """Save JSON output file."""
-    Path(output_path).write_text(
-        json.dumps(data, indent=2),
-        encoding="utf-8"
-    )
-    print(f"Saved: {output_path}")
+    output_dir = os.path.dirname(output_path)
+    if output_dir:  # Only create directory if path has a directory component
+        os.makedirs(output_dir, exist_ok=True)
+    try:
+        Path(output_path).write_text(
+            json.dumps(data, indent=2),
+            encoding="utf-8"
+        )
+        print(f"Saved: {output_path}")
+    except OSError as e:
+        print(f"ERROR: Failed to save {output_path}: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 def generate_markdown_report(data: dict, output_path: str):
@@ -1062,8 +1069,15 @@ def generate_markdown_report(data: dict, output_path: str):
     for target in claude_targets["tier3_medium"][:5]:
         lines.append(f"- **{target['project']}**: {target['why']}")
     
-    Path(output_path).write_text("\n".join(lines), encoding="utf-8")
-    print(f"Saved: {output_path}")
+    output_dir = os.path.dirname(output_path)
+    if output_dir:  # Only create directory if path has a directory component
+        os.makedirs(output_dir, exist_ok=True)
+    try:
+        Path(output_path).write_text("\n".join(lines), encoding="utf-8")
+        print(f"Saved: {output_path}")
+    except OSError as e:
+        print(f"ERROR: Failed to save {output_path}: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 def main():
@@ -1074,6 +1088,13 @@ def main():
     print(f"Scan root: {SCAN_ROOT}")
     print(f"Output dir: {OUT_DIR}")
     print()
+
+    # Fail fast: create output directory before doing any expensive work
+    try:
+        os.makedirs(OUT_DIR, exist_ok=True)
+    except OSError as e:
+        print(f"ERROR: Cannot create output directory '{OUT_DIR}': {e}", file=sys.stderr)
+        sys.exit(1)
     
     # Analyze all files
     result = analyze_all_files(SCAN_ROOT)
