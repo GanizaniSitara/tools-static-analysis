@@ -629,6 +629,12 @@ def load_existing_analysis(out_dir: str) -> dict:
             layer_info = bl.get(project, {})
             data["project_layer"][project] = layer_info.get("layer", "")
     
+    # Warn if project-meta.json is empty or missing
+    if not data["project_meta"]:
+        print("  ⚠ WARNING: project-meta.json is empty or missing!")
+        print("    Run analyze.py first for best results.")
+        print("    Falling back to directory-based project grouping.")
+    
     return data
 
 
@@ -665,6 +671,43 @@ def find_project_for_file(filepath: str, project_meta: list, scan_root: str) -> 
             continue
     
     return None
+
+
+def infer_project_from_path(filepath: str, scan_root: str) -> str:
+    """Infer a project name from the file path when project-meta.json has no match.
+    
+    Strategy:
+    1. Walk up from the file looking for a directory containing a .csproj file
+    2. If found, use the .csproj filename (without extension) as the project name  
+    3. If not found, use the parent directory name as a fallback
+    """
+    norm_path = _normalize_path(filepath)
+    norm_root = _normalize_path(scan_root)
+    
+    # Walk up from file directory looking for a .csproj
+    current = os.path.dirname(norm_path)
+    while current and current != norm_root and len(current) >= len(norm_root):
+        try:
+            for entry in os.scandir(_fs_path(current)):
+                if entry.name.endswith('.csproj') and entry.is_file():
+                    return os.path.splitext(entry.name)[0]
+        except OSError:
+            pass
+        parent = os.path.dirname(current)
+        if parent == current:
+            break
+        current = parent
+    
+    # Fallback: use parent directory name relative to scan root
+    try:
+        rel = _relpath(filepath, scan_root)
+        parts = rel.replace("\\", "/").split("/")
+        if len(parts) > 1:
+            return parts[0]  # top-level directory under scan root
+    except ValueError:
+        pass
+    
+    return "_unknown"
 
 
 def detect_test_coverage_gap(project: str, project_meta: list, analysis_data: dict) -> bool:
@@ -754,6 +797,7 @@ def analyze_all_files(scan_root: str) -> dict:
     
     print("\nAnalyzing files...")
     analyzed_count = 0
+    fallback_count = 0
     
     for i, filepath in enumerate(cs_files):
         if (i + 1) % _PROGRESS_INTERVAL == 0:
@@ -767,21 +811,21 @@ def analyze_all_files(scan_root: str) -> dict:
         
         # Find which project this file belongs to
         project = find_project_for_file(filepath, analysis_data["project_meta"], scan_root)
-        if project:
-            project_files[project].append(file_data)
-        else:
-            # Orphan file - store under special key
-            project_files["_orphaned"].append(file_data)
+        if not project:
+            project = infer_project_from_path(filepath, scan_root)
+            fallback_count += 1
+        project_files[project].append(file_data)
     
     print(f"\nAnalyzed {analyzed_count} files (skipped {len(cs_files) - analyzed_count} small/excluded files)")
-    print(f"Files grouped into {len(project_files)} projects")
+    if fallback_count > 0:
+        print(f"  ({fallback_count} files matched by directory fallback, not project-meta.json)")
+    real_project_count = sum(1 for p in project_files if not p.startswith("_"))
+    print(f"Files grouped into {real_project_count} projects")
     
     # Aggregate by project
     projects = []
     
     for project, files in project_files.items():
-        if project == "_orphaned":
-            continue
         
         total_lines = sum(f["lines"] for f in files)
         total_complexity = sum(f["complexity_score"] for f in files)
