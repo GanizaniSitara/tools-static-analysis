@@ -131,6 +131,51 @@ for f in data_findings:
     data_by_project.setdefault(proj_dir, []).append(f)
 
 
+def compute_hotspot_metrics() -> list[dict]:
+    """Compute coupling/complexity metrics for each project, sorted by hotspot score."""
+    bl = flow_paths_data.get("businessLayers", {})
+    metrics = []
+    for pm in project_meta:
+        project = pm["project"]
+        fan_out = len(refs_by_project.get(project, []))
+        fan_in = len(referenced_by.get(project, []))
+        nuget_deps = len(deps_by_project.get(project, []))
+        dp_list = data_by_project.get(project, [])
+        data_pattern_count = len(dp_list)
+        data_types = sorted({f["type"] for f in dp_list}) if dp_list else []
+        cross_repo_out = sum(
+            1 for r in refs_by_project.get(project, []) if r.get("crossRepo") == "true"
+        )
+        cross_repo_in = sum(
+            1
+            for src in referenced_by.get(project, [])
+            for r in refs_by_project.get(src, [])
+            if r.get("references") == project and r.get("crossRepo") == "true"
+        )
+        cross_repo_refs = cross_repo_out + cross_repo_in
+        hotspot_score = (
+            fan_out * 3 + fan_in * 2 + nuget_deps + data_pattern_count + cross_repo_refs * 4
+        )
+        layer_info = bl.get(project, {})
+        metrics.append({
+            "project": project,
+            "category": pm["category"],
+            "repo": pm.get("repo", ""),
+            "path": pm.get("globalPath") or pm.get("path", ""),
+            "layer": layer_info.get("layer", ""),
+            "layer_confidence": layer_info.get("confidence", 0),
+            "fan_out": fan_out,
+            "fan_in": fan_in,
+            "nuget_deps": nuget_deps,
+            "data_patterns": data_pattern_count,
+            "data_types": data_types,
+            "cross_repo_refs": cross_repo_refs,
+            "hotspot_score": hotspot_score,
+        })
+    metrics.sort(key=lambda x: -x["hotspot_score"])
+    return metrics
+
+
 def get_dir_for_category(cat: str) -> str:
     if cat == "Connector":
         return "connectors"
@@ -488,6 +533,14 @@ def generate_viewer_html() -> str:
     # ── Implied dependencies from data flow ──
     implied_deps = data_flow.get("impliedDependencies", [])
 
+    # ── Hotspot metrics ──
+    hotspot_metrics = compute_hotspot_metrics()
+    hotspot_json = json.dumps(hotspot_metrics)
+    # Summary card data
+    top_hotspot = hotspot_metrics[0] if hotspot_metrics else None
+    most_referenced = max(hotspot_metrics, key=lambda m: m["fan_in"]) if hotspot_metrics else None
+    most_cross_repo = max(hotspot_metrics, key=lambda m: m["cross_repo_refs"]) if hotspot_metrics else None
+
     # Tab buttons
     all_tab_ids: list[tuple[str, str]] = []
     for dt in diagram_tabs:
@@ -502,6 +555,7 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("e2eflows", "E2E Flows"))
     if field_trace_data.get("fieldChains"):
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
+    all_tab_ids.append(("hotspots", "Hotspots"))
     all_tab_ids.append(("allprojects", "All Projects"))
 
     tab_buttons = "\n".join(
@@ -522,11 +576,9 @@ def generate_viewer_html() -> str:
         <div class="diagram-legend">
           <div class="legend-title">Legend</div>
           <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> in the colored rectangle are individual projects in this category</div>
-          <div class="legend-item"><span class="legend-icon">&#9899;</span> <strong>Outside rounded nodes</strong> like &ldquo;Library (5)&rdquo; mean 5 Library projects have references to/from projects shown here</div>
+          <div class="legend-item"><span class="legend-icon">&#9899;</span> <strong>Outside pill nodes</strong> like &ldquo;Library (5)&rdquo; = 5 Library projects are dependencies of (or depend on) the projects shown in this diagram. Dashed arrows show which projects have those cross-category links. Click a pill to navigate to that category.</div>
           <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Solid arrow</strong> = direct project reference within this category</div>
-          <div class="legend-item"><span class="legend-icon">&#8674;</span> <strong>Dashed arrow</strong> = project depends on (or is used by) projects in that outside group</div>
           <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
-          <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>outside node</strong> &rarr; navigate to that category</div>
         </div>"""
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
@@ -912,6 +964,61 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # Hotspots panel
+    hs_top_name = _esc_html(top_hotspot["project"]) if top_hotspot else "—"
+    hs_top_score = top_hotspot["hotspot_score"] if top_hotspot else 0
+    hs_ref_name = _esc_html(most_referenced["project"]) if most_referenced else "—"
+    hs_ref_val = most_referenced["fan_in"] if most_referenced else 0
+    hs_xr_name = _esc_html(most_cross_repo["project"]) if most_cross_repo else "—"
+    hs_xr_val = most_cross_repo["cross_repo_refs"] if most_cross_repo else 0
+    hotspots_panel = f"""
+  <section class="tab-panel" id="panel-hotspots">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Hotspot Analysis</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Top Hotspot</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#ef4444;margin-top:0.2rem;">{hs_top_name}</div>
+          <div style="font-size:0.8rem;color:#64748b;">Score: {hs_top_score}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Most Referenced</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#3b82f6;margin-top:0.2rem;">{hs_ref_name}</div>
+          <div style="font-size:0.8rem;color:#64748b;">Fan-in: {hs_ref_val}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#1a2438;border:1px solid #334155;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;">Most Cross-Repo</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#f59e0b;margin-top:0.2rem;">{hs_xr_name}</div>
+          <div style="font-size:0.8rem;color:#64748b;">Cross-repo refs: {hs_xr_val}</div>
+        </div>
+      </div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:0.75rem;">
+        Projects ranked by coupling complexity &mdash; where AI help has most impact.
+        Score = Fan-Out&times;3 + Fan-In&times;2 + NuGet + Data&nbsp;Patterns + Cross-Repo&times;4
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Category</th>
+              <th>Layer</th>
+              <th>Fan-Out</th>
+              <th>Fan-In</th>
+              <th>NuGet</th>
+              <th>Data Patterns</th>
+              <th>Cross-Repo</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="hotspotsBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1132,6 +1239,7 @@ def generate_viewer_html() -> str:
 {connstrings_panel}
 {e2eflows_panel}
 {fieldtrace_panel}
+{hotspots_panel}
 {all_projects_panel}
 </main>
 
@@ -1817,6 +1925,7 @@ function zoomDiagram(containerId, delta) {{
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
   window._categoryMap = {{ {cat_map_entries} }};
+  window._hotspotData = {hotspot_json};
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -1874,13 +1983,46 @@ function zoomDiagram(containerId, delta) {{
 
   }}); // end finally for flow-paths.json
 
+  // Populate hotspots table from embedded data
+  (function () {{
+    var data = window._hotspotData || [];
+    var tbody = document.getElementById('hotspotsBody');
+    if (!tbody || data.length === 0) return;
+    var total = data.length;
+    var topThird = Math.ceil(total / 3);
+    var midThird = Math.ceil(total * 2 / 3);
+    data.forEach(function (m, idx) {{
+      var tr = document.createElement('tr');
+      var scoreColor, scoreBg;
+      if (idx < topThird) {{ scoreColor = '#ef4444'; scoreBg = 'rgba(239,68,68,0.12)'; }}
+      else if (idx < midThird) {{ scoreColor = '#eab308'; scoreBg = 'rgba(234,179,8,0.08)'; }}
+      else {{ scoreColor = '#22c55e'; scoreBg = 'rgba(34,197,94,0.08)'; }}
+      tr.setAttribute('data-search', (m.project + ' ' + m.category + ' ' + (m.layer || '') + ' ' + (m.repo || '')).toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(m.project) + '</strong></td>' +
+        '<td>' + tagHTML(m.category) + '</td>' +
+        '<td>' + layerTagHTML(m.layer || '', m.layer_confidence || 0) + '</td>' +
+        '<td style="text-align:center">' + m.fan_out + '</td>' +
+        '<td style="text-align:center">' + m.fan_in + '</td>' +
+        '<td style="text-align:center">' + m.nuget_deps + '</td>' +
+        '<td style="text-align:center">' + m.data_patterns + '</td>' +
+        '<td style="text-align:center">' + m.cross_repo_refs + '</td>' +
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor + ';background:' + scoreBg + '">' + m.hotspot_score + '</td>';
+      tbody.appendChild(tr);
+    }});
+  }})();
+
   // Search
   var searchInput = document.getElementById('searchInput');
   searchInput.addEventListener('input', function () {{
     var query = searchInput.value.trim().toLowerCase();
-    if (query.length > 0) activateTab('allprojects');
     var rows = document.querySelectorAll('#projectsBody tr[data-search]');
     rows.forEach(function (row) {{
+      var text = row.getAttribute('data-search') || '';
+      row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
+    }});
+    var hsRows = document.querySelectorAll('#hotspotsBody tr[data-search]');
+    hsRows.forEach(function (row) {{
       var text = row.getAttribute('data-search') || '';
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
     }});
@@ -2185,6 +2327,325 @@ function zoomDiagram(containerId, delta) {{
     return html
 
 
+# ─── AI Context Export ──────────────────────────────────────────────
+
+def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
+    """Write CODEBASE_OVERVIEW.md with architecture summary."""
+    summary = graph["summary"]
+    categories = summary["categories"]
+
+    md = f"""# Codebase Overview
+
+> Auto-generated context for AI coding agents. Feed this file to Claude/OpenCode for architecture awareness.
+
+## Architecture Summary
+
+| Metric | Value |
+|--------|-------|
+| Repositories | {summary.get('totalRepos', 1)} |
+| Projects | {summary['totalProjects']} |
+| NuGet Packages | {summary['totalNuGetPackages']} |
+| Project References | {summary['totalProjectRefs']} |
+| Cross-Repo References | {summary.get('totalCrossRepoRefs', 0)} |
+| Data Access Findings | {summary['totalDataFindings']} |
+| Config Files | {summary['totalConfigFiles']} |
+
+## Categories
+
+| Category | Count | Description |
+|----------|-------|-------------|
+"""
+    cat_descriptions = {
+        "Application": "Standalone executable applications",
+        "WebApp": "Web-facing applications and APIs",
+        "Library": "Shared libraries consumed by other projects",
+        "Connector": "Integration connectors to external systems",
+        "Service": "Background services and daemons",
+        "Tool": "Developer and build tools",
+        "Test": "Test projects",
+        "DesktopApp": "Desktop GUI applications",
+        "Localization": "Localization/translation resources",
+        "Sample": "Sample and example projects",
+    }
+    for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
+        desc = cat_descriptions.get(cat, "Project category")
+        md += f"| {cat} | {count} | {desc} |\n"
+
+    # Infrastructure patterns
+    type_counts: dict[str, int] = {}
+    for f in data_findings:
+        type_counts[f["type"]] = type_counts.get(f["type"], 0) + 1
+    if type_counts:
+        md += "\n## Infrastructure Patterns\n\n| Type | Occurrences |\n|------|-------------|\n"
+        for t, c in sorted(type_counts.items(), key=lambda x: -x[1]):
+            md += f"| {t} | {c} |\n"
+
+    # Cross-repo dependencies
+    cross_refs = [r for r in project_refs_csv if r.get("crossRepo") == "true"]
+    if cross_refs:
+        md += "\n## Cross-Repo Dependencies\n\n| From | To | From Repo | To Repo |\n|------|----|-----------|---------|\n"
+        seen = set()
+        for r in cross_refs:
+            key = (r["project"], r["references"])
+            if key in seen:
+                continue
+            seen.add(key)
+            from_meta = projects_by_name.get(r["project"], {})
+            to_meta = projects_by_name.get(r["references"], {})
+            md += f"| {r['project']} | {r['references']} | {from_meta.get('repo', '')} | {to_meta.get('repo', '')} |\n"
+            if len(seen) >= 50:
+                md += f"\n*... and {len(cross_refs) - 50} more cross-repo references*\n"
+                break
+
+    # Top 10 hotspots
+    md += "\n## Top 10 Hotspots\n\n"
+    md += "| Rank | Project | Category | Score | Key Factors |\n"
+    md += "|------|---------|----------|-------|-------------|\n"
+    for i, m in enumerate(metrics[:10]):
+        factors = []
+        if m["fan_out"] >= 5:
+            factors.append(f"fan-out:{m['fan_out']}")
+        if m["fan_in"] >= 5:
+            factors.append(f"fan-in:{m['fan_in']}")
+        if m["cross_repo_refs"] > 0:
+            factors.append(f"cross-repo:{m['cross_repo_refs']}")
+        if m["data_patterns"] >= 3:
+            factors.append(f"data:{m['data_patterns']}")
+        if m["nuget_deps"] >= 10:
+            factors.append(f"nuget:{m['nuget_deps']}")
+        md += f"| {i + 1} | {m['project']} | {m['category']} | {m['hotspot_score']} | {', '.join(factors) or 'moderate coupling'} |\n"
+
+    md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
+    Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
+
+
+def _write_project_context(ai_dir: str, pm: dict, metrics_by_name: dict[str, dict],
+                           bl: dict, data_nodes: list) -> None:
+    """Write per-project AI context markdown file."""
+    project = pm["project"]
+    m = metrics_by_name.get(project, {})
+    deps = deps_by_project.get(project, [])
+    refs = refs_by_project.get(project, [])
+    consumers = referenced_by.get(project, [])
+    dp_list = data_by_project.get(project, [])
+    layer_info = bl.get(project, {})
+
+    md = f"# {project}\n\n"
+    md += "## Metadata\n\n"
+    md += f"| Property | Value |\n|----------|-------|\n"
+    md += f"| Category | {pm['category']} |\n"
+    if pm.get("repo"):
+        md += f"| Repository | {pm['repo']} |\n"
+    md += f"| Path | `{pm.get('globalPath') or pm.get('path', '')}` |\n"
+    if layer_info.get("layer"):
+        md += f"| Business Layer | {layer_info['layer']} (confidence: {layer_info.get('confidence', 0):.0%}) |\n"
+
+    # Infer what this project does from data patterns
+    if dp_list:
+        types_used = sorted({f["type"] for f in dp_list})
+        patterns_used = sorted({f["pattern"] for f in dp_list})
+        md += f"\n## What This Project Does\n\n"
+        md += f"Data access types: {', '.join(types_used)}\n\n"
+        md += f"Patterns found: {', '.join(patterns_used[:10])}\n\n"
+
+    # Dependencies out
+    if refs:
+        md += "## Dependencies (Outgoing)\n\n"
+        for r in refs:
+            cross = " *(cross-repo)*" if r.get("crossRepo") == "true" else ""
+            md += f"- {r['references']}{cross}\n"
+        md += "\n"
+
+    # Consumers in
+    if consumers:
+        md += "## Consumers (Incoming)\n\n"
+        for c in consumers[:30]:
+            md += f"- {c}\n"
+        if len(consumers) > 30:
+            md += f"- *... +{len(consumers) - 30} more*\n"
+        md += "\n"
+
+    # NuGet packages
+    external_pkgs = [d for d in deps if not d["package"].startswith(("StockSharp.", "Ecng."))]
+    internal_pkgs = [d for d in deps if d["package"].startswith(("StockSharp.", "Ecng."))]
+    if external_pkgs:
+        md += "## External NuGet Packages\n\n"
+        for d in external_pkgs:
+            md += f"- {d['package']} ({d['version']})\n"
+        md += "\n"
+    if internal_pkgs:
+        md += "## Internal NuGet Packages\n\n"
+        for d in internal_pkgs:
+            md += f"- {d['package']} ({d['version']})\n"
+        md += "\n"
+
+    # Data access patterns with file:line
+    if dp_list:
+        grouped: dict[str, list] = {}
+        for dp in dp_list:
+            grouped.setdefault(dp["pattern"], []).append(dp)
+        md += "## Data Access Patterns\n\n"
+        for pattern, findings in grouped.items():
+            md += f"### {pattern}\n\n"
+            for f in findings[:10]:
+                md += f"- `{f['file']}:{f['line']}` — {f['context'][:80]}\n"
+            if len(findings) > 10:
+                md += f"- *... +{len(findings) - 10} more*\n"
+            md += "\n"
+
+    # Hotspot metrics
+    if m:
+        md += "## Hotspot Metrics\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Fan-Out | {m.get('fan_out', 0)} |\n"
+        md += f"| Fan-In | {m.get('fan_in', 0)} |\n"
+        md += f"| NuGet Deps | {m.get('nuget_deps', 0)} |\n"
+        md += f"| Data Patterns | {m.get('data_patterns', 0)} |\n"
+        md += f"| Cross-Repo Refs | {m.get('cross_repo_refs', 0)} |\n"
+        md += f"| **Hotspot Score** | **{m.get('hotspot_score', 0)}** |\n\n"
+
+    # Related projects: shared data nodes
+    related = set()
+    for dn in data_nodes:
+        all_connected = set(dn.get("writers", []) + dn.get("readers", []) +
+                           dn.get("exposers", []) + dn.get("consumers", []))
+        if project in all_connected:
+            related.update(all_connected - {project})
+
+    # Related projects: 3+ shared NuGet packages
+    my_pkgs = {d["package"] for d in deps}
+    if len(my_pkgs) >= 3:
+        for other_pm in project_meta:
+            if other_pm["project"] == project:
+                continue
+            other_pkgs = {d["package"] for d in deps_by_project.get(other_pm["project"], [])}
+            if len(my_pkgs & other_pkgs) >= 3:
+                related.add(other_pm["project"])
+
+    if related:
+        md += "## Related Projects\n\n"
+        for r in sorted(related)[:20]:
+            md += f"- {r}\n"
+        if len(related) > 20:
+            md += f"- *... +{len(related) - 20} more*\n"
+        md += "\n"
+
+    md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
+    safe_name = re.sub(r'[<>:"/\\|?*]', '_', project)
+    Path(os.path.join(ai_dir, f"{safe_name}.md")).write_text(md, encoding="utf-8")
+
+
+def _write_hotspots_report(ai_dir: str, metrics: list[dict]) -> None:
+    """Write HOTSPOTS.md with ranked hotspots, reasons, and suggestions."""
+    md = """# Hotspot Analysis Report
+
+> Projects ranked by coupling complexity. Higher scores indicate projects where
+> AI-assisted refactoring, testing, or documentation would have the most impact.
+
+## Scoring Formula
+
+`Score = Fan-Out×3 + Fan-In×2 + NuGet + Data Patterns + Cross-Repo×4`
+
+## Ranked Hotspots
+
+"""
+    for i, m in enumerate(metrics):
+        if m["hotspot_score"] == 0:
+            continue
+        md += f"### {i + 1}. {m['project']} (Score: {m['hotspot_score']})\n\n"
+        md += f"- **Category:** {m['category']}\n"
+        if m.get("layer"):
+            md += f"- **Layer:** {m['layer']}\n"
+        if m.get("repo"):
+            md += f"- **Repo:** {m['repo']}\n"
+        md += f"- Fan-Out: {m['fan_out']} | Fan-In: {m['fan_in']} | "
+        md += f"NuGet: {m['nuget_deps']} | Data: {m['data_patterns']} | "
+        md += f"Cross-Repo: {m['cross_repo_refs']}\n\n"
+
+        # Why it's a hotspot
+        reasons = []
+        if m["fan_out"] >= 5:
+            reasons.append(f"High fan-out ({m['fan_out']} outgoing refs) — tightly coupled to many projects")
+        if m["fan_in"] >= 5:
+            reasons.append(f"High fan-in ({m['fan_in']} consumers) — many projects depend on this")
+        if m["cross_repo_refs"] > 0:
+            reasons.append(f"Cross-repo coupling ({m['cross_repo_refs']} cross-repo refs) — changes ripple across repos")
+        if m["data_patterns"] >= 3:
+            reasons.append(f"Heavy data access ({m['data_patterns']} patterns, types: {', '.join(m.get('data_types', []))})")
+        if m["nuget_deps"] >= 10:
+            reasons.append(f"Many NuGet dependencies ({m['nuget_deps']}) — large dependency surface")
+        if reasons:
+            md += "**Why it's a hotspot:**\n"
+            for r in reasons:
+                md += f"- {r}\n"
+            md += "\n"
+
+        # Suggested focus
+        suggestions = []
+        if m["fan_out"] >= 8:
+            suggestions.append("Consider splitting responsibilities — this project depends on too many others")
+        if m["fan_in"] >= 10:
+            suggestions.append("Extract stable interfaces — many consumers means changes here are risky")
+        if m["cross_repo_refs"] >= 3:
+            suggestions.append("Define clear API contracts for cross-repo boundaries")
+        if m["data_patterns"] >= 5:
+            suggestions.append("Add integration tests for data access patterns")
+        if m["nuget_deps"] >= 15:
+            suggestions.append("Audit NuGet dependencies for consolidation opportunities")
+        if m["fan_out"] >= 3 and m["fan_in"] >= 3:
+            suggestions.append("Good candidate for comprehensive unit test coverage")
+        if suggestions:
+            md += "**Suggested focus:**\n"
+            for s in suggestions:
+                md += f"- {s}\n"
+            md += "\n"
+
+        md += "---\n\n"
+
+    # Category coupling summary
+    cat_stats: dict[str, dict] = {}
+    for m in metrics:
+        cat = m["category"]
+        if cat not in cat_stats:
+            cat_stats[cat] = {"count": 0, "total_score": 0, "total_fan_out": 0,
+                              "total_fan_in": 0, "total_cross_repo": 0}
+        cat_stats[cat]["count"] += 1
+        cat_stats[cat]["total_score"] += m["hotspot_score"]
+        cat_stats[cat]["total_fan_out"] += m["fan_out"]
+        cat_stats[cat]["total_fan_in"] += m["fan_in"]
+        cat_stats[cat]["total_cross_repo"] += m["cross_repo_refs"]
+
+    md += "## Category Coupling Summary\n\n"
+    md += "| Category | Projects | Avg Score | Total Fan-Out | Total Fan-In | Cross-Repo |\n"
+    md += "|----------|----------|-----------|---------------|--------------|------------|\n"
+    for cat, s in sorted(cat_stats.items(), key=lambda x: -x[1]["total_score"]):
+        avg = s["total_score"] / s["count"] if s["count"] else 0
+        md += (f"| {cat} | {s['count']} | {avg:.1f} | {s['total_fan_out']} | "
+               f"{s['total_fan_in']} | {s['total_cross_repo']} |\n")
+
+    md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
+    Path(os.path.join(ai_dir, "HOTSPOTS.md")).write_text(md, encoding="utf-8")
+
+
+def generate_ai_context() -> int:
+    """Generate AI-ready markdown context files. Returns count of files written."""
+    ai_dir = os.path.join(DOCS_DIR, "ai-context")
+    os.makedirs(ai_dir, exist_ok=True)
+
+    metrics = compute_hotspot_metrics()
+    metrics_by_name = {m["project"]: m for m in metrics}
+    bl = flow_paths_data.get("businessLayers", {})
+    data_nodes = data_flow.get("dataNodes", [])
+
+    _write_codebase_overview(ai_dir, metrics)
+    _write_hotspots_report(ai_dir, metrics)
+
+    for pm in project_meta:
+        _write_project_context(ai_dir, pm, metrics_by_name, bl, data_nodes)
+
+    return len(project_meta) + 2  # project files + overview + hotspots
+
+
 # ─── Main ───────────────────────────────────────────────────────────
 
 def main():
@@ -2227,6 +2688,10 @@ def main():
     # Viewer HTML
     Path(os.path.join(OUT_DIR, "viewer.html")).write_text(generate_viewer_html(), encoding="utf-8")
     print("  Wrote viewer.html")
+
+    # AI context export
+    ai_count = generate_ai_context()
+    print(f"  Wrote {ai_count} AI context files to docs/ai-context/")
 
     print(f"\n=== Documentation complete ({page_count} pages) ===\n")
 
