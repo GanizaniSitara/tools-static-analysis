@@ -115,7 +115,8 @@ def find_files(
     if not os.path.exists(directory):
         return results
     try:
-        entries = list(os.scandir(directory))
+        with os.scandir(directory) as it:
+            entries = list(it)
     except OSError:
         return results
 
@@ -367,7 +368,13 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
             ref_name = os.path.splitext(os.path.basename(resolved_ref))[0]
             ref_rel_path = os.path.relpath(resolved_ref, abs_root)
             ref_global_path = os.path.relpath(resolved_ref, global_scan_root)
-            is_in_same_repo = os.path.normcase(resolved_ref).startswith(os.path.normcase(abs_root))
+            resolved_ref_norm = os.path.normcase(os.path.abspath(resolved_ref))
+            abs_root_norm = os.path.normcase(abs_root)
+            try:
+                is_in_same_repo = os.path.commonpath([resolved_ref_norm, abs_root_norm]) == abs_root_norm
+            except ValueError:
+                # Different drives or otherwise incomparable paths are not in the same repo
+                is_in_same_repo = False
             project_refs.append({
                 "project": proj_name,
                 "repo": repo["name"],

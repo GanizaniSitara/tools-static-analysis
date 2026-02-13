@@ -55,7 +55,8 @@ def read_csv(filepath: str) -> list[dict]:
     """Read a CSV file, handling quoted values with commas."""
     try:
         content = Path(filepath).read_text(encoding="utf-8")
-    except OSError:
+    except OSError as exc:
+        print(f"  Warning: could not read CSV {filepath}: {exc}")
         return []
     lines = content.strip().splitlines()
     if not lines:
