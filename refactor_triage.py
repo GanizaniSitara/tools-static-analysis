@@ -774,8 +774,16 @@ def analyze_all_files(scan_root: str) -> dict:
         fan_out = analysis_data["fan_out"].get(project, 0)
         has_tests = not detect_test_coverage_gap(project, analysis_data["project_meta"], analysis_data)
         
+        # Get repo name from project metadata
+        repo = ""
+        for pm in analysis_data["project_meta"]:
+            if pm.get("project") == project:
+                repo = pm.get("repo", "")
+                break
+        
         project_data = {
             "project": project,
+            "repo": repo,
             "category": category,
             "layer": layer,
             "fan_in": fan_in,
