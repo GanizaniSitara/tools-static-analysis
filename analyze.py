@@ -76,8 +76,10 @@ def parse_xml_elements(xml: str, tag: str) -> list[dict]:
 
 def _strip_long_prefix(p: str) -> str:
     """Strip the Windows ``\\\\?\\`` extended-length prefix."""
+    if p.startswith("\\\\?\\UNC\\"):
+        return "\\\\" + p[8:]  # \\?\UNC\server\share → \\server\share
     if p.startswith("\\\\?\\"):
-        return p[4:]
+        return p[4:]           # \\?\C:\foo → C:\foo
     return p
 
 
@@ -91,6 +93,8 @@ def _fs_path(p: str) -> str:
     if sys.platform == "win32":
         abs_p = os.path.abspath(p)
         if len(abs_p) >= 260 and not abs_p.startswith("\\\\?\\"):
+            if abs_p.startswith("\\\\"):
+                return "\\\\?\\UNC\\" + abs_p[2:]  # \\server\share → \\?\UNC\server\share
             return "\\\\?\\" + abs_p
     return os.path.normpath(p) if p else p
 
@@ -102,7 +106,12 @@ def _normalize_path(p: str) -> str:
     like ``safe_read_text`` and ``find_files`` call ``_fs_path``
     internally when they need the long-path prefix.
     """
-    return _strip_long_prefix(os.path.normpath(os.path.abspath(p))) if p else p
+    if not p:
+        return p
+    cleaned = _strip_long_prefix(p)
+    if os.path.isabs(cleaned):
+        return os.path.normpath(cleaned)
+    return os.path.normpath(os.path.abspath(cleaned))
 
 
 def _relpath(path: str, start: str) -> str:
@@ -114,7 +123,10 @@ def _relpath(path: str, start: str) -> str:
     """
     clean_path = _strip_long_prefix(os.path.normpath(path))
     clean_start = _strip_long_prefix(os.path.normpath(start))
-    return os.path.relpath(clean_path, clean_start)
+    try:
+        return os.path.relpath(clean_path, clean_start)
+    except ValueError:
+        return clean_path
 
 
 # ─── Find all files recursively ─────────────────────────────────────
