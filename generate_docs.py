@@ -685,9 +685,10 @@ def generate_viewer_html() -> str:
         <div class="diagram-legend">
           <div class="legend-title">Legend</div>
           <div class="legend-item"><span class="legend-icon">&#9632;</span> <strong>Boxes</strong> in the colored rectangle are individual projects in this category</div>
-          <div class="legend-item"><span class="legend-icon">&#9899;</span> <strong>Outside pill nodes</strong> like &ldquo;Library (5)&rdquo; = 5 Library projects are dependencies of (or depend on) the projects shown in this diagram. Dashed arrows show which projects have those cross-category links. Click a pill to navigate to that category.</div>
+          <div class="legend-item"><span class="legend-icon">&#9899;</span> <strong>Outside pills</strong> (e.g. &ldquo;Library (5)&rdquo;) = other categories with cross-category dependencies. The number is how many projects in that category connect to this diagram. Dashed arrows show which projects link.</div>
           <div class="legend-item"><span class="legend-icon">&#8594;</span> <strong>Solid arrow</strong> = direct project reference within this category</div>
-          <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
+          <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>pill</strong> &rarr; see the underlying project references</div>
+          <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
         </div>"""
     diagram_panels = ""
     for i, dt in enumerate(diagram_tabs):
@@ -1007,22 +1008,25 @@ def generate_viewer_html() -> str:
         border:1px solid #E1E1E1;background:#FFFFFF;color:#000000;
         font-size:0.85rem;margin-bottom:0.75rem;outline:none;
       ">
-      <div class="table-wrap">
-        <table id="fieldTraceTable">
-          <thead>
-            <tr><th data-sort-type="text" title="XAML view/page file where the binding is defined">XAML View</th><th data-sort-type="text" title="Data binding path expression in the XAML markup">Binding Path</th><th data-sort-type="text" title="ViewModel class the XAML view binds to">ViewModel</th><th data-sort-type="text" title="Property on the ViewModel the binding resolves to">VM Property</th><th data-sort-type="text" title="Entity/model class that maps to a database table">Entity</th><th data-sort-type="text" title="Database table and column that stores this field">DB Table.Column</th><th data-sort-type="text" title="How complete the trace chain is (Full &#8594; XAML Only)">Completeness</th></tr>
-          </thead>
-          <tbody id="ftBody">
-{ft_rows}          </tbody>
-        </table>
-      </div>
-      <div id="ftDetailContainer" style="margin-top:1rem;display:none;">
-        <div class="card" style="border-color:#009639;">
-          <div class="card-title"><span class="icon">&#9670;</span> Field Chain Detail
-            <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="margin-left:auto;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+      <div class="ft-layout">
+        <div class="table-wrap" style="flex:1;min-width:0;">
+          <table id="fieldTraceTable">
+            <thead>
+              <tr><th data-sort-type="text" title="XAML view/page file where the binding is defined">XAML View</th><th data-sort-type="text" title="Data binding path expression in the XAML markup">Binding Path</th><th data-sort-type="text" title="ViewModel class the XAML view binds to">ViewModel</th><th data-sort-type="text" title="Property on the ViewModel the binding resolves to">VM Property</th><th data-sort-type="text" title="Entity/model class that maps to a database table">Entity</th><th data-sort-type="text" title="Database table and column that stores this field">DB Table.Column</th><th data-sort-type="text" title="How complete the trace chain is (Full &#8594; XAML Only)">Completeness</th></tr>
+            </thead>
+            <tbody id="ftBody">
+{ft_rows}            </tbody>
+          </table>
+        </div>
+        <div class="ft-sidebar" id="ftDetailContainer" style="display:none;">
+          <div style="border:1px solid #009639;border-radius:8px;padding:0.8rem;background:#FFFFFF;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;padding-bottom:0.5rem;border-bottom:1px solid #E1E1E1;">
+              <strong style="font-size:0.85rem;color:#022D5E;">Field Chain Detail</strong>
+              <button onclick="document.getElementById('ftDetailContainer').style.display='none'" style="background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.1rem 0.5rem;font-size:0.8rem;">Close</button>
+            </div>
+            <div id="ftDetailContent"></div>
+            <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
           </div>
-          <div id="ftDetailContent"></div>
-          <div class="mermaid-wrap" id="ftDetailMermaid" style="margin-top:0.75rem;"></div>
         </div>
       </div>
     </div>
@@ -1371,6 +1375,8 @@ def generate_viewer_html() -> str:
   .tag-dataaccess    {{ background: rgba(0,85,135,.15); color: #005587; }}
   .tag-infrastructure {{ background: rgba(128,39,108,.15); color: #80276C; }}
   .tag-unclassified  {{ background: rgba(83,86,90,.15); color: #53565A; }}
+  .ft-layout {{ display:flex; gap:1rem; align-items:flex-start; }}
+  .ft-sidebar {{ width:360px; flex-shrink:0; position:sticky; top:1rem; max-height:85vh; overflow-y:auto; }}
   .flow-row {{ cursor: pointer; }}
   .flow-row:hover {{ background: rgba(0,85,135,0.08) !important; }}
   .ft-row {{ cursor: pointer; }}
@@ -1390,6 +1396,8 @@ def generate_viewer_html() -> str:
     .diagram-with-legend {{ flex-direction:column; }}
     .diagram-sidebar {{ width:100%; }}
     .diagram-legend {{ width:100%; }}
+    .ft-layout {{ flex-direction:column; }}
+    .ft-sidebar {{ width:100%; position:static; max-height:none; }}
   }}
 </style>
 </head>
@@ -1541,9 +1549,90 @@ function attachCategoryNodeClicks(svg) {{
     var catInfo = parseCategoryLabel(label);
     if (!catInfo) return;
     node.style.cursor = 'pointer';
+    node.setAttribute('title', catInfo.name + ': ' + catInfo.count + ' projects in this category that connect to projects in this diagram. Click to see details.');
     node.addEventListener('click', function (e) {{
       e.stopPropagation();
-      var tabBtn = document.querySelector('.tab-btn[data-tab="' + catInfo.tabId + '"]');
+      showPillDetail(catInfo, svg);
+    }});
+  }});
+}}
+
+function showPillDetail(catInfo, svg) {{
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var meta = d.meta || [];
+  var refs = d.refs || [];
+
+  // Find the current diagram's tab panel to determine which category we're viewing
+  var activeTab = document.querySelector('.tab-panel.active');
+  var tabId = activeTab ? activeTab.id.replace('panel-', '') : '';
+  var currentCatKey = tabId.replace('cat_', '');
+
+  // Find projects in the pill's category and in the current category
+  var pillProjects = {{}};
+  var currentProjects = {{}};
+  meta.forEach(function (m) {{
+    if (m.category && m.category.toLowerCase() === catInfo.key) pillProjects[m.project] = m;
+    if (m.category && m.category.toLowerCase() === currentCatKey) currentProjects[m.project] = m;
+  }});
+
+  // Find references between current category and pill category
+  var outgoing = refs.filter(function (r) {{ return currentProjects[r.project] && pillProjects[r.references]; }});
+  var incoming = refs.filter(function (r) {{ return pillProjects[r.project] && currentProjects[r.references]; }});
+
+  var html = '<div class="detail-header"><h3>' + escHtmlGlobal(catInfo.name) + ' (' + catInfo.count + ' projects)</h3>'
+    + '<button class="detail-close">Close</button></div>';
+
+  html += '<div class="detail-section" style="color:#53565A;font-size:0.8rem;margin-bottom:0.6rem;">'
+    + 'This pill represents <strong>' + catInfo.count + '</strong> ' + escHtmlGlobal(catInfo.name)
+    + ' projects that have cross-category dependencies with the projects in this diagram.</div>';
+
+  // Outgoing refs (current -> pill)
+  if (outgoing.length > 0) {{
+    html += '<div class="detail-section"><h4>Depends on ' + escHtmlGlobal(catInfo.name) + ' (' + outgoing.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    var shown = outgoing.slice(0, 20);
+    shown.forEach(function (r) {{
+      html += '<li><span style="color:#005587">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#53565A">&#8594;</span> '
+        + '<span style="color:#00897B">' + escHtmlGlobal(r.references) + '</span></li>';
+    }});
+    if (outgoing.length > 20) html += '<li style="color:#53565A">... and ' + (outgoing.length - 20) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Incoming refs (pill -> current)
+  if (incoming.length > 0) {{
+    html += '<div class="detail-section"><h4>Referenced by ' + escHtmlGlobal(catInfo.name) + ' (' + incoming.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    var shown2 = incoming.slice(0, 20);
+    shown2.forEach(function (r) {{
+      html += '<li><span style="color:#005587">' + escHtmlGlobal(r.project) + '</span>'
+        + ' <span style="color:#53565A">&#8594;</span> '
+        + '<span style="color:#00897B">' + escHtmlGlobal(r.references) + '</span></li>';
+    }});
+    if (incoming.length > 20) html += '<li style="color:#53565A">... and ' + (incoming.length - 20) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  if (outgoing.length === 0 && incoming.length === 0) {{
+    html += '<div class="detail-section"><div class="detail-empty">No direct project references found</div></div>';
+  }}
+
+  // Navigation button
+  html += '<div class="detail-section" style="margin-top:0.5rem;">';
+  html += '<button class="cat-nav-btn" data-tab="' + catInfo.tabId + '">Explore ' + escHtmlGlobal(catInfo.name) + ' tab</button>';
+  html += '</div>';
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = panel.querySelector('.detail-close');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+  panel.querySelectorAll('.cat-nav-btn').forEach(function (btn) {{
+    btn.addEventListener('click', function () {{
+      panel.style.display = 'none';
+      var tabBtn = document.querySelector('.tab-btn[data-tab="' + btn.dataset.tab + '"]');
       if (tabBtn) tabBtn.click();
     }});
   }});
@@ -2592,41 +2681,41 @@ function initSortableTable(table) {{
     html += '<span style="color:#53565A;font-size:0.8rem;">Chain ID: ' + escHtml(ch.id || '') + ' | Completeness: <strong style="color:#009639;">' + escHtml(ch.chainCompleteness || '') + '</strong> | Confidence: ' + escHtml(ch.confidence || '') + '</span>';
     html += '</div>';
 
-    // Step-by-step chain
-    html += '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">';
+    // Step-by-step chain (vertical layout for sidebar)
+    html += '<div style="display:flex;flex-direction:column;gap:0.3rem;margin-bottom:0.75rem;">';
     if (xaml.viewType) {{
       html += '<div style="background:#FFFFFF;border:1px solid #621244;border-radius:6px;padding:0.4rem 0.6rem;">';
       html += '<div style="font-size:0.7rem;color:#621244;text-transform:uppercase;">XAML View</div>';
-      html += '<strong>' + escHtml(xaml.viewType) + '</strong>';
-      html += '<div class="mono" style="font-size:0.75rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
+      html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(xaml.viewType) + '</strong>';
+      html += '<div class="mono" style="font-size:0.72rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
+      html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
     if (vm.className) {{
       html += '<div style="background:#FFFFFF;border:1px solid #36749D;border-radius:6px;padding:0.4rem 0.6rem;">';
       html += '<div style="font-size:0.7rem;color:#36749D;text-transform:uppercase;">ViewModel</div>';
-      html += '<strong>' + escHtml(vm.className) + '</strong>';
-      html += '<div style="font-size:0.8rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
+      html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(vm.className) + '</strong>';
+      html += '<div style="font-size:0.78rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
+      html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
     if (ent.className) {{
       html += '<div style="background:#FFFFFF;border:1px solid #005587;border-radius:6px;padding:0.4rem 0.6rem;">';
       html += '<div style="font-size:0.7rem;color:#005587;text-transform:uppercase;">Entity</div>';
-      html += '<strong>' + escHtml(ent.className) + '</strong>';
-      html += '<div style="font-size:0.8rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
+      html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(ent.className) + '</strong>';
+      html += '<div style="font-size:0.78rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
+      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
       html += '</div>';
-      html += '<span style="color:#53565A;font-size:1.2rem;">&rarr;</span>';
+      html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
     if (db.table) {{
       html += '<div style="background:#FFFFFF;border:1px solid #009639;border-radius:6px;padding:0.4rem 0.6rem;">';
       html += '<div style="font-size:0.7rem;color:#009639;text-transform:uppercase;">DB Column</div>';
-      html += '<strong>' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
-      html += '<div style="font-size:0.8rem;">Source: ' + escHtml(db.source || '') + '</div>';
-      if (db.file) html += '<div class="mono" style="font-size:0.7rem;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
+      html += '<strong style="font-size:0.82rem;">' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
+      html += '<div style="font-size:0.78rem;">Source: ' + escHtml(db.source || '') + '</div>';
+      if (db.file) html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
       html += '</div>';
     }}
     html += '</div>';
