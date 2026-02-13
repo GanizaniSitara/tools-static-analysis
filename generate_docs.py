@@ -1089,10 +1089,10 @@ def generate_viewer_html() -> str:
         Score = Fan-Out&times;3 + Fan-In&times;2 + NuGet + Data&nbsp;Patterns + Cross-Repo&times;4
       </p>
       <div id="hsFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
-        <span class="hs-badge" data-filter="red">Risk: 0</span>
-        <span class="hs-badge" data-filter="yellow">Watch: 0</span>
-        <span class="hs-badge" data-filter="green">Stable: 0</span>
-        <span class="hs-badge" data-filter="none">None: 0</span>
+        <button type="button" class="hs-badge" data-filter="red">Risk: 0</button>
+        <button type="button" class="hs-badge" data-filter="yellow">Watch: 0</button>
+        <button type="button" class="hs-badge" data-filter="green">Stable: 0</button>
+        <button type="button" class="hs-badge" data-filter="none">None: 0</button>
         <select id="hsCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="hsLayerFilter" class="hs-dropdown"><option value="">All Layers</option></select>
       </div>
