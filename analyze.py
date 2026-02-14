@@ -928,6 +928,7 @@ _XAML_DESIGN_CTX_RE   = re.compile(r'd:DataContext\s*=\s*"\{[^}]*?(?:Type|local:
 
 # ViewModel regex patterns
 _VIEWMODEL_CLASS_RE   = re.compile(r'class\s+(\w+)\s*(?:<[^>]+>)?\s*:\s*[^{]*?(?:ViewModelBase|ObservableObject|INotifyPropertyChanged|BindableBase|ReactiveObject)')
+_VIEWMODEL_BASE_RE    = re.compile(r':\s*[^{]*?(ViewModelBase|ObservableObject|INotifyPropertyChanged|BindableBase|ReactiveObject)')
 _CS_AUTO_PROPERTY_RE  = re.compile(r'public\s+(?:virtual\s+|override\s+|new\s+)?([\w<>,\s?]+?)\s+(\w+)\s*\{\s*get\s*;')
 _CS_PROP_CHANGED_RE   = re.compile(r'(?:OnPropertyChanged|SetProperty|RaisePropertyChanged|RaiseAndSetIfChanged)\s*\(')
 
@@ -1037,6 +1038,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
             lines = content.splitlines()
 
             current_class: str | None = None
+            current_base: str = "unknown"
             properties: list[dict] = []
 
             for i, line in enumerate(lines):
@@ -1050,9 +1052,12 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
                             "repo": repo["name"],
                             "project": project_name,
                             "className": current_class,
+                            "baseClass": current_base,
                             "properties": properties,
                         })
                     current_class = cm.group(1)
+                    bm = _VIEWMODEL_BASE_RE.search(line)
+                    current_base = bm.group(1) if bm else "unknown"
                     properties = []
                     continue
 
@@ -1075,6 +1080,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
                     "repo": repo["name"],
                     "project": project_name,
                     "className": current_class,
+                    "baseClass": current_base,
                     "properties": properties,
                 })
 
@@ -1618,6 +1624,174 @@ def build_field_traceability(
         "xamlViews": xaml_views,
         "columnMappings": fluent_mappings,
         "sqlFields": sql_fields,
+    }
+
+
+# ─── UX inconsistency detection ──────────────────────────────────────
+
+def detect_ux_inconsistencies(
+    xaml_views: list[dict],
+    viewmodel_classes: list[dict],
+    entity_classes: list[dict],
+    project_meta: list[dict],
+) -> dict:
+    """Detect MVVM binding inconsistencies between XAML views and ViewModels.
+
+    Returns dict with 'issues' list and 'summary' counts.
+    Issue types: missing_datacontext, missing_viewmodel, broken_binding,
+                 orphan_viewmodel, mixed_patterns.
+    """
+    issues: list[dict] = []
+    issue_id = 0
+
+    # Build lookup maps
+    vm_by_class: dict[str, dict] = {}
+    for vm in viewmodel_classes:
+        vm_by_class[vm["className"]] = vm
+
+    # Map project → set of VM base classes used
+    project_bases: dict[str, set] = {}
+    for vm in viewmodel_classes:
+        proj = vm.get("project") or ""
+        if proj:
+            project_bases.setdefault(proj, set()).add(vm.get("baseClass", "unknown"))
+
+    # Track which VMs are referenced by views
+    referenced_vms: set[str] = set()
+
+    # Build project meta lookup
+    pm_by_name = {pm["project"]: pm for pm in project_meta}
+
+    for view in xaml_views:
+        has_bindings = len(view.get("bindings", [])) > 0
+        dc_type = view.get("dataContextType")
+        view_type = view.get("viewType")
+        project = view.get("project") or ""
+        repo = view.get("repo") or ""
+        file = view.get("file") or ""
+
+        # Convention-based VM name: ViewName → ViewNameViewModel
+        convention_vm = (view_type + "ViewModel") if view_type else None
+
+        # Check for missing_datacontext:
+        # View has bindings but no DataContext AND no convention-matched VM
+        if has_bindings and not dc_type:
+            convention_found = convention_vm and convention_vm in vm_by_class
+            if not convention_found:
+                issue_id += 1
+                issues.append({
+                    "id": f"ux-{issue_id:04d}",
+                    "type": "missing_datacontext",
+                    "severity": "warning",
+                    "project": project,
+                    "repo": repo,
+                    "file": file,
+                    "viewType": view_type,
+                    "message": f"View '{view_type or file}' has {len(view['bindings'])} bindings but no DataContext and no convention-matched ViewModel",
+                })
+
+        # Resolve the target VM (explicit DataContext or convention)
+        resolved_vm_name = dc_type
+        if not resolved_vm_name and convention_vm and convention_vm in vm_by_class:
+            resolved_vm_name = convention_vm
+
+        if resolved_vm_name:
+            referenced_vms.add(resolved_vm_name)
+
+        # Check for missing_viewmodel:
+        # DataContext references VM class that doesn't exist in scanned code
+        if dc_type and dc_type not in vm_by_class:
+            issue_id += 1
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "missing_viewmodel",
+                "severity": "error",
+                "project": project,
+                "repo": repo,
+                "file": file,
+                "viewType": view_type,
+                "className": dc_type,
+                "message": f"DataContext references '{dc_type}' but this ViewModel class was not found in scanned code",
+            })
+            continue  # Can't check bindings if VM doesn't exist
+
+        # Check for broken_binding:
+        # Binding path's first segment doesn't match any property on the resolved VM
+        if resolved_vm_name and resolved_vm_name in vm_by_class:
+            vm = vm_by_class[resolved_vm_name]
+            vm_props = {p["propertyName"] for p in vm.get("properties", [])}
+            for binding in view.get("bindings", []):
+                path = binding.get("path", "")
+                first_segment = path.split(".")[0] if path else ""
+                if first_segment and first_segment not in vm_props:
+                    issue_id += 1
+                    available = sorted(vm_props)[:10]
+                    issues.append({
+                        "id": f"ux-{issue_id:04d}",
+                        "type": "broken_binding",
+                        "severity": "error",
+                        "project": project,
+                        "repo": repo,
+                        "file": file,
+                        "viewType": view_type,
+                        "className": resolved_vm_name,
+                        "bindingPath": path,
+                        "line": binding.get("line"),
+                        "availableProperties": available,
+                        "message": f"Binding path '{path}' not found on '{resolved_vm_name}' (first segment '{first_segment}' has no matching property)",
+                    })
+
+    # Check for orphan_viewmodel:
+    # VM class not referenced by any XAML view (explicit or convention)
+    for vm_name, vm in vm_by_class.items():
+        if vm_name not in referenced_vms:
+            issue_id += 1
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "orphan_viewmodel",
+                "severity": "info",
+                "project": vm.get("project") or "",
+                "repo": vm.get("repo") or "",
+                "file": vm.get("file") or "",
+                "className": vm_name,
+                "message": f"ViewModel '{vm_name}' is not referenced by any XAML view (explicit DataContext or naming convention)",
+            })
+
+    # Check for mixed_patterns:
+    # Project uses >1 MVVM base class
+    for proj, bases in project_bases.items():
+        real_bases = bases - {"unknown"}
+        if len(real_bases) > 1:
+            issue_id += 1
+            pm = pm_by_name.get(proj, {})
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "mixed_patterns",
+                "severity": "info",
+                "project": proj,
+                "repo": pm.get("repo", ""),
+                "file": "",
+                "baseClasses": sorted(real_bases),
+                "message": f"Project '{proj}' uses multiple MVVM base classes: {', '.join(sorted(real_bases))}",
+            })
+
+    # Build summary
+    by_type: dict[str, int] = {}
+    by_severity: dict[str, int] = {}
+    by_project: dict[str, int] = {}
+    for iss in issues:
+        by_type[iss["type"]] = by_type.get(iss["type"], 0) + 1
+        by_severity[iss["severity"]] = by_severity.get(iss["severity"], 0) + 1
+        by_project[iss["project"]] = by_project.get(iss["project"], 0) + 1
+
+    return {
+        "issues": issues,
+        "summary": {
+            "totalIssues": len(issues),
+            "byType": by_type,
+            "bySeverity": by_severity,
+            "byProject": by_project,
+        },
     }
 
 
@@ -2349,6 +2523,15 @@ def main():
         for level, count in sorted(ft_summary["completenessBreakdown"].items(), key=lambda x: -x[1]):
             print(f"    {level}: {count}")
     print(f"  Wrote field-traceability.json")
+
+    # Step 2f: Detect UX inconsistencies
+    ux_issues = detect_ux_inconsistencies(xaml_views, vm_data, entity_data, all_project_meta)
+    Path(os.path.join(OUT_DIR, "ux-inconsistencies.json")).write_text(
+        json.dumps(ux_issues, indent=2), encoding="utf-8"
+    )
+    ux_sum = ux_issues.get("summary", {})
+    print(f"  UX inconsistencies: {ux_sum.get('totalIssues', 0)} (errors: {ux_sum.get('bySeverity', {}).get('error', 0)}, warnings: {ux_sum.get('bySeverity', {}).get('warning', 0)}, info: {ux_sum.get('bySeverity', {}).get('info', 0)})")
+    print(f"  Wrote ux-inconsistencies.json")
 
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")
