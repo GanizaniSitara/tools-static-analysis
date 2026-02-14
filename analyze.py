@@ -364,12 +364,26 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
         global_rel_path = _relpath(csproj_path, global_scan_root)
 
         category = categorize_project(rel_path, proj_name, xml)
+
+        # Extract target framework (check csproj first, then resolve $(Var) from props)
+        tf_match = re.search(r'<TargetFramework(?:s)?>(.*?)</TargetFramework(?:s)?>', xml)
+        target_framework = tf_match.group(1) if tf_match else "unknown"
+        # Resolve property references like $(StockSharpTargets)
+        if target_framework != "unknown":
+            tf_var = re.match(r'^\$\((\w+)\)$', target_framework)
+            if tf_var:
+                target_framework = props.get(tf_var.group(1), target_framework)
+        # Fallback: check props for TargetFramework/TargetFrameworks
+        if target_framework == "unknown":
+            target_framework = props.get("TargetFrameworks", props.get("TargetFramework", "unknown"))
+
         project_meta.append({
             "project": proj_name,
             "repo": repo["name"],
             "path": rel_path,
             "globalPath": global_rel_path,
             "category": category,
+            "targetFramework": target_framework,
         })
 
         # Resolve inherited deps from .props imports
@@ -385,11 +399,16 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
         # Also check for packages.config (legacy NuGet format)
         pkgs_config_path = os.path.join(csproj_dir, "packages.config")
         pkgs_config_xml = safe_read_text(pkgs_config_path)
+        uses_packages_config = False
         if pkgs_config_xml:
+            uses_packages_config = True
             for pc in parse_xml_elements(pkgs_config_xml, "package"):
                 pkg_id = pc["attrs"].get("id", "")
                 if pkg_id:
                     all_pkgs.append({"name": pkg_id, "version": pc["attrs"].get("version", "")})
+
+        # Record NuGet format in project meta
+        project_meta[-1]["nugetFormat"] = "packages.config" if uses_packages_config else "PackageReference"
 
         for pkg in all_pkgs:
             if pkg["name"]:
@@ -2328,6 +2347,107 @@ def build_graph(
     }
 
 
+# ─── NuGet health analysis ────────────────────────────────────────────
+
+def build_nuget_health(
+    package_deps: list[dict],
+    project_meta: list[dict],
+    repos: list[dict],
+) -> dict:
+    """Analyze NuGet package health: version conflicts, legacy formats, frameworks, CPM status.
+
+    Returns dict with versionConflicts, legacyFormatProjects, targetFrameworks,
+    mixedFrameworkRepos, centralPackageManagement, and summary.
+    """
+    # Build package → {versions: {version: [projects]}, consumers: set}
+    pkg_versions: dict[str, dict[str, list[str]]] = {}
+    for pd in package_deps:
+        pkg = pd["package"]
+        ver = pd["version"] or "unspecified"
+        proj = f"{pd['repo']}/{pd['project']}"
+        pkg_versions.setdefault(pkg, {}).setdefault(ver, []).append(proj)
+
+    # Version conflicts: packages with >1 version
+    version_conflicts = []
+    for pkg, versions in sorted(pkg_versions.items()):
+        if len(versions) > 1:
+            proj_count = sum(len(projs) for projs in versions.values())
+            version_conflicts.append({
+                "package": pkg,
+                "versions": versions,
+                "versionCount": len(versions),
+                "projectCount": proj_count,
+            })
+    version_conflicts.sort(key=lambda x: -x["projectCount"])
+
+    # Legacy format projects (packages.config)
+    legacy_projects = []
+    for pm in project_meta:
+        if pm.get("nugetFormat") == "packages.config":
+            legacy_projects.append({
+                "project": pm["project"],
+                "repo": pm.get("repo", ""),
+                "path": pm.get("path", ""),
+            })
+
+    # Target frameworks
+    target_frameworks: dict[str, list[str]] = {}
+    for pm in project_meta:
+        tf = pm.get("targetFramework", "unknown")
+        if tf == "unknown":
+            continue
+        # Handle multi-targeting (split on ';')
+        for fw in tf.split(";"):
+            fw = fw.strip()
+            if fw:
+                target_frameworks.setdefault(fw, []).append(pm["project"])
+
+    # Mixed framework repos
+    repo_frameworks: dict[str, set[str]] = {}
+    for pm in project_meta:
+        tf = pm.get("targetFramework", "unknown")
+        if tf == "unknown":
+            continue
+        repo = pm.get("repo", "")
+        if repo:
+            for fw in tf.split(";"):
+                fw = fw.strip()
+                if fw:
+                    repo_frameworks.setdefault(repo, set()).add(fw)
+    mixed_framework_repos = {
+        repo: sorted(fws)
+        for repo, fws in repo_frameworks.items()
+        if len(fws) > 1
+    }
+
+    # Central Package Management detection
+    cpm_status: dict[str, bool] = {}
+    for repo in repos:
+        dpp_path = os.path.join(repo["root"], "Directory.Packages.props")
+        dpp_content = safe_read_text(dpp_path)
+        if dpp_content:
+            has_cpm = bool(re.search(r'<ManagePackageVersionsCentrally>\s*true\s*</ManagePackageVersionsCentrally>',
+                                     dpp_content, re.IGNORECASE))
+            cpm_status[repo["name"]] = has_cpm
+        else:
+            cpm_status[repo["name"]] = False
+
+    return {
+        "versionConflicts": version_conflicts,
+        "legacyFormatProjects": legacy_projects,
+        "targetFrameworks": {fw: projs for fw, projs in sorted(target_frameworks.items())},
+        "mixedFrameworkRepos": mixed_framework_repos,
+        "centralPackageManagement": cpm_status,
+        "summary": {
+            "totalPackages": len(pkg_versions),
+            "conflictCount": len(version_conflicts),
+            "legacyCount": len(legacy_projects),
+            "frameworkCount": len(target_frameworks),
+            "cpmRepos": sum(1 for v in cpm_status.values() if v),
+        },
+    }
+
+
 # ─── Write CSV ───────────────────────────────────────────────────────
 
 def write_csv(filepath: str, rows: list[dict], columns: list[str]):
@@ -2563,6 +2683,20 @@ def main():
     print(f"  Categories: {json.dumps(graph['summary']['categories'])}")
     if graph["summary"]["totalCrossRepoRefs"] > 0:
         print(f"  Cross-repo references: {graph['summary']['totalCrossRepoRefs']}")
+
+    # Step 5: NuGet health analysis
+    print("\nStep 5: Analyzing NuGet health...")
+    nuget_health = build_nuget_health(all_package_deps, all_project_meta, repos)
+    Path(os.path.join(OUT_DIR, "nuget-health.json")).write_text(
+        json.dumps(nuget_health, indent=2), encoding="utf-8"
+    )
+    nh_sum = nuget_health["summary"]
+    print(f"  Total packages: {nh_sum['totalPackages']}")
+    print(f"  Version conflicts: {nh_sum['conflictCount']}")
+    print(f"  Legacy (packages.config): {nh_sum['legacyCount']}")
+    print(f"  Target frameworks: {nh_sum['frameworkCount']}")
+    print(f"  CPM repos: {nh_sum['cpmRepos']}")
+    print(f"  Wrote nuget-health.json")
 
     print("\n=== Analysis complete ===\n")
 
