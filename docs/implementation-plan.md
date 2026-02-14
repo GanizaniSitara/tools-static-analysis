@@ -1,20 +1,35 @@
 # Implementation Plan: Code Smell Visualization, NuGet Modernization & UX Inconsistency Detection
 
 **Date**: 2026-02-14
-**Scope**: Enhancements to the static analysis scanning pipeline (`analyze.py`, `refactor_triage.py`, `visualize.py`, `generate_docs.py`)
+**Scope**: Enhancements to the static analysis scanning pipeline
 **Target**: 25GB .NET financial pricer codebase (~10K+ C# files, WPF desktop apps, pricer engines, data access layers)
 
 ---
 
 ## Overview
 
-Three features that extend what the scanner detects and surfaces in the viewer when analyzing the target codebase. All three build on data that the pipeline **already partially collects** but doesn't fully exploit.
+Three features that extend what the scanner detects and surfaces when analyzing the target codebase. All three build on data that the pipeline **already partially collects** but doesn't fully exploit.
 
 | # | Feature | Key Insight | Effort |
 |---|---------|-------------|--------|
 | 1 | Code Smell Visualization | `refactoring-targets.json` exists with full smell data but viewer ignores it entirely | Medium |
 | 2 | NuGet Modernization Analysis | `analyze.py` already collects versions, `packages.config`, `.props` — just needs comparison/flagging logic | Low |
 | 3 | UX Inconsistency Detection | `discover_xaml_bindings()` and `extract_viewmodel_properties()` already run — need cross-referencing | Medium |
+
+### Architecture Principle
+
+All three features follow the same pattern:
+
+```
+analyze.py (or refactor_triage.py)    generate_docs.py
+         |                                  |
+    scan target codebase              load JSON, render tab
+    produce JSON output               inject into viewer.html
+         |                                  |
+    {feature}-data.json  ──────────>  "Feature" tab in viewer
+```
+
+**No changes to `visualize.py`**. All viewer rendering goes through `generate_docs.py` → `viewer.html`. The Mermaid diagrams in `visualize.py` are for dependency/flow visualization only and are not touched by this plan.
 
 ---
 
@@ -60,13 +75,13 @@ if refactoring_projects:
 
 Create a new panel with three sections:
 
-**Section A — Summary cards** (like the existing hotspot summary):
+**Section A — Summary cards** (same pattern as existing hotspot summary cards):
 - Total smells count
 - Top 5 smell types with counts
 - Files scanned / files with smells ratio
 - Top project by refactoring value score
 
-**Section B — Project table** (sortable, like the "All Projects" table):
+**Section B — Project table** (sortable, same pattern as "All Projects" table):
 
 | Column | Source |
 |--------|--------|
@@ -113,31 +128,15 @@ refactoring_json = json.dumps({
 
 Add to the `<script>` section: `window._refactoringData = {refactoring_json};`
 
-#### Step 5: Add smell overlay to existing diagrams (optional enhancement)
-
-In `visualize.py`, when generating the landscape Mermaid diagram, load `refactoring-targets.json` and color-code project nodes:
-
-```python
-# In generate_landscape_mermaid()
-refactoring = _load_json(os.path.join(OUT_DIR, "refactoring-targets.json"), {})
-smell_scores = {p["project"]: p["refactoring_value_score"] for p in refactoring.get("projects", [])}
-
-# When rendering each node:
-score = smell_scores.get(project_name, 0)
-if score > 100:
-    style = ":::critical"  # red
-elif score > 50:
-    style = ":::warning"   # yellow
-```
+Then build the table and session plan from `window._refactoringData` in JavaScript, same as the hotspot and allprojects tabs do.
 
 ### Files to Modify
 
 - `generate_docs.py` — load refactoring JSON, add tab, render panel, inject JS data
-- `visualize.py` — (optional) add smell score color-coding to diagram nodes
 
 ### Dependencies
 
-- `refactor_triage.py` must have been run before `generate_docs.py` (same as current `analyze.py` → `visualize.py` dependency)
+- `refactor_triage.py` must have been run before `generate_docs.py`
 - If `refactoring-targets.json` doesn't exist, skip the tab gracefully (no crash)
 
 ---
@@ -151,10 +150,10 @@ The 25GB financial codebase almost certainly has NuGet hygiene issues: version c
 ### What Already Exists
 
 - `analyze.py` extracts `PackageReference` from `.csproj` files (modern SDK-style)
-- `analyze.py` reads `packages.config` (legacy format) — see the `pkgs_config_path` code
-- `analyze.py` reads `Directory.Build.props` and `Directory.Packages.props`
+- `analyze.py` reads `packages.config` (legacy format) — see the `pkgs_config_path` code in `extract_dependencies_from_repo()`
+- `analyze.py` reads `Directory.Build.props` and `Directory.Packages.props` in `load_properties()`
 - `build_graph()` aggregates NuGet packages with version sets: `nuget_packages[pkg_id]["versions"]` is a `set` — version conflicts are already detectable by checking `len(versions) > 1`
-- `.csproj` XML content is already read into memory (the `xml` variable in `extract_dependencies_from_repo`) — `<TargetFramework>` is right there
+- `.csproj` XML content is already read into memory (the `xml` variable in `extract_dependencies_from_repo`) — `<TargetFramework>` is right there but never extracted
 
 ### Implementation Steps
 
@@ -172,7 +171,7 @@ Add `"targetFramework": target_framework` to the `project_meta` dict for each pr
 
 #### Step 2: Detect `packages.config` projects
 
-Already detected (the code reads it). Just need to flag it:
+Already detected (the code reads it). Just need to flag it in the metadata:
 
 ```python
 uses_packages_config = os.path.isfile(pkgs_config_path) and pkgs_config_xml is not None
@@ -182,7 +181,7 @@ Add `"nugetFormat": "packages.config" if uses_packages_config else "PackageRefer
 
 #### Step 3: Detect Central Package Management
 
-In `load_properties()`, already reads `Directory.Packages.props`. Check for the CPM property:
+In `load_properties()`, the code already reads `Directory.Packages.props`. Check for the CPM property:
 
 ```python
 uses_cpm = False
@@ -199,7 +198,7 @@ New function in `analyze.py`, called after `build_graph()`:
 
 ```python
 def build_nuget_health(package_deps, project_meta, repos):
-    """Analyze NuGet package health across the codebase."""
+    """Analyze NuGet package health across the scanned codebase."""
     
     # 1. Version conflicts
     pkg_versions = {}  # {package_name: {version: [projects]}}
@@ -280,7 +279,7 @@ In `generate_docs.py`, load `nuget-health.json` and add a tab with:
 
 - **Version conflict table** — sortable by package name, version count, project count. Click a row to expand and see which projects use which version.
 - **Legacy projects list** — projects still on `packages.config`, with a "Migrate to PackageReference" recommendation.
-- **Target framework heatmap** — group projects by framework, flag `net48`/`netstandard2.0` alongside `net8.0` as migration candidates.
+- **Target framework summary** — group projects by framework, flag `net48`/`netstandard2.0` alongside `net8.0` as migration candidates.
 - **CPM status** — per-repo badge: ✅ using Central Package Management or ❌ not using it.
 
 ### Files to Modify
@@ -311,7 +310,7 @@ The financial pricer codebase has WPF desktop applications. `analyze.py` already
 
 ### Implementation Steps
 
-#### Step 1: Add a new function `detect_ux_inconsistencies()` in `analyze.py`
+#### Step 1: Add `detect_ux_inconsistencies()` in `analyze.py`
 
 This runs **after** `discover_xaml_bindings()` and `extract_viewmodel_properties()` have completed, cross-referencing their outputs:
 
@@ -322,7 +321,8 @@ def detect_ux_inconsistencies(
     entity_classes: list[dict],
     project_meta: list[dict],
 ) -> dict:
-    """Cross-reference XAML bindings with ViewModel properties to find inconsistencies."""
+    """Cross-reference XAML bindings with ViewModel properties to find inconsistencies
+    in the scanned target codebase."""
     
     issues = []
     
@@ -336,7 +336,7 @@ def detect_ux_inconsistencies(
             "property_details": vm["properties"],
         }
     
-    # Build lookup: all ViewModel class names that are referenced by views
+    # Track which ViewModels are referenced by views
     referenced_vms = set()
     
     for view in xaml_views:
@@ -406,15 +406,10 @@ def detect_ux_inconsistencies(
             })
     
     # Issue 5: Mixed property notification patterns within a single project
-    notification_patterns_by_project = {}
-    for vm in viewmodel_classes:
-        project = vm.get("project", "_unknown")
-        if project not in notification_patterns_by_project:
-            notification_patterns_by_project[project] = set()
-        # Detect pattern from base class
-        # (ViewModelBase vs ObservableObject vs INotifyPropertyChanged vs ReactiveObject)
-        # This info is in the class declaration regex match — need to extract it
-        # For now, track by file content patterns
+    # (ViewModelBase vs ObservableObject vs INotifyPropertyChanged vs ReactiveObject)
+    # This requires extracting the base class from the ViewModel class declaration
+    # regex match — extend extract_viewmodel_properties() to also return the base class name
+    # For now, this is a TODO placeholder
     
     # Build summary
     by_type = {}
@@ -447,11 +442,24 @@ def detect_ux_inconsistencies(
 
 #### Step 2: Call it from `analyze.py` main
 
-In `main()`, after the existing `discover_xaml_bindings()` and `extract_viewmodel_properties()` calls (which are called as part of `build_field_chains()`), add:
+Currently `discover_xaml_bindings()` and `extract_viewmodel_properties()` are called inside `build_field_chains()` and their results aren't returned to `main()`. Refactor:
+
+- Call `discover_xaml_bindings()` and `extract_viewmodel_properties()` separately in `main()` before `build_field_chains()`
+- Pass the results to both `build_field_chains()` and `detect_ux_inconsistencies()`
+- This avoids re-scanning — those functions scan `.xaml` and `.cs` files which is the expensive part. Call them once, use the results twice.
 
 ```python
-# After field chain building
-print("\nStep N: Detecting UX inconsistencies...")
+# In main(), after data pattern discovery:
+print("\nStep N: Scanning XAML bindings and ViewModels...")
+xaml_views = discover_xaml_bindings(SCAN_ROOT, repos, all_project_meta)
+viewmodel_classes = extract_viewmodel_properties(SCAN_ROOT, repos, all_project_meta)
+entity_classes = extract_entity_properties(SCAN_ROOT, repos, data_findings, all_project_meta)
+
+# Existing field chain building — pass pre-computed data instead of re-scanning
+field_chains = build_field_chains_from_data(xaml_views, viewmodel_classes, entity_classes, ...)
+
+# NEW: cross-reference for inconsistencies
+print("\nStep N+1: Detecting UX inconsistencies...")
 ux_issues = detect_ux_inconsistencies(xaml_views, viewmodel_classes, entity_classes, all_project_meta)
 Path(os.path.join(OUT_DIR, "ux-inconsistencies.json")).write_text(
     json.dumps(ux_issues, indent=2), encoding="utf-8"
@@ -460,12 +468,6 @@ print(f"  UX issues: {ux_issues['summary']['totalIssues']} "
       f"({ux_issues['summary']['bySeverity'].get('error', 0)} errors, "
       f"{ux_issues['summary']['bySeverity'].get('warning', 0)} warnings)")
 ```
-
-**Note**: Currently `discover_xaml_bindings()` and `extract_viewmodel_properties()` are called inside `build_field_chains()` and their results aren't returned to `main()`. You'll need to either:
-- (a) Refactor `build_field_chains()` to return the intermediate data, or
-- (b) Call `discover_xaml_bindings()` and `extract_viewmodel_properties()` separately in `main()` before `build_field_chains()`, and pass the results to both
-
-Option (b) is simpler and avoids re-scanning — those functions scan `.xaml` and `.cs` files which is the expensive part. Call them once, use the results twice.
 
 #### Step 3: Add "UX Consistency" tab to viewer
 
@@ -496,33 +498,10 @@ When clicking a broken_binding row, show:
 - The DataContext ViewModel class
 - The list of available properties on that ViewModel (so the developer can see what the correct binding should be)
 
-#### Step 4: Optional — Mermaid visualization of View-ViewModel mapping
-
-In `visualize.py`, add a new diagram `ui-mapping.mmd`:
-
-```
-graph LR
-    subgraph Views
-        MainWindow["MainWindow"]
-        TradeView["TradeView"]
-    end
-    subgraph ViewModels
-        MainViewModel["MainViewModel"]
-        TradeViewModel["TradeViewModel"]
-        OrphanVM["OrphanVM ⚠"]
-    end
-    MainWindow -->|DataContext| MainViewModel
-    TradeView -->|DataContext| TradeViewModel
-    style OrphanVM fill:#FFF3CD,stroke:#856404
-```
-
-Broken bindings shown as red dashed lines, orphan VMs highlighted yellow.
-
 ### Files to Modify
 
-- `analyze.py` — add `detect_ux_inconsistencies()`, refactor to expose intermediate XAML/VM data, save `ux-inconsistencies.json`
+- `analyze.py` — add `detect_ux_inconsistencies()`, refactor `build_field_chains()` to accept pre-scanned data, save `ux-inconsistencies.json`
 - `generate_docs.py` — load `ux-inconsistencies.json`, add "UX Consistency" tab
-- `visualize.py` — (optional) add `ui-mapping.mmd` diagram
 
 ### Dependencies
 
@@ -544,22 +523,33 @@ Broken bindings shown as red dashed lines, orphan VMs highlighted yellow.
 ```
 Phase 1 (Quick Win):
   Feature 2 — NuGet Modernization
+  - Modify: analyze.py, generate_docs.py
   - Low effort, all data already collected
   - Adds nuget-health.json output + viewer tab
   - Immediately useful: version conflicts surface real build/runtime issues
 
 Phase 2 (High Impact):
   Feature 1 — Code Smell Visualization
+  - Modify: generate_docs.py only
   - Medium effort, data pipeline fully exists
   - Wires refactoring-targets.json into viewer
   - Makes the refactoring triage output actionable in the viewer
 
 Phase 3 (Deep Analysis):
   Feature 3 — UX Inconsistency Detection
-  - Medium effort, requires refactoring analyze.py internals
+  - Modify: analyze.py, generate_docs.py
+  - Medium effort, requires refactoring build_field_chains() internals
   - Cross-references XAML and ViewModel data
   - Most valuable for WPF-heavy financial pricer apps
 ```
+
+## Files Modified Per Feature
+
+| Feature | `analyze.py` | `refactor_triage.py` | `generate_docs.py` | `visualize.py` |
+|---------|:---:|:---:|:---:|:---:|
+| 1 — Code Smell Viz | — | — | ✅ | — |
+| 2 — NuGet Health | ✅ | — | ✅ | — |
+| 3 — UX Inconsistency | ✅ | — | ✅ | — |
 
 ## Output Files Summary
 
@@ -572,7 +562,7 @@ output-{name}/
 ├── refactoring-report.md       # Already exists from refactor_triage.py
 ├── nuget-health.json           # NEW — version conflicts, legacy format, frameworks
 ├── ux-inconsistencies.json     # NEW — broken bindings, orphan VMs, missing DataContexts
-└── viewer.html                 # UPDATED — 2 new tabs: "Code Quality", "NuGet Health", "UX Consistency"
+└── viewer.html                 # UPDATED — 3 new tabs: "Code Quality", "NuGet Health", "UX Consistency"
 ```
 
 ## Testing Strategy
@@ -587,7 +577,7 @@ For each feature, test against the existing test repos:
 | **Target codebase** | ~200+ | The real 25GB pricer codebase — final validation |
 
 For each test repo:
-1. Run full pipeline: `analyze.py` → `refactor_triage.py` → `visualize.py` → `generate_docs.py`
+1. Run full pipeline: `analyze.py` → `refactor_triage.py` → `generate_docs.py`
 2. Verify new JSON outputs exist and are valid
 3. Serve viewer, check new tabs render correctly
 4. Spot-check: do flagged issues look legitimate?
