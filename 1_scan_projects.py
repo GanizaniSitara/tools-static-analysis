@@ -3,8 +3,8 @@
 Dependency Mapper — Static Analysis Engine (Python)
 
 Modes:
-  python analyze.py /path/to/single-repo
-  python analyze.py /path/to/parent-dir    (auto-discovers repos by .sln/.git)
+  python 1_scan_projects.py /path/to/single-repo
+  python 1_scan_projects.py /path/to/parent-dir    (auto-discovers repos by .sln/.git)
 
 Extracts:
   1. NuGet package dependencies (from .csproj + .props)

@@ -6,12 +6,16 @@ import sys
 import tempfile
 import unittest
 
-# analyze.py runs module-level code (SCAN_ROOT, OUT_DIR, os.makedirs) on import,
+# 1_scan_projects.py runs module-level code (SCAN_ROOT, OUT_DIR, os.makedirs) on import,
 # so we inject a harmless argv and import only the helpers we need.
-sys.argv = ["analyze.py", tempfile.gettempdir()]
+sys.argv = ["1_scan_projects.py", tempfile.gettempdir()]
 
 # Now safe to import
-from analyze import _normalize_path, find_files, discover_repos  # noqa: E402
+import importlib
+_mod = importlib.import_module("1_scan_projects")
+_normalize_path = _mod._normalize_path
+find_files = _mod.find_files
+discover_repos = _mod.discover_repos
 
 
 class TestNormalizePath(unittest.TestCase):

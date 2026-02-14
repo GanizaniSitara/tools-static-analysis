@@ -7,9 +7,9 @@
 - Use descriptive commit messages summarizing the what and why.
 
 ## Project Overview
-- Static analysis tool for .NET solutions: `analyze.py` -> `refactor_triage.py` -> `visualize.py` -> `generate_docs.py`
-- `analyze.py`: Scans .csproj files, extracts dependencies, project refs, data patterns
-- `refactor_triage.py`: Scans .cs source files for complexity metrics and code smells, generates refactoring prioritization targets for AI-assisted refactoring
-- `visualize.py`: Generates Mermaid (.mmd) and GraphViz (.dot) diagrams
-- `generate_docs.py`: Generates markdown docs and `viewer.html` (interactive HTML viewer)
-- Output directories: `output-{name}/` with JSON, CSV, diagrams/, docs/, viewer.html, refactoring-targets.json, refactoring-report.md
+- Static analysis tool for .NET solutions: `1_scan_projects.py` → `2_scan_smells.py` → `3_gen_diagrams.py` → `4_gen_docs.py`
+- `1_scan_projects.py`: Scans .csproj/.xaml/.config files — dependencies, project refs, data patterns, field traceability, UX consistency, NuGet health
+- `2_scan_smells.py`: Scans .cs source files for complexity metrics and code smells, generates refactoring targets
+- `3_gen_diagrams.py`: Generates Mermaid (.mmd) and GraphViz (.dot) diagrams from graph.json
+- `4_gen_docs.py`: Generates markdown docs, `viewer.html` (interactive HTML viewer), and AI context files
+- Output directories: `output-{name}/` with JSON, CSV, diagrams/, docs/, viewer.html
