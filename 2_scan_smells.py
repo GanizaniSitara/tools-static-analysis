@@ -9,7 +9,7 @@ Scans .NET C# source files to identify refactoring targets based on:
   - Test coverage gaps
 
 Usage:
-  python refactor_triage.py /path/to/repos [output-dir]
+  python 2_scan_smells.py /path/to/repos [output-dir]
 
 Outputs:
   - refactoring-targets.json (machine-readable analysis)
@@ -70,7 +70,7 @@ FINANCIAL_PATTERNS = [
 ]
 
 
-# ─── Path Utilities (from analyze.py) ────────────────────────────────
+# ─── Path Utilities (from 1_scan_projects.py) ────────────────────────
 
 def _strip_long_prefix(p: str) -> str:
     """Strip the Windows ``\\\\?\\`` extended-length prefix."""
@@ -632,7 +632,7 @@ def load_existing_analysis(out_dir: str) -> dict:
     # Warn if project-meta.json is empty or missing
     if not data["project_meta"]:
         print("  ⚠ WARNING: project-meta.json is empty or missing!")
-        print("    Run analyze.py first for best results.")
+        print("    Run 1_scan_projects.py first for best results.")
         print("    Falling back to directory-based project grouping.")
     
     return data

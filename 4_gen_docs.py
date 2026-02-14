@@ -48,6 +48,9 @@ data_flow: dict = _load_json(os.path.join(OUT_DIR, "data-flow.json"), {})
 flow_paths_data: dict = _load_json(os.path.join(OUT_DIR, "flow-paths.json"), {})
 field_trace_data: dict = _load_json(os.path.join(OUT_DIR, "field-traceability.json"), {})
 repos_data: list = _load_json(os.path.join(OUT_DIR, "repos.json"), [])
+refactoring_data: dict = _load_json(os.path.join(OUT_DIR, "refactoring-targets.json"), {})
+ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.json"), {})
+nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
@@ -648,6 +651,38 @@ def generate_viewer_html() -> str:
     most_referenced = max(hotspot_metrics, key=lambda m: m["fan_in"]) if hotspot_metrics else None
     most_cross_repo = max(hotspot_metrics, key=lambda m: m["cross_repo_refs"]) if hotspot_metrics else None
 
+    # ── Code quality data ──
+    refactoring_projects = refactoring_data.get("projects", [])
+    refactoring_summary = refactoring_data.get("summary", {})
+    claude_targets = refactoring_data.get("claudeCodeTargets", {})
+    # Cap at 200 projects and strip files[] (too large for embedding)
+    cq_projects_trimmed = []
+    for _rp in refactoring_projects[:200]:
+        cq_projects_trimmed.append({
+            k: v for k, v in _rp.items()
+            if k in ("project", "repo", "category", "layer", "refactoring_value_score",
+                     "smell_count", "top_smells", "total_lines", "total_files",
+                     "has_tests", "complexity_score", "fan_in", "fan_out")
+        })
+    cq_embedded = json.dumps({
+        "projects": cq_projects_trimmed,
+        "summary": refactoring_summary,
+        "claudeCodeTargets": claude_targets,
+    })
+
+    # ── UX inconsistency data ──
+    ux_issues = ux_inconsistencies.get("issues", [])
+    ux_summary = ux_inconsistencies.get("summary", {})
+    ux_embedded = json.dumps({"issues": ux_issues, "summary": ux_summary})
+
+    # ── NuGet health data ──
+    nh_conflicts = nuget_health.get("versionConflicts", [])
+    nh_legacy = nuget_health.get("legacyFormatProjects", [])
+    nh_frameworks = nuget_health.get("targetFrameworks", {})
+    nh_mixed_repos = nuget_health.get("mixedFrameworkRepos", {})
+    nh_cpm = nuget_health.get("centralPackageManagement", {})
+    nh_summary = nuget_health.get("summary", {})
+
     # Tab buttons
     all_tab_ids: list[tuple[str, str]] = []
     for dt in diagram_tabs:
@@ -662,7 +697,13 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("e2eflows", "E2E Flows"))
     if field_trace_data.get("fieldChains"):
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
+    if refactoring_projects:
+        all_tab_ids.append(("codequality", "Code Quality"))
+    if ux_issues:
+        all_tab_ids.append(("uxconsistency", "UX Consistency"))
     all_tab_ids.append(("hotspots", "Hotspots"))
+    if nh_conflicts or nh_legacy:
+        all_tab_ids.append(("nugethealth", "NuGet Health"))
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -1117,6 +1158,268 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── Code Quality panel ──
+    codequality_panel = ""
+    if refactoring_projects:
+        cq_total_smells = refactoring_summary.get("totalSmells", 0)
+        cq_top_smell_types = refactoring_summary.get("topSmellTypes", [])
+        cq_top_smell_name = cq_top_smell_types[0]["smell"] if cq_top_smell_types else "—"
+        cq_top_smell_count = cq_top_smell_types[0]["count"] if cq_top_smell_types else 0
+        cq_top_project = max(refactoring_projects, key=lambda p: p.get("smell_count", 0)) if refactoring_projects else {}
+        cq_top_proj_name = _esc_html(cq_top_project.get("project", "—"))
+        cq_top_proj_smells = cq_top_project.get("smell_count", 0)
+        cq_files_scanned = refactoring_summary.get("totalFilesScanned", 0)
+        cq_files_with = refactoring_summary.get("totalFilesWithSmells", 0)
+        cq_files_ratio = f"{{cq_files_with}}/{{cq_files_scanned}}" if cq_files_scanned else "—"
+
+        # Smell type badges
+        cq_badge_html = ""
+        for st in cq_top_smell_types:
+            cq_badge_html += f'<button type="button" class="cq-badge" data-smell="{_esc_html(st["smell"])}">{_esc_html(st["smell"])}: {st["count"]}</button>\n        '
+
+        # Refactoring targets (tier details)
+        cq_tier_html = ""
+        for tier_key, tier_label in [("tier1_critical", "Tier 1 Critical"), ("tier2_high", "Tier 2 High"), ("tier3_medium", "Tier 3 Medium")]:
+            tier_items = claude_targets.get(tier_key, [])
+            if not tier_items:
+                continue
+            items_html = ""
+            for t in tier_items:
+                files_list = ", ".join(t.get("files", [])[:5])
+                if len(t.get("files", [])) > 5:
+                    files_list += f" +{{len(t['files']) - 5}} more"
+                effort_color = "#D0002B" if "large" in t.get("estimatedEffort", "").lower() else "#9E8700" if "medium" in t.get("estimatedEffort", "").lower() else "#009639"
+                items_html += f"""<div style="margin-bottom:1rem;padding:0.75rem;background:#FAFAFA;border:1px solid #E1E1E1;border-radius:6px;">
+              <div style="font-weight:700;">{_esc_html(t.get('project', ''))}</div>
+              <div style="font-size:0.82rem;color:#53565A;margin:0.3rem 0;">{_esc_html(t.get('why', ''))}</div>
+              <pre style="background:#F5F5F5;padding:0.5rem;border-radius:4px;font-size:0.78rem;overflow-x:auto;cursor:pointer;position:relative;" onclick="navigator.clipboard.writeText(this.textContent).then(function(){{var el=event.target.closest('pre');el.style.outline='2px solid #009639';setTimeout(function(){{el.style.outline='none';}},600);}})">{_esc_html(t.get('suggestedPrompt', ''))}</pre>
+              <div style="display:flex;gap:0.5rem;align-items:center;margin-top:0.3rem;">
+                <span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba({_hex_to_rgb(effort_color)},0.15);color:{effort_color};">{_esc_html(t.get('estimatedEffort', ''))}</span>
+                <span style="font-size:0.75rem;color:#53565A;">Files: {_esc_html(files_list)}</span>
+              </div>
+            </div>
+"""
+            cq_tier_html += f"""<details style="margin-bottom:0.5rem;">
+          <summary style="cursor:pointer;font-weight:600;padding:0.4rem 0;">{tier_label} ({len(tier_items)})</summary>
+          <div style="padding:0.5rem 0;">
+            {items_html}
+          </div>
+        </details>
+"""
+
+        codequality_panel = f"""
+  <section class="tab-panel" id="panel-codequality">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Code Quality Analysis</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Smells</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_total_smells}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Top Smell Type</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_esc_html(cq_top_smell_name)}</div>
+          <div style="font-size:0.8rem;color:#53565A;">Count: {cq_top_smell_count}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Top Project</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{cq_top_proj_name}</div>
+          <div style="font-size:0.8rem;color:#53565A;">Smells: {cq_top_proj_smells}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Files With Smells</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{cq_files_ratio}</div>
+        </div>
+      </div>
+      <div id="cqFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {cq_badge_html}
+        <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
+        <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
+      </div>
+      <div class="table-wrap">
+        <table id="cqTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Project name">Project</th>
+              <th data-sort-type="text" title="Project category">Category</th>
+              <th data-sort-type="num" title="Refactoring value score">Score</th>
+              <th data-sort-type="num" title="Number of code smells">Smells</th>
+              <th data-sort-type="text" title="Most frequent smell type">Top Smell</th>
+              <th data-sort-type="num" title="Total lines of code">Lines</th>
+              <th data-sort-type="num" title="Complexity score">Complexity</th>
+              <th data-sort-type="text" title="Whether the project has tests">Has Tests</th>
+            </tr>
+          </thead>
+          <tbody id="cqBody">
+          </tbody>
+        </table>
+      </div>
+      {f'<div style="margin-top:1.5rem;"><div class="card-title"><span class="icon">&#9670;</span> Refactoring Targets</div>{cq_tier_html}</div>' if cq_tier_html else ''}
+    </div>
+  </section>
+"""
+
+    # ── UX Consistency panel ──
+    uxconsistency_panel = ""
+    if ux_issues:
+        ux_by_severity = ux_summary.get("bySeverity", {})
+        ux_by_type = ux_summary.get("byType", {})
+        ux_total = ux_summary.get("totalIssues", len(ux_issues))
+
+        ux_severity_badges = ""
+        sev_colors = {"error": "#D0002B", "warning": "#9E8700", "info": "#53565A"}
+        for sev in ["error", "warning", "info"]:
+            cnt = ux_by_severity.get(sev, 0)
+            if cnt:
+                c = sev_colors.get(sev, "#53565A")
+                ux_severity_badges += f'<button type="button" class="ux-badge" data-severity="{sev}" style="background:rgba({_hex_to_rgb(c)},0.15);color:{c};">{sev.title()}: {cnt}</button>\n        '
+
+        ux_type_badges = ""
+        for typ, cnt in sorted(ux_by_type.items(), key=lambda x: -x[1]):
+            ux_type_badges += f'<button type="button" class="ux-badge" data-type="{_esc_html(typ)}">{_esc_html(typ)}: {cnt}</button>\n        '
+
+        uxconsistency_panel = f"""
+  <section class="tab-panel" id="panel-uxconsistency">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> UX Consistency Analysis</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Issues</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_total}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Errors</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_by_severity.get('error', 0)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Warnings</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{ux_by_severity.get('warning', 0)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Info</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{ux_by_severity.get('info', 0)}</div>
+        </div>
+      </div>
+      <div id="uxFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {ux_severity_badges}
+        {ux_type_badges}
+      </div>
+      <div class="table-wrap">
+        <table id="uxTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Issue severity">Severity</th>
+              <th data-sort-type="text" title="Issue type">Type</th>
+              <th data-sort-type="text" title="Project name">Project</th>
+              <th data-sort-type="text" title="Source file">File</th>
+              <th data-sort-type="text" title="View or class involved">View/Class</th>
+              <th data-sort-type="text" title="Issue description">Message</th>
+            </tr>
+          </thead>
+          <tbody id="uxBody">
+          </tbody>
+        </table>
+      </div>
+      <div id="uxDetailSidebar" style="display:none;margin-top:1rem;padding:1rem;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;">
+      </div>
+    </div>
+  </section>
+"""
+
+    # ── NuGet Health panel ──
+    nugethealth_panel = ""
+    if nh_conflicts or nh_legacy:
+        # Build conflict table rows server-side
+        nh_conflict_rows = ""
+        for vc in nh_conflicts:
+            pkg = _esc_html(vc.get("package", ""))
+            ver_count = vc.get("versionCount", 0)
+            proj_count = vc.get("projectCount", 0)
+            versions_detail = ""
+            for ver, projs in sorted(vc.get("versions", {}).items()):
+                proj_list = ", ".join(_esc_html(p) for p in projs[:10])
+                if len(projs) > 10:
+                    proj_list += f" +{len(projs) - 10} more"
+                versions_detail += f"<div style='margin:0.3rem 0;'><strong>{_esc_html(ver)}</strong>: {proj_list}</div>"
+            nh_conflict_rows += f"""<tr>
+              <td><strong>{pkg}</strong></td>
+              <td style="text-align:center">{ver_count}</td>
+              <td style="text-align:center">{proj_count}</td>
+              <td><details><summary style="cursor:pointer;font-size:0.82rem;">Show versions</summary><div style="padding:0.4rem 0;font-size:0.8rem;">{versions_detail}</div></details></td>
+            </tr>
+"""
+
+        # Build legacy table rows
+        nh_legacy_rows = ""
+        for lp in nh_legacy:
+            nh_legacy_rows += f"""<tr>
+              <td>{_esc_html(lp.get('project', ''))}</td>
+              <td>{_esc_html(lp.get('repo', ''))}</td>
+              <td class="mono">{_esc_html(lp.get('path', ''))}</td>
+              <td><span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba(158,135,0,0.15);color:#9E8700;">packages.config</span></td>
+            </tr>
+"""
+
+        # Build framework badges
+        nh_fw_html = ""
+        for fw, projs in sorted(nh_frameworks.items()):
+            fw_lower = fw.lower()
+            if "net8" in fw_lower or "net9" in fw_lower or "net10" in fw_lower:
+                fw_color = "#009639"
+            elif "net4" in fw_lower or "net3" in fw_lower:
+                fw_color = "#9E8700"
+            elif "netstandard" in fw_lower:
+                fw_color = "#005587"
+            else:
+                fw_color = "#53565A"
+            nh_fw_html += f'<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.78rem;font-weight:600;background:rgba({_hex_to_rgb(fw_color)},0.15);color:{fw_color};margin:0.2rem;">{_esc_html(fw)}: {len(projs)}</span>\n'
+
+        # Mixed framework repos
+        nh_mixed_html = ""
+        if nh_mixed_repos:
+            nh_mixed_html = '<div style="margin-top:0.5rem;"><strong>Mixed-Framework Repos:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">'
+            for repo, fws in sorted(nh_mixed_repos.items()):
+                nh_mixed_html += f'<li style="font-size:0.85rem;">{_esc_html(repo)}: {", ".join(_esc_html(f) for f in fws)}</li>'
+            nh_mixed_html += '</ul></div>'
+
+        # CPM status badges
+        nh_cpm_html = ""
+        if nh_cpm:
+            for repo, enabled in sorted(nh_cpm.items()):
+                icon = "&#10003;" if enabled else "&#10007;"
+                color = "#009639" if enabled else "#D0002B"
+                nh_cpm_html += f'<span style="display:inline-block;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.78rem;font-weight:600;background:rgba({_hex_to_rgb(color)},0.15);color:{color};margin:0.2rem;">{icon} {_esc_html(repo)}</span>\n'
+
+        nugethealth_panel = f"""
+  <section class="tab-panel" id="panel-nugethealth">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> NuGet Health</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Version Conflicts</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{nh_summary.get('conflictCount', len(nh_conflicts))}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Legacy Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{nh_summary.get('legacyCount', len(nh_legacy))}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Frameworks</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{nh_summary.get('frameworkCount', len(nh_frameworks))}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">CPM Repos</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{nh_summary.get('cpmRepos', sum(1 for v in nh_cpm.values() if v))}</div>
+        </div>
+      </div>
+      {"<h3 style='margin:1rem 0 0.5rem;'>Version Conflicts</h3>" + '<div class="table-wrap"><table id="nhConflictsTable"><thead><tr><th data-sort-type="text">Package</th><th data-sort-type="num">Versions</th><th data-sort-type="num">Projects</th><th data-sort-type="none">Details</th></tr></thead><tbody>' + nh_conflict_rows + '</tbody></table></div>' if nh_conflict_rows else ''}
+      {"<h3 style='margin:1rem 0 0.5rem;'>Legacy Format Projects</h3>" + '<div class="table-wrap"><table id="nhLegacyTable"><thead><tr><th data-sort-type="text">Project</th><th data-sort-type="text">Repo</th><th data-sort-type="text">Path</th><th data-sort-type="none">Format</th></tr></thead><tbody>' + nh_legacy_rows + '</tbody></table></div>' if nh_legacy_rows else ''}
+      {"<h3 style='margin:1rem 0 0.5rem;'>Target Frameworks</h3><div style='display:flex;flex-wrap:wrap;gap:0.3rem;'>" + nh_fw_html + "</div>" + nh_mixed_html if nh_fw_html else ''}
+      {"<h3 style='margin:1rem 0 0.5rem;'>Central Package Management</h3><div style='display:flex;flex-wrap:wrap;gap:0.3rem;'>" + nh_cpm_html + "</div>" if nh_cpm_html else ''}
+    </div>
+  </section>
+"""
+
     # Hotspots panel
     hs_top_name = _esc_html(top_hotspot["project"]) if top_hotspot else "—"
     hs_top_score = top_hotspot["hotspot_score"] if top_hotspot else 0
@@ -1346,6 +1649,17 @@ def generate_viewer_html() -> str:
   .hs-badge[data-filter="green"]  {{ background:rgba(0,150,57,0.15); color:#009639; }}
   .hs-badge[data-filter="none"]   {{ background:rgba(83,86,90,0.15); color:#53565A; }}
   .hs-badge-active {{ outline:2px solid currentColor; }}
+  .cq-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    background:rgba(0,85,135,0.15); color:#005587;
+  }}
+  .cq-badge-active {{ outline:2px solid currentColor; }}
+  .ux-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+  }}
+  .ux-badge-active {{ outline:2px solid currentColor; }}
   .hs-dropdown {{
     padding:0.35rem 0.6rem; border-radius:6px; border:1px solid #E1E1E1;
     background:#FFFFFF; color:#333333; font-size:0.82rem; outline:none;
@@ -1414,6 +1728,9 @@ def generate_viewer_html() -> str:
   </div>
   <div class="stats-row">
 {stats_html}
+    <a href="docs/ai-context/CODEBASE_OVERVIEW.md" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
+      <span class="stat-value">AI</span> Context
+    </a>
   </div>
 </header>
 
@@ -1428,7 +1745,10 @@ def generate_viewer_html() -> str:
 {connstrings_panel}
 {e2eflows_panel}
 {fieldtrace_panel}
+{codequality_panel}
+{uxconsistency_panel}
 {hotspots_panel}
+{nugethealth_panel}
 {repos_panel}
 {all_projects_panel}
 </main>
@@ -2284,6 +2604,8 @@ function initSortableTable(table) {{
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
   window._categoryMap = {{ {cat_map_entries} }};
   window._hotspotData = {hotspot_json};
+  window._codeQualityData = {cq_embedded};
+  window._uxData = {ux_embedded};
   window._isMultiRepo = {str(is_multi_repo).lower()};
 
   // Load data-flow.json for edge detail panel
@@ -2455,6 +2777,177 @@ function initSortableTable(table) {{
     if (laySelect) laySelect.addEventListener('change', function () {{ applyHotspotFilters(); }});
   }})();
 
+  // ── Code Quality IIFE ──
+  (function () {{
+    var cqData = window._codeQualityData || {{}};
+    var projects = cqData.projects || [];
+    var tbody = document.getElementById('cqBody');
+    if (!tbody || projects.length === 0) return;
+    var categories = {{}};
+    projects.forEach(function (p) {{
+      var tr = document.createElement('tr');
+      var score = p.refactoring_value_score || 0;
+      var scoreColor = score > 100 ? '#D0002B' : score > 50 ? '#9E8700' : '#009639';
+      var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
+      var smellList = (p.top_smells || []).join(',');
+      tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
+      tr.setAttribute('data-category', (p.category || '').toLowerCase());
+      tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
+      tr.setAttribute('data-smells', smellList.toLowerCase());
+      tr.innerHTML =
+        '<td><strong>' + escHtml(p.project || '') + '</strong></td>' +
+        '<td>' + tagHTML(p.category || '') + '</td>' +
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor + '">' + score + '</td>' +
+        '<td style="text-align:center">' + (p.smell_count || 0) + '</td>' +
+        '<td>' + escHtml(topSmell) + '</td>' +
+        '<td style="text-align:center">' + (p.total_lines || 0).toLocaleString() + '</td>' +
+        '<td style="text-align:center">' + (p.complexity_score || 0) + '</td>' +
+        '<td style="text-align:center">' + (p.has_tests ? '<span style="color:#009639">&#10003;</span>' : '<span style="color:#D0002B">&#10007;</span>') + '</td>';
+      tbody.appendChild(tr);
+      var cat = (p.category || '').toLowerCase();
+      if (cat) categories[cat] = true;
+    }});
+    initSortableTable(document.getElementById('cqTable'));
+
+    // Populate category dropdown
+    var cqCatSelect = document.getElementById('cqCategoryFilter');
+    if (cqCatSelect) {{
+      Object.keys(categories).sort().forEach(function (c) {{
+        var opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+        cqCatSelect.appendChild(opt);
+      }});
+    }}
+
+    // Badge click handlers
+    document.querySelectorAll('.cq-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('cq-badge-active');
+        document.querySelectorAll('.cq-badge').forEach(function (b) {{ b.classList.remove('cq-badge-active'); }});
+        if (!isActive) badge.classList.add('cq-badge-active');
+        applyCqFilters();
+      }});
+    }});
+
+    // Dropdown handlers
+    if (cqCatSelect) cqCatSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+    var cqTestSelect = document.getElementById('cqTestsFilter');
+    if (cqTestSelect) cqTestSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+  }})();
+
+  function applyCqFilters() {{
+    var activeBadge = document.querySelector('.cq-badge.cq-badge-active');
+    var smellFilter = activeBadge ? activeBadge.getAttribute('data-smell').toLowerCase() : '';
+    var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
+    var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
+
+    var rows = document.querySelectorAll('#cqBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var show = true;
+      if (smellFilter) {{
+        var smells = row.getAttribute('data-smells') || '';
+        if (smells.indexOf(smellFilter) === -1) show = false;
+      }}
+      if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
+      if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
+      if (searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
+    }});
+  }}
+
+  // ── UX Consistency IIFE ──
+  (function () {{
+    var uxData = window._uxData || {{}};
+    var issues = uxData.issues || [];
+    var tbody = document.getElementById('uxBody');
+    if (!tbody || issues.length === 0) return;
+    var sevColors = {{ error: '#D0002B', warning: '#9E8700', info: '#53565A' }};
+    issues.forEach(function (iss) {{
+      var tr = document.createElement('tr');
+      var c = sevColors[iss.severity] || '#53565A';
+      tr.setAttribute('data-search', (iss.project + ' ' + iss.type + ' ' + (iss.file || '') + ' ' + iss.message).toLowerCase());
+      tr.setAttribute('data-severity', iss.severity || '');
+      tr.setAttribute('data-type', iss.type || '');
+      var viewClass = iss.viewType || iss.className || '';
+      tr.innerHTML =
+        '<td><span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(iss.severity || '') + '</span></td>' +
+        '<td>' + escHtml(iss.type || '') + '</td>' +
+        '<td><strong>' + escHtml(iss.project || '') + '</strong></td>' +
+        '<td class="mono" style="font-size:0.75rem;">' + escHtml(iss.file || '') + '</td>' +
+        '<td>' + escHtml(viewClass) + '</td>' +
+        '<td>' + escHtml(iss.message || '') + '</td>';
+      // Store available properties for detail sidebar
+      if (iss.availableProperties) {{
+        tr.setAttribute('data-available-props', JSON.stringify(iss.availableProperties));
+      }}
+      tr.style.cursor = 'pointer';
+      tr.addEventListener('click', function () {{
+        var sidebar = document.getElementById('uxDetailSidebar');
+        if (!sidebar) return;
+        var props = tr.getAttribute('data-available-props');
+        if (props) {{
+          try {{
+            var propList = JSON.parse(props);
+            sidebar.innerHTML = '<strong>Available VM Properties:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">' +
+              propList.map(function(p) {{ return '<li style="font-size:0.85rem;">' + escHtml(p) + '</li>'; }}).join('') + '</ul>';
+            sidebar.style.display = 'block';
+          }} catch(e) {{ sidebar.style.display = 'none'; }}
+        }} else {{
+          sidebar.innerHTML = '<strong>' + escHtml(iss.type || '') + ':</strong> ' + escHtml(iss.message || '');
+          sidebar.style.display = 'block';
+        }}
+      }});
+      tbody.appendChild(tr);
+    }});
+    initSortableTable(document.getElementById('uxTable'));
+
+    // Badge click handlers
+    document.querySelectorAll('.ux-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('ux-badge-active');
+        document.querySelectorAll('.ux-badge').forEach(function (b) {{ b.classList.remove('ux-badge-active'); }});
+        if (!isActive) badge.classList.add('ux-badge-active');
+        applyUxFilters();
+      }});
+    }});
+  }})();
+
+  function applyUxFilters() {{
+    var activeBadge = document.querySelector('.ux-badge.ux-badge-active');
+    var sevFilter = activeBadge ? activeBadge.getAttribute('data-severity') || '' : '';
+    var typeFilter = activeBadge ? activeBadge.getAttribute('data-type') || '' : '';
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
+
+    var rows = document.querySelectorAll('#uxBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var show = true;
+      if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
+      if (typeFilter && row.getAttribute('data-type') !== typeFilter) show = false;
+      if (searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
+    }});
+  }}
+
+  // ── NuGet Health sorting init ──
+  initSortableTable(document.getElementById('nhConflictsTable'));
+  initSortableTable(document.getElementById('nhLegacyTable'));
+
+  // hexToRgb helper for UX badges
+  function hexToRgb(hex) {{
+    var h = hex.replace('#', '');
+    return parseInt(h.substring(0,2),16) + ',' + parseInt(h.substring(2,4),16) + ',' + parseInt(h.substring(4,6),16);
+  }}
+
   // Shared hotspot filter function
   function applyHotspotFilters() {{
     var activeBadge = document.querySelector('.hs-badge.hs-badge-active');
@@ -2488,6 +2981,8 @@ function initSortableTable(table) {{
       row.style.display = (!query || text.indexOf(query) !== -1) ? '' : 'none';
     }});
     applyHotspotFilters();
+    applyCqFilters();
+    applyUxFilters();
   }});
 
   // Flow paths search
@@ -2877,6 +3372,21 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
             factors.append(f"nuget:{m['nuget_deps']}")
         md += f"| {i + 1} | {m['project']} | {m['category']} | {m['hotspot_score']} | {', '.join(factors) or 'moderate coupling'} |\n"
 
+    # Code Quality Summary
+    if refactoring_data.get("summary"):
+        rs = refactoring_data["summary"]
+        md += "\n## Code Quality Summary\n\n"
+        md += f"| Metric | Value |\n|--------|-------|\n"
+        md += f"| Total Smells | {rs.get('totalSmells', 0)} |\n"
+        md += f"| Files Scanned | {rs.get('totalFilesScanned', 0)} |\n"
+        md += f"| Files With Smells | {rs.get('totalFilesWithSmells', 0)} |\n"
+        top_types = rs.get("topSmellTypes", [])
+        if top_types:
+            md += "\n**Top Smell Types:**\n\n"
+            for st in top_types[:10]:
+                md += f"- {st['smell']}: {st['count']}\n"
+            md += "\n"
+
     md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
     Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
 
@@ -2965,6 +3475,20 @@ def _write_project_context(ai_dir: str, pm: dict, metrics_by_name: dict[str, dic
         md += f"| Data Patterns | {m.get('data_patterns', 0)} |\n"
         md += f"| Cross-Repo Refs | {m.get('cross_repo_refs', 0)} |\n"
         md += f"| **Hotspot Score** | **{m.get('hotspot_score', 0)}** |\n\n"
+
+    # Code Quality Metrics (from refactoring triage)
+    refactoring_by_name = {rp["project"]: rp for rp in refactoring_data.get("projects", [])}
+    rp = refactoring_by_name.get(project)
+    if rp:
+        md += "## Code Quality Metrics\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Refactoring Score | {rp.get('refactoring_value_score', 0)} |\n"
+        md += f"| Smell Count | {rp.get('smell_count', 0)} |\n"
+        md += f"| Has Tests | {'Yes' if rp.get('has_tests') else 'No'} |\n"
+        top_smells = rp.get("top_smells", [])
+        if top_smells:
+            md += f"| Top Smells | {', '.join(top_smells[:5])} |\n"
+        md += "\n"
 
     # Related projects: shared data nodes
     related = set()

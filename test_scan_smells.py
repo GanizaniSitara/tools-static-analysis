@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for refactor_triage.py project inference and fallback logic."""
+"""Tests for 2_scan_smells.py project inference and fallback logic."""
 
 import os
 import sys
@@ -7,16 +7,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-# refactor_triage.py runs module-level code (SCAN_ROOT, OUT_DIR, os.makedirs) on import,
+# 2_scan_smells.py runs module-level code (SCAN_ROOT, OUT_DIR, os.makedirs) on import,
 # so we inject a harmless argv and import only the helpers we need.
-sys.argv = ["refactor_triage.py", tempfile.gettempdir()]
+sys.argv = ["2_scan_smells.py", tempfile.gettempdir()]
 
 # Now safe to import
-from refactor_triage import (  # noqa: E402
-    _normalize_path,
-    infer_project_from_path,
-    find_project_for_file,
-)
+import importlib  # noqa: E402
+_mod = importlib.import_module("2_scan_smells")
+_normalize_path = _mod._normalize_path
+infer_project_from_path = _mod.infer_project_from_path
+find_project_for_file = _mod.find_project_for_file
 
 
 class TestInferProjectFromPath(unittest.TestCase):

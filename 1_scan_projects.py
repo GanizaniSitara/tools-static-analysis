@@ -3,8 +3,8 @@
 Dependency Mapper — Static Analysis Engine (Python)
 
 Modes:
-  python analyze.py /path/to/single-repo
-  python analyze.py /path/to/parent-dir    (auto-discovers repos by .sln/.git)
+  python 1_scan_projects.py /path/to/single-repo
+  python 1_scan_projects.py /path/to/parent-dir    (auto-discovers repos by .sln/.git)
 
 Extracts:
   1. NuGet package dependencies (from .csproj + .props)
@@ -364,12 +364,26 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
         global_rel_path = _relpath(csproj_path, global_scan_root)
 
         category = categorize_project(rel_path, proj_name, xml)
+
+        # Extract target framework (check csproj first, then resolve $(Var) from props)
+        tf_match = re.search(r'<TargetFramework(?:s)?>(.*?)</TargetFramework(?:s)?>', xml)
+        target_framework = tf_match.group(1) if tf_match else "unknown"
+        # Resolve property references like $(StockSharpTargets)
+        if target_framework != "unknown":
+            tf_var = re.match(r'^\$\((\w+)\)$', target_framework)
+            if tf_var:
+                target_framework = props.get(tf_var.group(1), target_framework)
+        # Fallback: check props for TargetFramework/TargetFrameworks
+        if target_framework == "unknown":
+            target_framework = props.get("TargetFrameworks", props.get("TargetFramework", "unknown"))
+
         project_meta.append({
             "project": proj_name,
             "repo": repo["name"],
             "path": rel_path,
             "globalPath": global_rel_path,
             "category": category,
+            "targetFramework": target_framework,
         })
 
         # Resolve inherited deps from .props imports
@@ -385,11 +399,16 @@ def extract_dependencies_from_repo(repo: dict, global_scan_root: str) -> dict:
         # Also check for packages.config (legacy NuGet format)
         pkgs_config_path = os.path.join(csproj_dir, "packages.config")
         pkgs_config_xml = safe_read_text(pkgs_config_path)
+        uses_packages_config = False
         if pkgs_config_xml:
+            uses_packages_config = True
             for pc in parse_xml_elements(pkgs_config_xml, "package"):
                 pkg_id = pc["attrs"].get("id", "")
                 if pkg_id:
                     all_pkgs.append({"name": pkg_id, "version": pc["attrs"].get("version", "")})
+
+        # Record NuGet format in project meta
+        project_meta[-1]["nugetFormat"] = "packages.config" if uses_packages_config else "PackageReference"
 
         for pkg in all_pkgs:
             if pkg["name"]:
@@ -928,6 +947,7 @@ _XAML_DESIGN_CTX_RE   = re.compile(r'd:DataContext\s*=\s*"\{[^}]*?(?:Type|local:
 
 # ViewModel regex patterns
 _VIEWMODEL_CLASS_RE   = re.compile(r'class\s+(\w+)\s*(?:<[^>]+>)?\s*:\s*[^{]*?(?:ViewModelBase|ObservableObject|INotifyPropertyChanged|BindableBase|ReactiveObject)')
+_VIEWMODEL_BASE_RE    = re.compile(r':\s*[^{]*?(ViewModelBase|ObservableObject|INotifyPropertyChanged|BindableBase|ReactiveObject)')
 _CS_AUTO_PROPERTY_RE  = re.compile(r'public\s+(?:virtual\s+|override\s+|new\s+)?([\w<>,\s?]+?)\s+(\w+)\s*\{\s*get\s*;')
 _CS_PROP_CHANGED_RE   = re.compile(r'(?:OnPropertyChanged|SetProperty|RaisePropertyChanged|RaiseAndSetIfChanged)\s*\(')
 
@@ -1037,6 +1057,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
             lines = content.splitlines()
 
             current_class: str | None = None
+            current_base: str = "unknown"
             properties: list[dict] = []
 
             for i, line in enumerate(lines):
@@ -1050,9 +1071,12 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
                             "repo": repo["name"],
                             "project": project_name,
                             "className": current_class,
+                            "baseClass": current_base,
                             "properties": properties,
                         })
                     current_class = cm.group(1)
+                    bm = _VIEWMODEL_BASE_RE.search(line)
+                    current_base = bm.group(1) if bm else "unknown"
                     properties = []
                     continue
 
@@ -1075,6 +1099,7 @@ def extract_viewmodel_properties(scan_root: str, repos: list[dict], project_meta
                     "repo": repo["name"],
                     "project": project_name,
                     "className": current_class,
+                    "baseClass": current_base,
                     "properties": properties,
                 })
 
@@ -1621,6 +1646,174 @@ def build_field_traceability(
     }
 
 
+# ─── UX inconsistency detection ──────────────────────────────────────
+
+def detect_ux_inconsistencies(
+    xaml_views: list[dict],
+    viewmodel_classes: list[dict],
+    entity_classes: list[dict],
+    project_meta: list[dict],
+) -> dict:
+    """Detect MVVM binding inconsistencies between XAML views and ViewModels.
+
+    Returns dict with 'issues' list and 'summary' counts.
+    Issue types: missing_datacontext, missing_viewmodel, broken_binding,
+                 orphan_viewmodel, mixed_patterns.
+    """
+    issues: list[dict] = []
+    issue_id = 0
+
+    # Build lookup maps
+    vm_by_class: dict[str, dict] = {}
+    for vm in viewmodel_classes:
+        vm_by_class[vm["className"]] = vm
+
+    # Map project → set of VM base classes used
+    project_bases: dict[str, set] = {}
+    for vm in viewmodel_classes:
+        proj = vm.get("project") or ""
+        if proj:
+            project_bases.setdefault(proj, set()).add(vm.get("baseClass", "unknown"))
+
+    # Track which VMs are referenced by views
+    referenced_vms: set[str] = set()
+
+    # Build project meta lookup
+    pm_by_name = {pm["project"]: pm for pm in project_meta}
+
+    for view in xaml_views:
+        has_bindings = len(view.get("bindings", [])) > 0
+        dc_type = view.get("dataContextType")
+        view_type = view.get("viewType")
+        project = view.get("project") or ""
+        repo = view.get("repo") or ""
+        file = view.get("file") or ""
+
+        # Convention-based VM name: ViewName → ViewNameViewModel
+        convention_vm = (view_type + "ViewModel") if view_type else None
+
+        # Check for missing_datacontext:
+        # View has bindings but no DataContext AND no convention-matched VM
+        if has_bindings and not dc_type:
+            convention_found = convention_vm and convention_vm in vm_by_class
+            if not convention_found:
+                issue_id += 1
+                issues.append({
+                    "id": f"ux-{issue_id:04d}",
+                    "type": "missing_datacontext",
+                    "severity": "warning",
+                    "project": project,
+                    "repo": repo,
+                    "file": file,
+                    "viewType": view_type,
+                    "message": f"View '{view_type or file}' has {len(view['bindings'])} bindings but no DataContext and no convention-matched ViewModel",
+                })
+
+        # Resolve the target VM (explicit DataContext or convention)
+        resolved_vm_name = dc_type
+        if not resolved_vm_name and convention_vm and convention_vm in vm_by_class:
+            resolved_vm_name = convention_vm
+
+        if resolved_vm_name:
+            referenced_vms.add(resolved_vm_name)
+
+        # Check for missing_viewmodel:
+        # DataContext references VM class that doesn't exist in scanned code
+        if dc_type and dc_type not in vm_by_class:
+            issue_id += 1
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "missing_viewmodel",
+                "severity": "error",
+                "project": project,
+                "repo": repo,
+                "file": file,
+                "viewType": view_type,
+                "className": dc_type,
+                "message": f"DataContext references '{dc_type}' but this ViewModel class was not found in scanned code",
+            })
+            continue  # Can't check bindings if VM doesn't exist
+
+        # Check for broken_binding:
+        # Binding path's first segment doesn't match any property on the resolved VM
+        if resolved_vm_name and resolved_vm_name in vm_by_class:
+            vm = vm_by_class[resolved_vm_name]
+            vm_props = {p["propertyName"] for p in vm.get("properties", [])}
+            for binding in view.get("bindings", []):
+                path = binding.get("path", "")
+                first_segment = path.split(".")[0] if path else ""
+                if first_segment and first_segment not in vm_props:
+                    issue_id += 1
+                    available = sorted(vm_props)[:10]
+                    issues.append({
+                        "id": f"ux-{issue_id:04d}",
+                        "type": "broken_binding",
+                        "severity": "error",
+                        "project": project,
+                        "repo": repo,
+                        "file": file,
+                        "viewType": view_type,
+                        "className": resolved_vm_name,
+                        "bindingPath": path,
+                        "line": binding.get("line"),
+                        "availableProperties": available,
+                        "message": f"Binding path '{path}' not found on '{resolved_vm_name}' (first segment '{first_segment}' has no matching property)",
+                    })
+
+    # Check for orphan_viewmodel:
+    # VM class not referenced by any XAML view (explicit or convention)
+    for vm_name, vm in vm_by_class.items():
+        if vm_name not in referenced_vms:
+            issue_id += 1
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "orphan_viewmodel",
+                "severity": "info",
+                "project": vm.get("project") or "",
+                "repo": vm.get("repo") or "",
+                "file": vm.get("file") or "",
+                "className": vm_name,
+                "message": f"ViewModel '{vm_name}' is not referenced by any XAML view (explicit DataContext or naming convention)",
+            })
+
+    # Check for mixed_patterns:
+    # Project uses >1 MVVM base class
+    for proj, bases in project_bases.items():
+        real_bases = bases - {"unknown"}
+        if len(real_bases) > 1:
+            issue_id += 1
+            pm = pm_by_name.get(proj, {})
+            issues.append({
+                "id": f"ux-{issue_id:04d}",
+                "type": "mixed_patterns",
+                "severity": "info",
+                "project": proj,
+                "repo": pm.get("repo", ""),
+                "file": "",
+                "baseClasses": sorted(real_bases),
+                "message": f"Project '{proj}' uses multiple MVVM base classes: {', '.join(sorted(real_bases))}",
+            })
+
+    # Build summary
+    by_type: dict[str, int] = {}
+    by_severity: dict[str, int] = {}
+    by_project: dict[str, int] = {}
+    for iss in issues:
+        by_type[iss["type"]] = by_type.get(iss["type"], 0) + 1
+        by_severity[iss["severity"]] = by_severity.get(iss["severity"], 0) + 1
+        by_project[iss["project"]] = by_project.get(iss["project"], 0) + 1
+
+    return {
+        "issues": issues,
+        "summary": {
+            "totalIssues": len(issues),
+            "byType": by_type,
+            "bySeverity": by_severity,
+            "byProject": by_project,
+        },
+    }
+
+
 # ─── Data flow graph builder ─────────────────────────────────────────
 
 def build_data_flow_graph(findings: list[dict], project_meta: list[dict]) -> dict:
@@ -2154,6 +2347,107 @@ def build_graph(
     }
 
 
+# ─── NuGet health analysis ────────────────────────────────────────────
+
+def build_nuget_health(
+    package_deps: list[dict],
+    project_meta: list[dict],
+    repos: list[dict],
+) -> dict:
+    """Analyze NuGet package health: version conflicts, legacy formats, frameworks, CPM status.
+
+    Returns dict with versionConflicts, legacyFormatProjects, targetFrameworks,
+    mixedFrameworkRepos, centralPackageManagement, and summary.
+    """
+    # Build package → {versions: {version: [projects]}, consumers: set}
+    pkg_versions: dict[str, dict[str, list[str]]] = {}
+    for pd in package_deps:
+        pkg = pd["package"]
+        ver = pd["version"] or "unspecified"
+        proj = f"{pd['repo']}/{pd['project']}"
+        pkg_versions.setdefault(pkg, {}).setdefault(ver, []).append(proj)
+
+    # Version conflicts: packages with >1 version
+    version_conflicts = []
+    for pkg, versions in sorted(pkg_versions.items()):
+        if len(versions) > 1:
+            proj_count = sum(len(projs) for projs in versions.values())
+            version_conflicts.append({
+                "package": pkg,
+                "versions": versions,
+                "versionCount": len(versions),
+                "projectCount": proj_count,
+            })
+    version_conflicts.sort(key=lambda x: -x["projectCount"])
+
+    # Legacy format projects (packages.config)
+    legacy_projects = []
+    for pm in project_meta:
+        if pm.get("nugetFormat") == "packages.config":
+            legacy_projects.append({
+                "project": pm["project"],
+                "repo": pm.get("repo", ""),
+                "path": pm.get("path", ""),
+            })
+
+    # Target frameworks
+    target_frameworks: dict[str, list[str]] = {}
+    for pm in project_meta:
+        tf = pm.get("targetFramework", "unknown")
+        if tf == "unknown":
+            continue
+        # Handle multi-targeting (split on ';')
+        for fw in tf.split(";"):
+            fw = fw.strip()
+            if fw:
+                target_frameworks.setdefault(fw, []).append(pm["project"])
+
+    # Mixed framework repos
+    repo_frameworks: dict[str, set[str]] = {}
+    for pm in project_meta:
+        tf = pm.get("targetFramework", "unknown")
+        if tf == "unknown":
+            continue
+        repo = pm.get("repo", "")
+        if repo:
+            for fw in tf.split(";"):
+                fw = fw.strip()
+                if fw:
+                    repo_frameworks.setdefault(repo, set()).add(fw)
+    mixed_framework_repos = {
+        repo: sorted(fws)
+        for repo, fws in repo_frameworks.items()
+        if len(fws) > 1
+    }
+
+    # Central Package Management detection
+    cpm_status: dict[str, bool] = {}
+    for repo in repos:
+        dpp_path = os.path.join(repo["root"], "Directory.Packages.props")
+        dpp_content = safe_read_text(dpp_path)
+        if dpp_content:
+            has_cpm = bool(re.search(r'<ManagePackageVersionsCentrally>\s*true\s*</ManagePackageVersionsCentrally>',
+                                     dpp_content, re.IGNORECASE))
+            cpm_status[repo["name"]] = has_cpm
+        else:
+            cpm_status[repo["name"]] = False
+
+    return {
+        "versionConflicts": version_conflicts,
+        "legacyFormatProjects": legacy_projects,
+        "targetFrameworks": {fw: projs for fw, projs in sorted(target_frameworks.items())},
+        "mixedFrameworkRepos": mixed_framework_repos,
+        "centralPackageManagement": cpm_status,
+        "summary": {
+            "totalPackages": len(pkg_versions),
+            "conflictCount": len(version_conflicts),
+            "legacyCount": len(legacy_projects),
+            "frameworkCount": len(target_frameworks),
+            "cpmRepos": sum(1 for v in cpm_status.values() if v),
+        },
+    }
+
+
 # ─── Write CSV ───────────────────────────────────────────────────────
 
 def write_csv(filepath: str, rows: list[dict], columns: list[str]):
@@ -2350,6 +2644,15 @@ def main():
             print(f"    {level}: {count}")
     print(f"  Wrote field-traceability.json")
 
+    # Step 2f: Detect UX inconsistencies
+    ux_issues = detect_ux_inconsistencies(xaml_views, vm_data, entity_data, all_project_meta)
+    Path(os.path.join(OUT_DIR, "ux-inconsistencies.json")).write_text(
+        json.dumps(ux_issues, indent=2), encoding="utf-8"
+    )
+    ux_sum = ux_issues.get("summary", {})
+    print(f"  UX inconsistencies: {ux_sum.get('totalIssues', 0)} (errors: {ux_sum.get('bySeverity', {}).get('error', 0)}, warnings: {ux_sum.get('bySeverity', {}).get('warning', 0)}, info: {ux_sum.get('bySeverity', {}).get('info', 0)})")
+    print(f"  Wrote ux-inconsistencies.json")
+
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")
     configs = extract_configs(SCAN_ROOT, repos)
@@ -2380,6 +2683,20 @@ def main():
     print(f"  Categories: {json.dumps(graph['summary']['categories'])}")
     if graph["summary"]["totalCrossRepoRefs"] > 0:
         print(f"  Cross-repo references: {graph['summary']['totalCrossRepoRefs']}")
+
+    # Step 5: NuGet health analysis
+    print("\nStep 5: Analyzing NuGet health...")
+    nuget_health = build_nuget_health(all_package_deps, all_project_meta, repos)
+    Path(os.path.join(OUT_DIR, "nuget-health.json")).write_text(
+        json.dumps(nuget_health, indent=2), encoding="utf-8"
+    )
+    nh_sum = nuget_health["summary"]
+    print(f"  Total packages: {nh_sum['totalPackages']}")
+    print(f"  Version conflicts: {nh_sum['conflictCount']}")
+    print(f"  Legacy (packages.config): {nh_sum['legacyCount']}")
+    print(f"  Target frameworks: {nh_sum['frameworkCount']}")
+    print(f"  CPM repos: {nh_sum['cpmRepos']}")
+    print(f"  Wrote nuget-health.json")
 
     print("\n=== Analysis complete ===\n")
 
