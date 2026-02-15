@@ -38,16 +38,13 @@ def main():
             print(f"ERROR: {script} failed (exit {result.returncode})")
             sys.exit(1)
 
-    # Steps 1 & 2 scan source — run in parallel
-    print("--- Step 1+2: Scanning projects and smells (parallel) ---")
-    p1 = subprocess.Popen([sys.executable, os.path.join(SCRIPT_DIR, "1_scan_projects.py"), repos, out])
-    p2 = subprocess.Popen([sys.executable, os.path.join(SCRIPT_DIR, "2_scan_smells.py"), repos, out])
-    rc1 = p1.wait()
-    rc2 = p2.wait()
-    if rc1 != 0:
-        print("ERROR: 1_scan_projects.py failed"); sys.exit(1)
-    if rc2 != 0:
-        print("ERROR: 2_scan_smells.py failed"); sys.exit(1)
+    # Step 1: Scan projects (must complete first — produces project-meta.json, test-projects.json)
+    print("--- Step 1: Scanning projects ---")
+    run("1_scan_projects.py", repos, out)
+
+    # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
+    print("\n--- Step 2: Scanning smells ---")
+    run("2_scan_smells.py", repos, out)
 
     # Run language scanners (auto-discovered plugins)
     print("\n--- Language scanners ---")
