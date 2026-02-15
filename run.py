@@ -1,17 +1,102 @@
 #!/usr/bin/env python3
 """Master runner: scans, diagrams, docs, web server."""
 
+import html as html_mod
 import http.server
 import json
 import os
 import subprocess
 import sys
 import threading
+from urllib.parse import urlparse, parse_qs
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Ensure scanner package is importable
 sys.path.insert(0, SCRIPT_DIR)
+
+
+class ViewerHandler(http.server.SimpleHTTPRequestHandler):
+    """HTTP handler that adds a /_view endpoint for source file viewing."""
+
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        if parsed.path == "/_view":
+            params = parse_qs(parsed.query)
+            file_path = params.get("path", [""])[0]
+            line = int(params.get("line", ["0"])[0])
+            self._serve_file_view(file_path, line)
+            return
+        super().do_GET()
+
+    def _serve_file_view(self, file_path: str, highlight_line: int):
+        """Render a source file as HTML with line numbers and highlighting."""
+        if not file_path:
+            self.send_error(400, "Missing path parameter")
+            return
+        real_path = os.path.realpath(file_path)
+        if not os.path.isfile(real_path):
+            self.send_error(404, f"File not found: {file_path}")
+            return
+        try:
+            with open(real_path, "r", encoding="utf-8", errors="replace") as f:
+                content = f.read()
+        except OSError as exc:
+            self.send_error(500, str(exc))
+            return
+
+        lines = content.split("\n")
+        html_lines = []
+        for i, line_text in enumerate(lines, 1):
+            esc = html_mod.escape(line_text).replace("\t", "    ")
+            cls = ' class="hl"' if i == highlight_line else ""
+            html_lines.append(
+                f'<tr{cls} id="L{i}"><td class="ln">{i}</td>'
+                f'<td class="code"><pre>{esc}</pre></td></tr>'
+            )
+
+        fname = html_mod.escape(os.path.basename(real_path))
+        fpath = html_mod.escape(real_path)
+        line_note = f" &mdash; line {highlight_line}" if highlight_line else ""
+        scroll = (
+            f'<script>document.getElementById("L{highlight_line}")'
+            f'.scrollIntoView({{block:"center"}});</script>'
+            if highlight_line
+            else ""
+        )
+
+        page = (
+            "<!DOCTYPE html>\n"
+            f"<html><head><meta charset='utf-8'><title>{fname}</title><style>\n"
+            "body{margin:0;font-family:Consolas,'Courier New',monospace;"
+            "background:#1e1e1e;color:#d4d4d4;font-size:13px;}\n"
+            ".hdr{background:#252526;padding:0.5rem 1rem;border-bottom:1px solid #3c3c3c;"
+            "font-size:0.85rem;position:sticky;top:0;z-index:1;}\n"
+            ".hdr .p{color:#569cd6;}\n"
+            "table{border-collapse:collapse;width:100%;}\n"
+            ".ln{padding:0 0.8rem;text-align:right;color:#858585;user-select:none;"
+            "border-right:1px solid #3c3c3c;vertical-align:top;min-width:3rem;}\n"
+            ".code{padding:0 0 0 0.8rem;white-space:pre;}\n"
+            ".code pre{margin:0;}\n"
+            "tr.hl{background:rgba(255,255,0,0.15);}\n"
+            "tr.hl .ln{color:#fff;font-weight:bold;}\n"
+            "</style></head><body>\n"
+            f'<div class="hdr"><span class="p">{fpath}</span>{line_note}</div>\n'
+            f"<table>{''.join(html_lines)}</table>\n"
+            f"{scroll}\n"
+            "</body></html>"
+        )
+
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(page.encode("utf-8"))
+
+    def log_message(self, fmt, *args):
+        # Suppress noisy per-request logs except errors
+        if args and str(args[0]).startswith("2"):
+            return
+        super().log_message(fmt, *args)
 
 
 def main():
@@ -131,8 +216,7 @@ def main():
     print(f"\n=== Done. Opening viewer at http://localhost:{port}/viewer.html ===\n")
 
     os.chdir(out)
-    handler = http.server.SimpleHTTPRequestHandler
-    server = http.server.HTTPServer(("", port), handler)
+    server = http.server.HTTPServer(("", port), ViewerHandler)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
