@@ -3450,6 +3450,34 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
                 md += f"- {st['smell']}: {st['count']}\n"
             md += "\n"
 
+    # UX Consistency Summary
+    ux_sum = ux_inconsistencies.get("summary", {})
+    if ux_sum.get("totalIssues"):
+        md += "\n## UX Consistency Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Total Issues | {ux_sum.get('totalIssues', 0)} |\n"
+        by_sev = ux_sum.get("bySeverity", {})
+        md += f"| Errors | {by_sev.get('error', 0)} |\n"
+        md += f"| Warnings | {by_sev.get('warning', 0)} |\n"
+        md += f"| Info | {by_sev.get('info', 0)} |\n"
+        by_type = ux_sum.get("byType", {})
+        if by_type:
+            md += "\n**Top Issue Types:**\n\n"
+            for typ, cnt in sorted(by_type.items(), key=lambda x: -x[1])[:10]:
+                md += f"- {typ}: {cnt}\n"
+            md += "\n"
+
+    # NuGet Health Summary
+    nh_sum = nuget_health.get("summary", {})
+    if nh_sum:
+        md += "\n## NuGet Health Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Version Conflicts | {nh_sum.get('conflictCount', 0)} |\n"
+        md += f"| Legacy Projects | {nh_sum.get('legacyCount', 0)} |\n"
+        md += f"| Frameworks | {nh_sum.get('frameworkCount', 0)} |\n"
+        md += f"| Total Packages | {nh_sum.get('totalPackages', 0)} |\n"
+        md += f"| CPM Repos | {nh_sum.get('cpmRepos', 0)} |\n\n"
+
     md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
     Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
 
@@ -3551,6 +3579,78 @@ def _write_project_context(ai_dir: str, pm: dict, metrics_by_name: dict[str, dic
         top_smells = rp.get("top_smells", [])
         if top_smells:
             md += f"| Top Smells | {', '.join(top_smells[:5])} |\n"
+        md += "\n"
+
+        # Smell Locations (per-file details, capped at 30)
+        rp_files = rp.get("files", [])
+        smell_entries = []
+        for rf in rp_files:
+            for sm in rf.get("smells", []):
+                smell_entries.append((rf.get("file", ""), sm))
+                if len(smell_entries) >= 30:
+                    break
+            if len(smell_entries) >= 30:
+                break
+        if smell_entries:
+            md += "### Smell Locations\n\n"
+            for sf, sm in smell_entries:
+                fname = os.path.basename(sf) if sf else "unknown"
+                line = sm.get("line", "?")
+                stype = sm.get("type", "unknown")
+                ctx = (sm.get("context") or "")[:80]
+                md += f"- `{fname}:{line}` — {stype}: {ctx}\n"
+            total_smells_in_files = sum(len(rf.get("smells", [])) for rf in rp_files)
+            if total_smells_in_files > 30:
+                md += f"- *... +{total_smells_in_files - 30} more smell locations*\n"
+            md += "\n"
+
+    # UX Consistency Issues for this project
+    project_ux_issues = [i for i in ux_inconsistencies.get("issues", []) if i.get("project") == project]
+    if project_ux_issues:
+        md += "## UX Consistency Issues\n\n"
+        for iss in project_ux_issues[:20]:
+            sev = iss.get("severity", "info")
+            iss_type = iss.get("type", "")
+            msg = iss.get("message", "")
+            iss_file = iss.get("file", "")
+            md += f"- [{sev}] {iss_type}: {msg}"
+            if iss_file:
+                md += f" — {iss_file}"
+            md += "\n"
+            if iss.get("availableProperties"):
+                md += f"  - Available properties: {', '.join(iss['availableProperties'][:10])}\n"
+        if len(project_ux_issues) > 20:
+            md += f"- *... +{len(project_ux_issues) - 20} more issues*\n"
+        md += "\n"
+
+    # NuGet Health for this project
+    nh_project_data = {}
+    for fw_name, fw_projs in nuget_health.get("targetFrameworks", {}).items():
+        if project in fw_projs:
+            nh_project_data["targetFramework"] = fw_name
+            break
+    # Check legacy format
+    for lp in nuget_health.get("legacyFormatProjects", []):
+        if lp.get("project") == project:
+            nh_project_data["nugetFormat"] = "packages.config (legacy)"
+            break
+    else:
+        nh_project_data["nugetFormat"] = "PackageReference"
+    # Check version conflicts involving this project
+    project_conflicts = []
+    for vc in nuget_health.get("versionConflicts", []):
+        for ver, projs in vc.get("versions", {}).items():
+            if project in projs:
+                project_conflicts.append(f"{vc['package']} ({ver})")
+                break
+    if nh_project_data.get("targetFramework") or project_conflicts:
+        md += "## NuGet Health\n\n"
+        md += "| Property | Value |\n|----------|-------|\n"
+        if nh_project_data.get("targetFramework"):
+            md += f"| Target Framework | {nh_project_data['targetFramework']} |\n"
+        md += f"| NuGet Format | {nh_project_data.get('nugetFormat', 'PackageReference')} |\n"
+        if project_conflicts:
+            md += f"\n**Version Conflicts:** {', '.join(project_conflicts)}\n"
         md += "\n"
 
     # Related projects: shared data nodes
