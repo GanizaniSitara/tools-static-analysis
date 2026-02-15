@@ -879,9 +879,8 @@ def generate_viewer_html() -> str:
         for cs in conn_strings:
             cs_file = cs['file']
             cs_repo = cs.get('repo', '')
-            cs_file_esc = _esc_html(cs_file).replace("'", "\\'")
             if cs_file:
-                file_cell = f'<a href="#" onclick="return handleFileClick(event,\'{cs_file_esc}\',0)" class="mono" style="color:#005587;cursor:pointer;" title="Click to copy path">{_esc_html(cs_file)}</a>'
+                file_cell = f'<a href="#" class="file-link mono" data-path="{_esc_html(cs_file)}" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">{_esc_html(cs_file)}</a>'
             else:
                 file_cell = _esc_html(cs_file)
             rows += f"""            <tr>
@@ -1167,8 +1166,7 @@ def generate_viewer_html() -> str:
             cats = ", ".join(sorted(info.get("categories", {}).keys()))
             root_path_raw = rd.get("root", "")
             root_path = _esc_html(root_path_raw)
-            root_path_esc = root_path.replace("'", "\\'")
-            root_path_link = f'<a href="#" onclick="copyPathToClipboard(\'{root_path_esc}\'); return false;" class="mono" style="color:#005587;cursor:pointer;" title="Click to copy path">{root_path}</a>' if root_path_raw else root_path
+            root_path_link = f'<a href="#" class="file-link mono" data-path="{root_path}" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">{root_path}</a>' if root_path_raw else root_path
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
@@ -2716,17 +2714,23 @@ function showToast(msg, isLong) {{
 function handleFileClick(e, filePath, line) {{
   var fullPath = _resolveFromRoots(filePath);
   if (window.location.protocol === 'file:') {{
-    // Direct file:// open works when page is opened from filesystem
     var p = fullPath;
     if (p.charAt(0) !== '/') p = '/' + p;
     window.open('file://' + p, '_blank');
   }} else {{
-    // Served over http — copy to clipboard instead
     copyPathToClipboard(fullPath, line);
   }}
   e.preventDefault();
   return false;
 }}
+// Delegated click handler for all .file-link elements (uses data attributes, no inline JS)
+document.addEventListener('click', function(e) {{
+  var link = e.target.closest('.file-link');
+  if (!link) return;
+  var path = link.getAttribute('data-path');
+  var line = parseInt(link.getAttribute('data-line') || '0', 10);
+  if (path) handleFileClick(e, path, line);
+}});
 
 function parseCategoryLabel(label) {{
   var catMap = window._categoryMap || {{}};
@@ -3011,7 +3015,7 @@ function initSortableTable(table) {{
         '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
-        (function() {{ var fp = p.globalPath || p.path || ''; return fp ? '<td class="mono"><a href="#" onclick="return handleFileClick(event,\'' + escHtml(fp).replace(/'/g, "\\\\'") + '\',0)" style="color:#005587;cursor:pointer;" title="Click to copy path">' + escHtml(fp) + '</a></td>' : '<td class="mono"></td>'; }})();
+        (function() {{ var fp = p.globalPath || p.path || ''; return fp ? '<td class="mono"><a href="#" class="file-link" data-path="' + escHtml(fp) + '" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">' + escHtml(fp) + '</a></td>' : '<td class="mono"></td>'; }})();
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
@@ -3148,7 +3152,7 @@ function initSortableTable(table) {{
 
     function fileLink(filePath, line, style) {{
       var display = escHtml(filePath || '') + (line ? ':' + line : '');
-      if (filePath) return '<a href="#" onclick="return handleFileClick(event,\'' + escHtml(filePath).replace(/'/g, "\\\\'") + '\',' + (line || 0) + ')" class="mono" style="cursor:pointer;' + (style || 'color:#005587;font-size:0.68rem;') + '" title="Click to copy path">' + display + '</a>';
+      if (filePath) return '<a href="#" class="file-link mono" data-path="' + escHtml(filePath) + '" data-line="' + (line || 0) + '" style="cursor:pointer;' + (style || 'color:#005587;font-size:0.68rem;') + '" title="Click to copy path">' + display + '</a>';
       return '<span class="mono" style="' + (style || 'font-size:0.68rem;color:#53565A;') + '">' + display + '</span>';
     }}
 
@@ -3163,7 +3167,7 @@ function initSortableTable(table) {{
         var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
           var sc = smellColors[s.type] || '#53565A';
-          var fileLink = fPath ? '<a href="#" onclick="return handleFileClick(event,\'' + escHtml(fPath).replace(/'/g, "\\\\'") + '\',' + (s.line || 0) + ')" style="color:#005587;cursor:pointer;" title="' + escHtml(fPath) + '">' + escHtml(fname) + '</a>' : escHtml(fname);
+          var fileLink = fPath ? '<a href="#" class="file-link" data-path="' + escHtml(fPath) + '" data-line="' + (s.line || 0) + '" style="color:#005587;cursor:pointer;" title="' + escHtml(fPath) + '">' + escHtml(fname) + '</a>' : escHtml(fname);
           h += '<tr style="border-bottom:1px solid #F5F5F5;">';
           h += '<td style="padding:0.25rem 0.5rem;" class="mono">' + fileLink + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
