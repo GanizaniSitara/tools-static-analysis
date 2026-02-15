@@ -879,9 +879,9 @@ def generate_viewer_html() -> str:
         for cs in conn_strings:
             cs_file = cs['file']
             cs_repo = cs.get('repo', '')
-            cs_uri = _resolve_file_uri(cs_file, cs_repo, repos_root_lookup)
-            if cs_uri:
-                file_cell = f'<a href="{_esc_html(cs_uri)}" target="_blank" class="mono" style="color:#005587;">{_esc_html(cs_file)}</a>'
+            cs_file_esc = _esc_html(cs_file).replace("'", "\\'")
+            if cs_file:
+                file_cell = f'<a href="#" onclick="return handleFileClick(event,\'{cs_file_esc}\',0)" class="mono" style="color:#005587;cursor:pointer;" title="Click to copy path">{_esc_html(cs_file)}</a>'
             else:
                 file_cell = _esc_html(cs_file)
             rows += f"""            <tr>
@@ -1167,7 +1167,8 @@ def generate_viewer_html() -> str:
             cats = ", ".join(sorted(info.get("categories", {}).keys()))
             root_path_raw = rd.get("root", "")
             root_path = _esc_html(root_path_raw)
-            root_path_link = f'<a href="{_file_uri(root_path_raw)}" target="_blank" class="mono" style="color:#005587;">{root_path}</a>' if root_path_raw else root_path
+            root_path_esc = root_path.replace("'", "\\'")
+            root_path_link = f'<a href="#" onclick="copyPathToClipboard(\'{root_path_esc}\'); return false;" class="mono" style="color:#005587;cursor:pointer;" title="Click to copy path">{root_path}</a>' if root_path_raw else root_path
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
@@ -2669,6 +2670,64 @@ function escHtmlGlobal(s) {{
   return d.innerHTML;
 }}
 
+// ── File path resolution and copy-to-clipboard ──
+function _resolveFilePath(repoRoot, relFile) {{
+  if (!repoRoot || !relFile) return '';
+  var rf = relFile.replace(/\\\\/g, '/');
+  var rr = repoRoot.replace(/\\\\/g, '/');
+  var repoTail = rr.split('/').pop();
+  if (repoTail && rf.indexOf(repoTail + '/') === 0) {{
+    rf = rf.substring(repoTail.length + 1);
+  }}
+  return rr + '/' + rf;
+}}
+function _resolveFromRoots(filePath) {{
+  if (!filePath) return '';
+  var fp = filePath.replace(/\\\\/g, '/');
+  var roots = window._repoRoots || {{}};
+  var firstSeg = fp.split('/')[0];
+  if (roots[firstSeg]) return _resolveFilePath(roots[firstSeg], fp);
+  for (var rn in roots) {{
+    if (roots.hasOwnProperty(rn)) return _resolveFilePath(roots[rn], fp);
+  }}
+  return fp;
+}}
+function copyPathToClipboard(fullPath, line) {{
+  var text = fullPath + (line ? ':' + line : '');
+  navigator.clipboard.writeText(text).then(function() {{
+    showToast('Copied: ' + text);
+  }}).catch(function() {{
+    showToast(text, true);
+  }});
+}}
+function showToast(msg, isLong) {{
+  var t = document.getElementById('pathToast');
+  if (!t) {{
+    t = document.createElement('div');
+    t.id = 'pathToast';
+    t.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#022D5E;color:#fff;padding:0.5rem 1.2rem;border-radius:8px;font-size:0.82rem;font-family:monospace;z-index:10000;opacity:0;transition:opacity 0.3s;pointer-events:none;max-width:80vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    document.body.appendChild(t);
+  }}
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
+}}
+function handleFileClick(e, filePath, line) {{
+  var fullPath = _resolveFromRoots(filePath);
+  if (window.location.protocol === 'file:') {{
+    // Direct file:// open works when page is opened from filesystem
+    var p = fullPath;
+    if (p.charAt(0) !== '/') p = '/' + p;
+    window.open('file://' + p, '_blank');
+  }} else {{
+    // Served over http — copy to clipboard instead
+    copyPathToClipboard(fullPath, line);
+  }}
+  e.preventDefault();
+  return false;
+}}
+
 function parseCategoryLabel(label) {{
   var catMap = window._categoryMap || {{}};
   if (catMap[label]) return catMap[label];
@@ -2952,7 +3011,7 @@ function initSortableTable(table) {{
         '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
-        (function() {{ var fp = p.globalPath || p.path || ''; var u = fileUri(repoRoots[p.repo || ''] || '', fp); return u ? '<td class="mono"><a href="' + escHtml(u) + '" target="_blank" style="color:#005587;" title="Open in filesystem">' + escHtml(fp) + '</a></td>' : '<td class="mono">' + escHtml(fp) + '</td>'; }})();
+        (function() {{ var fp = p.globalPath || p.path || ''; return fp ? '<td class="mono"><a href="#" onclick="return handleFileClick(event,\'' + escHtml(fp).replace(/'/g, "\\\\'") + '\',0)" style="color:#005587;cursor:pointer;" title="Click to copy path">' + escHtml(fp) + '</a></td>' : '<td class="mono"></td>'; }})();
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
@@ -3087,38 +3146,9 @@ function initSortableTable(table) {{
       magic_numbers:'#53565A', empty_catch:'#D0002B'
     }};
 
-    function fileUri(repoRoot, relFile) {{
-      if (!repoRoot || !relFile) return '';
-      var rf = relFile.replace(/\\\\/g, '/');
-      var rr = repoRoot.replace(/\\\\/g, '/');
-      // Strip repo-name prefix from relFile if it duplicates the repo root tail
-      // e.g. repoRoot="/home/user/eShop/src", relFile="src/Foo/Bar.cs" → "Foo/Bar.cs"
-      var repoTail = rr.split('/').pop();
-      if (repoTail && rf.indexOf(repoTail + '/') === 0) {{
-        rf = rf.substring(repoTail.length + 1);
-      }}
-      var p = rr + '/' + rf;
-      if (p.charAt(0) !== '/') p = '/' + p;
-      return 'file://' + p;
-    }}
-    // Resolve file:// URI by auto-detecting repo from path prefix
-    function resolveFileUri(filePath) {{
-      if (!filePath) return '';
-      var fp = filePath.replace(/\\\\/g, '/');
-      var roots = window._repoRoots || {{}};
-      // Try matching first path segment to a repo name
-      var firstSeg = fp.split('/')[0];
-      if (roots[firstSeg]) return fileUri(roots[firstSeg], fp);
-      // Try all repo roots
-      for (var rn in roots) {{
-        if (roots.hasOwnProperty(rn)) return fileUri(roots[rn], fp);
-      }}
-      return '';
-    }}
     function fileLink(filePath, line, style) {{
-      var uri = resolveFileUri(filePath);
       var display = escHtml(filePath || '') + (line ? ':' + line : '');
-      if (uri) return '<a href="' + escHtml(uri) + '" target="_blank" class="mono" style="' + (style || 'color:#005587;font-size:0.68rem;') + '">' + display + '</a>';
+      if (filePath) return '<a href="#" onclick="return handleFileClick(event,\'' + escHtml(filePath).replace(/'/g, "\\\\'") + '\',' + (line || 0) + ')" class="mono" style="cursor:pointer;' + (style || 'color:#005587;font-size:0.68rem;') + '" title="Click to copy path">' + display + '</a>';
       return '<span class="mono" style="' + (style || 'font-size:0.68rem;color:#53565A;') + '">' + display + '</span>';
     }}
 
@@ -3130,10 +3160,10 @@ function initSortableTable(table) {{
       h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
       files.forEach(function(f) {{
         var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
-        var uri = fileUri(root, f.file || '');
+        var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
           var sc = smellColors[s.type] || '#53565A';
-          var fileLink = uri ? '<a href="' + escHtml(uri) + '" target="_blank" style="color:#005587;" title="' + escHtml(f.file || '') + '">' + escHtml(fname) + '</a>' : escHtml(fname);
+          var fileLink = fPath ? '<a href="#" onclick="return handleFileClick(event,\'' + escHtml(fPath).replace(/'/g, "\\\\'") + '\',' + (s.line || 0) + ')" style="color:#005587;cursor:pointer;" title="' + escHtml(fPath) + '">' + escHtml(fname) + '</a>' : escHtml(fname);
           h += '<tr style="border-bottom:1px solid #F5F5F5;">';
           h += '<td style="padding:0.25rem 0.5rem;" class="mono">' + fileLink + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
