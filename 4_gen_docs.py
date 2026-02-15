@@ -6,6 +6,7 @@ Reads analysis outputs and generates structured markdown documentation.
 Supports single-repo and multi-repo modes.
 """
 
+import glob
 import json
 import os
 import re
@@ -52,6 +53,17 @@ refactoring_data: dict = _load_json(os.path.join(OUT_DIR, "refactoring-targets.j
 ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.json"), {})
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
+
+# Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
+language_data: dict[str, dict] = {}
+for _lf in glob.glob(os.path.join(OUT_DIR, "*-projects.json")):
+    _basename = os.path.basename(_lf)
+    if _basename in ("project-meta.json", "test-projects.json"):
+        continue
+    _lang_name = _basename.replace("-projects.json", "")
+    _ld = _load_json(_lf, {})
+    if _ld.get("projects"):
+        language_data[_lang_name] = _ld
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
@@ -733,6 +745,10 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("nugethealth", "NuGet Health"))
     if test_data.get("testProjects"):
         all_tab_ids.append(("tests", "Tests"))
+    # Dynamic language tabs
+    for _lang_key, _lang_d in sorted(language_data.items()):
+        _display = _lang_d.get("displayName", _lang_key.title())
+        all_tab_ids.append((_lang_key, _display))
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -1603,6 +1619,89 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── Language panels (dynamic, from scanner plugins) ──
+    language_panels = ""
+    for _lk, _ld in sorted(language_data.items()):
+        _ldisp = _ld.get("displayName", _lk.title())
+        _lprojs = _ld.get("projects", [])
+        _lsum = _ld.get("summary", {})
+        _lfiles = _lsum.get("totalFiles", 0)
+        _llines = _lsum.get("totalLines", 0)
+        _lfws = _lsum.get("frameworks", {})
+        _lcats = _lsum.get("categories", {})
+
+        # Framework badges
+        _fw_badge_html = ""
+        _fw_colors = {"Django": "#0C4B33", "Flask": "#000000", "FastAPI": "#009485",
+                      "pytest": "#009639", "Celery": "#37822E", "Airflow": "#017CEE"}
+        for fw, cnt in sorted(_lfws.items(), key=lambda x: -x[1]):
+            _fwc = _fw_colors.get(fw, "#005587")
+            _fw_badge_html += f'<span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:12px;font-size:0.78rem;font-weight:600;background:rgba({_hex_to_rgb(_fwc)},0.15);color:{_fwc};margin:0.15rem;">{_esc_html(fw)}: {cnt}</span>\n'
+
+        # Table rows
+        _lang_rows = ""
+        for _lp in sorted(_lprojs, key=lambda p: -(p.get("lineCount", 0))):
+            _dep_list = ", ".join(_lp.get("dependencies", [])[:8])
+            if len(_lp.get("dependencies", [])) > 8:
+                _dep_list += f" +{len(_lp['dependencies']) - 8} more"
+            _cat_lower = (_lp.get("category") or "").lower()
+            _tag_class = f"tag-{_cat_lower}" if _cat_lower else "tag-unclassified"
+            _lang_rows += f"""            <tr>
+              <td><strong>{_esc_html(_lp.get('name', ''))}</strong></td>
+              <td>{_esc_html(_lp.get('repo', ''))}</td>
+              <td><span class="tag {_tag_class}">{_esc_html(_lp.get('category', ''))}</span></td>
+              <td>{_esc_html(_lp.get('framework', '') or '—')}</td>
+              <td style="text-align:center">{_lp.get('fileCount', 0)}</td>
+              <td style="text-align:center">{_lp.get('lineCount', 0):,}</td>
+              <td style="font-size:0.8rem;"><details><summary style="cursor:pointer;font-size:0.8rem;">{len(_lp.get('dependencies', []))} deps</summary><div style="padding:0.3rem 0;font-size:0.78rem;">{_esc_html(_dep_list)}</div></details></td>
+              <td style="text-align:center">{'<span style="color:#009639">&#10003;</span>' if _lp.get('hasTests') else '<span style="color:#D0002B">&#10007;</span>'}</td>
+            </tr>
+"""
+
+        language_panels += f"""
+  <section class="tab-panel" id="panel-{_lk}">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> {_esc_html(_ldisp)} Projects ({len(_lprojs)})</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{len(_lprojs)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Files</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{_lfiles:,}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Lines</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_llines:,}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Frameworks</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.2rem;margin-top:0.2rem;">{_fw_badge_html or '<span style="color:#53565A;">—</span>'}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="{_lk}Table">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Project name">Project</th>
+              <th data-sort-type="text" title="Repository">Repo</th>
+              <th data-sort-type="text" title="Project category">Category</th>
+              <th data-sort-type="text" title="Detected framework">Framework</th>
+              <th data-sort-type="num" title="Number of source files">Files</th>
+              <th data-sort-type="num" title="Lines of code">Lines</th>
+              <th data-sort-type="num" title="Dependencies">Deps</th>
+              <th data-sort-type="text" title="Has test suite">Tests</th>
+            </tr>
+          </thead>
+          <tbody>
+{_lang_rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1877,6 +1976,8 @@ def generate_viewer_html() -> str:
 
     <h3 style="color:#005587;margin:1rem 0 0.5rem;">Other Tabs</h3>
     <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Tests</strong> — test project detection with method counts, framework identification, and coverage mapping.<br>
+      <strong>Language tabs</strong> (Python, etc.) — auto-detected non-.NET projects with framework detection, dependency parsing, and line counts.<br>
       <strong>Repos</strong> — repository summary with project counts and categories.<br>
       <strong>All Projects</strong> — searchable/sortable table of every .csproj project found.
     </p>
@@ -1921,6 +2022,7 @@ def generate_viewer_html() -> str:
 {hotspots_panel}
 {nugethealth_panel}
 {tests_panel}
+{language_panels}
 {repos_panel}
 {all_projects_panel}
 </main>
@@ -3224,6 +3326,9 @@ function initSortableTable(table) {{
   // ── Tests table sorting init ──
   initSortableTable(document.getElementById('testsTable'));
 
+  // ── Language panel table sorting init ──
+  {chr(10).join(f"  initSortableTable(document.getElementById('{lk}Table'));" for lk in sorted(language_data.keys()))}
+
   // hexToRgb helper for UX badges
   function hexToRgb(hex) {{
     var h = hex.replace('#', '');
@@ -3707,6 +3812,23 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
         md += f"| Test Classes | {t_sum.get('totalTestClasses', 0)} |\n"
         md += f"| Coverage Ratio | {t_sum.get('coverageRatio', '0/0')} |\n"
         md += f"| Uncovered Projects | {t_sum.get('uncoveredProjects', 0)} |\n\n"
+
+    # Language scanner summaries
+    for _lk, _ld in sorted(language_data.items()):
+        _ldisp = _ld.get("displayName", _lk.title())
+        _lsum = _ld.get("summary", {})
+        md += f"\n## {_ldisp} Projects Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Projects | {_lsum.get('totalProjects', 0)} |\n"
+        md += f"| Files | {_lsum.get('totalFiles', 0)} |\n"
+        md += f"| Lines | {_lsum.get('totalLines', 0)} |\n"
+        fws = _lsum.get("frameworks", {})
+        if fws:
+            md += f"| Frameworks | {', '.join(f'{fw}: {cnt}' for fw, cnt in sorted(fws.items(), key=lambda x: -x[1]))} |\n"
+        cats = _lsum.get("categories", {})
+        if cats:
+            md += f"| Categories | {', '.join(f'{cat}: {cnt}' for cat, cnt in sorted(cats.items(), key=lambda x: -x[1]))} |\n"
+        md += "\n"
 
     md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
     Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
