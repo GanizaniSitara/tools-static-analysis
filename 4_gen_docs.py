@@ -540,6 +540,20 @@ def _file_uri(path: str) -> str:
     return "file://" + p
 
 
+def _resolve_file_uri(rel_path: str, repo_name: str, repo_roots: dict[str, str]) -> str:
+    """Resolve a relative file path (possibly repo-prefixed) to a file:/// URI."""
+    root = repo_roots.get(repo_name, "")
+    if not root or not rel_path:
+        return ""
+    rp = rel_path.replace("\\", "/")
+    rr = root.replace("\\", "/")
+    # Strip repo-name prefix if it duplicates the repo root tail
+    repo_tail = rr.rstrip("/").rsplit("/", 1)[-1]
+    if repo_tail and rp.startswith(repo_tail + "/"):
+        rp = rp[len(repo_tail) + 1:]
+    return _file_uri(rr + "/" + rp)
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -693,7 +707,7 @@ def generate_viewer_html() -> str:
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
                                "context": (s.get("context") or "")[:100]} for s in smells]
             if trimmed_smells:
-                trimmed_files.append({"file": rf.get("file", ""),
+                trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
                                       "smells": trimmed_smells})
         if trimmed_files:
@@ -863,9 +877,16 @@ def generate_viewer_html() -> str:
     if conn_strings:
         rows = ""
         for cs in conn_strings:
+            cs_file = cs['file']
+            cs_repo = cs.get('repo', '')
+            cs_uri = _resolve_file_uri(cs_file, cs_repo, repos_root_lookup)
+            if cs_uri:
+                file_cell = f'<a href="{_esc_html(cs_uri)}" target="_blank" class="mono" style="color:#005587;">{_esc_html(cs_file)}</a>'
+            else:
+                file_cell = _esc_html(cs_file)
             rows += f"""            <tr>
-              <td class="mono">{_esc_html(cs['file'])}</td>
-              <td>{_esc_html(cs['repo'])}</td>
+              <td class="mono">{file_cell}</td>
+              <td>{_esc_html(cs_repo)}</td>
               <td>{_esc_html(cs['name'])}</td>
               <td class="mono">{_esc_html(cs['value'])}</td>
             </tr>
@@ -2931,7 +2952,7 @@ function initSortableTable(table) {{
         '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
-        '<td class="mono">' + escHtml(p.globalPath || p.path || '') + '</td>';
+        (function() {{ var fp = p.globalPath || p.path || ''; var u = fileUri(repoRoots[p.repo || ''] || '', fp); return u ? '<td class="mono"><a href="' + escHtml(u) + '" target="_blank" style="color:#005587;" title="Open in filesystem">' + escHtml(fp) + '</a></td>' : '<td class="mono">' + escHtml(fp) + '</td>'; }})();
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
@@ -3067,10 +3088,38 @@ function initSortableTable(table) {{
     }};
 
     function fileUri(repoRoot, relFile) {{
-      if (!repoRoot) return '';
-      var p = (repoRoot + '/' + relFile).replace(/\\\\/g, '/');
+      if (!repoRoot || !relFile) return '';
+      var rf = relFile.replace(/\\\\/g, '/');
+      var rr = repoRoot.replace(/\\\\/g, '/');
+      // Strip repo-name prefix from relFile if it duplicates the repo root tail
+      // e.g. repoRoot="/home/user/eShop/src", relFile="src/Foo/Bar.cs" → "Foo/Bar.cs"
+      var repoTail = rr.split('/').pop();
+      if (repoTail && rf.indexOf(repoTail + '/') === 0) {{
+        rf = rf.substring(repoTail.length + 1);
+      }}
+      var p = rr + '/' + rf;
       if (p.charAt(0) !== '/') p = '/' + p;
       return 'file://' + p;
+    }}
+    // Resolve file:// URI by auto-detecting repo from path prefix
+    function resolveFileUri(filePath) {{
+      if (!filePath) return '';
+      var fp = filePath.replace(/\\\\/g, '/');
+      var roots = window._repoRoots || {{}};
+      // Try matching first path segment to a repo name
+      var firstSeg = fp.split('/')[0];
+      if (roots[firstSeg]) return fileUri(roots[firstSeg], fp);
+      // Try all repo roots
+      for (var rn in roots) {{
+        if (roots.hasOwnProperty(rn)) return fileUri(roots[rn], fp);
+      }}
+      return '';
+    }}
+    function fileLink(filePath, line, style) {{
+      var uri = resolveFileUri(filePath);
+      var display = escHtml(filePath || '') + (line ? ':' + line : '');
+      if (uri) return '<a href="' + escHtml(uri) + '" target="_blank" class="mono" style="' + (style || 'color:#005587;font-size:0.68rem;') + '">' + display + '</a>';
+      return '<span class="mono" style="' + (style || 'font-size:0.68rem;color:#53565A;') + '">' + display + '</span>';
     }}
 
     function buildFileDetail(p) {{
@@ -3248,11 +3297,8 @@ function initSortableTable(table) {{
         h += '<span style="padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(issue.severity || '') + '</span></div>';
         h += '<div style="margin:0.4rem 0;font-size:0.88rem;">' + escHtml(issue.message || '') + '</div>';
         if (issue.file) {{
-          var fileUri = root ? 'file://' + (root + '/' + issue.file).replace(/\\\\/g, '/').replace(/^([^/])/, '/$1') : '';
           h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">File:</span> ';
-          if (fileUri) h += '<a href="' + escHtml(fileUri) + '" target="_blank" style="color:#005587;" class="mono">' + escHtml(issue.file) + '</a>';
-          else h += '<span class="mono">' + escHtml(issue.file) + '</span>';
-          if (issue.line) h += '<span class="mono">:' + issue.line + '</span>';
+          h += fileLink(issue.file, issue.line, 'color:#005587;font-size:0.85rem;');
           h += '</div>';
         }}
         if (issue.bindingPath) {{
@@ -3570,7 +3616,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#621244;text-transform:uppercase;">XAML View</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(xaml.viewType) + '</strong>';
       html += '<div class="mono" style="font-size:0.72rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(xaml.file || '') + ':' + (xaml.line || '') + '</div>';
+      html += '<div>' + fileLink(xaml.file, xaml.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3579,7 +3625,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#36749D;text-transform:uppercase;">ViewModel</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(vm.className) + '</strong>';
       html += '<div style="font-size:0.78rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(vm.file || '') + ':' + (vm.line || '') + '</div>';
+      html += '<div>' + fileLink(vm.file, vm.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3588,7 +3634,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#005587;text-transform:uppercase;">Entity</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(ent.className) + '</strong>';
       html += '<div style="font-size:0.78rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
-      html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(ent.file || '') + ':' + (ent.line || '') + '</div>';
+      html += '<div>' + fileLink(ent.file, ent.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3597,7 +3643,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#009639;text-transform:uppercase;">DB Column</div>';
       html += '<strong style="font-size:0.82rem;">' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
       html += '<div style="font-size:0.78rem;">Source: ' + escHtml(db.source || '') + '</div>';
-      if (db.file) html += '<div class="mono" style="font-size:0.68rem;color:#53565A;">' + escHtml(db.file) + ':' + (db.line || '') + '</div>';
+      if (db.file) html += '<div>' + fileLink(db.file, db.line) + '</div>';
       html += '</div>';
     }}
     html += '</div>';
