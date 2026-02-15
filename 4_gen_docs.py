@@ -51,6 +51,7 @@ repos_data: list = _load_json(os.path.join(OUT_DIR, "repos.json"), [])
 refactoring_data: dict = _load_json(os.path.join(OUT_DIR, "refactoring-targets.json"), {})
 ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.json"), {})
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
+test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
@@ -730,6 +731,8 @@ def generate_viewer_html() -> str:
     all_tab_ids.append(("hotspots", "Hotspots"))
     if nh_conflicts or nh_legacy:
         all_tab_ids.append(("nugethealth", "NuGet Health"))
+    if test_data.get("testProjects"):
+        all_tab_ids.append(("tests", "Tests"))
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -1513,6 +1516,93 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── Tests panel ──
+    tests_panel = ""
+    test_projects_list = test_data.get("testProjects", [])
+    test_summary = test_data.get("summary", {})
+    if test_projects_list:
+        t_total = test_summary.get("totalTestProjects", 0)
+        t_methods = test_summary.get("totalTestMethods", 0)
+        t_coverage = test_summary.get("coverageRatio", "0/0")
+        # Detect frameworks
+        fw_counts: dict[str, int] = {}
+        for tp in test_projects_list:
+            fw = tp.get("testFramework", "unknown")
+            fw_counts[fw] = fw_counts.get(fw, 0) + 1
+        fw_str = ", ".join(f"{fw}: {cnt}" for fw, cnt in sorted(fw_counts.items(), key=lambda x: -x[1]))
+
+        # Test project rows
+        test_rows = ""
+        for tp in sorted(test_projects_list, key=lambda t: -t.get("testMethodCount", 0)):
+            covers = ", ".join(tp.get("covers", [])[:5])
+            if len(tp.get("covers", [])) > 5:
+                covers += f" +{len(tp['covers']) - 5} more"
+            fw_color = {"xUnit": "#005587", "NUnit": "#009639", "MSTest": "#80276C"}.get(tp.get("testFramework", ""), "#53565A")
+            test_rows += f"""            <tr>
+              <td><strong>{_esc_html(tp.get('project', ''))}</strong></td>
+              <td>{_esc_html(tp.get('repo', ''))}</td>
+              <td><span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba({_hex_to_rgb(fw_color)},0.15);color:{fw_color};">{_esc_html(tp.get('testFramework', ''))}</span></td>
+              <td style="text-align:center">{tp.get('testClassCount', 0)}</td>
+              <td style="text-align:center">{tp.get('testMethodCount', 0)}</td>
+              <td style="font-size:0.82rem;">{_esc_html(covers)}</td>
+            </tr>
+"""
+
+        # Uncovered projects
+        uncovered = test_data.get("uncoveredProjects", [])
+        uncovered_html = ""
+        if uncovered:
+            uncovered_badges = "".join(
+                f'<span style="display:inline-block;padding:0.15rem 0.5rem;margin:0.15rem;border-radius:4px;font-size:0.78rem;background:rgba(208,0,43,0.1);color:#D0002B;">{_esc_html(p)}</span>'
+                for p in uncovered[:50]
+            )
+            if len(uncovered) > 50:
+                uncovered_badges += f'<span style="color:#53565A;font-size:0.8rem;margin-left:0.3rem;">+{len(uncovered) - 50} more</span>'
+            uncovered_html = f'<div style="margin-top:1rem;"><h3 style="margin:0 0 0.5rem;color:#022D5E;font-size:0.95rem;">Uncovered Projects ({len(uncovered)})</h3><div style="display:flex;flex-wrap:wrap;gap:0.2rem;">{uncovered_badges}</div></div>'
+
+        tests_panel = f"""
+  <section class="tab-panel" id="panel-tests">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Coverage</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Test Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{t_total}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Test Methods</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{t_methods}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Coverage Ratio</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_esc_html(t_coverage)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Frameworks</div>
+          <div style="font-size:0.88rem;font-weight:600;color:#53565A;margin-top:0.2rem;">{_esc_html(fw_str)}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="testsTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Test project name">Test Project</th>
+              <th data-sort-type="text" title="Repository">Repo</th>
+              <th data-sort-type="text" title="Testing framework">Framework</th>
+              <th data-sort-type="num" title="Number of test classes">Classes</th>
+              <th data-sort-type="num" title="Number of test methods">Methods</th>
+              <th data-sort-type="text" title="Projects covered by this test project">Covers</th>
+            </tr>
+          </thead>
+          <tbody>
+{test_rows}          </tbody>
+        </table>
+      </div>
+      {uncovered_html}
+    </div>
+  </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1830,6 +1920,7 @@ def generate_viewer_html() -> str:
 {uxconsistency_panel}
 {hotspots_panel}
 {nugethealth_panel}
+{tests_panel}
 {repos_panel}
 {all_projects_panel}
 </main>
@@ -3130,6 +3221,9 @@ function initSortableTable(table) {{
   initSortableTable(document.getElementById('nhConflictsTable'));
   initSortableTable(document.getElementById('nhLegacyTable'));
 
+  // ── Tests table sorting init ──
+  initSortableTable(document.getElementById('testsTable'));
+
   // hexToRgb helper for UX badges
   function hexToRgb(hex) {{
     var h = hex.replace('#', '');
@@ -3603,6 +3697,17 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
         md += f"| Total Packages | {nh_sum.get('totalPackages', 0)} |\n"
         md += f"| CPM Repos | {nh_sum.get('cpmRepos', 0)} |\n\n"
 
+    # Test Coverage Summary
+    t_sum = test_data.get("summary", {})
+    if t_sum.get("totalTestProjects"):
+        md += "\n## Test Coverage Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Test Projects | {t_sum.get('totalTestProjects', 0)} |\n"
+        md += f"| Test Methods | {t_sum.get('totalTestMethods', 0)} |\n"
+        md += f"| Test Classes | {t_sum.get('totalTestClasses', 0)} |\n"
+        md += f"| Coverage Ratio | {t_sum.get('coverageRatio', '0/0')} |\n"
+        md += f"| Uncovered Projects | {t_sum.get('uncoveredProjects', 0)} |\n\n"
+
     md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
     Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
 
@@ -3777,6 +3882,19 @@ def _write_project_context(ai_dir: str, pm: dict, metrics_by_name: dict[str, dic
         if project_conflicts:
             md += f"\n**Version Conflicts:** {', '.join(project_conflicts)}\n"
         md += "\n"
+
+    # Test Coverage for this project
+    test_cov = test_data.get("coverage", {}).get(project)
+    if test_cov:
+        md += "## Test Coverage\n\n"
+        md += "| Property | Value |\n|----------|-------|\n"
+        md += f"| Test Project | {test_cov.get('testProject', '')} |\n"
+        md += f"| Framework | {test_cov.get('testFramework', '')} |\n"
+        md += f"| Test Methods | {test_cov.get('testMethodCount', 0)} |\n\n"
+    elif project not in (tp["project"] for tp in test_data.get("testProjects", [])):
+        # This is a non-test project with no test coverage
+        if test_data.get("testProjects"):
+            md += "## Test Coverage\n\n**No test project found covering this project.**\n\n"
 
     # Related projects: shared data nodes
     related = set()

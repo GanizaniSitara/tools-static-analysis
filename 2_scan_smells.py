@@ -629,12 +629,18 @@ def load_existing_analysis(out_dir: str) -> dict:
             layer_info = bl.get(project, {})
             data["project_layer"][project] = layer_info.get("layer", "")
     
+    # Load test coverage data if available
+    test_data = load_json(os.path.join(out_dir, "test-projects.json"), {})
+    if test_data.get("coverage"):
+        data["test_coverage"] = test_data["coverage"]
+        print(f"  Loaded test coverage: {len(data['test_coverage'])} projects covered")
+
     # Warn if project-meta.json is empty or missing
     if not data["project_meta"]:
         print("  ⚠ WARNING: project-meta.json is empty or missing!")
         print("    Run 1_scan_projects.py first for best results.")
         print("    Falling back to directory-based project grouping.")
-    
+
     return data
 
 
@@ -711,21 +717,30 @@ def infer_project_from_path(filepath: str, scan_root: str) -> str:
 
 
 def detect_test_coverage_gap(project: str, project_meta: list, analysis_data: dict) -> bool:
-    """Check if a project has no corresponding test project."""
-    # Look for test projects that reference this project
+    """Check if a project has no corresponding test project.
+
+    Uses test-projects.json coverage data when available, falling back to
+    the original graph-edge check otherwise.
+    """
+    # Prefer test-projects.json coverage data if loaded
+    test_coverage = analysis_data.get("test_coverage")
+    if test_coverage is not None:
+        return project not in test_coverage
+
+    # Fallback: look for test projects that reference this project via graph edges
     graph = analysis_data.get("graph", {})
     edges = graph.get("links", [])
-    
+
     for edge in edges:
         target = edge.get("target")
         source = edge.get("source")
-        
+
         if target == project:
             # Check if source is a test project
             source_category = analysis_data["project_category"].get(source, "")
             if "test" in source_category.lower():
                 return False
-    
+
     return True
 
 
