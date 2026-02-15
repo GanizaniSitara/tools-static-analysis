@@ -559,6 +559,12 @@ _TEST_FRAMEWORK_PATTERNS = {
     "NUnit": re.compile(r"\b(?:global\s+)?using\s+NUnit\b"),
     "MSTest": re.compile(r"\b(?:global\s+)?using\s+Microsoft\.VisualStudio\.TestTools\b"),
 }
+# Fallback: detect framework from .csproj / .props PackageReference or Sdk includes
+_CSPROJ_FRAMEWORK_PATTERNS = {
+    "xUnit": re.compile(r"(?:xunit|xUnit)", re.IGNORECASE),
+    "NUnit": re.compile(r"(?:NUnit)", re.IGNORECASE),
+    "MSTest": re.compile(r"(?:MSTest|Microsoft\.NET\.Test\.Sdk)", re.IGNORECASE),
+}
 
 
 def scan_test_projects(
@@ -651,6 +657,25 @@ def scan_test_projects(
                     test_class_count += classes
                     rel_path = _relpath(fpath, repo_root)
                     test_files.append(rel_path)
+
+        # Fallback: detect framework from .csproj and imported .props files
+        if not frameworks_found and (is_test_category or test_method_count > 0):
+            csproj_file = os.path.join(repo_root, proj_path) if not os.path.isabs(proj_path) else proj_path
+            if not os.path.isfile(csproj_file):
+                csproj_file = os.path.join(scan_root, proj_path)
+            files_to_check = [csproj_file]
+            csproj_content = safe_read_text(csproj_file) or ""
+            # Find imported .props files
+            for imp_match in re.finditer(r'<Import\s+Project="([^"]+)"', csproj_content):
+                props_rel = imp_match.group(1).replace("\\", "/")
+                props_path = os.path.normpath(os.path.join(os.path.dirname(csproj_file), props_rel))
+                if os.path.isfile(props_path):
+                    files_to_check.append(props_path)
+            for check_file in files_to_check:
+                check_content = safe_read_text(check_file) or "" if check_file != csproj_file else csproj_content
+                for fw_name, fw_pat in _CSPROJ_FRAMEWORK_PATTERNS.items():
+                    if fw_pat.search(check_content):
+                        frameworks_found.add(fw_name)
 
         if is_test_category or test_method_count > 0:
             fw_list = sorted(frameworks_found)
