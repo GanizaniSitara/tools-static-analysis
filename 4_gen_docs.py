@@ -564,7 +564,7 @@ def _resolve_file_uri(rel_path: str, repo_name: str, repo_roots: dict[str, str])
 
 
 def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
-    """Generate HTML for a file reference with VS Code and View action icons."""
+    """Generate HTML for a file reference with IDE action icons."""
     if not path:
         return f'<span class="mono">{_esc_html(display or "")}</span>'
     disp = _esc_html(display or (f"{path}:{line}" if line else path))
@@ -572,7 +572,9 @@ def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
     return (
         f'<span class="file-ref">'
         f'<span class="mono" style="color:#53565A;">{disp}</span>'
-        f' <a href="#" class="file-action file-vs" data-path="{p}" data-line="{line}" title="Open in VS Code">VS</a>'
+        f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
+        f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
+        f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" title="Explore with Claude Code">Claude</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -1964,8 +1966,12 @@ def generate_viewer_html() -> str:
   .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #53565A; }}
   .file-ref {{ display:inline; white-space:nowrap; }}
   .file-action {{ display:inline-block; padding:0.1rem 0.35rem; border-radius:3px; font-size:0.6rem; font-weight:700; cursor:pointer; text-decoration:none; margin-left:0.2rem; vertical-align:middle; line-height:1.2; }}
-  .file-vs {{ background:#0078d4; color:#fff !important; }}
-  .file-vs:hover {{ background:#005a9e; }}
+  .file-studio {{ background:#68217a; color:#fff !important; }}
+  .file-studio:hover {{ background:#4e1a5c; }}
+  .file-code {{ background:#0078d4; color:#fff !important; }}
+  .file-code:hover {{ background:#005a9e; }}
+  .file-claude {{ background:#da7756; color:#fff !important; }}
+  .file-claude:hover {{ background:#b85e3f; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
   .footer {{
@@ -2725,7 +2731,7 @@ function _resolveFromRoots(filePath) {{
   }}
   return fp;
 }}
-// Global helper: generate file action icons HTML (VS Code + View)
+// Global helper: generate file action icons HTML
 function fileActionsHtml(filePath, line, style) {{
   if (!filePath) return '';
   var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
@@ -2733,9 +2739,33 @@ function fileActionsHtml(filePath, line, style) {{
   var dl = line || 0;
   return '<span class="file-ref">' +
     '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
-    ' <a href="#" class="file-action file-vs" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">VS</a>' +
+    ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
+    ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
+    ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" title="Explore with Claude Code">Claude</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
+}}
+function showToast(msg, isLong) {{
+  var t = document.getElementById('pathToast');
+  if (!t) {{
+    t = document.createElement('div');
+    t.id = 'pathToast';
+    t.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#022D5E;color:#fff;padding:0.5rem 1.2rem;border-radius:8px;font-size:0.82rem;font-family:monospace;z-index:10000;opacity:0;transition:opacity 0.3s;pointer-events:none;max-width:80vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    document.body.appendChild(t);
+  }}
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
+}}
+function _openViaServer(editor, resolved, line) {{
+  var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+  fetch(url).then(function(r) {{ return r.json(); }}).then(function(d) {{
+    if (d.error) showToast(d.error, true);
+    else showToast('Opening ' + editor + '...', false);
+  }}).catch(function() {{
+    showToast('Server not available — are you using run.py?', true);
+  }});
 }}
 // Delegated click handler for file action icons
 document.addEventListener('click', function(e) {{
@@ -2746,13 +2776,16 @@ document.addEventListener('click', function(e) {{
   var line = parseInt(action.getAttribute('data-line') || '0', 10);
   if (!path) return;
   var resolved = _resolveFromRoots(path);
-  if (action.classList.contains('file-vs')) {{
-    // Open in VS Code
+  if (action.classList.contains('file-studio')) {{
+    _openViaServer('studio', resolved, line);
+  }} else if (action.classList.contains('file-code')) {{
+    // VS Code: try client-side URI first, fall back to server
     var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
     if (line) vsUri += ':' + line;
     window.location.href = vsUri;
+  }} else if (action.classList.contains('file-claude')) {{
+    _openViaServer('claude', resolved, line);
   }} else if (action.classList.contains('file-view')) {{
-    // Open in browser file viewer
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
   }}
