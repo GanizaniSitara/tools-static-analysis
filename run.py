@@ -5,6 +5,7 @@ import html as html_mod
 import http.server
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -16,8 +17,62 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
 
 
+def _is_wsl() -> bool:
+    """Detect if running under Windows Subsystem for Linux."""
+    try:
+        with open("/proc/version", "r") as f:
+            return "microsoft" in f.read().lower()
+    except OSError:
+        return False
+
+
+def _find_solution(file_path: str, repo_roots: dict, solutions_map: dict) -> str:
+    """Find the .sln file that likely contains the given source file."""
+    fp = file_path.replace("\\", "/")
+    # Match file to a repo root
+    best_repo = ""
+    best_root = ""
+    for repo_name, root in repo_roots.items():
+        r = root.replace("\\", "/")
+        if fp.startswith(r + "/") or fp.startswith(r + "\\"):
+            if len(r) > len(best_root):
+                best_root = r
+                best_repo = repo_name
+    if best_repo and best_repo in solutions_map:
+        solutions = solutions_map[best_repo]
+        if len(solutions) == 1:
+            return os.path.join(best_root, solutions[0])
+        # Multiple solutions: pick the one whose directory is closest to the file
+        rel = fp[len(best_root) + 1:]
+        best_sln = solutions[0]
+        best_depth = 0
+        for sln in solutions:
+            sln_dir = os.path.dirname(sln).replace("\\", "/")
+            if rel.startswith(sln_dir + "/") and len(sln_dir) > best_depth:
+                best_sln = sln
+                best_depth = len(sln_dir)
+        return os.path.join(best_root, best_sln)
+    # Fallback: search upward from the file for a .sln
+    dir_path = os.path.dirname(file_path)
+    for _ in range(20):  # max depth
+        if not dir_path or dir_path == os.path.dirname(dir_path):
+            break
+        try:
+            for entry in os.listdir(dir_path):
+                if entry.endswith(".sln"):
+                    return os.path.join(dir_path, entry)
+        except OSError:
+            break
+        dir_path = os.path.dirname(dir_path)
+    return ""
+
+
 class ViewerHandler(http.server.SimpleHTTPRequestHandler):
-    """HTTP handler that adds a /_view endpoint for source file viewing."""
+    """HTTP handler with /_view and /_open endpoints for IDE integration."""
+
+    # Set by main() before server starts
+    repo_roots: dict = {}
+    solutions_map: dict = {}
 
     def do_GET(self):
         parsed = urlparse(self.path)
@@ -27,22 +82,28 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             line = int(params.get("line", ["0"])[0])
             self._serve_file_view(file_path, line)
             return
+        if parsed.path == "/_open":
+            params = parse_qs(parsed.query)
+            self._handle_open(params)
+            return
         super().do_GET()
+
+    # ── /_view: render source file in browser ──
 
     def _serve_file_view(self, file_path: str, highlight_line: int):
         """Render a source file as HTML with line numbers and highlighting."""
         if not file_path:
-            self.send_error(400, "Missing path parameter")
+            self._json_error(400, "Missing path parameter")
             return
         real_path = os.path.realpath(file_path)
         if not os.path.isfile(real_path):
-            self.send_error(404, f"File not found: {file_path}")
+            self._json_error(404, f"File not found: {file_path}")
             return
         try:
             with open(real_path, "r", encoding="utf-8", errors="replace") as f:
                 content = f.read()
         except OSError as exc:
-            self.send_error(500, str(exc))
+            self._json_error(500, str(exc))
             return
 
         lines = content.split("\n")
@@ -91,6 +152,155 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         self.wfile.write(page.encode("utf-8"))
+
+    # ── /_open: launch editors ──
+
+    def _handle_open(self, params: dict):
+        editor = params.get("editor", [""])[0]
+        file_path = params.get("path", [""])[0]
+        line = int(params.get("line", ["0"])[0])
+
+        if not file_path:
+            self._json_error(400, "Missing path parameter")
+            return
+
+        if editor == "studio":
+            self._open_visual_studio(file_path, line)
+        elif editor == "code":
+            self._open_vscode(file_path, line)
+        elif editor == "claude":
+            self._open_claude(file_path)
+        else:
+            self._json_error(400, f"Unknown editor: {editor}")
+
+    def _open_visual_studio(self, file_path: str, line: int):
+        """Open file in Visual Studio 2022 with the nearest solution."""
+        sln = _find_solution(file_path, self.repo_roots, self.solutions_map)
+        if not sln:
+            self._json_response({"error": "No .sln solution file found for this file"}, 404)
+            return
+
+        is_win = sys.platform == "win32"
+        is_wsl = _is_wsl()
+
+        if is_win:
+            # Windows native: launch devenv directly
+            cmd = ["devenv", sln]
+            if file_path:
+                cmd.extend(["/edit", file_path])
+            try:
+                subprocess.Popen(cmd, creationflags=subprocess.DETACHED_PROCESS)
+                self._json_response({"status": "ok", "editor": "studio", "solution": sln})
+            except FileNotFoundError:
+                self._json_response({"error": "devenv.exe not found — is Visual Studio 2022 installed?"}, 500)
+        elif is_wsl:
+            # WSL: convert paths to Windows and call devenv.exe
+            try:
+                win_sln = subprocess.check_output(
+                    ["wslpath", "-w", sln], text=True
+                ).strip()
+                win_file = subprocess.check_output(
+                    ["wslpath", "-w", file_path], text=True
+                ).strip()
+                cmd = ["cmd.exe", "/c", "start", "", "devenv.exe", win_sln, "/edit", win_file]
+                subprocess.Popen(cmd)
+                self._json_response({"status": "ok", "editor": "studio", "solution": win_sln})
+            except FileNotFoundError:
+                self._json_response({"error": "WSL path conversion failed — is wslpath available?"}, 500)
+            except subprocess.CalledProcessError as exc:
+                self._json_response({"error": f"Failed to convert path: {exc}"}, 500)
+        else:
+            # Native Linux: Visual Studio not available, suggest VS Code
+            self._json_response(
+                {"error": "Visual Studio 2022 is not available on Linux. Use Code (VS Code) instead."},
+                501,
+            )
+
+    def _open_vscode(self, file_path: str, line: int):
+        """Open file in VS Code via CLI."""
+        code_cmd = shutil.which("code")
+        if not code_cmd:
+            self._json_response({"error": "VS Code (code) not found in PATH"}, 500)
+            return
+        goto = f"{file_path}:{line}" if line else file_path
+        try:
+            subprocess.Popen([code_cmd, "--goto", goto])
+            self._json_response({"status": "ok", "editor": "code"})
+        except OSError as exc:
+            self._json_response({"error": f"Failed to launch VS Code: {exc}"}, 500)
+
+    def _open_claude(self, file_path: str):
+        """Open Claude Code in a terminal at the file's directory."""
+        dir_path = os.path.dirname(file_path) if os.path.isfile(file_path) else file_path
+        if not os.path.isdir(dir_path):
+            self._json_response({"error": f"Directory not found: {dir_path}"}, 404)
+            return
+
+        claude_cmd = shutil.which("claude")
+        if not claude_cmd:
+            self._json_response({"error": "Claude Code CLI (claude) not found in PATH"}, 500)
+            return
+
+        # Try terminal emulators in order of preference
+        launched = False
+        shell_cmd = f'cd "{dir_path}" && claude'
+        terminals = [
+            (["gnome-terminal", "--", "bash", "-c", shell_cmd], "gnome-terminal"),
+            (["x-terminal-emulator", "-e", f"bash -c '{shell_cmd}'"], "x-terminal-emulator"),
+            (["xterm", "-e", f"bash -c '{shell_cmd}'"], "xterm"),
+            (["konsole", "-e", f"bash -c '{shell_cmd}'"], "konsole"),
+        ]
+
+        if sys.platform == "win32":
+            # Windows: use cmd.exe start
+            try:
+                subprocess.Popen(["cmd.exe", "/c", "start", "claude"], cwd=dir_path)
+                launched = True
+            except OSError:
+                pass
+        elif _is_wsl():
+            # WSL: use Windows Terminal or cmd.exe
+            try:
+                win_dir = subprocess.check_output(
+                    ["wslpath", "-w", dir_path], text=True
+                ).strip()
+                subprocess.Popen(
+                    ["cmd.exe", "/c", "start", "wsl.exe", "--cd", dir_path, "claude"]
+                )
+                launched = True
+            except (OSError, subprocess.CalledProcessError):
+                pass
+
+        if not launched:
+            for cmd, name in terminals:
+                if shutil.which(cmd[0]):
+                    try:
+                        subprocess.Popen(cmd)
+                        launched = True
+                        break
+                    except OSError:
+                        continue
+
+        if launched:
+            self._json_response({"status": "ok", "editor": "claude", "directory": dir_path})
+        else:
+            self._json_response(
+                {"error": "No terminal emulator found. Install gnome-terminal, xterm, or konsole."},
+                500,
+            )
+
+    # ── Response helpers ──
+
+    def _json_response(self, data: dict, status: int = 200):
+        body = json.dumps(data).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _json_error(self, status: int, message: str):
+        self._json_response({"error": message}, status)
 
     def log_message(self, fmt, *args):
         # Suppress noisy per-request logs except errors
@@ -212,6 +422,18 @@ def main():
     # Step 4 needs all outputs
     print("\n--- Step 4: Generating docs + viewer ---")
     run("4_gen_docs.py", out)
+
+    # Load repos.json for solution discovery
+    repos_json_path = os.path.join(out, "repos.json")
+    if os.path.isfile(repos_json_path):
+        try:
+            with open(repos_json_path, "r", encoding="utf-8") as f:
+                repos_data = json.load(f)
+            ViewerHandler.repo_roots = {r["name"]: r.get("root", "") for r in repos_data}
+            ViewerHandler.solutions_map = {r["name"]: r.get("solutions", []) for r in repos_data}
+            print(f"  Loaded {len(repos_data)} repo(s) from repos.json for IDE integration")
+        except (json.JSONDecodeError, KeyError) as exc:
+            print(f"  Warning: could not parse repos.json: {exc}")
 
     print(f"\n=== Done. Opening viewer at http://localhost:{port}/viewer.html ===\n")
 
