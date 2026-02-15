@@ -546,6 +546,189 @@ def categorize_project(rel_path: str, proj_name: str, xml: str) -> str:
     return "Application"
 
 
+# ─── Test project scanning ───────────────────────────────────────────
+
+_TEST_METHOD_ATTRS = re.compile(
+    r"^\s*\[(?:Test|TestMethod|Fact|Theory|TestCase)\b", re.MULTILINE
+)
+_TEST_CLASS_ATTRS = re.compile(
+    r"^\s*\[(?:TestFixture|TestClass)\b", re.MULTILINE
+)
+_TEST_FRAMEWORK_PATTERNS = {
+    "xUnit": re.compile(r"\b(?:global\s+)?using\s+Xunit\b"),
+    "NUnit": re.compile(r"\b(?:global\s+)?using\s+NUnit\b"),
+    "MSTest": re.compile(r"\b(?:global\s+)?using\s+Microsoft\.VisualStudio\.TestTools\b"),
+}
+# Fallback: detect framework from .csproj / .props PackageReference or Sdk includes
+_CSPROJ_FRAMEWORK_PATTERNS = {
+    "xUnit": re.compile(r"(?:xunit|xUnit)", re.IGNORECASE),
+    "NUnit": re.compile(r"(?:NUnit)", re.IGNORECASE),
+    "MSTest": re.compile(r"(?:MSTest|Microsoft\.NET\.Test\.Sdk)", re.IGNORECASE),
+}
+
+
+def scan_test_projects(
+    all_project_meta: list[dict],
+    all_project_refs: list[dict],
+    scan_root: str,
+    repos: list[dict],
+) -> dict:
+    """Scan test projects to count test methods/classes and determine coverage.
+
+    Returns a dict suitable for writing to test-projects.json.
+    """
+    # Build category lookup
+    cat_by_name = {pm["project"]: pm.get("category", "") for pm in all_project_meta}
+    repo_by_name = {pm["project"]: pm.get("repo", "") for pm in all_project_meta}
+
+    # Build project reference graph for coverage mapping
+    # test_project → set of referenced projects
+    test_refs: dict[str, set[str]] = {}
+    for pr in all_project_refs:
+        test_refs.setdefault(pr["project"], set()).add(pr["references"])
+
+    # Build repo root lookup
+    repo_roots = {r["name"]: r["root"] for r in repos}
+
+    test_projects = []
+
+    for pm in all_project_meta:
+        proj_name = pm["project"]
+        category = pm.get("category", "")
+        repo_name = pm.get("repo", "")
+        repo_root = repo_roots.get(repo_name, scan_root)
+        # Use path (relative to repo root) preferably, globalPath is relative to scan_root
+        proj_path = pm.get("path", "")
+        if not proj_path:
+            proj_path = pm.get("globalPath", "")
+
+        if not proj_path:
+            continue
+
+        # Resolve full path to project directory
+        if os.path.isabs(proj_path):
+            proj_dir = os.path.dirname(proj_path)
+        else:
+            # Try relative to repo root first, fall back to scan root
+            candidate = os.path.join(repo_root, proj_path)
+            if not os.path.exists(candidate):
+                candidate = os.path.join(scan_root, proj_path)
+            proj_dir = os.path.dirname(candidate)
+
+        if not os.path.isdir(proj_dir):
+            continue
+
+        # Only scan projects categorized as Test, or non-test projects
+        # with Test-like .cs files (inline tests)
+        is_test_category = category.lower() == "test"
+
+        test_method_count = 0
+        test_class_count = 0
+        frameworks_found: set[str] = set()
+        test_files: list[str] = []
+
+        # Walk .cs files in project directory
+        for root, dirs, files in os.walk(proj_dir):
+            # Skip common non-source directories
+            dirs[:] = [d for d in dirs if d not in ("bin", "obj", "node_modules", "packages", ".git")]
+            depth = root.replace(proj_dir, "").count(os.sep)
+            if depth > 15:
+                dirs.clear()
+                continue
+
+            for fname in files:
+                if not fname.endswith(".cs"):
+                    continue
+                fpath = os.path.join(root, fname)
+                content = safe_read_text(fpath)
+                if not content:
+                    continue
+
+                # Check for framework using directives in all .cs files
+                for fw_name, fw_pat in _TEST_FRAMEWORK_PATTERNS.items():
+                    if fw_pat.search(content):
+                        frameworks_found.add(fw_name)
+
+                methods = len(_TEST_METHOD_ATTRS.findall(content))
+                classes = len(_TEST_CLASS_ATTRS.findall(content))
+
+                if methods > 0 or classes > 0:
+                    test_method_count += methods
+                    test_class_count += classes
+                    rel_path = _relpath(fpath, repo_root)
+                    test_files.append(rel_path)
+
+        # Fallback: detect framework from .csproj and imported .props files
+        if not frameworks_found and (is_test_category or test_method_count > 0):
+            csproj_file = os.path.join(repo_root, proj_path) if not os.path.isabs(proj_path) else proj_path
+            if not os.path.isfile(csproj_file):
+                csproj_file = os.path.join(scan_root, proj_path)
+            files_to_check = [csproj_file]
+            csproj_content = safe_read_text(csproj_file) or ""
+            # Find imported .props files
+            for imp_match in re.finditer(r'<Import\s+Project="([^"]+)"', csproj_content):
+                props_rel = imp_match.group(1).replace("\\", "/")
+                props_path = os.path.normpath(os.path.join(os.path.dirname(csproj_file), props_rel))
+                if os.path.isfile(props_path):
+                    files_to_check.append(props_path)
+            for check_file in files_to_check:
+                check_content = safe_read_text(check_file) or "" if check_file != csproj_file else csproj_content
+                for fw_name, fw_pat in _CSPROJ_FRAMEWORK_PATTERNS.items():
+                    if fw_pat.search(check_content):
+                        frameworks_found.add(fw_name)
+
+        if is_test_category or test_method_count > 0:
+            fw_list = sorted(frameworks_found)
+            test_projects.append({
+                "project": proj_name,
+                "repo": repo_name,
+                "category": category,
+                "testFramework": fw_list[0] if fw_list else "unknown",
+                "testFrameworks": fw_list,
+                "testClassCount": test_class_count,
+                "testMethodCount": test_method_count,
+                "testFileCount": len(test_files),
+                "files": test_files[:20],  # cap for output size
+                "covers": sorted(test_refs.get(proj_name, set())),
+            })
+
+    # Build coverage map: which non-test projects are covered by test projects
+    coverage: dict[str, dict] = {}
+    for tp in test_projects:
+        for covered_proj in tp.get("covers", []):
+            if cat_by_name.get(covered_proj, "").lower() == "test":
+                continue  # don't count test→test as coverage
+            if covered_proj not in coverage or tp["testMethodCount"] > coverage[covered_proj].get("testMethodCount", 0):
+                coverage[covered_proj] = {
+                    "testProject": tp["project"],
+                    "testFramework": tp["testFramework"],
+                    "testMethodCount": tp["testMethodCount"],
+                }
+
+    # Find uncovered non-test projects
+    non_test_projects = [pm["project"] for pm in all_project_meta
+                         if pm.get("category", "").lower() != "test"]
+    uncovered = sorted(p for p in non_test_projects if p not in coverage)
+
+    total_test_methods = sum(tp["testMethodCount"] for tp in test_projects)
+    total_test_classes = sum(tp["testClassCount"] for tp in test_projects)
+    covered_count = len(coverage)
+
+    return {
+        "testProjects": test_projects,
+        "coverage": coverage,
+        "uncoveredProjects": uncovered,
+        "summary": {
+            "totalTestProjects": len(test_projects),
+            "totalTestMethods": total_test_methods,
+            "totalTestClasses": total_test_classes,
+            "coveredProjects": covered_count,
+            "uncoveredProjects": len(uncovered),
+            "coverageRatio": f"{covered_count}/{len(non_test_projects)}" if non_test_projects else "0/0",
+        },
+    }
+
+
 # ─── Project resolution for .cs files ────────────────────────────────
 
 def build_file_to_project_map(project_meta: list[dict], repo_root: str) -> dict[str, str]:
@@ -2652,6 +2835,17 @@ def main():
     ux_sum = ux_issues.get("summary", {})
     print(f"  UX inconsistencies: {ux_sum.get('totalIssues', 0)} (errors: {ux_sum.get('bySeverity', {}).get('error', 0)}, warnings: {ux_sum.get('bySeverity', {}).get('warning', 0)}, info: {ux_sum.get('bySeverity', {}).get('info', 0)})")
     print(f"  Wrote ux-inconsistencies.json")
+
+    # Step 2g: Scan test projects
+    print("\nStep 2g: Scanning test projects...")
+    test_data = scan_test_projects(all_project_meta, all_project_refs, SCAN_ROOT, repos)
+    Path(os.path.join(OUT_DIR, "test-projects.json")).write_text(
+        json.dumps(test_data, indent=2), encoding="utf-8"
+    )
+    ts = test_data["summary"]
+    print(f"  Test projects: {ts['totalTestProjects']}, methods: {ts['totalTestMethods']}, classes: {ts['totalTestClasses']}")
+    print(f"  Coverage: {ts['coverageRatio']} projects covered")
+    print(f"  Wrote test-projects.json")
 
     # Step 4: Extract configs
     print("\nStep 3: Extracting configuration files...")

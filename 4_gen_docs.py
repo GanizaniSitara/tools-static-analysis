@@ -6,6 +6,7 @@ Reads analysis outputs and generates structured markdown documentation.
 Supports single-repo and multi-repo modes.
 """
 
+import glob
 import json
 import os
 import re
@@ -51,6 +52,18 @@ repos_data: list = _load_json(os.path.join(OUT_DIR, "repos.json"), [])
 refactoring_data: dict = _load_json(os.path.join(OUT_DIR, "refactoring-targets.json"), {})
 ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.json"), {})
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
+test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
+
+# Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
+language_data: dict[str, dict] = {}
+for _lf in glob.glob(os.path.join(OUT_DIR, "*-projects.json")):
+    _basename = os.path.basename(_lf)
+    if _basename in ("project-meta.json", "test-projects.json"):
+        continue
+    _lang_name = _basename.replace("-projects.json", "")
+    _ld = _load_json(_lf, {})
+    if _ld.get("projects"):
+        language_data[_lang_name] = _ld
 
 
 # ─── Parse CSVs ──────────────────────────────────────────────────────
@@ -519,6 +532,14 @@ def _hex_to_rgb(hex_color: str) -> str:
     return f"{int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)}"
 
 
+def _file_uri(path: str) -> str:
+    """Convert a filesystem path to a file:/// URI (forward slashes)."""
+    p = path.replace("\\", "/")
+    if not p.startswith("/"):
+        p = "/" + p  # e.g. C:/foo → /C:/foo for file:///C:/foo
+    return "file://" + p
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -655,20 +676,38 @@ def generate_viewer_html() -> str:
     refactoring_projects = refactoring_data.get("projects", [])
     refactoring_summary = refactoring_data.get("summary", {})
     claude_targets = refactoring_data.get("claudeCodeTargets", {})
-    # Cap at 200 projects and strip files[] (too large for embedding)
+    # Cap at 200 projects; include trimmed files[] for click-through evidence
     cq_projects_trimmed = []
     for _rp in refactoring_projects[:200]:
-        cq_projects_trimmed.append({
+        entry = {
             k: v for k, v in _rp.items()
             if k in ("project", "repo", "category", "layer", "refactoring_value_score",
                      "smell_count", "top_smells", "total_lines", "total_files",
                      "has_tests", "complexity_score", "fan_in", "fan_out")
-        })
+        }
+        # Include trimmed files with smell evidence (max 50 files, 20 smells each)
+        raw_files = _rp.get("files", [])
+        trimmed_files = []
+        for rf in sorted(raw_files, key=lambda f: -f.get("smell_count", 0))[:50]:
+            smells = rf.get("smells", [])[:20]
+            trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
+                               "context": (s.get("context") or "")[:100]} for s in smells]
+            if trimmed_smells:
+                trimmed_files.append({"file": rf.get("file", ""),
+                                      "smellCount": rf.get("smell_count", len(trimmed_smells)),
+                                      "smells": trimmed_smells})
+        if trimmed_files:
+            entry["files"] = trimmed_files
+        cq_projects_trimmed.append(entry)
     cq_embedded = json.dumps({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
     })
+
+    # ── Repo root lookup for file:// links ──
+    repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
+    repos_roots_json = json.dumps(repos_root_lookup)
 
     # ── UX inconsistency data ──
     ux_issues = ux_inconsistencies.get("issues", [])
@@ -704,6 +743,12 @@ def generate_viewer_html() -> str:
     all_tab_ids.append(("hotspots", "Hotspots"))
     if nh_conflicts or nh_legacy:
         all_tab_ids.append(("nugethealth", "NuGet Health"))
+    if test_data.get("testProjects"):
+        all_tab_ids.append(("tests", "Tests"))
+    # Dynamic language tabs
+    for _lang_key, _lang_d in sorted(language_data.items()):
+        _display = _lang_d.get("displayName", _lang_key.title())
+        all_tab_ids.append((_lang_key, _display))
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -1099,13 +1144,15 @@ def generate_viewer_html() -> str:
             solutions = rd.get("solutions", [])
             sol_count = len(solutions)
             cats = ", ".join(sorted(info.get("categories", {}).keys()))
-            root_path = _esc_html(rd.get("root", ""))
+            root_path_raw = rd.get("root", "")
+            root_path = _esc_html(root_path_raw)
+            root_path_link = f'<a href="{_file_uri(root_path_raw)}" target="_blank" class="mono" style="color:#005587;">{root_path}</a>' if root_path_raw else root_path
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
               <td>{sol_count}</td>
               <td>{_esc_html(cats)}</td>
-              <td class="mono">{root_path}</td>
+              <td>{root_path_link}</td>
             </tr>
 """
         repos_panel = f"""
@@ -1485,6 +1532,176 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── Tests panel ──
+    tests_panel = ""
+    test_projects_list = test_data.get("testProjects", [])
+    test_summary = test_data.get("summary", {})
+    if test_projects_list:
+        t_total = test_summary.get("totalTestProjects", 0)
+        t_methods = test_summary.get("totalTestMethods", 0)
+        t_coverage = test_summary.get("coverageRatio", "0/0")
+        # Detect frameworks
+        fw_counts: dict[str, int] = {}
+        for tp in test_projects_list:
+            fw = tp.get("testFramework", "unknown")
+            fw_counts[fw] = fw_counts.get(fw, 0) + 1
+        fw_str = ", ".join(f"{fw}: {cnt}" for fw, cnt in sorted(fw_counts.items(), key=lambda x: -x[1]))
+
+        # Test project rows
+        test_rows = ""
+        for tp in sorted(test_projects_list, key=lambda t: -t.get("testMethodCount", 0)):
+            covers = ", ".join(tp.get("covers", [])[:5])
+            if len(tp.get("covers", [])) > 5:
+                covers += f" +{len(tp['covers']) - 5} more"
+            fw_color = {"xUnit": "#005587", "NUnit": "#009639", "MSTest": "#80276C"}.get(tp.get("testFramework", ""), "#53565A")
+            test_rows += f"""            <tr>
+              <td><strong>{_esc_html(tp.get('project', ''))}</strong></td>
+              <td>{_esc_html(tp.get('repo', ''))}</td>
+              <td><span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba({_hex_to_rgb(fw_color)},0.15);color:{fw_color};">{_esc_html(tp.get('testFramework', ''))}</span></td>
+              <td style="text-align:center">{tp.get('testClassCount', 0)}</td>
+              <td style="text-align:center">{tp.get('testMethodCount', 0)}</td>
+              <td style="font-size:0.82rem;">{_esc_html(covers)}</td>
+            </tr>
+"""
+
+        # Uncovered projects
+        uncovered = test_data.get("uncoveredProjects", [])
+        uncovered_html = ""
+        if uncovered:
+            uncovered_badges = "".join(
+                f'<span style="display:inline-block;padding:0.15rem 0.5rem;margin:0.15rem;border-radius:4px;font-size:0.78rem;background:rgba(208,0,43,0.1);color:#D0002B;">{_esc_html(p)}</span>'
+                for p in uncovered[:50]
+            )
+            if len(uncovered) > 50:
+                uncovered_badges += f'<span style="color:#53565A;font-size:0.8rem;margin-left:0.3rem;">+{len(uncovered) - 50} more</span>'
+            uncovered_html = f'<div style="margin-top:1rem;"><h3 style="margin:0 0 0.5rem;color:#022D5E;font-size:0.95rem;">Uncovered Projects ({len(uncovered)})</h3><div style="display:flex;flex-wrap:wrap;gap:0.2rem;">{uncovered_badges}</div></div>'
+
+        tests_panel = f"""
+  <section class="tab-panel" id="panel-tests">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Test Coverage</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Test Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{t_total}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Test Methods</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{t_methods}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Coverage Ratio</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_esc_html(t_coverage)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Frameworks</div>
+          <div style="font-size:0.88rem;font-weight:600;color:#53565A;margin-top:0.2rem;">{_esc_html(fw_str)}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="testsTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Test project name">Test Project</th>
+              <th data-sort-type="text" title="Repository">Repo</th>
+              <th data-sort-type="text" title="Testing framework">Framework</th>
+              <th data-sort-type="num" title="Number of test classes">Classes</th>
+              <th data-sort-type="num" title="Number of test methods">Methods</th>
+              <th data-sort-type="text" title="Projects covered by this test project">Covers</th>
+            </tr>
+          </thead>
+          <tbody>
+{test_rows}          </tbody>
+        </table>
+      </div>
+      {uncovered_html}
+    </div>
+  </section>
+"""
+
+    # ── Language panels (dynamic, from scanner plugins) ──
+    language_panels = ""
+    for _lk, _ld in sorted(language_data.items()):
+        _ldisp = _ld.get("displayName", _lk.title())
+        _lprojs = _ld.get("projects", [])
+        _lsum = _ld.get("summary", {})
+        _lfiles = _lsum.get("totalFiles", 0)
+        _llines = _lsum.get("totalLines", 0)
+        _lfws = _lsum.get("frameworks", {})
+        _lcats = _lsum.get("categories", {})
+
+        # Framework badges
+        _fw_badge_html = ""
+        _fw_colors = {"Django": "#0C4B33", "Flask": "#000000", "FastAPI": "#009485",
+                      "pytest": "#009639", "Celery": "#37822E", "Airflow": "#017CEE"}
+        for fw, cnt in sorted(_lfws.items(), key=lambda x: -x[1]):
+            _fwc = _fw_colors.get(fw, "#005587")
+            _fw_badge_html += f'<span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:12px;font-size:0.78rem;font-weight:600;background:rgba({_hex_to_rgb(_fwc)},0.15);color:{_fwc};margin:0.15rem;">{_esc_html(fw)}: {cnt}</span>\n'
+
+        # Table rows
+        _lang_rows = ""
+        for _lp in sorted(_lprojs, key=lambda p: -(p.get("lineCount", 0))):
+            _dep_list = ", ".join(_lp.get("dependencies", [])[:8])
+            if len(_lp.get("dependencies", [])) > 8:
+                _dep_list += f" +{len(_lp['dependencies']) - 8} more"
+            _cat_lower = (_lp.get("category") or "").lower()
+            _tag_class = f"tag-{_cat_lower}" if _cat_lower else "tag-unclassified"
+            _lang_rows += f"""            <tr>
+              <td><strong>{_esc_html(_lp.get('name', ''))}</strong></td>
+              <td>{_esc_html(_lp.get('repo', ''))}</td>
+              <td><span class="tag {_tag_class}">{_esc_html(_lp.get('category', ''))}</span></td>
+              <td>{_esc_html(_lp.get('framework', '') or '—')}</td>
+              <td style="text-align:center">{_lp.get('fileCount', 0)}</td>
+              <td style="text-align:center">{_lp.get('lineCount', 0):,}</td>
+              <td style="font-size:0.8rem;"><details><summary style="cursor:pointer;font-size:0.8rem;">{len(_lp.get('dependencies', []))} deps</summary><div style="padding:0.3rem 0;font-size:0.78rem;">{_esc_html(_dep_list)}</div></details></td>
+              <td style="text-align:center">{'<span style="color:#009639">&#10003;</span>' if _lp.get('hasTests') else '<span style="color:#D0002B">&#10007;</span>'}</td>
+            </tr>
+"""
+
+        language_panels += f"""
+  <section class="tab-panel" id="panel-{_lk}">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> {_esc_html(_ldisp)} Projects ({len(_lprojs)})</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{len(_lprojs)}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Files</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{_lfiles:,}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Lines</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_llines:,}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Frameworks</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.2rem;margin-top:0.2rem;">{_fw_badge_html or '<span style="color:#53565A;">—</span>'}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="{_lk}Table">
+          <thead>
+            <tr>
+              <th data-sort-type="text" title="Project name">Project</th>
+              <th data-sort-type="text" title="Repository">Repo</th>
+              <th data-sort-type="text" title="Project category">Category</th>
+              <th data-sort-type="text" title="Detected framework">Framework</th>
+              <th data-sort-type="num" title="Number of source files">Files</th>
+              <th data-sort-type="num" title="Lines of code">Lines</th>
+              <th data-sort-type="num" title="Dependencies">Deps</th>
+              <th data-sort-type="text" title="Has test suite">Tests</th>
+            </tr>
+          </thead>
+          <tbody>
+{_lang_rows}          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1718,6 +1935,60 @@ def generate_viewer_html() -> str:
 <body>
 <div class="edge-tooltip" id="edgeTooltip"></div>
 
+<div id="helpModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#FFFFFF;border-radius:12px;max-width:720px;width:90%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+    <button onclick="document.getElementById('helpModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.2rem 0.6rem;font-size:0.85rem;">&#10005;</button>
+    <h2 style="color:#022D5E;margin-bottom:1rem;">Dependency Map — Help</h2>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Diagram Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Overview</strong> — category-level dependency graph. Click boxes to jump to category detail; click arrows to see project-level references.<br>
+      <strong>Category tabs</strong> (Library, Service, etc.) — project-level dependency diagrams within each category.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Data Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Data Sources</strong> — discovered data access patterns (SQL, EF, HTTP, messaging).<br>
+      <strong>Implied Dependencies</strong> — projects connected through shared data infrastructure (same DB table, queue, etc.).<br>
+      <strong>Connection Strings</strong> — configuration file connection strings found across repos.<br>
+      <strong>E2E Flows</strong> — end-to-end paths from UI screens through business layers to data access.<br>
+      <strong>Field Traceability</strong> — traces XAML bindings through ViewModels and Entities to database columns.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Analysis Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Code Quality</strong> — refactoring triage based on code smell detection. Scores combine complexity, smell count, coupling, and test coverage gaps.<br>
+      <em>Smell types:</em> sync_over_async, exception_swallowing, god_method, precision_unsafe_math, deep_nesting, excessive_parameters, magic_numbers, empty_catch.<br>
+      <em>Refactoring Value Score</em> = Complexity&times;2 + Smells&times;3 + (Fan-In&times;Fan-Out)&times;0.5 + TestGap&times;5 &minus; CategoryDiscount.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>UX Consistency</strong> — detects XAML/WPF binding issues including broken bindings, missing DataContext, and inconsistent naming.<br>
+      <em>Severity levels:</em> Error (broken bindings that will fail at runtime), Warning (likely issues), Info (style suggestions).
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Hotspots</strong> — projects ranked by coupling complexity where AI-assisted refactoring has the most impact.<br>
+      <em>Hotspot Score</em> = Fan-Out&times;3 + Fan-In&times;2 + NuGet + DataPatterns + CrossRepo&times;4.<br>
+      <em>Risk Score</em> adjusts for expected patterns (Library fan-in) and factors in code smell flags.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>NuGet Health</strong> — version conflicts (same package, different versions), legacy format projects (packages.config), target framework distribution, and Central Package Management status.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Other Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Tests</strong> — test project detection with method counts, framework identification, and coverage mapping.<br>
+      <strong>Language tabs</strong> (Python, etc.) — auto-detected non-.NET projects with framework detection, dependency parsing, and line counts.<br>
+      <strong>Repos</strong> — repository summary with project counts and categories.<br>
+      <strong>All Projects</strong> — searchable/sortable table of every .csproj project found.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Tips</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      Use the search box to filter any active tab. Click stat cards in the header to jump to the relevant tab. Click the AI Context link to browse per-project context files for feeding to AI assistants.
+    </p>
+  </div>
+</div>
+
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -1728,9 +1999,10 @@ def generate_viewer_html() -> str:
   </div>
   <div class="stats-row">
 {stats_html}
-    <a href="docs/ai-context/CODEBASE_OVERVIEW.md" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
+    <a href="docs/ai-context/index.html" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
       <span class="stat-value">AI</span> Context
     </a>
+    <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';">? Help</a>
   </div>
 </header>
 
@@ -1749,6 +2021,8 @@ def generate_viewer_html() -> str:
 {uxconsistency_panel}
 {hotspots_panel}
 {nugethealth_panel}
+{tests_panel}
+{language_panels}
 {repos_panel}
 {all_projects_panel}
 </main>
@@ -2606,6 +2880,7 @@ function initSortableTable(table) {{
   window._hotspotData = {hotspot_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
+  window._repoRoots = {repos_roots_json};
   window._isMultiRepo = {str(is_multi_repo).lower()};
 
   // Load data-flow.json for edge detail panel
@@ -2781,8 +3056,47 @@ function initSortableTable(table) {{
   (function () {{
     var cqData = window._codeQualityData || {{}};
     var projects = cqData.projects || [];
+    var repoRoots = window._repoRoots || {{}};
     var tbody = document.getElementById('cqBody');
     if (!tbody || projects.length === 0) return;
+
+    var smellColors = {{
+      sync_over_async:'#D0002B', exception_swallowing:'#D0002B', god_method:'#9E8700',
+      precision_unsafe_math:'#9E8700', deep_nesting:'#9E8700', excessive_parameters:'#005587',
+      magic_numbers:'#53565A', empty_catch:'#D0002B'
+    }};
+
+    function fileUri(repoRoot, relFile) {{
+      if (!repoRoot) return '';
+      var p = (repoRoot + '/' + relFile).replace(/\\\\/g, '/');
+      if (p.charAt(0) !== '/') p = '/' + p;
+      return 'file://' + p;
+    }}
+
+    function buildFileDetail(p) {{
+      var files = p.files || [];
+      if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
+      var root = repoRoots[p.repo || ''] || '';
+      var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      files.forEach(function(f) {{
+        var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
+        var uri = fileUri(root, f.file || '');
+        (f.smells || []).forEach(function(s) {{
+          var sc = smellColors[s.type] || '#53565A';
+          var fileLink = uri ? '<a href="' + escHtml(uri) + '" target="_blank" style="color:#005587;" title="' + escHtml(f.file || '') + '">' + escHtml(fname) + '</a>' : escHtml(fname);
+          h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+          h += '<td style="padding:0.25rem 0.5rem;" class="mono">' + fileLink + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
+          h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
+          h += '</tr>';
+        }});
+      }});
+      h += '</tbody></table>';
+      return h;
+    }}
+
     var categories = {{}};
     projects.forEach(function (p) {{
       var tr = document.createElement('tr');
@@ -2790,12 +3104,14 @@ function initSortableTable(table) {{
       var scoreColor = score > 100 ? '#D0002B' : score > 50 ? '#9E8700' : '#009639';
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
+      var hasFiles = p.files && p.files.length > 0;
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
+      if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
-        '<td><strong>' + escHtml(p.project || '') + '</strong></td>' +
+        '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
         '<td>' + tagHTML(p.category || '') + '</td>' +
         '<td style="text-align:center;font-weight:700;color:' + scoreColor + '">' + score + '</td>' +
         '<td style="text-align:center">' + (p.smell_count || 0) + '</td>' +
@@ -2804,6 +3120,35 @@ function initSortableTable(table) {{
         '<td style="text-align:center">' + (p.complexity_score || 0) + '</td>' +
         '<td style="text-align:center">' + (p.has_tests ? '<span style="color:#009639">&#10003;</span>' : '<span style="color:#D0002B">&#10007;</span>') + '</td>';
       tbody.appendChild(tr);
+
+      // Expandable detail row
+      if (hasFiles) {{
+        var detailTr = document.createElement('tr');
+        detailTr.className = 'cq-detail-row';
+        detailTr.style.display = 'none';
+        var detailTd = document.createElement('td');
+        detailTd.colSpan = 8;
+        detailTd.style.padding = '0 0.5rem 0.75rem 1.5rem';
+        detailTd.style.background = '#FAFAFA';
+        detailTr.appendChild(detailTd);
+        tbody.appendChild(detailTr);
+
+        tr.addEventListener('click', function () {{
+          var showing = detailTr.style.display !== 'none';
+          // Collapse any open detail rows
+          document.querySelectorAll('.cq-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+          document.querySelectorAll('#cqBody tr[data-search] span').forEach(function(s) {{
+            if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+          }});
+          if (!showing) {{
+            if (!detailTd.innerHTML) detailTd.innerHTML = buildFileDetail(p);
+            detailTr.style.display = '';
+            var arrow = tr.querySelector('td:first-child span');
+            if (arrow) arrow.textContent = '\u25BC';
+          }}
+        }});
+      }}
+
       var cat = (p.category || '').toLowerCase();
       if (cat) categories[cat] = true;
     }});
@@ -2844,6 +3189,11 @@ function initSortableTable(table) {{
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
 
+    // Collapse all detail rows on filter
+    document.querySelectorAll('.cq-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+    document.querySelectorAll('#cqBody tr[data-search] span').forEach(function(s) {{
+      if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+    }});
     var rows = document.querySelectorAll('#cqBody tr[data-search]');
     rows.forEach(function (row) {{
       var show = true;
@@ -2887,22 +3237,53 @@ function initSortableTable(table) {{
         tr.setAttribute('data-available-props', JSON.stringify(iss.availableProperties));
       }}
       tr.style.cursor = 'pointer';
-      tr.addEventListener('click', function () {{
+      tr.addEventListener('click', (function(issue) {{ return function () {{
         var sidebar = document.getElementById('uxDetailSidebar');
         if (!sidebar) return;
+        var repoRoots = window._repoRoots || {{}};
+        var root = repoRoots[issue.repo || ''] || '';
+        var h = '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;">';
+        h += '<strong style="color:#022D5E;font-size:0.95rem;">' + escHtml(issue.type || '') + '</strong>';
+        var sc = sevColors[issue.severity] || '#53565A';
+        h += '<span style="padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(issue.severity || '') + '</span></div>';
+        h += '<div style="margin:0.4rem 0;font-size:0.88rem;">' + escHtml(issue.message || '') + '</div>';
+        if (issue.file) {{
+          var fileUri = root ? 'file://' + (root + '/' + issue.file).replace(/\\\\/g, '/').replace(/^([^/])/, '/$1') : '';
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">File:</span> ';
+          if (fileUri) h += '<a href="' + escHtml(fileUri) + '" target="_blank" style="color:#005587;" class="mono">' + escHtml(issue.file) + '</a>';
+          else h += '<span class="mono">' + escHtml(issue.file) + '</span>';
+          if (issue.line) h += '<span class="mono">:' + issue.line + '</span>';
+          h += '</div>';
+        }}
+        if (issue.bindingPath) {{
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">Binding Path:</span> <code style="background:#F5F5F5;padding:0.1rem 0.4rem;border-radius:3px;">' + escHtml(issue.bindingPath) + '</code></div>';
+        }}
+        if (issue.resolvedViewModel) {{
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">ViewModel:</span> <strong>' + escHtml(issue.resolvedViewModel) + '</strong></div>';
+        }}
         var props = tr.getAttribute('data-available-props');
         if (props) {{
           try {{
             var propList = JSON.parse(props);
-            sidebar.innerHTML = '<strong>Available VM Properties:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">' +
-              propList.map(function(p) {{ return '<li style="font-size:0.85rem;">' + escHtml(p) + '</li>'; }}).join('') + '</ul>';
-            sidebar.style.display = 'block';
-          }} catch(e) {{ sidebar.style.display = 'none'; }}
-        }} else {{
-          sidebar.innerHTML = '<strong>' + escHtml(iss.type || '') + ':</strong> ' + escHtml(iss.message || '');
-          sidebar.style.display = 'block';
+            // Fuzzy match suggestion
+            if (issue.bindingPath && propList.length > 0) {{
+              var bp = (issue.bindingPath || '').toLowerCase();
+              var suggestions = propList.filter(function(p) {{
+                var pl = p.toLowerCase();
+                return pl.indexOf(bp) !== -1 || bp.indexOf(pl) !== -1 ||
+                  (bp.length > 2 && pl.indexOf(bp.substring(0,3)) !== -1);
+              }});
+              if (suggestions.length > 0 && suggestions.length < propList.length) {{
+                h += '<div style="margin:0.5rem 0;padding:0.5rem;background:#E8F5E9;border-radius:6px;"><strong style="color:#009639;">Did you mean?</strong> ' + suggestions.map(function(s) {{ return '<code style="background:#FFFFFF;padding:0.1rem 0.4rem;border-radius:3px;">' + escHtml(s) + '</code>'; }}).join(', ') + '</div>';
+              }}
+            }}
+            h += '<div style="margin-top:0.5rem;"><strong>Available VM Properties:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">' +
+              propList.map(function(p) {{ return '<li style="font-size:0.85rem;">' + escHtml(p) + '</li>'; }}).join('') + '</ul></div>';
+          }} catch(e) {{ /* skip */ }}
         }}
-      }});
+        sidebar.innerHTML = h;
+        sidebar.style.display = 'block';
+      }}; }})(iss));
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('uxTable'));
@@ -2941,6 +3322,12 @@ function initSortableTable(table) {{
   // ── NuGet Health sorting init ──
   initSortableTable(document.getElementById('nhConflictsTable'));
   initSortableTable(document.getElementById('nhLegacyTable'));
+
+  // ── Tests table sorting init ──
+  initSortableTable(document.getElementById('testsTable'));
+
+  // ── Language panel table sorting init ──
+  {chr(10).join(f"  initSortableTable(document.getElementById('{lk}Table'));" for lk in sorted(language_data.keys()))}
 
   // hexToRgb helper for UX badges
   function hexToRgb(hex) {{
@@ -3387,6 +3774,62 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
                 md += f"- {st['smell']}: {st['count']}\n"
             md += "\n"
 
+    # UX Consistency Summary
+    ux_sum = ux_inconsistencies.get("summary", {})
+    if ux_sum.get("totalIssues"):
+        md += "\n## UX Consistency Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Total Issues | {ux_sum.get('totalIssues', 0)} |\n"
+        by_sev = ux_sum.get("bySeverity", {})
+        md += f"| Errors | {by_sev.get('error', 0)} |\n"
+        md += f"| Warnings | {by_sev.get('warning', 0)} |\n"
+        md += f"| Info | {by_sev.get('info', 0)} |\n"
+        by_type = ux_sum.get("byType", {})
+        if by_type:
+            md += "\n**Top Issue Types:**\n\n"
+            for typ, cnt in sorted(by_type.items(), key=lambda x: -x[1])[:10]:
+                md += f"- {typ}: {cnt}\n"
+            md += "\n"
+
+    # NuGet Health Summary
+    nh_sum = nuget_health.get("summary", {})
+    if nh_sum:
+        md += "\n## NuGet Health Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Version Conflicts | {nh_sum.get('conflictCount', 0)} |\n"
+        md += f"| Legacy Projects | {nh_sum.get('legacyCount', 0)} |\n"
+        md += f"| Frameworks | {nh_sum.get('frameworkCount', 0)} |\n"
+        md += f"| Total Packages | {nh_sum.get('totalPackages', 0)} |\n"
+        md += f"| CPM Repos | {nh_sum.get('cpmRepos', 0)} |\n\n"
+
+    # Test Coverage Summary
+    t_sum = test_data.get("summary", {})
+    if t_sum.get("totalTestProjects"):
+        md += "\n## Test Coverage Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Test Projects | {t_sum.get('totalTestProjects', 0)} |\n"
+        md += f"| Test Methods | {t_sum.get('totalTestMethods', 0)} |\n"
+        md += f"| Test Classes | {t_sum.get('totalTestClasses', 0)} |\n"
+        md += f"| Coverage Ratio | {t_sum.get('coverageRatio', '0/0')} |\n"
+        md += f"| Uncovered Projects | {t_sum.get('uncoveredProjects', 0)} |\n\n"
+
+    # Language scanner summaries
+    for _lk, _ld in sorted(language_data.items()):
+        _ldisp = _ld.get("displayName", _lk.title())
+        _lsum = _ld.get("summary", {})
+        md += f"\n## {_ldisp} Projects Summary\n\n"
+        md += "| Metric | Value |\n|--------|-------|\n"
+        md += f"| Projects | {_lsum.get('totalProjects', 0)} |\n"
+        md += f"| Files | {_lsum.get('totalFiles', 0)} |\n"
+        md += f"| Lines | {_lsum.get('totalLines', 0)} |\n"
+        fws = _lsum.get("frameworks", {})
+        if fws:
+            md += f"| Frameworks | {', '.join(f'{fw}: {cnt}' for fw, cnt in sorted(fws.items(), key=lambda x: -x[1]))} |\n"
+        cats = _lsum.get("categories", {})
+        if cats:
+            md += f"| Categories | {', '.join(f'{cat}: {cnt}' for cat, cnt in sorted(cats.items(), key=lambda x: -x[1]))} |\n"
+        md += "\n"
+
     md += f"\n---\n*Generated: {date.today().isoformat()}*\n"
     Path(os.path.join(ai_dir, "CODEBASE_OVERVIEW.md")).write_text(md, encoding="utf-8")
 
@@ -3489,6 +3932,91 @@ def _write_project_context(ai_dir: str, pm: dict, metrics_by_name: dict[str, dic
         if top_smells:
             md += f"| Top Smells | {', '.join(top_smells[:5])} |\n"
         md += "\n"
+
+        # Smell Locations (per-file details, capped at 30)
+        rp_files = rp.get("files", [])
+        smell_entries = []
+        for rf in rp_files:
+            for sm in rf.get("smells", []):
+                smell_entries.append((rf.get("file", ""), sm))
+                if len(smell_entries) >= 30:
+                    break
+            if len(smell_entries) >= 30:
+                break
+        if smell_entries:
+            md += "### Smell Locations\n\n"
+            for sf, sm in smell_entries:
+                fname = os.path.basename(sf) if sf else "unknown"
+                line = sm.get("line", "?")
+                stype = sm.get("type", "unknown")
+                ctx = (sm.get("context") or "")[:80]
+                md += f"- `{fname}:{line}` — {stype}: {ctx}\n"
+            total_smells_in_files = sum(len(rf.get("smells", [])) for rf in rp_files)
+            if total_smells_in_files > 30:
+                md += f"- *... +{total_smells_in_files - 30} more smell locations*\n"
+            md += "\n"
+
+    # UX Consistency Issues for this project
+    project_ux_issues = [i for i in ux_inconsistencies.get("issues", []) if i.get("project") == project]
+    if project_ux_issues:
+        md += "## UX Consistency Issues\n\n"
+        for iss in project_ux_issues[:20]:
+            sev = iss.get("severity", "info")
+            iss_type = iss.get("type", "")
+            msg = iss.get("message", "")
+            iss_file = iss.get("file", "")
+            md += f"- [{sev}] {iss_type}: {msg}"
+            if iss_file:
+                md += f" — {iss_file}"
+            md += "\n"
+            if iss.get("availableProperties"):
+                md += f"  - Available properties: {', '.join(iss['availableProperties'][:10])}\n"
+        if len(project_ux_issues) > 20:
+            md += f"- *... +{len(project_ux_issues) - 20} more issues*\n"
+        md += "\n"
+
+    # NuGet Health for this project
+    nh_project_data = {}
+    for fw_name, fw_projs in nuget_health.get("targetFrameworks", {}).items():
+        if project in fw_projs:
+            nh_project_data["targetFramework"] = fw_name
+            break
+    # Check legacy format
+    for lp in nuget_health.get("legacyFormatProjects", []):
+        if lp.get("project") == project:
+            nh_project_data["nugetFormat"] = "packages.config (legacy)"
+            break
+    else:
+        nh_project_data["nugetFormat"] = "PackageReference"
+    # Check version conflicts involving this project
+    project_conflicts = []
+    for vc in nuget_health.get("versionConflicts", []):
+        for ver, projs in vc.get("versions", {}).items():
+            if project in projs:
+                project_conflicts.append(f"{vc['package']} ({ver})")
+                break
+    if nh_project_data.get("targetFramework") or project_conflicts:
+        md += "## NuGet Health\n\n"
+        md += "| Property | Value |\n|----------|-------|\n"
+        if nh_project_data.get("targetFramework"):
+            md += f"| Target Framework | {nh_project_data['targetFramework']} |\n"
+        md += f"| NuGet Format | {nh_project_data.get('nugetFormat', 'PackageReference')} |\n"
+        if project_conflicts:
+            md += f"\n**Version Conflicts:** {', '.join(project_conflicts)}\n"
+        md += "\n"
+
+    # Test Coverage for this project
+    test_cov = test_data.get("coverage", {}).get(project)
+    if test_cov:
+        md += "## Test Coverage\n\n"
+        md += "| Property | Value |\n|----------|-------|\n"
+        md += f"| Test Project | {test_cov.get('testProject', '')} |\n"
+        md += f"| Framework | {test_cov.get('testFramework', '')} |\n"
+        md += f"| Test Methods | {test_cov.get('testMethodCount', 0)} |\n\n"
+    elif project not in (tp["project"] for tp in test_data.get("testProjects", [])):
+        # This is a non-test project with no test coverage
+        if test_data.get("testProjects"):
+            md += "## Test Coverage\n\n**No test project found covering this project.**\n\n"
 
     # Related projects: shared data nodes
     related = set()
@@ -3613,6 +4141,45 @@ def _write_hotspots_report(ai_dir: str, metrics: list[dict]) -> None:
     Path(os.path.join(ai_dir, "HOTSPOTS.md")).write_text(md, encoding="utf-8")
 
 
+def _write_ai_context_index(ai_dir: str) -> None:
+    """Write an index.html in the ai-context directory listing all .md files."""
+    md_files = sorted(
+        f for f in os.listdir(ai_dir) if f.endswith(".md")
+    )
+    overview_files = [f for f in md_files if f == "CODEBASE_OVERVIEW.md"]
+    hotspot_files = [f for f in md_files if f == "HOTSPOTS.md"]
+    project_files = [f for f in md_files if f not in ("CODEBASE_OVERVIEW.md", "HOTSPOTS.md")]
+
+    rows = ""
+    for f in overview_files + hotspot_files:
+        rows += f'    <li style="margin:0.3rem 0;"><a href="{f}" style="color:#005587;font-weight:600;">{f}</a></li>\n'
+    if project_files:
+        rows += '    <li style="margin:0.8rem 0 0.3rem;font-weight:600;color:#022D5E;list-style:none;">Per-Project Context Files</li>\n'
+        for f in project_files:
+            label = f.replace(".md", "")
+            rows += f'    <li style="margin:0.2rem 0;"><a href="{f}" style="color:#005587;">{label}</a></li>\n'
+
+    title = repos[0] if len(repos) == 1 else f"{len(repos)} Repositories"
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>AI Context — {_esc_html(title)}</title>
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; color: #000; }}
+  h1 {{ color: #022D5E; font-size: 1.4rem; border-bottom: 2px solid #005587; padding-bottom: 0.5rem; }}
+  ul {{ padding-left: 1.2rem; }}
+  a {{ text-decoration: none; }} a:hover {{ text-decoration: underline; }}
+  .count {{ color: #53565A; font-size: 0.85rem; }}
+</style></head>
+<body>
+  <h1>AI Context Files</h1>
+  <p class="count">{len(md_files)} files generated for {_esc_html(title)}</p>
+  <ul>
+{rows}  </ul>
+  <p style="margin-top:2rem;color:#53565A;font-size:0.78rem;font-style:italic;">Generated by Dependency Mapper — {date.today().isoformat()}</p>
+</body></html>"""
+    Path(os.path.join(ai_dir, "index.html")).write_text(html, encoding="utf-8")
+
+
 def generate_ai_context() -> int:
     """Generate AI-ready markdown context files. Returns count of files written."""
     ai_dir = os.path.join(DOCS_DIR, "ai-context")
@@ -3628,6 +4195,8 @@ def generate_ai_context() -> int:
 
     for pm in project_meta:
         _write_project_context(ai_dir, pm, metrics_by_name, bl, data_nodes)
+
+    _write_ai_context_index(ai_dir)
 
     return len(project_meta) + 2  # project files + overview + hotspots
 
