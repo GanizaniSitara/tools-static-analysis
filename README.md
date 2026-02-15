@@ -8,8 +8,8 @@ Static analysis pipeline for .NET codebases. Scan → visualize → review in br
 # 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
 python3 1_scan_projects.py /path/to/repos output-myproject
 
-# 2. Scan .cs source — code smells, complexity, refactoring targets
-python3 2_scan_smells.py /path/to/repos output-myproject
+# 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
+python3 2_scan_smells.py /path/to/repos output-myproject --level high
 
 # 3. Generate Mermaid/GraphViz diagrams from graph.json
 python3 3_gen_diagrams.py output-myproject
@@ -19,6 +19,23 @@ python3 4_gen_docs.py output-myproject
 ```
 
 Steps 1-2 scan source and can run in parallel. Step 3 needs graph.json from step 1. Step 4 reads all outputs, so run it last.
+
+### Severity levels (`--level`)
+
+The smell scanner supports log-level-style verbosity via `--level critical|high|medium|low` (default: `high`). Each level includes all levels above it.
+
+| Level | What runs | Typical use |
+|-------|-----------|-------------|
+| `critical` | Security only (hardcoded secrets, SQL injection, insecure deserialization, command injection) | CI gate for must-fix vulnerabilities |
+| `high` | Critical + high-severity security (weak crypto, open redirect, XSS, insecure random) + bugs (exception swallowing, sync-over-async) | **Default** — actionable findings without noise |
+| `medium` | High + code quality (god methods, deep nesting, long parameter lists) | Sprint planning |
+| `low` | All detectors including style (magic numbers, missing null checks, mutable shared state) | Full audit |
+
+The `run.py` pipeline also accepts `--level`:
+
+```bash
+python3 run.py /path/to/repos output-myproject --level medium
+```
 
 ## Outputs (in `output-myproject/`)
 
@@ -32,6 +49,6 @@ Steps 1-2 scan source and can run in parallel. Step 3 needs graph.json from step
 | `field-traceability.json` | 1_scan_projects | XAML → ViewModel → Entity → DB column chains |
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
-| `refactoring-targets.json` | 2_scan_smells | Code smells, complexity, Claude Code prompts |
-| `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs |
+| `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
+| `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
 | `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |
