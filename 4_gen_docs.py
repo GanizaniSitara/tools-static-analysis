@@ -526,6 +526,15 @@ def _esc_html(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
+def _safe_json_for_script(data, **kwargs) -> str:
+    """json.dumps() safe for embedding inside <script> tags.
+
+    Replaces '</' with '<\\/' to prevent the HTML parser from seeing
+    '</script>' (or any closing tag) inside string literals.
+    """
+    return json.dumps(data, **kwargs).replace("</", "<\\/")
+
+
 def _hex_to_rgb(hex_color: str) -> str:
     """Convert #RRGGBB to 'R,G,B' for use in rgba()."""
     h = hex_color.lstrip("#")
@@ -680,7 +689,7 @@ def generate_viewer_html() -> str:
 
     # ── Hotspot metrics ──
     hotspot_metrics = compute_hotspot_metrics()
-    hotspot_json = json.dumps(hotspot_metrics)
+    hotspot_json = _safe_json_for_script(hotspot_metrics)
     # Summary card data
     top_hotspot = hotspot_metrics[0] if hotspot_metrics else None
     most_referenced = max(hotspot_metrics, key=lambda m: m["fan_in"]) if hotspot_metrics else None
@@ -713,7 +722,7 @@ def generate_viewer_html() -> str:
         if trimmed_files:
             entry["files"] = trimmed_files
         cq_projects_trimmed.append(entry)
-    cq_embedded = json.dumps({
+    cq_embedded = _safe_json_for_script({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
@@ -721,12 +730,12 @@ def generate_viewer_html() -> str:
 
     # ── Repo root lookup for file:// links ──
     repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
-    repos_roots_json = json.dumps(repos_root_lookup)
+    repos_roots_json = _safe_json_for_script(repos_root_lookup)
 
     # ── UX inconsistency data ──
     ux_issues = ux_inconsistencies.get("issues", [])
     ux_summary = ux_inconsistencies.get("summary", {})
-    ux_embedded = json.dumps({"issues": ux_issues, "summary": ux_summary})
+    ux_embedded = _safe_json_for_script({"issues": ux_issues, "summary": ux_summary})
 
     # ── NuGet health data ──
     nh_conflicts = nuget_health.get("versionConflicts", [])
@@ -1145,8 +1154,11 @@ def generate_viewer_html() -> str:
         cat_chart_mermaid += f'    "{cat}" : {count}\n'
 
     # Category map for JS-side category detection on Overview edges
+    def _js_str(s: str) -> str:
+        """Escape a string for safe embedding in a JS single-quoted literal."""
+        return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r").replace("</", "<\\/")
     cat_map_entries = ", ".join(
-        f"'{cat_name} ({count})': {{key:'{cat_name.lower()}', name:'{cat_name}', count:{count}, tabId:'cat_{sanitize_id(cat_name.lower())}'}}"
+        f"'{_js_str(cat_name)} ({count})': {{key:'{_js_str(cat_name.lower())}', name:'{_js_str(cat_name)}', count:{count}, tabId:'cat_{sanitize_id(cat_name.lower())}'}}"
         for cat_name, count in categories.items()
         if cat_name not in {"Localization", "Sample"}
     )
