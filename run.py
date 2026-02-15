@@ -310,17 +310,19 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python run.py /path/to/repos [output-name] [port]")
-        print()
-        print("  /path/to/repos   Directory containing repos to scan")
-        print("  output-name      Output directory name (default: output)")
-        print("  port             Web server port (default: 8000)")
-        sys.exit(1)
+    import argparse as _ap
+    parser = _ap.ArgumentParser(description="Pipeline: scans, diagrams, docs, web server.")
+    parser.add_argument("repos", help="Directory containing repos to scan")
+    parser.add_argument("out", nargs="?", default="output", help="Output directory name (default: output)")
+    parser.add_argument("port", nargs="?", type=int, default=8000, help="Web server port (default: 8000)")
+    parser.add_argument("--level", choices=["critical", "high", "medium", "low"], default="high",
+                        help="Minimum severity level for smell scanner (default: high)")
+    args = parser.parse_args()
 
-    repos = sys.argv[1]
-    out = sys.argv[2] if len(sys.argv) > 2 else "output"
-    port = int(sys.argv[3]) if len(sys.argv) > 3 else 8000
+    repos = args.repos
+    out = args.out
+    port = args.port
+    level = args.level
 
     os.makedirs(out, exist_ok=True)
 
@@ -339,7 +341,7 @@ def main():
 
     # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
     print("\n--- Step 2: Scanning smells ---")
-    run("2_scan_smells.py", repos, out)
+    run("2_scan_smells.py", repos, out, "--level", level)
 
     # Run language scanners (auto-discovered plugins)
     print("\n--- Language scanners ---")
