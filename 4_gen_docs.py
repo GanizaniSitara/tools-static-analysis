@@ -731,7 +731,9 @@ def generate_viewer_html() -> str:
         for rf in sorted(raw_files, key=lambda f: -f.get("smell_count", 0))[:50]:
             smells = rf.get("smells", [])[:20]
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
-                               "context": (s.get("context") or "")[:100]} for s in smells]
+                               "context": (s.get("context") or "")[:100],
+                               "severity": s.get("severity", ""),
+                               "category": s.get("category", "")} for s in smells]
             if trimmed_smells:
                 trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
@@ -778,6 +780,15 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
     if refactoring_projects:
         all_tab_ids.append(("codequality", "Code Quality"))
+    # Security tab: show if any security-category smells exist
+    _has_security_findings = any(
+        s.get("category") == "security"
+        for _rp in refactoring_projects
+        for _rf in _rp.get("files", [])
+        for s in _rf.get("smells", [])
+    )
+    if _has_security_findings:
+        all_tab_ids.append(("security", "Security"))
     if ux_issues:
         all_tab_ids.append(("uxconsistency", "UX Consistency"))
     all_tab_ids.append(("hotspots", "Hotspots"))
@@ -1266,12 +1277,29 @@ def generate_viewer_html() -> str:
         cq_top_proj_smells = cq_top_project.get("smell_count", 0)
         cq_files_scanned = refactoring_summary.get("totalFilesScanned", 0)
         cq_files_with = refactoring_summary.get("totalFilesWithSmells", 0)
-        cq_files_ratio = f"{{cq_files_with}}/{{cq_files_scanned}}" if cq_files_scanned else "—"
+        cq_files_ratio = f"{cq_files_with}/{cq_files_scanned}" if cq_files_scanned else "—"
+
+        # Severity counts for summary cards
+        cq_sev_counts = refactoring_summary.get("severityCounts", {})
+        cq_critical_count = cq_sev_counts.get("critical", 0)
+        cq_high_count = cq_sev_counts.get("high", 0)
+        cq_medium_count = cq_sev_counts.get("medium", 0)
+        cq_low_count = cq_sev_counts.get("low", 0)
+        cq_scan_level = _esc_html(refactoring_summary.get("level", "high"))
 
         # Smell type badges
         cq_badge_html = ""
         for st in cq_top_smell_types:
             cq_badge_html += f'<button type="button" class="cq-badge" data-smell="{_esc_html(st["smell"])}">{_esc_html(st["smell"])}: {st["count"]}</button>\n        '
+
+        # Severity filter badges
+        cq_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
+        cq_sev_badges_html = ""
+        for sev in ["critical", "high", "medium", "low"]:
+            cnt = cq_sev_counts.get(sev, 0)
+            if cnt:
+                c = cq_sev_badge_colors[sev]
+                cq_sev_badges_html += f'<button type="button" class="cq-sev-badge" data-severity="{sev}" style="background:rgba({_hex_to_rgb(c)},0.15);color:{c};">{sev.title()}: {cnt}</button>\n        '
 
         # Refactoring targets (tier details)
         cq_tier_html = ""
@@ -1283,7 +1311,7 @@ def generate_viewer_html() -> str:
             for t in tier_items:
                 files_list = ", ".join(t.get("files", [])[:5])
                 if len(t.get("files", [])) > 5:
-                    files_list += f" +{{len(t['files']) - 5}} more"
+                    files_list += f" +{len(t['files']) - 5} more"
                 effort_color = "#D0002B" if "large" in t.get("estimatedEffort", "").lower() else "#9E8700" if "medium" in t.get("estimatedEffort", "").lower() else "#009639"
                 items_html += f"""<div style="margin-bottom:1rem;padding:0.75rem;background:#FAFAFA;border:1px solid #E1E1E1;border-radius:6px;">
               <div style="font-weight:700;">{_esc_html(t.get('project', ''))}</div>
@@ -1306,28 +1334,32 @@ def generate_viewer_html() -> str:
         codequality_panel = f"""
   <section class="tab-panel" id="panel-codequality">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> Code Quality Analysis</div>
+      <div class="card-title"><span class="icon">&#9670;</span> Code Quality Analysis <span style="font-size:0.72rem;font-weight:400;color:#53565A;margin-left:0.5rem;">Level: {cq_scan_level}</span></div>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
           <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Smells</div>
           <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_total_smells}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Top Smell Type</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_esc_html(cq_top_smell_name)}</div>
-          <div style="font-size:0.8rem;color:#53565A;">Count: {cq_top_smell_count}</div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_critical_count}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Top Project</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#005587;margin-top:0.2rem;">{cq_top_proj_name}</div>
-          <div style="font-size:0.8rem;color:#53565A;">Smells: {cq_top_proj_smells}</div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{cq_high_count}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Files With Smells</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#009639;margin-top:0.2rem;">{cq_files_ratio}</div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#9E8700;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{cq_medium_count}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Low</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{cq_low_count}</div>
         </div>
       </div>
       <div id="cqFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {cq_sev_badges_html}
+        <span style="color:#E1E1E1;">|</span>
         {cq_badge_html}
         <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
@@ -1351,6 +1383,60 @@ def generate_viewer_html() -> str:
         </table>
       </div>
       {f'<div style="margin-top:1.5rem;"><div class="card-title"><span class="icon">&#9670;</span> Refactoring Targets</div>{cq_tier_html}</div>' if cq_tier_html else ''}
+    </div>
+  </section>
+"""
+
+    # ── Security panel ──
+    security_panel = ""
+    if _has_security_findings:
+        # Count security findings by severity
+        _sec_critical = 0
+        _sec_high = 0
+        _sec_total = 0
+        for _rp in refactoring_projects:
+            for _rf in _rp.get("files", []):
+                for _s in _rf.get("smells", []):
+                    if _s.get("category") == "security":
+                        _sec_total += 1
+                        if _s.get("severity") == "critical":
+                            _sec_critical += 1
+                        elif _s.get("severity") == "high":
+                            _sec_high += 1
+
+        security_panel = f"""
+  <section class="tab-panel" id="panel-security">
+    <div class="card">
+      <div class="card-title"><span class="icon" style="color:#D0002B;">&#9888;</span> Security Findings</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:180px;background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_sec_critical}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_sec_high}</div>
+        </div>
+        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Security</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_sec_total}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="securityTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text">File</th>
+              <th data-sort-type="num">Line</th>
+              <th data-sort-type="text">Detector</th>
+              <th data-sort-type="text">Severity</th>
+              <th data-sort-type="text">Context</th>
+            </tr>
+          </thead>
+          <tbody id="securityBody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 """
@@ -1921,6 +2007,12 @@ def generate_viewer_html() -> str:
     background:rgba(0,85,135,0.15); color:#005587;
   }}
   .cq-badge-active {{ outline:2px solid currentColor; }}
+  .cq-sev-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    border:none;
+  }}
+  .cq-sev-badge-active {{ outline:2px solid currentColor; }}
   .ux-badge {{
     display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
     font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
@@ -2016,9 +2108,10 @@ def generate_viewer_html() -> str:
 
     <h3 style="color:#005587;margin:1rem 0 0.5rem;">Analysis Tabs</h3>
     <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Code Quality</strong> — refactoring triage based on code smell detection. Scores combine complexity, smell count, coupling, and test coverage gaps.<br>
-      <em>Smell types:</em> sync_over_async, exception_swallowing, god_method, precision_unsafe_math, deep_nesting, excessive_parameters, magic_numbers, empty_catch.<br>
-      <em>Refactoring Value Score</em> = Complexity&times;2 + Smells&times;3 + (Fan-In&times;Fan-Out)&times;0.5 + TestGap&times;5 &minus; CategoryDiscount.
+      <strong>Code Quality</strong> — refactoring triage based on code smell and security detection. Scores use severity-weighted smells (critical=15, high=8, medium=3, low=1).<br>
+      <em>Severity tiers:</em> Critical (hardcoded secrets, SQL injection, insecure deserialization, command injection), High (weak crypto, open redirect, XSS, insecure random, exception swallowing, sync-over-async), Medium (god methods, deep nesting, long parameter lists), Low (magic numbers, missing null checks, mutable shared state).<br>
+      <em>Refactoring Value Score</em> = Complexity&times;2 + WeightedSmells + (Fan-In&times;Fan-Out)&times;0.5 + TestGap&times;5 &minus; CategoryDiscount.<br>
+      <strong>Security</strong> — dedicated view of security-category findings (critical + high severity). Shows file, line, detector, severity, and context with direct file navigation.
     </p>
     <p style="font-size:0.88rem;color:#333;line-height:1.6;">
       <strong>UX Consistency</strong> — detects XAML/WPF binding issues including broken bindings, missing DataContext, and inconsistent naming.<br>
@@ -2077,6 +2170,7 @@ def generate_viewer_html() -> str:
 {e2eflows_panel}
 {fieldtrace_panel}
 {codequality_panel}
+{security_panel}
 {uxconsistency_panel}
 {hotspots_panel}
 {nugethealth_panel}
@@ -3203,27 +3297,29 @@ function initSortableTable(table) {{
     var tbody = document.getElementById('cqBody');
     if (!tbody || projects.length === 0) return;
 
-    var smellColors = {{
-      sync_over_async:'#D0002B', exception_swallowing:'#D0002B', god_method:'#9E8700',
-      precision_unsafe_math:'#9E8700', deep_nesting:'#9E8700', excessive_parameters:'#005587',
-      magic_numbers:'#53565A', empty_catch:'#D0002B'
-    }};
+    var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
+
+    function sevBadge(sev) {{
+      var c = sevColors[sev] || '#53565A';
+      return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sev || '') + '</span>';
+    }}
 
     function buildFileDetail(p) {{
       var files = p.files || [];
       if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
       var root = repoRoots[p.repo || ''] || '';
       var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
-      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
       files.forEach(function(f) {{
         var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
         var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
-          var sc = smellColors[s.type] || '#53565A';
+          var sc = sevColors[s.severity] || '#53565A';
           var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;') : escHtml(fname);
           h += '<tr style="border-bottom:1px solid #F5F5F5;">';
           h += '<td style="padding:0.25rem 0.5rem;">' + fActions + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;">' + sevBadge(s.severity) + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
           h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
           h += '</tr>';
@@ -3241,10 +3337,15 @@ function initSortableTable(table) {{
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
       var hasFiles = p.files && p.files.length > 0;
+      // Collect severity set for this project
+      var sevSet = {{}};
+      (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{ if (s.severity) sevSet[s.severity] = true; }}); }});
+      var sevList = Object.keys(sevSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
+      tr.setAttribute('data-severities', sevList.toLowerCase());
       if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -3301,12 +3402,22 @@ function initSortableTable(table) {{
       }});
     }}
 
-    // Badge click handlers
+    // Smell badge click handlers
     document.querySelectorAll('.cq-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('cq-badge-active');
         document.querySelectorAll('.cq-badge').forEach(function (b) {{ b.classList.remove('cq-badge-active'); }});
         if (!isActive) badge.classList.add('cq-badge-active');
+        applyCqFilters();
+      }});
+    }});
+
+    // Severity badge click handlers
+    document.querySelectorAll('.cq-sev-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('cq-sev-badge-active');
+        document.querySelectorAll('.cq-sev-badge').forEach(function (b) {{ b.classList.remove('cq-sev-badge-active'); }});
+        if (!isActive) badge.classList.add('cq-sev-badge-active');
         applyCqFilters();
       }});
     }});
@@ -3320,6 +3431,8 @@ function initSortableTable(table) {{
   function applyCqFilters() {{
     var activeBadge = document.querySelector('.cq-badge.cq-badge-active');
     var smellFilter = activeBadge ? activeBadge.getAttribute('data-smell').toLowerCase() : '';
+    var activeSevBadge = document.querySelector('.cq-sev-badge.cq-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
     var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
@@ -3337,6 +3450,10 @@ function initSortableTable(table) {{
         var smells = row.getAttribute('data-smells') || '';
         if (smells.indexOf(smellFilter) === -1) show = false;
       }}
+      if (sevFilter) {{
+        var rowSevs = row.getAttribute('data-severities') || '';
+        if (rowSevs.indexOf(sevFilter) === -1) show = false;
+      }}
       if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
       if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
       if (searchQuery) {{
@@ -3346,6 +3463,45 @@ function initSortableTable(table) {{
       row.style.display = show ? '' : 'none';
     }});
   }}
+
+  // ── Security IIFE ──
+  (function () {{
+    var cqData = window._codeQualityData || {{}};
+    var projects = cqData.projects || [];
+    var repoRoots = window._repoRoots || {{}};
+    var tbody = document.getElementById('securityBody');
+    if (!tbody) return;
+
+    var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
+    var secFindings = [];
+    projects.forEach(function (p) {{
+      (p.files || []).forEach(function (f) {{
+        (f.smells || []).forEach(function (s) {{
+          if (s.category === 'security') {{
+            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '' }});
+          }}
+        }});
+      }});
+    }});
+    // Sort: critical first, then high
+    var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
+    secFindings.sort(function (a, b) {{ return (sevOrder[a.severity] || 9) - (sevOrder[b.severity] || 9); }});
+    secFindings.forEach(function (sf) {{
+      var tr = document.createElement('tr');
+      var c = sevColors[sf.severity] || '#53565A';
+      var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;') : escHtml(sf.file);
+      tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
+      tr.style.borderLeft = '3px solid ' + c;
+      tr.innerHTML =
+        '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;text-align:center;">' + sf.line + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;">' + escHtml(sf.type) + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sf.severity) + '</span></td>' +
+        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(sf.context) + '</td>';
+      tbody.appendChild(tr);
+    }});
+    initSortableTable(document.getElementById('securityTable'));
+  }})();
 
   // ── UX Consistency IIFE ──
   (function () {{
