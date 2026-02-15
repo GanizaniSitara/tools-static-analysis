@@ -519,6 +519,14 @@ def _hex_to_rgb(hex_color: str) -> str:
     return f"{int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)}"
 
 
+def _file_uri(path: str) -> str:
+    """Convert a filesystem path to a file:/// URI (forward slashes)."""
+    p = path.replace("\\", "/")
+    if not p.startswith("/"):
+        p = "/" + p  # e.g. C:/foo → /C:/foo for file:///C:/foo
+    return "file://" + p
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -1099,13 +1107,15 @@ def generate_viewer_html() -> str:
             solutions = rd.get("solutions", [])
             sol_count = len(solutions)
             cats = ", ".join(sorted(info.get("categories", {}).keys()))
-            root_path = _esc_html(rd.get("root", ""))
+            root_path_raw = rd.get("root", "")
+            root_path = _esc_html(root_path_raw)
+            root_path_link = f'<a href="{_file_uri(root_path_raw)}" target="_blank" class="mono" style="color:#005587;">{root_path}</a>' if root_path_raw else root_path
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
               <td>{sol_count}</td>
               <td>{_esc_html(cats)}</td>
-              <td class="mono">{root_path}</td>
+              <td>{root_path_link}</td>
             </tr>
 """
         repos_panel = f"""
@@ -1718,6 +1728,58 @@ def generate_viewer_html() -> str:
 <body>
 <div class="edge-tooltip" id="edgeTooltip"></div>
 
+<div id="helpModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#FFFFFF;border-radius:12px;max-width:720px;width:90%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+    <button onclick="document.getElementById('helpModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.2rem 0.6rem;font-size:0.85rem;">&#10005;</button>
+    <h2 style="color:#022D5E;margin-bottom:1rem;">Dependency Map — Help</h2>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Diagram Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Overview</strong> — category-level dependency graph. Click boxes to jump to category detail; click arrows to see project-level references.<br>
+      <strong>Category tabs</strong> (Library, Service, etc.) — project-level dependency diagrams within each category.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Data Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Data Sources</strong> — discovered data access patterns (SQL, EF, HTTP, messaging).<br>
+      <strong>Implied Dependencies</strong> — projects connected through shared data infrastructure (same DB table, queue, etc.).<br>
+      <strong>Connection Strings</strong> — configuration file connection strings found across repos.<br>
+      <strong>E2E Flows</strong> — end-to-end paths from UI screens through business layers to data access.<br>
+      <strong>Field Traceability</strong> — traces XAML bindings through ViewModels and Entities to database columns.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Analysis Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Code Quality</strong> — refactoring triage based on code smell detection. Scores combine complexity, smell count, coupling, and test coverage gaps.<br>
+      <em>Smell types:</em> sync_over_async, exception_swallowing, god_method, precision_unsafe_math, deep_nesting, excessive_parameters, magic_numbers, empty_catch.<br>
+      <em>Refactoring Value Score</em> = Complexity&times;2 + Smells&times;3 + (Fan-In&times;Fan-Out)&times;0.5 + TestGap&times;5 &minus; CategoryDiscount.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>UX Consistency</strong> — detects XAML/WPF binding issues including broken bindings, missing DataContext, and inconsistent naming.<br>
+      <em>Severity levels:</em> Error (broken bindings that will fail at runtime), Warning (likely issues), Info (style suggestions).
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Hotspots</strong> — projects ranked by coupling complexity where AI-assisted refactoring has the most impact.<br>
+      <em>Hotspot Score</em> = Fan-Out&times;3 + Fan-In&times;2 + NuGet + DataPatterns + CrossRepo&times;4.<br>
+      <em>Risk Score</em> adjusts for expected patterns (Library fan-in) and factors in code smell flags.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>NuGet Health</strong> — version conflicts (same package, different versions), legacy format projects (packages.config), target framework distribution, and Central Package Management status.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Other Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Repos</strong> — repository summary with project counts and categories.<br>
+      <strong>All Projects</strong> — searchable/sortable table of every .csproj project found.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Tips</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      Use the search box to filter any active tab. Click stat cards in the header to jump to the relevant tab. Click the AI Context link to browse per-project context files for feeding to AI assistants.
+    </p>
+  </div>
+</div>
+
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -1728,9 +1790,10 @@ def generate_viewer_html() -> str:
   </div>
   <div class="stats-row">
 {stats_html}
-    <a href="docs/ai-context/CODEBASE_OVERVIEW.md" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
+    <a href="docs/ai-context/index.html" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
       <span class="stat-value">AI</span> Context
     </a>
+    <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';">? Help</a>
   </div>
 </header>
 
@@ -3613,6 +3676,45 @@ def _write_hotspots_report(ai_dir: str, metrics: list[dict]) -> None:
     Path(os.path.join(ai_dir, "HOTSPOTS.md")).write_text(md, encoding="utf-8")
 
 
+def _write_ai_context_index(ai_dir: str) -> None:
+    """Write an index.html in the ai-context directory listing all .md files."""
+    md_files = sorted(
+        f for f in os.listdir(ai_dir) if f.endswith(".md")
+    )
+    overview_files = [f for f in md_files if f == "CODEBASE_OVERVIEW.md"]
+    hotspot_files = [f for f in md_files if f == "HOTSPOTS.md"]
+    project_files = [f for f in md_files if f not in ("CODEBASE_OVERVIEW.md", "HOTSPOTS.md")]
+
+    rows = ""
+    for f in overview_files + hotspot_files:
+        rows += f'    <li style="margin:0.3rem 0;"><a href="{f}" style="color:#005587;font-weight:600;">{f}</a></li>\n'
+    if project_files:
+        rows += '    <li style="margin:0.8rem 0 0.3rem;font-weight:600;color:#022D5E;list-style:none;">Per-Project Context Files</li>\n'
+        for f in project_files:
+            label = f.replace(".md", "")
+            rows += f'    <li style="margin:0.2rem 0;"><a href="{f}" style="color:#005587;">{label}</a></li>\n'
+
+    title = repos[0] if len(repos) == 1 else f"{len(repos)} Repositories"
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>AI Context — {_esc_html(title)}</title>
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; color: #000; }}
+  h1 {{ color: #022D5E; font-size: 1.4rem; border-bottom: 2px solid #005587; padding-bottom: 0.5rem; }}
+  ul {{ padding-left: 1.2rem; }}
+  a {{ text-decoration: none; }} a:hover {{ text-decoration: underline; }}
+  .count {{ color: #53565A; font-size: 0.85rem; }}
+</style></head>
+<body>
+  <h1>AI Context Files</h1>
+  <p class="count">{len(md_files)} files generated for {_esc_html(title)}</p>
+  <ul>
+{rows}  </ul>
+  <p style="margin-top:2rem;color:#53565A;font-size:0.78rem;font-style:italic;">Generated by Dependency Mapper — {date.today().isoformat()}</p>
+</body></html>"""
+    Path(os.path.join(ai_dir, "index.html")).write_text(html, encoding="utf-8")
+
+
 def generate_ai_context() -> int:
     """Generate AI-ready markdown context files. Returns count of files written."""
     ai_dir = os.path.join(DOCS_DIR, "ai-context")
@@ -3628,6 +3730,8 @@ def generate_ai_context() -> int:
 
     for pm in project_meta:
         _write_project_context(ai_dir, pm, metrics_by_name, bl, data_nodes)
+
+    _write_ai_context_index(ai_dir)
 
     return len(project_meta) + 2  # project files + overview + hotspots
 
