@@ -6,6 +6,13 @@
 - If a change might need to be rolled back, it absolutely must be committed first.
 - Use descriptive commit messages summarizing the what and why.
 - **Never commit plan/design .md files.** Plans live in conversation context only, not in the repo.
+- **Always raise PRs to GanizaniSitara/tools-static-analysis** (origin), not the fork. Push to `fork` remote, PR into `origin/main`.
+
+## Testing Pipeline
+- **Always test on all three repos before raising a PR:** eShop, StockSharp, OrchardCore
+- Run the full pipeline: `1_scan_projects.py` → `2_scan_smells.py` → `3_gen_diagrams.py` → `4_gen_docs.py`
+- Verify: no errors, sensible output counts, viewer.html JS syntax check passes
+- JS syntax check: extract `<script>` blocks and run `node --check`
 
 ## Project Overview
 - Static analysis tool for .NET solutions: `1_scan_projects.py` → `2_scan_smells.py` → `3_gen_diagrams.py` → `4_gen_docs.py`
