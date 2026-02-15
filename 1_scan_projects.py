@@ -555,9 +555,9 @@ _TEST_CLASS_ATTRS = re.compile(
     r"^\s*\[(?:TestFixture|TestClass)\b", re.MULTILINE
 )
 _TEST_FRAMEWORK_PATTERNS = {
-    "xUnit": re.compile(r"\busing\s+Xunit\b"),
-    "NUnit": re.compile(r"\busing\s+NUnit\b"),
-    "MSTest": re.compile(r"\busing\s+Microsoft\.VisualStudio\.TestTools\b"),
+    "xUnit": re.compile(r"\b(?:global\s+)?using\s+Xunit\b"),
+    "NUnit": re.compile(r"\b(?:global\s+)?using\s+NUnit\b"),
+    "MSTest": re.compile(r"\b(?:global\s+)?using\s+Microsoft\.VisualStudio\.TestTools\b"),
 }
 
 
@@ -591,7 +591,11 @@ def scan_test_projects(
         category = pm.get("category", "")
         repo_name = pm.get("repo", "")
         repo_root = repo_roots.get(repo_name, scan_root)
-        proj_path = pm.get("globalPath") or pm.get("path", "")
+        # Use path (relative to repo root) preferably, globalPath is relative to scan_root
+        proj_path = pm.get("path", "")
+        if not proj_path:
+            proj_path = pm.get("globalPath", "")
+
         if not proj_path:
             continue
 
@@ -599,7 +603,11 @@ def scan_test_projects(
         if os.path.isabs(proj_path):
             proj_dir = os.path.dirname(proj_path)
         else:
-            proj_dir = os.path.dirname(os.path.join(repo_root, proj_path))
+            # Try relative to repo root first, fall back to scan root
+            candidate = os.path.join(repo_root, proj_path)
+            if not os.path.exists(candidate):
+                candidate = os.path.join(scan_root, proj_path)
+            proj_dir = os.path.dirname(candidate)
 
         if not os.path.isdir(proj_dir):
             continue
@@ -630,6 +638,11 @@ def scan_test_projects(
                 if not content:
                     continue
 
+                # Check for framework using directives in all .cs files
+                for fw_name, fw_pat in _TEST_FRAMEWORK_PATTERNS.items():
+                    if fw_pat.search(content):
+                        frameworks_found.add(fw_name)
+
                 methods = len(_TEST_METHOD_ATTRS.findall(content))
                 classes = len(_TEST_CLASS_ATTRS.findall(content))
 
@@ -638,10 +651,6 @@ def scan_test_projects(
                     test_class_count += classes
                     rel_path = _relpath(fpath, repo_root)
                     test_files.append(rel_path)
-
-                    for fw_name, fw_pat in _TEST_FRAMEWORK_PATTERNS.items():
-                        if fw_pat.search(content):
-                            frameworks_found.add(fw_name)
 
         if is_test_category or test_method_count > 0:
             fw_list = sorted(frameworks_found)
