@@ -563,6 +563,21 @@ def _resolve_file_uri(rel_path: str, repo_name: str, repo_roots: dict[str, str])
     return _file_uri(rr + "/" + rp)
 
 
+def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
+    """Generate HTML for a file reference with VS Code and View action icons."""
+    if not path:
+        return f'<span class="mono">{_esc_html(display or "")}</span>'
+    disp = _esc_html(display or (f"{path}:{line}" if line else path))
+    p = _esc_html(path)
+    return (
+        f'<span class="file-ref">'
+        f'<span class="mono" style="color:#53565A;">{disp}</span>'
+        f' <a href="#" class="file-action file-vs" data-path="{p}" data-line="{line}" title="Open in VS Code">VS</a>'
+        f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
+        f'</span>'
+    )
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -889,7 +904,7 @@ def generate_viewer_html() -> str:
             cs_file = cs['file']
             cs_repo = cs.get('repo', '')
             if cs_file:
-                file_cell = f'<a href="#" class="file-link mono" data-path="{_esc_html(cs_file)}" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">{_esc_html(cs_file)}</a>'
+                file_cell = _file_actions_html(cs_file)
             else:
                 file_cell = _esc_html(cs_file)
             rows += f"""            <tr>
@@ -1178,7 +1193,7 @@ def generate_viewer_html() -> str:
             cats = ", ".join(sorted(info.get("categories", {}).keys()))
             root_path_raw = rd.get("root", "")
             root_path = _esc_html(root_path_raw)
-            root_path_link = f'<a href="#" class="file-link mono" data-path="{root_path}" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">{root_path}</a>' if root_path_raw else root_path
+            root_path_link = _file_actions_html(root_path_raw) if root_path_raw else root_path
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
@@ -1947,6 +1962,12 @@ def generate_viewer_html() -> str:
   .flow-step {{ display: inline-flex; align-items: center; gap: 0.3rem; margin: 0.2rem 0; }}
   .flow-arrow {{ color: #53565A; margin: 0 0.2rem; }}
   .mono {{ font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; color: #53565A; }}
+  .file-ref {{ display:inline; white-space:nowrap; }}
+  .file-action {{ display:inline-block; padding:0.1rem 0.35rem; border-radius:3px; font-size:0.6rem; font-weight:700; cursor:pointer; text-decoration:none; margin-left:0.2rem; vertical-align:middle; line-height:1.2; }}
+  .file-vs {{ background:#0078d4; color:#fff !important; }}
+  .file-vs:hover {{ background:#005a9e; }}
+  .file-view {{ background:#e8e8e8; color:#333 !important; }}
+  .file-view:hover {{ background:#d0d0d0; }}
   .footer {{
     text-align: center; padding: 1.5rem 2rem; color: #53565A;
     font-size: 0.78rem; font-style: italic; border-top: 1px solid #E1E1E1;
@@ -2680,7 +2701,7 @@ function escHtmlGlobal(s) {{
   return d.innerHTML;
 }}
 
-// ── File path resolution and copy-to-clipboard ──
+// ── File path resolution ──
 function _resolveFilePath(repoRoot, relFile) {{
   if (!repoRoot || !relFile) return '';
   var rf = relFile.replace(/\\\\/g, '/');
@@ -2694,6 +2715,8 @@ function _resolveFilePath(repoRoot, relFile) {{
 function _resolveFromRoots(filePath) {{
   if (!filePath) return '';
   var fp = filePath.replace(/\\\\/g, '/');
+  // Already an absolute path — return as-is
+  if (fp.charAt(0) === '/' || /^[A-Za-z]:/.test(fp)) return fp;
   var roots = window._repoRoots || {{}};
   var firstSeg = fp.split('/')[0];
   if (roots[firstSeg]) return _resolveFilePath(roots[firstSeg], fp);
@@ -2702,46 +2725,37 @@ function _resolveFromRoots(filePath) {{
   }}
   return fp;
 }}
-function copyPathToClipboard(fullPath, line) {{
-  var text = fullPath + (line ? ':' + line : '');
-  navigator.clipboard.writeText(text).then(function() {{
-    showToast('Copied: ' + text);
-  }}).catch(function() {{
-    showToast(text, true);
-  }});
+// Global helper: generate file action icons HTML (VS Code + View)
+function fileActionsHtml(filePath, line, style) {{
+  if (!filePath) return '';
+  var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
+  var dp = escHtmlGlobal(filePath);
+  var dl = line || 0;
+  return '<span class="file-ref">' +
+    '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
+    ' <a href="#" class="file-action file-vs" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">VS</a>' +
+    ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
+    '</span>';
 }}
-function showToast(msg, isLong) {{
-  var t = document.getElementById('pathToast');
-  if (!t) {{
-    t = document.createElement('div');
-    t.id = 'pathToast';
-    t.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#022D5E;color:#fff;padding:0.5rem 1.2rem;border-radius:8px;font-size:0.82rem;font-family:monospace;z-index:10000;opacity:0;transition:opacity 0.3s;pointer-events:none;max-width:80vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-    document.body.appendChild(t);
-  }}
-  t.textContent = msg;
-  t.style.opacity = '1';
-  clearTimeout(t._tid);
-  t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
-}}
-function handleFileClick(e, filePath, line) {{
-  var fullPath = _resolveFromRoots(filePath);
-  if (window.location.protocol === 'file:') {{
-    var p = fullPath;
-    if (p.charAt(0) !== '/') p = '/' + p;
-    window.open('file://' + p, '_blank');
-  }} else {{
-    copyPathToClipboard(fullPath, line);
-  }}
-  e.preventDefault();
-  return false;
-}}
-// Delegated click handler for all .file-link elements (uses data attributes, no inline JS)
+// Delegated click handler for file action icons
 document.addEventListener('click', function(e) {{
-  var link = e.target.closest('.file-link');
-  if (!link) return;
-  var path = link.getAttribute('data-path');
-  var line = parseInt(link.getAttribute('data-line') || '0', 10);
-  if (path) handleFileClick(e, path, line);
+  var action = e.target.closest('.file-action');
+  if (!action) return;
+  e.preventDefault();
+  var path = action.getAttribute('data-path');
+  var line = parseInt(action.getAttribute('data-line') || '0', 10);
+  if (!path) return;
+  var resolved = _resolveFromRoots(path);
+  if (action.classList.contains('file-vs')) {{
+    // Open in VS Code
+    var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
+    if (line) vsUri += ':' + line;
+    window.location.href = vsUri;
+  }} else if (action.classList.contains('file-view')) {{
+    // Open in browser file viewer
+    var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+    window.open(viewUrl, '_blank');
+  }}
 }});
 
 function parseCategoryLabel(label) {{
@@ -3027,7 +3041,7 @@ function initSortableTable(table) {{
         '<td>' + layerTagHTML(layerName, layerConf) + '</td>' +
         '<td style="text-align:center">' + (refCounts[p.project] || 0) + '</td>' +
         '<td style="text-align:center">' + (depCounts[p.project] || 0) + '</td>' +
-        (function() {{ var fp = p.globalPath || p.path || ''; return fp ? '<td class="mono"><a href="#" class="file-link" data-path="' + escHtml(fp) + '" data-line="0" style="color:#005587;cursor:pointer;" title="Click to copy path">' + escHtml(fp) + '</a></td>' : '<td class="mono"></td>'; }})();
+        (function() {{ var fp = p.globalPath || p.path || ''; return fp ? '<td>' + fileActionsHtml(fp, 0) + '</td>' : '<td class="mono"></td>'; }})();
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
@@ -3162,12 +3176,6 @@ function initSortableTable(table) {{
       magic_numbers:'#53565A', empty_catch:'#D0002B'
     }};
 
-    function fileLink(filePath, line, style) {{
-      var display = escHtml(filePath || '') + (line ? ':' + line : '');
-      if (filePath) return '<a href="#" class="file-link mono" data-path="' + escHtml(filePath) + '" data-line="' + (line || 0) + '" style="cursor:pointer;' + (style || 'color:#005587;font-size:0.68rem;') + '" title="Click to copy path">' + display + '</a>';
-      return '<span class="mono" style="' + (style || 'font-size:0.68rem;color:#53565A;') + '">' + display + '</span>';
-    }}
-
     function buildFileDetail(p) {{
       var files = p.files || [];
       if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
@@ -3179,9 +3187,9 @@ function initSortableTable(table) {{
         var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
           var sc = smellColors[s.type] || '#53565A';
-          var fileLink = fPath ? '<a href="#" class="file-link" data-path="' + escHtml(fPath) + '" data-line="' + (s.line || 0) + '" style="color:#005587;cursor:pointer;" title="' + escHtml(fPath) + '">' + escHtml(fname) + '</a>' : escHtml(fname);
+          var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;') : escHtml(fname);
           h += '<tr style="border-bottom:1px solid #F5F5F5;">';
-          h += '<td style="padding:0.25rem 0.5rem;" class="mono">' + fileLink + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;">' + fActions + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
           h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
@@ -3344,7 +3352,7 @@ function initSortableTable(table) {{
         h += '<div style="margin:0.4rem 0;font-size:0.88rem;">' + escHtml(issue.message || '') + '</div>';
         if (issue.file) {{
           h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">File:</span> ';
-          h += fileLink(issue.file, issue.line, 'color:#005587;font-size:0.85rem;');
+          h += fileActionsHtml(issue.file, issue.line, 'color:#005587;font-size:0.85rem;');
           h += '</div>';
         }}
         if (issue.bindingPath) {{
@@ -3662,7 +3670,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#621244;text-transform:uppercase;">XAML View</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(xaml.viewType) + '</strong>';
       html += '<div class="mono" style="font-size:0.72rem;">' + escHtml(xaml.bindingPath || '') + '</div>';
-      html += '<div>' + fileLink(xaml.file, xaml.line) + '</div>';
+      html += '<div>' + fileActionsHtml(xaml.file, xaml.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3671,7 +3679,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#36749D;text-transform:uppercase;">ViewModel</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(vm.className) + '</strong>';
       html += '<div style="font-size:0.78rem;">' + escHtml(vm.propertyName || '') + ': ' + escHtml(vm.propertyType || '') + '</div>';
-      html += '<div>' + fileLink(vm.file, vm.line) + '</div>';
+      html += '<div>' + fileActionsHtml(vm.file, vm.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3680,7 +3688,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#005587;text-transform:uppercase;">Entity</div>';
       html += '<strong style="font-size:0.82rem;word-break:break-all;">' + escHtml(ent.className) + '</strong>';
       html += '<div style="font-size:0.78rem;">' + escHtml(ent.propertyName || '') + ': ' + escHtml(ent.propertyType || '') + '</div>';
-      html += '<div>' + fileLink(ent.file, ent.line) + '</div>';
+      html += '<div>' + fileActionsHtml(ent.file, ent.line) + '</div>';
       html += '</div>';
       html += '<div style="text-align:center;color:#53565A;font-size:0.9rem;">&darr;</div>';
     }}
@@ -3689,7 +3697,7 @@ function initSortableTable(table) {{
       html += '<div style="font-size:0.7rem;color:#009639;text-transform:uppercase;">DB Column</div>';
       html += '<strong style="font-size:0.82rem;">' + escHtml(db.table) + '.' + escHtml(db.column || '') + '</strong>';
       html += '<div style="font-size:0.78rem;">Source: ' + escHtml(db.source || '') + '</div>';
-      if (db.file) html += '<div>' + fileLink(db.file, db.line) + '</div>';
+      if (db.file) html += '<div>' + fileActionsHtml(db.file, db.line) + '</div>';
       html += '</div>';
     }}
     html += '</div>';
