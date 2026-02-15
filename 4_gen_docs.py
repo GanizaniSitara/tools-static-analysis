@@ -663,20 +663,38 @@ def generate_viewer_html() -> str:
     refactoring_projects = refactoring_data.get("projects", [])
     refactoring_summary = refactoring_data.get("summary", {})
     claude_targets = refactoring_data.get("claudeCodeTargets", {})
-    # Cap at 200 projects and strip files[] (too large for embedding)
+    # Cap at 200 projects; include trimmed files[] for click-through evidence
     cq_projects_trimmed = []
     for _rp in refactoring_projects[:200]:
-        cq_projects_trimmed.append({
+        entry = {
             k: v for k, v in _rp.items()
             if k in ("project", "repo", "category", "layer", "refactoring_value_score",
                      "smell_count", "top_smells", "total_lines", "total_files",
                      "has_tests", "complexity_score", "fan_in", "fan_out")
-        })
+        }
+        # Include trimmed files with smell evidence (max 50 files, 20 smells each)
+        raw_files = _rp.get("files", [])
+        trimmed_files = []
+        for rf in sorted(raw_files, key=lambda f: -f.get("smell_count", 0))[:50]:
+            smells = rf.get("smells", [])[:20]
+            trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
+                               "context": (s.get("context") or "")[:100]} for s in smells]
+            if trimmed_smells:
+                trimmed_files.append({"file": rf.get("file", ""),
+                                      "smellCount": rf.get("smell_count", len(trimmed_smells)),
+                                      "smells": trimmed_smells})
+        if trimmed_files:
+            entry["files"] = trimmed_files
+        cq_projects_trimmed.append(entry)
     cq_embedded = json.dumps({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
     })
+
+    # ── Repo root lookup for file:// links ──
+    repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
+    repos_roots_json = json.dumps(repos_root_lookup)
 
     # ── UX inconsistency data ──
     ux_issues = ux_inconsistencies.get("issues", [])
@@ -2669,6 +2687,7 @@ function initSortableTable(table) {{
   window._hotspotData = {hotspot_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
+  window._repoRoots = {repos_roots_json};
   window._isMultiRepo = {str(is_multi_repo).lower()};
 
   // Load data-flow.json for edge detail panel
@@ -2844,8 +2863,47 @@ function initSortableTable(table) {{
   (function () {{
     var cqData = window._codeQualityData || {{}};
     var projects = cqData.projects || [];
+    var repoRoots = window._repoRoots || {{}};
     var tbody = document.getElementById('cqBody');
     if (!tbody || projects.length === 0) return;
+
+    var smellColors = {{
+      sync_over_async:'#D0002B', exception_swallowing:'#D0002B', god_method:'#9E8700',
+      precision_unsafe_math:'#9E8700', deep_nesting:'#9E8700', excessive_parameters:'#005587',
+      magic_numbers:'#53565A', empty_catch:'#D0002B'
+    }};
+
+    function fileUri(repoRoot, relFile) {{
+      if (!repoRoot) return '';
+      var p = (repoRoot + '/' + relFile).replace(/\\\\/g, '/');
+      if (p.charAt(0) !== '/') p = '/' + p;
+      return 'file://' + p;
+    }}
+
+    function buildFileDetail(p) {{
+      var files = p.files || [];
+      if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
+      var root = repoRoots[p.repo || ''] || '';
+      var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      files.forEach(function(f) {{
+        var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
+        var uri = fileUri(root, f.file || '');
+        (f.smells || []).forEach(function(s) {{
+          var sc = smellColors[s.type] || '#53565A';
+          var fileLink = uri ? '<a href="' + escHtml(uri) + '" target="_blank" style="color:#005587;" title="' + escHtml(f.file || '') + '">' + escHtml(fname) + '</a>' : escHtml(fname);
+          h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+          h += '<td style="padding:0.25rem 0.5rem;" class="mono">' + fileLink + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
+          h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
+          h += '</tr>';
+        }});
+      }});
+      h += '</tbody></table>';
+      return h;
+    }}
+
     var categories = {{}};
     projects.forEach(function (p) {{
       var tr = document.createElement('tr');
@@ -2853,12 +2911,14 @@ function initSortableTable(table) {{
       var scoreColor = score > 100 ? '#D0002B' : score > 50 ? '#9E8700' : '#009639';
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
+      var hasFiles = p.files && p.files.length > 0;
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
+      if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
-        '<td><strong>' + escHtml(p.project || '') + '</strong></td>' +
+        '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
         '<td>' + tagHTML(p.category || '') + '</td>' +
         '<td style="text-align:center;font-weight:700;color:' + scoreColor + '">' + score + '</td>' +
         '<td style="text-align:center">' + (p.smell_count || 0) + '</td>' +
@@ -2867,6 +2927,35 @@ function initSortableTable(table) {{
         '<td style="text-align:center">' + (p.complexity_score || 0) + '</td>' +
         '<td style="text-align:center">' + (p.has_tests ? '<span style="color:#009639">&#10003;</span>' : '<span style="color:#D0002B">&#10007;</span>') + '</td>';
       tbody.appendChild(tr);
+
+      // Expandable detail row
+      if (hasFiles) {{
+        var detailTr = document.createElement('tr');
+        detailTr.className = 'cq-detail-row';
+        detailTr.style.display = 'none';
+        var detailTd = document.createElement('td');
+        detailTd.colSpan = 8;
+        detailTd.style.padding = '0 0.5rem 0.75rem 1.5rem';
+        detailTd.style.background = '#FAFAFA';
+        detailTr.appendChild(detailTd);
+        tbody.appendChild(detailTr);
+
+        tr.addEventListener('click', function () {{
+          var showing = detailTr.style.display !== 'none';
+          // Collapse any open detail rows
+          document.querySelectorAll('.cq-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+          document.querySelectorAll('#cqBody tr[data-search] span').forEach(function(s) {{
+            if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+          }});
+          if (!showing) {{
+            if (!detailTd.innerHTML) detailTd.innerHTML = buildFileDetail(p);
+            detailTr.style.display = '';
+            var arrow = tr.querySelector('td:first-child span');
+            if (arrow) arrow.textContent = '\u25BC';
+          }}
+        }});
+      }}
+
       var cat = (p.category || '').toLowerCase();
       if (cat) categories[cat] = true;
     }});
@@ -2907,6 +2996,11 @@ function initSortableTable(table) {{
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
 
+    // Collapse all detail rows on filter
+    document.querySelectorAll('.cq-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+    document.querySelectorAll('#cqBody tr[data-search] span').forEach(function(s) {{
+      if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+    }});
     var rows = document.querySelectorAll('#cqBody tr[data-search]');
     rows.forEach(function (row) {{
       var show = true;
@@ -2950,22 +3044,53 @@ function initSortableTable(table) {{
         tr.setAttribute('data-available-props', JSON.stringify(iss.availableProperties));
       }}
       tr.style.cursor = 'pointer';
-      tr.addEventListener('click', function () {{
+      tr.addEventListener('click', (function(issue) {{ return function () {{
         var sidebar = document.getElementById('uxDetailSidebar');
         if (!sidebar) return;
+        var repoRoots = window._repoRoots || {{}};
+        var root = repoRoots[issue.repo || ''] || '';
+        var h = '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;">';
+        h += '<strong style="color:#022D5E;font-size:0.95rem;">' + escHtml(issue.type || '') + '</strong>';
+        var sc = sevColors[issue.severity] || '#53565A';
+        h += '<span style="padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(issue.severity || '') + '</span></div>';
+        h += '<div style="margin:0.4rem 0;font-size:0.88rem;">' + escHtml(issue.message || '') + '</div>';
+        if (issue.file) {{
+          var fileUri = root ? 'file://' + (root + '/' + issue.file).replace(/\\\\/g, '/').replace(/^([^/])/, '/$1') : '';
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">File:</span> ';
+          if (fileUri) h += '<a href="' + escHtml(fileUri) + '" target="_blank" style="color:#005587;" class="mono">' + escHtml(issue.file) + '</a>';
+          else h += '<span class="mono">' + escHtml(issue.file) + '</span>';
+          if (issue.line) h += '<span class="mono">:' + issue.line + '</span>';
+          h += '</div>';
+        }}
+        if (issue.bindingPath) {{
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">Binding Path:</span> <code style="background:#F5F5F5;padding:0.1rem 0.4rem;border-radius:3px;">' + escHtml(issue.bindingPath) + '</code></div>';
+        }}
+        if (issue.resolvedViewModel) {{
+          h += '<div style="margin:0.3rem 0;"><span style="color:#53565A;font-size:0.75rem;text-transform:uppercase;">ViewModel:</span> <strong>' + escHtml(issue.resolvedViewModel) + '</strong></div>';
+        }}
         var props = tr.getAttribute('data-available-props');
         if (props) {{
           try {{
             var propList = JSON.parse(props);
-            sidebar.innerHTML = '<strong>Available VM Properties:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">' +
-              propList.map(function(p) {{ return '<li style="font-size:0.85rem;">' + escHtml(p) + '</li>'; }}).join('') + '</ul>';
-            sidebar.style.display = 'block';
-          }} catch(e) {{ sidebar.style.display = 'none'; }}
-        }} else {{
-          sidebar.innerHTML = '<strong>' + escHtml(iss.type || '') + ':</strong> ' + escHtml(iss.message || '');
-          sidebar.style.display = 'block';
+            // Fuzzy match suggestion
+            if (issue.bindingPath && propList.length > 0) {{
+              var bp = (issue.bindingPath || '').toLowerCase();
+              var suggestions = propList.filter(function(p) {{
+                var pl = p.toLowerCase();
+                return pl.indexOf(bp) !== -1 || bp.indexOf(pl) !== -1 ||
+                  (bp.length > 2 && pl.indexOf(bp.substring(0,3)) !== -1);
+              }});
+              if (suggestions.length > 0 && suggestions.length < propList.length) {{
+                h += '<div style="margin:0.5rem 0;padding:0.5rem;background:#E8F5E9;border-radius:6px;"><strong style="color:#009639;">Did you mean?</strong> ' + suggestions.map(function(s) {{ return '<code style="background:#FFFFFF;padding:0.1rem 0.4rem;border-radius:3px;">' + escHtml(s) + '</code>'; }}).join(', ') + '</div>';
+              }}
+            }}
+            h += '<div style="margin-top:0.5rem;"><strong>Available VM Properties:</strong><ul style="margin:0.3rem 0;padding-left:1.2rem;">' +
+              propList.map(function(p) {{ return '<li style="font-size:0.85rem;">' + escHtml(p) + '</li>'; }}).join('') + '</ul></div>';
+          }} catch(e) {{ /* skip */ }}
         }}
-      }});
+        sidebar.innerHTML = h;
+        sidebar.style.display = 'block';
+      }}; }})(iss));
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('uxTable'));
