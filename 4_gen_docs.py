@@ -116,6 +116,14 @@ repos = sorted({p["repo"] for p in project_meta if p.get("repo")})
 is_multi_repo = len(repos) > 1
 project_to_repo = {p["project"]: p.get("repo", "") for p in project_meta}
 
+def _first_path_segment(path: str) -> str:
+    parts = path.replace("\\", "/").split("/")
+    return parts[0] if len(parts) > 1 else ""
+
+project_to_group = {p["project"]: _first_path_segment(p.get("globalPath") or p.get("path", "")) for p in project_meta}
+project_groups = sorted({g for g in project_to_group.values() if g})
+has_filter_groups = len(project_groups) > 1
+
 # Create directory structure
 dirs = ["", "applications", "libraries", "connectors", "data-sources", "diagrams"]
 if is_multi_repo:
@@ -665,15 +673,13 @@ def generate_viewer_html() -> str:
     for f in data_findings:
         p = f["pattern"]
         if p not in pattern_summary:
-            pattern_summary[p] = {"type": f["type"], "count": 0, "projects": set(), "repos": set()}
+            pattern_summary[p] = {"type": f["type"], "count": 0, "projects": set()}
         pattern_summary[p]["count"] += 1
         proj = f.get("project") or ""
         if not proj:
             parts = os.path.normpath(f["file"]).split(os.sep)
             proj = parts[1 if is_multi_repo else 0] if len(parts) > (1 if is_multi_repo else 0) else parts[0]
         pattern_summary[p]["projects"].add(proj)
-        if proj:
-            pattern_summary[p]["repos"].add(project_to_repo.get(proj, ""))
 
     # ── Connection strings ──
     conn_strings: list[dict] = []
@@ -754,7 +760,8 @@ def generate_viewer_html() -> str:
     # ── Repo root lookup for file:// links ──
     repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
     repos_roots_json = _safe_json_for_script(repos_root_lookup)
-    repos_json = _safe_json_for_script(repos)
+    repos_json = _safe_json_for_script(project_groups)
+    project_groups_map_json = _safe_json_for_script(project_to_group)
 
     # ── UX inconsistency data ──
     ux_issues = ux_inconsistencies.get("issues", [])
@@ -910,8 +917,8 @@ def generate_viewer_html() -> str:
             projects_str = _esc_html(", ".join(sorted(info["projects"])[:5]))
             if len(info["projects"]) > 5:
                 projects_str += f", ... +{len(info['projects']) - 5} more"
-            ds_repos = ",".join(sorted(r for r in info.get("repos", set()) if r))
-            rows += f"""            <tr data-repo="{_esc_html(ds_repos)}">
+            ds_groups = ",".join(sorted({project_to_group.get(p, '') for p in info["projects"]} - {''}))
+            rows += f"""            <tr data-repo="{_esc_html(ds_groups)}">
               <td><strong>{_esc_html(pattern)}</strong></td>
               <td><span class="tag {tag_cls}">{type_label}</span></td>
               <td>{info['count']}</td>
@@ -1052,7 +1059,7 @@ def generate_viewer_html() -> str:
             chain = " &rarr; ".join(chain_parts)
             named = _esc_html(fp.get("namedFlow", ""))
 
-            flow_repo = _esc_html(project_to_repo.get(source, ''))
+            flow_repo = _esc_html(project_to_group.get(source, ''))
             flow_rows += f"""            <tr class="flow-row" data-flow-idx="{i}" data-repo="{flow_repo}" data-search="{_esc_html(source.lower() + ' ' + layers_crossed.lower() + ' ' + named.lower())}">
               <td><strong>{_esc_html(source)}</strong></td>
               <td>{_esc_html(layers_crossed)}</td>
@@ -1569,7 +1576,7 @@ def generate_viewer_html() -> str:
         # Build legacy table rows
         nh_legacy_rows = ""
         for lp in nh_legacy:
-            nh_legacy_rows += f"""<tr data-repo="{_esc_html(lp.get('repo', ''))}">
+            nh_legacy_rows += f"""<tr data-repo="{_esc_html(project_to_group.get(lp.get('project',''), ''))}">
               <td>{_esc_html(lp.get('project', ''))}</td>
               <td>{_esc_html(lp.get('repo', ''))}</td>
               <td class="mono">{_esc_html(lp.get('path', ''))}</td>
@@ -1724,7 +1731,7 @@ def generate_viewer_html() -> str:
             if len(tp.get("covers", [])) > 5:
                 covers += f" +{len(tp['covers']) - 5} more"
             fw_color = {"xUnit": "#005587", "NUnit": "#009639", "MSTest": "#80276C"}.get(tp.get("testFramework", ""), "#53565A")
-            test_rows += f"""            <tr data-repo="{_esc_html(tp.get('repo', ''))}">
+            test_rows += f"""            <tr data-repo="{_esc_html(project_to_group.get(tp.get('project',''), ''))}">
               <td><strong>{_esc_html(tp.get('project', ''))}</strong></td>
               <td>{_esc_html(tp.get('repo', ''))}</td>
               <td><span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:4px;font-size:0.72rem;font-weight:600;background:rgba({_hex_to_rgb(fw_color)},0.15);color:{fw_color};">{_esc_html(tp.get('testFramework', ''))}</span></td>
@@ -2260,9 +2267,9 @@ def generate_viewer_html() -> str:
       <span class="search-icon">&#128269;</span>
       <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
     </div>
-{"" if not is_multi_repo else '''    <div class="search-box" style="margin-left:0.5rem;">
+{"" if not has_filter_groups else '''    <div class="search-box" style="margin-left:0.5rem;">
       <select id="globalRepoFilter" style="padding:0.35rem 0.6rem;border-radius:6px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:#fff;font-size:0.85rem;cursor:pointer;outline:none;">
-        <option value="">All Repos</option>
+        <option value="">All Folders</option>
       </select>
     </div>'''}
   </div>
@@ -3239,6 +3246,7 @@ function initSortableTable(table) {{
   window._externalToolsData = {ext_tools_embedded};
   window._isMultiRepo = {str(is_multi_repo).lower()};
   window._repos = {repos_json};
+  window._projectGroupMap = {project_groups_map_json};
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -3272,13 +3280,14 @@ function initSortableTable(table) {{
     var tbody = document.getElementById('projectsBody');
     tbody.innerHTML = '';
     var bl = (window._flowData || {{}}).businessLayers || {{}};
+    var grp = window._projectGroupMap || {{}};
     meta.forEach(function (p) {{
       var tr = document.createElement('tr');
       var layerInfo = bl[p.project] || {{}};
       var layerName = layerInfo.layer || '';
       var layerConf = layerInfo.confidence || 0;
       tr.setAttribute('data-search', (p.project + ' ' + (p.repo||'') + ' ' + p.category + ' ' + layerName + ' ' + (p.globalPath||p.path||'')).toLowerCase());
-      tr.setAttribute('data-repo', p.repo || '');
+      tr.setAttribute('data-repo', grp[p.project] || '');
       var docPath = window._isMultiRepo
         ? 'docs/repos/' + encodeURIComponent(p.repo || 'unknown') + '/' + encodeURIComponent(p.project) + '.md'
         : 'docs/' + catDir(p.category) + '/' + encodeURIComponent(p.project) + '.md';
@@ -3306,6 +3315,7 @@ function initSortableTable(table) {{
     var data = window._hotspotData || [];
     var tbody = document.getElementById('hotspotsBody');
     if (!tbody || data.length === 0) return;
+    var grp = window._projectGroupMap || {{}};
     var total = data.length;
     var topThird = Math.ceil(total / 3);
     var midThird = Math.ceil(total * 2 / 3);
@@ -3316,7 +3326,7 @@ function initSortableTable(table) {{
       else if (idx < midThird) {{ scoreColor = '#9E8700'; scoreBg = 'rgba(158,135,0,0.06)'; }}
       else {{ scoreColor = '#009639'; scoreBg = 'rgba(0,150,57,0.06)'; }}
       tr.setAttribute('data-search', (m.project + ' ' + m.category + ' ' + (m.layer || '') + ' ' + (m.repo || '')).toLowerCase());
-      tr.setAttribute('data-repo', m.repo || '');
+      tr.setAttribute('data-repo', grp[m.project] || '');
       tr.setAttribute('data-category', (m.category || '').toLowerCase());
       tr.setAttribute('data-layer', (m.layer || '').toLowerCase());
       // Build risk cell & determine highest risk level
@@ -3416,6 +3426,7 @@ function initSortableTable(table) {{
     var cqData = window._codeQualityData || {{}};
     var projects = cqData.projects || [];
     var repoRoots = window._repoRoots || {{}};
+    var grp = window._projectGroupMap || {{}};
     var tbody = document.getElementById('cqBody');
     if (!tbody || projects.length === 0) return;
 
@@ -3464,7 +3475,7 @@ function initSortableTable(table) {{
       (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{ if (s.severity) sevSet[s.severity] = true; }}); }});
       var sevList = Object.keys(sevSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
-      tr.setAttribute('data-repo', p.repo || '');
+      tr.setAttribute('data-repo', grp[p.project] || '');
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
@@ -3594,6 +3605,8 @@ function initSortableTable(table) {{
     var cqData = window._codeQualityData || {{}};
     var projects = cqData.projects || [];
     var repoRoots = window._repoRoots || {{}};
+    var grp = window._projectGroupMap || {{}};
+    function firstPathSegment(p) {{ var s = (p||'').replace(/\\\\/g,'/').split('/'); return s.length > 1 ? s[0] : ''; }}
     var extData = window._externalToolsData || {{}};
     var tbody = document.getElementById('securityBody');
     if (!tbody) return;
@@ -3623,7 +3636,7 @@ function initSortableTable(table) {{
       var c = sevColors[sf.severity] || '#53565A';
       var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;') : escHtml(sf.file);
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
-      tr.setAttribute('data-repo', sf.repo || '');
+      tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
         '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
@@ -3642,18 +3655,7 @@ function initSortableTable(table) {{
     var findings = extData.findings || [];
     var tbody = document.getElementById('extToolsBody');
     if (!tbody || findings.length === 0) return;
-    var repoRoots = window._repoRoots || {{}};
-    function findRepoForFile(filePath) {{
-      if (!filePath) return '';
-      var bestRepo = '', bestLen = 0;
-      for (var rName in repoRoots) {{
-        var root = repoRoots[rName];
-        if (root && filePath.indexOf(root) === 0 && root.length > bestLen) {{
-          bestRepo = rName; bestLen = root.length;
-        }}
-      }}
-      return bestRepo;
-    }}
+    function firstPathSegment(p) {{ var s = (p||'').replace(/\\\\/g,'/').split('/'); return s.length > 1 ? s[0] : ''; }}
     var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
     var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
     findings.sort(function (a, b) {{ return (sevOrder[a.severity] || 9) - (sevOrder[b.severity] || 9); }});
@@ -3662,7 +3664,7 @@ function initSortableTable(table) {{
       var c = sevColors[f.severity] || '#53565A';
       var fActions = f.file ? fileActionsHtml(f.file, f.line, 'font-size:0.8rem;color:#005587;') : escHtml(f.file || '');
       tr.setAttribute('data-search', ((f.tool || '') + ' ' + (f.file || '') + ' ' + (f.ruleId || '') + ' ' + (f.message || '')).toLowerCase());
-      tr.setAttribute('data-repo', findRepoForFile(f.file || ''));
+      tr.setAttribute('data-repo', firstPathSegment(f.file || ''));
       tr.setAttribute('data-tool', f.tool || '');
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
@@ -3708,12 +3710,13 @@ function initSortableTable(table) {{
     var issues = uxData.issues || [];
     var tbody = document.getElementById('uxBody');
     if (!tbody || issues.length === 0) return;
+    var grp = window._projectGroupMap || {{}};
     var sevColors = {{ error: '#D0002B', warning: '#9E8700', info: '#53565A' }};
     issues.forEach(function (iss) {{
       var tr = document.createElement('tr');
       var c = sevColors[iss.severity] || '#53565A';
       tr.setAttribute('data-search', (iss.project + ' ' + iss.type + ' ' + (iss.file || '') + ' ' + iss.message).toLowerCase());
-      tr.setAttribute('data-repo', iss.repo || '');
+      tr.setAttribute('data-repo', grp[iss.project] || '');
       tr.setAttribute('data-severity', iss.severity || '');
       tr.setAttribute('data-type', iss.type || '');
       var viewClass = iss.viewType || iss.className || '';
