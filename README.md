@@ -2,7 +2,38 @@
 
 Static analysis pipeline for .NET codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
 
-## Usage
+## Prerequisites
+
+Python 3.10+ with no additional packages required — the core pipeline uses only the standard library.
+
+### Optional: external analysis tools
+
+For deeper security and quality coverage, install any combination of:
+
+```bash
+pip install semgrep bandit detect-secrets radon
+```
+
+These are entirely optional. The pipeline works without them and skips any that aren't installed.
+
+## Quick start
+
+The simplest way to run everything is via `run.py`:
+
+```bash
+# Core pipeline only (no external tools)
+python3 run.py /path/to/repos output-myproject
+
+# Core pipeline + all available external tools
+python3 run.py /path/to/repos output-myproject --tools all
+
+# Core pipeline + specific tools only
+python3 run.py /path/to/repos output-myproject --tools semgrep,bandit
+```
+
+This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
+
+## Running individual steps
 
 ```bash
 # 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
@@ -11,14 +42,17 @@ python3 1_scan_projects.py /path/to/repos output-myproject
 # 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
 python3 2_scan_smells.py /path/to/repos output-myproject --level high
 
-# 3. Generate Mermaid/GraphViz diagrams from graph.json
+# 3. (Optional) Run external tools — semgrep, bandit, detect-secrets, radon
+python3 5_external_tools.py /path/to/repos output-myproject --tools all
+
+# 4. Generate Mermaid/GraphViz diagrams from graph.json
 python3 3_gen_diagrams.py output-myproject
 
-# 4. Generate viewer.html, markdown docs, and AI context files
+# 5. Generate viewer.html, markdown docs, and AI context files
 python3 4_gen_docs.py output-myproject
 ```
 
-Steps 1-2 scan source and can run in parallel. Step 3 needs graph.json from step 1. Step 4 reads all outputs, so run it last.
+Steps 1-2 scan source and can run in parallel. Step 3 (external tools) can run any time after steps 1-2. Step 4 needs graph.json from step 1. Step 5 reads all outputs (including `external-tools.json` if present), so run it last.
 
 ### Severity levels (`--level`)
 
@@ -47,6 +81,19 @@ python3 run.py dummy output-myproject 8001 --serve-only
 
 This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
 
+### External tools (`--tools`)
+
+Off by default. Pass `--tools all` to run every installed tool, or a comma-separated list for specific ones. Tools not found in PATH are skipped with a warning.
+
+| Tool | What it checks | Category |
+|------|---------------|----------|
+| `semgrep` | Pattern-based security and correctness rules | security |
+| `bandit` | Python security linter | security |
+| `detect-secrets` | Hardcoded secrets and credentials | security |
+| `radon` | Cyclomatic complexity and maintainability index | quality |
+
+Findings appear in an **External Tools** tab in the viewer, and security-category findings are also merged into the **Security** tab. Output is written to `external-tools.json`.
+
 ## Outputs (in `output-myproject/`)
 
 | File | Producer | Description |
@@ -60,5 +107,6 @@ This starts the custom HTTP server immediately on existing output — no re-scan
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
 | `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
+| `external-tools.json` | 5_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
 | `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
 | `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |

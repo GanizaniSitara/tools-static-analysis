@@ -53,6 +53,7 @@ refactoring_data: dict = _load_json(os.path.join(OUT_DIR, "refactoring-targets.j
 ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.json"), {})
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
+external_tools_data: dict = _load_json(os.path.join(OUT_DIR, "external-tools.json"), {})
 
 # Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
 language_data: dict[str, dict] = {}
@@ -756,6 +757,17 @@ def generate_viewer_html() -> str:
     ux_summary = ux_inconsistencies.get("summary", {})
     ux_embedded = _safe_json_for_script({"issues": ux_issues, "summary": ux_summary})
 
+    # ── External tools data ──
+    _ext_all_findings = []
+    for _et in external_tools_data.get("tools", {}).values():
+        _ext_all_findings.extend(_et.get("findings", []))
+    ext_tools_embedded = _safe_json_for_script({
+        "findings": _ext_all_findings,
+        "summary": external_tools_data.get("summary", {}),
+        "toolsExecuted": external_tools_data.get("toolsExecuted", []),
+        "toolsSkipped": external_tools_data.get("toolsSkipped", {}),
+    })
+
     # ── NuGet health data ──
     nh_conflicts = nuget_health.get("versionConflicts", [])
     nh_legacy = nuget_health.get("legacyFormatProjects", [])
@@ -780,12 +792,16 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
     if refactoring_projects:
         all_tab_ids.append(("codequality", "Code Quality"))
-    # Security tab: show if any security-category smells exist
+    # Security tab: show if any security-category smells exist (built-in or external tools)
     _has_security_findings = any(
         s.get("category") == "security"
         for _rp in refactoring_projects
         for _rf in _rp.get("files", [])
         for s in _rf.get("smells", [])
+    ) or any(
+        f.get("category") == "security"
+        for _et in external_tools_data.get("tools", {}).values()
+        for f in _et.get("findings", [])
     )
     if _has_security_findings:
         all_tab_ids.append(("security", "Security"))
@@ -796,6 +812,11 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("nugethealth", "NuGet Health"))
     if test_data.get("testProjects"):
         all_tab_ids.append(("tests", "Tests"))
+    # External Tools tab: show if any tool produced findings
+    _ext_tools = external_tools_data.get("tools", {})
+    _has_ext_findings = any(t.get("findingCount", 0) > 0 for t in _ext_tools.values())
+    if _has_ext_findings:
+        all_tab_ids.append(("externaltools", "External Tools"))
     # Dynamic language tabs
     for _lang_key, _lang_d in sorted(language_data.items()):
         _display = _lang_d.get("displayName", _lang_key.title())
@@ -1390,7 +1411,7 @@ def generate_viewer_html() -> str:
     # ── Security panel ──
     security_panel = ""
     if _has_security_findings:
-        # Count security findings by severity
+        # Count security findings by severity (built-in + external tools)
         _sec_critical = 0
         _sec_high = 0
         _sec_total = 0
@@ -1403,6 +1424,14 @@ def generate_viewer_html() -> str:
                             _sec_critical += 1
                         elif _s.get("severity") == "high":
                             _sec_high += 1
+        for _et in external_tools_data.get("tools", {}).values():
+            for _ef in _et.get("findings", []):
+                if _ef.get("category") == "security":
+                    _sec_total += 1
+                    if _ef.get("severity") == "critical":
+                        _sec_critical += 1
+                    elif _ef.get("severity") == "high":
+                        _sec_high += 1
 
         security_panel = f"""
   <section class="tab-panel" id="panel-security">
@@ -1837,6 +1866,83 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── External Tools panel ──
+    externaltools_panel = ""
+    if _has_ext_findings:
+        _ext_summary = external_tools_data.get("summary", {})
+        _ext_total = _ext_summary.get("totalFindings", 0)
+        _ext_by_sev = _ext_summary.get("findingsBySeverity", {})
+        _ext_by_tool = _ext_summary.get("findingsByTool", {})
+        _ext_skipped = external_tools_data.get("toolsSkipped", {})
+
+        # Severity summary cards
+        _ext_crit = _ext_by_sev.get("critical", 0)
+        _ext_high = _ext_by_sev.get("high", 0)
+        _ext_med = _ext_by_sev.get("medium", 0)
+        _ext_low = _ext_by_sev.get("low", 0)
+
+        # Tool badges
+        _ext_tool_badges = ""
+        _tool_colors = {"semgrep": "#4B11A8", "bandit": "#D0002B", "detect-secrets": "#9E8700", "radon": "#005587"}
+        for _tn, _tc in sorted(_ext_by_tool.items(), key=lambda x: -x[1]):
+            _tcolor = _tool_colors.get(_tn, "#53565A")
+            _ext_tool_badges += f'<button type="button" class="ext-tool-badge" data-tool="{_esc_html(_tn)}" style="display:inline-block;padding:0.15rem 0.5rem;border-radius:12px;font-size:0.78rem;font-weight:600;background:rgba({_hex_to_rgb(_tcolor)},0.15);color:{_tcolor};margin:0.15rem;border:none;cursor:pointer;">{_esc_html(_tn)}: {_tc}</button>\n'
+
+        # Skipped tools notice
+        _skip_notice = ""
+        if _ext_skipped:
+            _skip_items = ", ".join(f"{k} ({v})" for k, v in _ext_skipped.items())
+            _skip_notice = f'<div style="margin-bottom:0.75rem;padding:0.5rem 0.75rem;background:#FFF7ED;border:1px solid #FDBA74;border-radius:6px;font-size:0.82rem;color:#9E8700;">Skipped: {_esc_html(_skip_items)}</div>'
+
+        externaltools_panel = f"""
+  <section class="tab-panel" id="panel-externaltools">
+    <div class="card">
+      <div class="card-title"><span class="icon" style="color:#4B11A8;">&#9881;</span> External Tool Findings</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:140px;background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_ext_crit}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_ext_high}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#FFFDE7;border:1px solid #FFF176;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#9E8700;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{_ext_med}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Low</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_ext_low}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_ext_total}</div>
+        </div>
+      </div>
+      <div style="margin-bottom:0.75rem;">{_ext_tool_badges}</div>
+      {_skip_notice}
+      <div class="table-wrap">
+        <table id="extToolsTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text">Tool</th>
+              <th data-sort-type="text">File</th>
+              <th data-sort-type="num">Line</th>
+              <th data-sort-type="text">Rule</th>
+              <th data-sort-type="text">Severity</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="text">Message</th>
+            </tr>
+          </thead>
+          <tbody id="extToolsBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2175,6 +2281,7 @@ def generate_viewer_html() -> str:
 {hotspots_panel}
 {nugethealth_panel}
 {tests_panel}
+{externaltools_panel}
 {language_panels}
 {repos_panel}
 {all_projects_panel}
@@ -3118,6 +3225,7 @@ function initSortableTable(table) {{
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
   window._repoRoots = {repos_roots_json};
+  window._externalToolsData = {ext_tools_embedded};
   window._isMultiRepo = {str(is_multi_repo).lower()};
 
   // Load data-flow.json for edge detail panel
@@ -3469,6 +3577,7 @@ function initSortableTable(table) {{
     var cqData = window._codeQualityData || {{}};
     var projects = cqData.projects || [];
     var repoRoots = window._repoRoots || {{}};
+    var extData = window._externalToolsData || {{}};
     var tbody = document.getElementById('securityBody');
     if (!tbody) return;
 
@@ -3482,6 +3591,12 @@ function initSortableTable(table) {{
           }}
         }});
       }});
+    }});
+    // Merge external tool security findings
+    (extData.findings || []).forEach(function (ef) {{
+      if (ef.category === 'security') {{
+        secFindings.push({{ project: '', repo: '', file: ef.file || '', line: ef.line || 0, type: '[' + (ef.tool || '') + '] ' + (ef.ruleId || ''), severity: ef.severity || '', context: ef.message || '' }});
+      }}
     }});
     // Sort: critical first, then high
     var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
@@ -3501,6 +3616,60 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('securityTable'));
+  }})();
+
+  // ── External Tools IIFE ──
+  (function () {{
+    var extData = window._externalToolsData || {{}};
+    var findings = extData.findings || [];
+    var tbody = document.getElementById('extToolsBody');
+    if (!tbody || findings.length === 0) return;
+
+    var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
+    var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
+    findings.sort(function (a, b) {{ return (sevOrder[a.severity] || 9) - (sevOrder[b.severity] || 9); }});
+    findings.forEach(function (f) {{
+      var tr = document.createElement('tr');
+      var c = sevColors[f.severity] || '#53565A';
+      var fActions = f.file ? fileActionsHtml(f.file, f.line, 'font-size:0.8rem;color:#005587;') : escHtml(f.file || '');
+      tr.setAttribute('data-search', ((f.tool || '') + ' ' + (f.file || '') + ' ' + (f.ruleId || '') + ' ' + (f.message || '')).toLowerCase());
+      tr.setAttribute('data-tool', f.tool || '');
+      tr.style.borderLeft = '3px solid ' + c;
+      tr.innerHTML =
+        '<td style="padding:0.4rem 0.5rem;font-weight:600;">' + escHtml(f.tool || '') + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;text-align:center;">' + (f.line || 0) + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;font-size:0.8rem;">' + escHtml(f.ruleId || '') + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(f.severity || '') + '</span></td>' +
+        '<td style="padding:0.4rem 0.5rem;">' + escHtml(f.category || '') + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(f.message || '') + '</td>';
+      tbody.appendChild(tr);
+    }});
+    initSortableTable(document.getElementById('extToolsTable'));
+
+    // Tool badge filtering
+    var badges = document.querySelectorAll('.ext-tool-badge');
+    var activeTool = null;
+    badges.forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var toolName = badge.getAttribute('data-tool');
+        if (activeTool === toolName) {{
+          activeTool = null;
+          badges.forEach(function (b) {{ b.style.opacity = '1'; }});
+        }} else {{
+          activeTool = toolName;
+          badges.forEach(function (b) {{ b.style.opacity = b.getAttribute('data-tool') === toolName ? '1' : '0.4'; }});
+        }}
+        var rows = tbody.querySelectorAll('tr');
+        rows.forEach(function (row) {{
+          if (!activeTool || row.getAttribute('data-tool') === activeTool) {{
+            row.style.display = '';
+          }} else {{
+            row.style.display = 'none';
+          }}
+        }});
+      }});
+    }});
   }})();
 
   // ── UX Consistency IIFE ──
