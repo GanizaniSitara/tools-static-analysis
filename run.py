@@ -312,118 +312,127 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 def main():
     import argparse as _ap
     parser = _ap.ArgumentParser(description="Pipeline: scans, diagrams, docs, web server.")
-    parser.add_argument("repos", help="Directory containing repos to scan")
+    parser.add_argument("repos", nargs="?", help="Directory containing repos to scan")
     parser.add_argument("out", nargs="?", default="output", help="Output directory name (default: output)")
     parser.add_argument("port", nargs="?", type=int, default=8000, help="Web server port (default: 8000)")
     parser.add_argument("--level", choices=["critical", "high", "medium", "low"], default="high",
                         help="Minimum severity level for smell scanner (default: high)")
+    parser.add_argument("--serve-only", action="store_true",
+                        help="Skip pipeline, just start the web server on existing output")
     args = parser.parse_args()
 
-    repos = args.repos
+    if not args.serve_only and not args.repos:
+        parser.error("repos is required unless --serve-only is used")
+
+    repos = args.repos or ""
     out = args.out
     port = args.port
     level = args.level
 
     os.makedirs(out, exist_ok=True)
 
-    print(f"=== Pipeline: {repos} → {out} ===\n")
+    if args.serve_only:
+        print(f"=== Serve-only: {out} on port {port} ===\n")
+    else:
+        print(f"=== Pipeline: {repos} → {out} ===\n")
 
-    def run(script, *args):
-        path = os.path.join(SCRIPT_DIR, script)
-        result = subprocess.run([sys.executable, path, *args])
-        if result.returncode != 0:
-            print(f"ERROR: {script} failed (exit {result.returncode})")
-            sys.exit(1)
+    if not args.serve_only:
+        def run(script, *args):
+            path = os.path.join(SCRIPT_DIR, script)
+            result = subprocess.run([sys.executable, path, *args])
+            if result.returncode != 0:
+                print(f"ERROR: {script} failed (exit {result.returncode})")
+                sys.exit(1)
 
-    # Step 1: Scan projects (must complete first — produces project-meta.json, test-projects.json)
-    print("--- Step 1: Scanning projects ---")
-    run("1_scan_projects.py", repos, out)
+        # Step 1: Scan projects (must complete first — produces project-meta.json, test-projects.json)
+        print("--- Step 1: Scanning projects ---")
+        run("1_scan_projects.py", repos, out)
 
-    # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
-    print("\n--- Step 2: Scanning smells ---")
-    run("2_scan_smells.py", repos, out, "--level", level)
+        # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
+        print("\n--- Step 2: Scanning smells ---")
+        run("2_scan_smells.py", repos, out, "--level", level)
 
-    # Run language scanners (auto-discovered plugins)
-    print("\n--- Language scanners ---")
-    try:
-        from scanners import discover_scanners
-        scanners = discover_scanners()
-        if scanners:
-            print(f"  Discovered {len(scanners)} scanner(s): {', '.join(s.display_name for s in scanners)}")
+        # Run language scanners (auto-discovered plugins)
+        print("\n--- Language scanners ---")
+        try:
+            from scanners import discover_scanners
+            scanners = discover_scanners()
+            if scanners:
+                print(f"  Discovered {len(scanners)} scanner(s): {', '.join(s.display_name for s in scanners)}")
 
-            # Discover repo directories (same logic as 1_scan_projects.py)
-            repos_abs = os.path.abspath(repos)
-            repo_dirs: list[tuple[str, str]] = []  # (name, path)
-            # Check if root is a single repo
-            has_subdirs = False
-            for entry in sorted(os.listdir(repos_abs)):
-                sub = os.path.join(repos_abs, entry)
-                if os.path.isdir(sub) and not entry.startswith("."):
-                    has_subdirs = True
-                    repo_dirs.append((entry, sub))
-            if not repo_dirs:
-                repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
+                # Discover repo directories (same logic as 1_scan_projects.py)
+                repos_abs = os.path.abspath(repos)
+                repo_dirs: list[tuple[str, str]] = []  # (name, path)
+                # Check if root is a single repo
+                has_subdirs = False
+                for entry in sorted(os.listdir(repos_abs)):
+                    sub = os.path.join(repos_abs, entry)
+                    if os.path.isdir(sub) and not entry.startswith("."):
+                        has_subdirs = True
+                        repo_dirs.append((entry, sub))
+                if not repo_dirs:
+                    repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
 
-            for scanner in scanners:
-                detected_repos = []
-                for repo_name, repo_path in repo_dirs:
-                    try:
-                        if scanner.detect(repo_path):
-                            detected_repos.append((repo_name, repo_path))
-                    except Exception as exc:
-                        print(f"  Warning: {scanner.display_name} detect failed for {repo_name}: {exc}")
+                for scanner in scanners:
+                    detected_repos = []
+                    for repo_name, repo_path in repo_dirs:
+                        try:
+                            if scanner.detect(repo_path):
+                                detected_repos.append((repo_name, repo_path))
+                        except Exception as exc:
+                            print(f"  Warning: {scanner.display_name} detect failed for {repo_name}: {exc}")
 
-                if not detected_repos:
-                    print(f"  {scanner.display_name}: no repos detected, skipping")
-                    continue
+                    if not detected_repos:
+                        print(f"  {scanner.display_name}: no repos detected, skipping")
+                        continue
 
-                print(f"  {scanner.display_name}: scanning {len(detected_repos)} repo(s)...")
-                all_projects: list[dict] = []
-                combined_summary: dict = {}
+                    print(f"  {scanner.display_name}: scanning {len(detected_repos)} repo(s)...")
+                    all_projects: list[dict] = []
+                    combined_summary: dict = {}
 
-                for repo_name, repo_path in detected_repos:
-                    try:
-                        result = scanner.scan(repo_path, repo_name)
-                        all_projects.extend(result.get("projects", []))
-                        # Merge summaries
-                        if not combined_summary:
-                            combined_summary = result.get("summary", {})
-                        else:
-                            s = result.get("summary", {})
-                            combined_summary["totalProjects"] = combined_summary.get("totalProjects", 0) + s.get("totalProjects", 0)
-                            combined_summary["totalFiles"] = combined_summary.get("totalFiles", 0) + s.get("totalFiles", 0)
-                            combined_summary["totalLines"] = combined_summary.get("totalLines", 0) + s.get("totalLines", 0)
-                            for fw, cnt in s.get("frameworks", {}).items():
-                                combined_summary.setdefault("frameworks", {})[fw] = combined_summary.get("frameworks", {}).get(fw, 0) + cnt
-                            for cat, cnt in s.get("categories", {}).items():
-                                combined_summary.setdefault("categories", {})[cat] = combined_summary.get("categories", {}).get(cat, 0) + cnt
-                    except Exception as exc:
-                        print(f"  Warning: {scanner.display_name} scan failed for {repo_name}: {exc}")
+                    for repo_name, repo_path in detected_repos:
+                        try:
+                            result = scanner.scan(repo_path, repo_name)
+                            all_projects.extend(result.get("projects", []))
+                            # Merge summaries
+                            if not combined_summary:
+                                combined_summary = result.get("summary", {})
+                            else:
+                                s = result.get("summary", {})
+                                combined_summary["totalProjects"] = combined_summary.get("totalProjects", 0) + s.get("totalProjects", 0)
+                                combined_summary["totalFiles"] = combined_summary.get("totalFiles", 0) + s.get("totalFiles", 0)
+                                combined_summary["totalLines"] = combined_summary.get("totalLines", 0) + s.get("totalLines", 0)
+                                for fw, cnt in s.get("frameworks", {}).items():
+                                    combined_summary.setdefault("frameworks", {})[fw] = combined_summary.get("frameworks", {}).get(fw, 0) + cnt
+                                for cat, cnt in s.get("categories", {}).items():
+                                    combined_summary.setdefault("categories", {})[cat] = combined_summary.get("categories", {}).get(cat, 0) + cnt
+                        except Exception as exc:
+                            print(f"  Warning: {scanner.display_name} scan failed for {repo_name}: {exc}")
 
-                if all_projects:
-                    output_data = {
-                        "displayName": scanner.display_name,
-                        "projects": all_projects,
-                        "summary": combined_summary,
-                    }
-                    out_path = os.path.join(out, scanner.output_filename())
-                    with open(out_path, "w", encoding="utf-8") as f:
-                        json.dump(output_data, f, indent=2)
-                    print(f"  {scanner.display_name}: {len(all_projects)} projects, wrote {scanner.output_filename()}")
-                else:
-                    print(f"  {scanner.display_name}: no projects found")
-        else:
-            print("  No language scanners found")
-    except ImportError:
-        print("  Language scanner module not available, skipping")
+                    if all_projects:
+                        output_data = {
+                            "displayName": scanner.display_name,
+                            "projects": all_projects,
+                            "summary": combined_summary,
+                        }
+                        out_path = os.path.join(out, scanner.output_filename())
+                        with open(out_path, "w", encoding="utf-8") as f:
+                            json.dump(output_data, f, indent=2)
+                        print(f"  {scanner.display_name}: {len(all_projects)} projects, wrote {scanner.output_filename()}")
+                    else:
+                        print(f"  {scanner.display_name}: no projects found")
+            else:
+                print("  No language scanners found")
+        except ImportError:
+            print("  Language scanner module not available, skipping")
 
-    # Step 3 needs graph.json from step 1
-    print("\n--- Step 3: Generating diagrams ---")
-    run("3_gen_diagrams.py", out)
+        # Step 3 needs graph.json from step 1
+        print("\n--- Step 3: Generating diagrams ---")
+        run("3_gen_diagrams.py", out)
 
-    # Step 4 needs all outputs
-    print("\n--- Step 4: Generating docs + viewer ---")
-    run("4_gen_docs.py", out)
+        # Step 4 needs all outputs
+        print("\n--- Step 4: Generating docs + viewer ---")
+        run("4_gen_docs.py", out)
 
     # Load repos.json for solution discovery
     repos_json_path = os.path.join(out, "repos.json")

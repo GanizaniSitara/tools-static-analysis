@@ -37,6 +37,16 @@ The `run.py` pipeline also accepts `--level`:
 python3 run.py /path/to/repos output-myproject --level medium
 ```
 
+### Serve-only mode (`--serve-only`)
+
+If you've already run the pipeline and just want the web server (with IDE integration endpoints for the Claude/VS Code/View buttons), use `--serve-only` to skip the scan steps:
+
+```bash
+python3 run.py dummy output-myproject 8001 --serve-only
+```
+
+This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
+
 ## Outputs (in `output-myproject/`)
 
 | File | Producer | Description |
