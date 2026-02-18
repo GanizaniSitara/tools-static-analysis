@@ -170,6 +170,8 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             self._open_vscode(file_path, line)
         elif editor == "claude":
             self._open_claude(file_path)
+        elif editor == "opencode":
+            self._open_opencode(file_path)
         else:
             self._json_error(400, f"Unknown editor: {editor}")
 
@@ -283,6 +285,48 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         if launched:
             self._json_response({"status": "ok", "editor": "claude", "directory": dir_path})
+        else:
+            self._json_response(
+                {"error": "No terminal emulator found. Install gnome-terminal, xterm, or konsole."},
+                500,
+            )
+
+    def _open_opencode(self, file_path: str):
+        """Open OpenCode TUI in a terminal at the file's directory."""
+        dir_path = os.path.dirname(file_path) if os.path.splitext(file_path)[1] else file_path
+        launched = False
+        shell_cmd = f'cd "{dir_path}" && opencode'
+        terminals = [
+            (["gnome-terminal", "--", "bash", "-c", shell_cmd], "gnome-terminal"),
+            (["x-terminal-emulator", "-e", f"bash -c '{shell_cmd}'"], "x-terminal-emulator"),
+            (["xterm", "-e", f"bash -c '{shell_cmd}'"], "xterm"),
+            (["konsole", "-e", f"bash -c '{shell_cmd}'"], "konsole"),
+        ]
+        if sys.platform == "win32":
+            try:
+                subprocess.Popen(["cmd.exe", "/c", "start", "opencode"], cwd=dir_path)
+                launched = True
+            except OSError:
+                pass
+        elif _is_wsl():
+            try:
+                subprocess.Popen(
+                    ["cmd.exe", "/c", "start", "wsl.exe", "--cd", dir_path, "opencode"]
+                )
+                launched = True
+            except (OSError, subprocess.CalledProcessError):
+                pass
+        if not launched:
+            for cmd, name in terminals:
+                if shutil.which(cmd[0]):
+                    try:
+                        subprocess.Popen(cmd)
+                        launched = True
+                        break
+                    except OSError:
+                        continue
+        if launched:
+            self._json_response({"status": "ok", "editor": "opencode", "directory": dir_path})
         else:
             self._json_response(
                 {"error": "No terminal emulator found. Install gnome-terminal, xterm, or konsole."},

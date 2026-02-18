@@ -585,6 +585,7 @@ def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
         f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
         f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" title="Explore with Claude Code">Claude</a>'
+        f' <a href="#" class="file-action file-opencode" data-path="{p}" data-line="{line}" title="Open in OpenCode">OpenCode</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -2183,6 +2184,8 @@ def generate_viewer_html() -> str:
   .file-code:hover {{ background:#005a9e; }}
   .file-claude {{ background:#da7756; color:#fff !important; }}
   .file-claude:hover {{ background:#b85e3f; }}
+  .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
+  .file-opencode:hover {{ background:#0f0f1a; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
   .footer {{
@@ -2961,6 +2964,7 @@ function fileActionsHtml(filePath, line, style) {{
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" title="Explore with Claude Code">Claude</a>' +
+    ' <a href="#" class="file-action file-opencode" data-path="' + dp + '" data-line="' + dl + '" title="Open in OpenCode">OpenCode</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -3004,6 +3008,8 @@ document.addEventListener('click', function(e) {{
     window.location.href = vsUri;
   }} else if (action.classList.contains('file-claude')) {{
     _openViaServer('claude', resolved, line);
+  }} else if (action.classList.contains('file-opencode')) {{
+    _openViaServer('opencode', resolved, line);
   }} else if (action.classList.contains('file-view')) {{
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
