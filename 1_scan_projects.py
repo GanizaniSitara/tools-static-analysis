@@ -759,6 +759,63 @@ def resolve_project_for_file(filepath: str, dir_to_project: dict[str, str]) -> s
     return None
 
 
+# ─── Namespace collection for coupling analysis ────────────────────
+
+_NS_DECL = re.compile(r'^namespace\s+([\w.]+)', re.MULTILINE)
+_USING_LINE = re.compile(r'^using\s+([\w.]+)', re.MULTILINE)
+
+
+def collect_project_namespaces_and_files(
+    scan_root: str,
+    repos: list[dict],
+    project_meta: list[dict],
+) -> tuple[dict[str, set[str]], dict[str, list[str]]]:
+    """Scan .cs files to collect namespace declarations and file lists per project.
+
+    Returns:
+        project_namespaces: project_name → set of declared namespace strings
+        cs_files_by_project: project_name → list of absolute .cs file paths
+    """
+    abs_root = _normalize_path(scan_root)
+    project_namespaces: dict[str, set[str]] = {}
+    cs_files_by_project: dict[str, list[str]] = {}
+
+    for repo in repos:
+        repo_meta = [pm for pm in project_meta if pm.get("repo") == repo["name"]]
+        dir_to_project = build_file_to_project_map(repo_meta, repo["root"])
+        cs_files = find_files(repo["root"], re.compile(r"\.cs$"))
+
+        for cs_file in cs_files:
+            proj_name = resolve_project_for_file(cs_file, dir_to_project)
+            if proj_name is None:
+                continue
+            # Track file list
+            cs_files_by_project.setdefault(proj_name, []).append(cs_file)
+            # Collect namespace declarations
+            content = safe_read_text(cs_file)
+            if content:
+                for ns in _NS_DECL.findall(content):
+                    project_namespaces.setdefault(proj_name, set()).add(ns)
+
+    return project_namespaces, cs_files_by_project
+
+
+def _count_coupling(consumer_files: list[str], target_namespaces: set[str]) -> "int | None":
+    """Count .cs files in consumer that import any namespace from target."""
+    if not target_namespaces:
+        return None  # unknown — don't write 0, write null
+    count = 0
+    for fpath in consumer_files:
+        try:
+            text = open(fpath, encoding="utf-8", errors="ignore").read()
+            usings = set(_USING_LINE.findall(text))
+            if any(u == ns or u.startswith(ns + ".") for u in usings for ns in target_namespaces):
+                count += 1
+        except OSError:
+            pass
+    return count
+
+
 # ─── Enhanced data access pattern discovery ──────────────────────────
 
 # Direction values: "read", "write", "both", "expose", "consume", None
@@ -2407,6 +2464,8 @@ def build_graph(
     project_meta: list[dict],
     data_findings: list[dict],
     configs: list[dict],
+    project_namespaces: "dict[str, set] | None" = None,
+    cs_files_by_project: "dict[str, list] | None" = None,
 ) -> dict:
     """Build the full dependency graph as a JSON-serialisable dict."""
     nodes = {}
@@ -2453,19 +2512,79 @@ def build_graph(
         from_id = f"{pr['repo']}/{pr['project']}"
         target = meta_by_name.get(pr["references"])
         to_id = f"{target['repo']}/{target['project']}" if target else pr["references"]
-        edges.append({
+        edge = {
             "from": from_id,
             "to": to_id,
             "type": "cross-repo-reference" if pr["crossRepo"] else "project-reference",
-        })
+        }
+        if project_namespaces is not None and cs_files_by_project is not None:
+            to_proj = target["project"] if target else pr["references"]
+            consumer_files = cs_files_by_project.get(pr["project"], [])
+            target_ns = project_namespaces.get(to_proj, set())
+            count = _count_coupling(consumer_files, target_ns)
+            if count is not None:
+                edge["count"] = count
+        edges.append(edge)
 
     # NuGet dependency edges
     for pd in package_deps:
         edges.append({
-            "from": f"{pd['repo']}/{pd['project']}",
-            "to": f"nuget:{pd['package']}",
-            "type": "nuget-dependency",
+            "from":    f"{pd['repo']}/{pd['project']}",
+            "to":      f"nuget:{pd['package']}",
+            "type":    "nuget-dependency",
+            "version": pd.get("version", ""),
         })
+
+    # Fan-in / fan-out computation (project-reference edges only)
+    fan_in: dict[str, int] = {}
+    fan_out: dict[str, int] = {}
+    for edge in edges:
+        if edge["type"] in ("project-reference", "cross-repo-reference"):
+            fan_out[edge["from"]] = fan_out.get(edge["from"], 0) + 1
+            fan_in[edge["to"]] = fan_in.get(edge["to"], 0) + 1
+    for node_id, node in nodes.items():
+        if node.get("type") not in ("nuget-package", "datasource"):
+            node["fanIn"] = fan_in.get(node_id, 0)
+            node["fanOut"] = fan_out.get(node_id, 0)
+
+    # Circular dependency detection (DFS on project-reference edges only)
+    def _find_cycles(node_ids: list, adjacency: dict) -> list:
+        WHITE, GRAY, BLACK = 0, 1, 2
+        colour: dict = {n: WHITE for n in node_ids}
+        path: list = []
+        cycles: list = []
+
+        def dfs(u: str) -> None:
+            colour[u] = GRAY
+            path.append(u)
+            for v in adjacency.get(u, []):
+                if v not in colour:
+                    continue  # skip external/unknown target nodes
+                if colour[v] == GRAY:
+                    idx = path.index(v)
+                    cycles.append(path[idx:] + [v])
+                elif colour[v] == WHITE:
+                    dfs(v)
+            path.pop()
+            colour[u] = BLACK
+
+        for n in node_ids:
+            if colour[n] == WHITE:
+                try:
+                    dfs(n)
+                except RecursionError:
+                    pass  # skip deeply nested paths
+        return cycles
+
+    _adjacency: dict = {}
+    for edge in edges:
+        if edge["type"] in ("project-reference", "cross-repo-reference"):
+            _adjacency.setdefault(edge["from"], []).append(edge["to"])
+    _project_node_ids = [
+        nid for nid, n in nodes.items()
+        if n.get("type") not in ("nuget-package", "datasource")
+    ]
+    _cycles = _find_cycles(_project_node_ids, _adjacency)
 
     # Data source nodes
     datasource_map: dict[str, dict] = {}
@@ -2526,6 +2645,7 @@ def build_graph(
             "totalConfigFiles": len(configs),
             "repos": repo_summary,
             "categories": cat_counts,
+            "circularDependencies": _cycles,
         },
     }
 
@@ -2714,6 +2834,13 @@ def main():
         json.dumps(all_project_meta, indent=2), encoding="utf-8"
     )
 
+    # Step 2a: Collect project namespaces and .cs file lists for coupling analysis
+    print("\nStep 2a: Collecting project namespace declarations...")
+    _proj_namespaces, _cs_files_by_proj = collect_project_namespaces_and_files(
+        SCAN_ROOT, repos, all_project_meta
+    )
+    print(f"  Projects with namespace declarations: {len(_proj_namespaces)}")
+
     # Step 3: Discover data access patterns (enhanced with direction + endpoints)
     print("\nStep 2: Discovering data access patterns...")
     data_findings = discover_data_patterns(SCAN_ROOT, repos, all_project_meta)
@@ -2863,11 +2990,33 @@ def main():
 
     # Step 5: Build graph
     print("\nStep 4: Building dependency graph...")
-    graph = build_graph(all_package_deps, all_project_refs, all_project_meta, data_findings, configs)
+    graph = build_graph(
+        all_package_deps, all_project_refs, all_project_meta, data_findings, configs,
+        project_namespaces=_proj_namespaces,
+        cs_files_by_project=_cs_files_by_proj,
+    )
     Path(os.path.join(OUT_DIR, "graph.json")).write_text(
         json.dumps(graph, indent=2), encoding="utf-8"
     )
     print(f"  Graph: {len(graph['nodes'])} nodes, {len(graph['edges'])} edges")
+
+    # Patch fan-in/fan-out back into project-meta.json
+    _fan_map = {}
+    for _n in graph["nodes"]:
+        if _n.get("type") not in ("nuget-package", "datasource"):
+            _fan_map[_n["id"]] = (_n.get("fanIn", 0), _n.get("fanOut", 0))
+    for _pm in all_project_meta:
+        _nid = f"{_pm['repo']}/{_pm['project']}" if _pm.get("repo") else _pm["project"]
+        _fi, _fo = _fan_map.get(_nid, (0, 0))
+        _pm["fanIn"] = _fi
+        _pm["fanOut"] = _fo
+    Path(os.path.join(OUT_DIR, "project-meta.json")).write_text(
+        json.dumps(all_project_meta, indent=2), encoding="utf-8"
+    )
+
+    _cycles_count = len(graph["summary"].get("circularDependencies", []))
+    if _cycles_count:
+        print(f"  WARNING: {_cycles_count} circular dependenc{'y' if _cycles_count == 1 else 'ies'} detected!")
 
     if graph["summary"]["totalRepos"] > 1:
         print(f"  Repos: {graph['summary']['totalRepos']}")

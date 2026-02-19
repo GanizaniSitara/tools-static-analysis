@@ -780,6 +780,18 @@ def generate_viewer_html() -> str:
         "toolsSkipped": external_tools_data.get("toolsSkipped", {}),
     })
 
+    # ── Edge metadata (coupling count, NuGet version) for viewer tooltips ──
+    _edge_meta: dict = {}
+    for _e in graph.get("edges", []):
+        _extra = {k: v for k, v in _e.items() if k not in ("from", "to", "type")}
+        if _extra:
+            _edge_meta[f"{_e['from']}||{_e['to']}"] = _extra
+    edge_meta_json = _safe_json_for_script(_edge_meta)
+
+    # ── Circular dependency data ──
+    _cycles = graph.get("summary", {}).get("circularDependencies", [])
+    cycles_json = _safe_json_for_script(_cycles)
+
     # ── NuGet health data ──
     nh_conflicts = nuget_health.get("versionConflicts", [])
     nh_legacy = nuget_health.get("legacyFormatProjects", [])
@@ -1273,11 +1285,33 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # Cycles warning HTML (embedded at build time)
+    _cycles_warning_html = ""
+    if _cycles:
+        _cycle_items = ""
+        for _cyc in _cycles[:20]:  # cap at 20 for readability
+            _cyc_names = [c.split("/")[-1] for c in _cyc]
+            _cyc_links = " &rarr; ".join(
+                f'<a href="#" class="cycle-proj-link" data-project="{_esc_html(c.split("/")[-1])}">{_esc_html(c.split("/")[-1])}</a>'
+                for c in _cyc
+            )
+            _cycle_items += f'<li>{_cyc_links} <span style="color:#53565A;font-size:0.75rem;">({len(_cyc) - 1} project{"s" if len(_cyc) - 1 != 1 else ""})</span></li>\n'
+        if len(_cycles) > 20:
+            _cycle_items += f'<li style="color:#53565A">... and {len(_cycles) - 20} more</li>\n'
+        _n_cycles = len(_cycles)
+        _word = "dependency" if _n_cycles == 1 else "dependencies"
+        _cycles_warning_html = f"""
+      <div class="cycles-warning" style="background:#fff3cd;border:1px solid #E87722;border-radius:4px;padding:0.75rem 1rem;margin-bottom:1rem;">
+        <strong style="color:#D0002B;">&#9888; {_n_cycles} circular {_word} detected</strong>
+        <ul style="margin:0.4rem 0 0 1.2rem;padding:0;font-size:0.82rem;">
+{_cycle_items}        </ul>
+      </div>"""
+
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>{_cycles_warning_html}
       <div class="table-wrap">
         <table id="projectsTable">
           <thead>
@@ -2554,6 +2588,11 @@ function showEdgeDetail(fromName, toName) {{
   var sharedPatternNames = {{}};
   sharedPatterns.forEach(function (p) {{ sharedPatternNames[p.pattern] = (sharedPatternNames[p.pattern] || 0) + 1; }});
 
+  // Look up edge metadata (coupling count, version) from graph edges
+  var fromNodeId = fromMeta ? ((fromMeta.repo ? fromMeta.repo + '/' : '') + fromMeta.project) : fromName;
+  var toNodeId = toMeta ? ((toMeta.repo ? toMeta.repo + '/' : '') + toMeta.project) : toName;
+  var edgeMeta = (window._edgeMeta || {{}})[fromNodeId + '||' + toNodeId] || {{}};
+
   // Build HTML
   var html = '<div class="detail-header"><h3>Dependency Detail</h3>'
     + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
@@ -2570,6 +2609,22 @@ function showEdgeDetail(fromName, toName) {{
     html += ' &#8594; ';
     if (toMeta) html += escHtmlGlobal(toMeta.category);
     html += '</div>';
+  }}
+  // Coupling strength
+  if (typeof edgeMeta.count === 'number') {{
+    html += '<div style="font-size:0.78rem;color:#005587;margin-top:0.3rem;">Coupling: '
+      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency</div>';
+  }}
+  // Fan-in / fan-out for both projects
+  if (fromMeta && (typeof fromMeta.fanIn === 'number' || typeof fromMeta.fanOut === 'number')) {{
+    html += '<div style="font-size:0.75rem;color:#53565A;margin-top:0.15rem;">'
+      + escHtmlGlobal(fromName) + ': Fan-in <strong>' + (fromMeta.fanIn || 0) + '</strong>'
+      + ' &bull; Fan-out <strong>' + (fromMeta.fanOut || 0) + '</strong></div>';
+  }}
+  if (toMeta && (typeof toMeta.fanIn === 'number' || typeof toMeta.fanOut === 'number')) {{
+    html += '<div style="font-size:0.75rem;color:#53565A;margin-top:0.1rem;">'
+      + escHtmlGlobal(toName) + ': Fan-in <strong>' + (toMeta.fanIn || 0) + '</strong>'
+      + ' &bull; Fan-out <strong>' + (toMeta.fanOut || 0) + '</strong></div>';
   }}
   html += '</div>';
 
@@ -3253,6 +3308,8 @@ function initSortableTable(table) {{
   window._isMultiRepo = {str(is_multi_repo).lower()};
   window._repos = {repos_json};
   window._projectGroupMap = {project_groups_map_json};
+  window._edgeMeta = {edge_meta_json};
+  window._cycles = {cycles_json};
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -3315,6 +3372,30 @@ function initSortableTable(table) {{
   }});
 
   }}); // end finally for flow-paths.json
+
+  // Wire up cycle project links in the All Projects panel
+  (function () {{
+    var panel = document.getElementById('panel-allprojects');
+    if (!panel) return;
+    panel.addEventListener('click', function (e) {{
+      var link = e.target.closest('.cycle-proj-link');
+      if (!link) return;
+      e.preventDefault();
+      var projName = link.getAttribute('data-project');
+      if (!projName) return;
+      // Scroll to matching row in the projects table
+      var rows = document.querySelectorAll('#projectsBody tr');
+      for (var i = 0; i < rows.length; i++) {{
+        var td = rows[i].querySelector('td:first-child');
+        if (td && td.textContent.trim() === projName) {{
+          rows[i].scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+          rows[i].style.outline = '2px solid #D0002B';
+          setTimeout(function (r) {{ r.style.outline = ''; }}, 2000, rows[i]);
+          break;
+        }}
+      }}
+    }});
+  }})();
 
   // Populate hotspots table from embedded data
   (function () {{
