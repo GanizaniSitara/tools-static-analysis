@@ -373,7 +373,8 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             # This allows the TUI to run in its own terminal
             if sys.platform == "win32":
                 # Windows: Use cmd /c start to open new window
-                cmd = ["cmd.exe", "/c", "start", "claude"] + claude_args
+                # Note: start requires window title as first arg (use "" for default)
+                cmd = ["cmd.exe", "/c", "start", "", "claude"] + claude_args
                 try:
                     subprocess.Popen(cmd)
                     self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
@@ -382,7 +383,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             elif _is_wsl():
                 # WSL: Launch Windows claude.exe via cmd.exe
                 try:
-                    cmd = ["cmd.exe", "/c", "start", "claude.exe"] + claude_args
+                    cmd = ["cmd.exe", "/c", "start", "", "claude.exe"] + claude_args
                     subprocess.Popen(cmd)
                     self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows-from-wsl"})
                 except OSError as exc:
