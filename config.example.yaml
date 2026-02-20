@@ -22,7 +22,8 @@ claudePrompt: |
 
 # WSL Tools Configuration
 # ============================================================================
-# Master toggle: When true, AI tools run via WSL instead of Windows native
+# Master toggle for OpenCode and GitHub Copilot
+# Does NOT affect Claude Code (see claudeCodeUseWsl below)
 enableWslTools: false
 
 # WSL distribution name (check with: wsl -l -v)
@@ -33,14 +34,26 @@ wslPathPrefix: \\wsl.localhost\\Ubuntu-24.04
 
 # Claude Code Configuration
 # ============================================================================
-# Path to Claude Code executable in WSL (can be absolute or from PATH)
+# Separate toggle for Claude Code execution mode
+# true  = Run Claude Code via WSL (with optional micromamba)
+# false = Run Claude Code on Windows native (default)
+#
+# This is independent of enableWslTools, allowing you to:
+#   - Use Windows Claude Code + WSL OpenCode/Copilot
+#   - Use WSL Claude Code + Windows-only setup
+claudeCodeUseWsl: false
+
+# Path to Claude Code executable
+# - If claudeCodeUseWsl=false: Windows PATH (e.g., "claude" finds claude.exe)
+# - If claudeCodeUseWsl=true: WSL path (e.g., "/home/user/.local/bin/claude")
 # Examples:
-#   - "claude"                              (from PATH)
-#   - "/home/username/.local/bin/claude"    (absolute path)
-#   - "~/.local/bin/claude"                 (home-relative)
+#   - "claude"                              (from PATH - Windows or WSL)
+#   - "/home/username/.local/bin/claude"    (WSL absolute path)
+#   - "~/.local/bin/claude"                 (WSL home-relative)
 claudeCodePath: claude
 
 # Micromamba/Conda environment to activate before running Claude Code
+# Only applies when claudeCodeUseWsl=true
 # Leave empty ("") to run in base environment
 # Examples:
 #   - ""            (no environment activation)

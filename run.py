@@ -28,6 +28,7 @@ def _load_config():
         "enableWslTools": False,
         "wslDistro": "Ubuntu",
         "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
         "micromambaEnv": "",
         "openCodePath": "/usr/local/bin/opencode",
@@ -300,8 +301,9 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                      smell_description: str = None):
         """Open Claude Code with context: workspace dir, file:line, and custom prompt.
 
-        If enableWslTools is true, runs Claude Code via WSL with optional micromamba activation.
-        Otherwise, runs Claude Code natively on Windows.
+        Uses claudeCodeUseWsl toggle:
+        - false: Run Claude Code natively on Windows (opens new terminal window)
+        - true: Run Claude Code via WSL with optional micromamba activation
         """
         # Find solution directory by walking up from file
         sln_dir = None
@@ -323,14 +325,14 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         prompt = "".join(prompt_parts)
 
         # Choose between Windows native or WSL execution
-        if CONFIG.get("enableWslTools", False):
+        if CONFIG.get("claudeCodeUseWsl", False):
             # WSL mode with optional micromamba activation
             wsl_file = _windows_to_wsl_path(file_path)
             workspace_dir = _windows_to_wsl_path(sln_dir) if sln_dir else _windows_to_wsl_path(str(Path(file_path).parent))
 
             # Build Claude Code command
             claude_cmd = CONFIG.get("claudeCodePath", "claude")
-            claude_args = f"{claude_cmd} --add-dir {workspace_dir} @{wsl_file}"
+            claude_args = f"{claude_cmd} --add-dir {shlex.quote(workspace_dir)} @{wsl_file}"
             if line:
                 claude_args += f":{line}"
             claude_args += f" --append-system-prompt {shlex.quote(prompt)}"
@@ -358,26 +360,40 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Claude Code via WSL: {exc}"}, 500)
         else:
-            # Windows native mode
-            claude_cmd = shutil.which("claude")
-            if not claude_cmd:
-                self._json_response({"error": "Claude Code CLI (claude) not found in PATH"}, 500)
-                return
-
+            # Windows native mode - launch in new terminal window
             workspace_dir = sln_dir if sln_dir else str(Path(file_path).parent)
 
-            # Build command
-            cmd = [claude_cmd]
-            cmd.extend(["--add-dir", workspace_dir])
-            cmd.append(f"@{file_path}" + (f":{line}" if line else ""))
-            cmd.extend(["--append-system-prompt", prompt])
+            # Build Claude Code arguments
+            claude_args = [
+                "--add-dir", workspace_dir,
+                f"@{file_path}" + (f":{line}" if line else ""),
+                "--append-system-prompt", prompt
+            ]
 
-            try:
-                subprocess.Popen(cmd, start_new_session=True,
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
-            except OSError as exc:
-                self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
+            # Launch claude in a new command window on Windows
+            # This allows the TUI to run in its own terminal
+            if sys.platform == "win32":
+                # Windows: Use cmd /c start to open new window
+                cmd = ["cmd.exe", "/c", "start", "claude"] + claude_args
+                try:
+                    subprocess.Popen(cmd)
+                    self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
+                except OSError as exc:
+                    self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
+            elif _is_wsl():
+                # WSL: Launch Windows claude.exe via cmd.exe
+                try:
+                    cmd = ["cmd.exe", "/c", "start", "claude.exe"] + claude_args
+                    subprocess.Popen(cmd)
+                    self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows-from-wsl"})
+                except OSError as exc:
+                    self._json_response({"error": f"Failed to launch Claude Code from WSL: {exc}"}, 500)
+            else:
+                # Native Linux: Claude Code not typically used here, suggest WSL mode
+                self._json_response(
+                    {"error": "Claude Code Windows mode requires Windows or WSL. Set claudeCodeUseWsl: true in config.yaml to use WSL mode."},
+                    501
+                )
 
     def _open_opencode(self, file_path: str, line: int = None, project_name: str = None,
                        smell_description: str = None):

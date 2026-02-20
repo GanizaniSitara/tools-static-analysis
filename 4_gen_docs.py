@@ -28,6 +28,7 @@ def _load_config():
         "enableWslTools": False,
         "wslDistro": "Ubuntu",
         "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
         "micromambaEnv": "",
         "openCodePath": "/usr/local/bin/opencode",
