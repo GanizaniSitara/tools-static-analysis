@@ -2138,8 +2138,8 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
   .tour-spotlight {{
-    position: relative; z-index: 10001; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
-    border-radius: 8px;
+    position: relative; z-index: 9999; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
+    border-radius: 8px; pointer-events: none;
   }}
   @keyframes pulse-edge {{
     0%, 100% {{ stroke-width: 2px; opacity: 1; }}
@@ -2360,8 +2360,8 @@ def generate_viewer_html() -> str:
   </div>
 </div>
 
-<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);">
-  <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10002;background:transparent;pointer-events:none;">
+  <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);pointer-events:auto;">
     <div id="tourStep"></div>
     <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;">
       <button id="tourSkip" style="background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Skip Tour</button>
@@ -3428,18 +3428,34 @@ function initSortableTable(table) {{
         var target = document.querySelector(step.highlight);
         if (target) {{
           target.classList.add('tour-spotlight');
+          overlay.style.background = 'transparent'; // Spotlight creates darkness
           var rect = target.getBoundingClientRect();
-          content.style.top = Math.max(rect.bottom + 20, 100) + 'px';
-          content.style.left = Math.max(rect.left, 50) + 'px';
+
+          // Clear any transform
+          content.style.transform = 'none';
+
+          // Position below target, centered horizontally on screen
+          var top = rect.bottom + 20;
+          var left = Math.max(50, Math.min(window.innerWidth - 550, (window.innerWidth - 500) / 2));
+
+          // Keep within viewport
+          if (top + 300 > window.innerHeight) {{
+            top = Math.max(100, rect.top - 320);
+          }}
+
+          content.style.top = top + 'px';
+          content.style.left = left + 'px';
         }} else {{
+          overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+          content.style.transform = 'translate(-50%, -50%)';
           content.style.top = '50%';
           content.style.left = '50%';
-          content.style.transform = 'translate(-50%, -50%)';
         }}
       }} else {{
+        overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+        content.style.transform = 'translate(-50%, -50%)';
         content.style.top = '50%';
         content.style.left = '50%';
-        content.style.transform = 'translate(-50%, -50%)';
       }}
 
       // Update buttons
