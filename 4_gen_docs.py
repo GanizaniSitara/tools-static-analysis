@@ -927,6 +927,7 @@ def generate_viewer_html() -> str:
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
           </pre>
+          <div class="diagram-legend">Tip: Hover edges to preview, click for detailed analysis</div>
         </div>
         <div class="diagram-sidebar">
           {side_legend}
@@ -2136,6 +2137,30 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-from {{ color: #005587; }}
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
+  .tour-spotlight {{
+    position: relative; z-index: 10001; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
+    border-radius: 8px;
+  }}
+  @keyframes pulse-edge {{
+    0%, 100% {{ stroke-width: 2px; opacity: 1; }}
+    50% {{ stroke-width: 4px; opacity: 0.6; }}
+  }}
+  .pulse-hint {{
+    animation: pulse-edge 1.5s ease-in-out 3;
+  }}
+  .edge-hint-label {{
+    position: absolute; background: #005587; color: white;
+    padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem;
+    pointer-events: none; animation: fadeOut 5s forwards; z-index: 1001;
+  }}
+  @keyframes fadeOut {{
+    0%, 80% {{ opacity: 1; }}
+    100% {{ opacity: 0; }}
+  }}
+  .diagram-legend {{
+    text-align: center; padding: 0.5rem; font-size: 0.78rem; color: #53565A;
+    background: #F5F5F5; border-top: 1px solid #E1E1E1; border-radius: 0 0 8px 8px;
+  }}
   .edge-detail-panel {{
     display: none; margin-top: 0.75rem;
     background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
@@ -2332,6 +2357,19 @@ def generate_viewer_html() -> str:
     <p style="font-size:0.88rem;color:#333;line-height:1.6;">
       Use the search box to filter any active tab. Click stat cards in the header to jump to the relevant tab. Click the AI Context link to browse per-project context files for feeding to AI assistants.
     </p>
+  </div>
+</div>
+
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);">
+  <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+    <div id="tourStep"></div>
+    <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+      <button id="tourSkip" style="background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Skip Tour</button>
+      <div style="display:flex;gap:0.5rem;">
+        <button id="tourPrev" style="background:#F5F5F5;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;display:none;">Previous</button>
+        <button id="tourNext" style="background:#005587;border:none;color:#FFFFFF;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Next</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3334,6 +3372,139 @@ function initSortableTable(table) {{
   // Render first tab on load
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
+
+  // First-visit guided tour
+  function initTour() {{
+    if (localStorage.getItem('dependencyViewer_tourCompleted')) return;
+
+    var tourSteps = [
+      {{
+        title: 'Welcome to Dependency Analyzer',
+        content: 'This tool helps you understand dependencies, data flows, and code quality across your projects. Let me show you the key features.',
+        highlight: null
+      }},
+      {{
+        title: 'Navigate Diagrams',
+        content: 'Use tabs to explore different views. Zoom with + / - buttons or mouse wheel. Search to filter projects.',
+        highlight: '.tabs'
+      }},
+      {{
+        title: 'Click Edges for Details',
+        content: 'Click any arrow in the diagrams to see detailed analysis: coupling, shared packages, data patterns, and more.',
+        highlight: '.mermaid-wrap'
+      }},
+      {{
+        title: 'AI-Ready Context',
+        content: 'Click the AI Context link to access pre-formatted codebase summaries perfect for feeding to Claude or other AI assistants.',
+        highlight: '.stat-link'
+      }}
+    ];
+
+    var currentStep = 0;
+    var overlay = document.getElementById('tourOverlay');
+    var content = document.getElementById('tourContent');
+    var stepDiv = document.getElementById('tourStep');
+    var nextBtn = document.getElementById('tourNext');
+    var prevBtn = document.getElementById('tourPrev');
+    var skipBtn = document.getElementById('tourSkip');
+
+    function showStep(index) {{
+      if (index < 0 || index >= tourSteps.length) return;
+      currentStep = index;
+      var step = tourSteps[index];
+
+      // Remove previous spotlight
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+
+      // Update content
+      stepDiv.innerHTML = '<h3 style="color:#022D5E;margin:0 0 1rem;">' + step.title + '</h3>' +
+        '<p style="color:#53565A;font-size:0.9rem;line-height:1.6;margin:0;">' + step.content + '</p>' +
+        '<div style="margin-top:0.5rem;font-size:0.75rem;color:#999;">Step ' + (index + 1) + ' of ' + tourSteps.length + '</div>';
+
+      // Position and highlight
+      if (step.highlight) {{
+        var target = document.querySelector(step.highlight);
+        if (target) {{
+          target.classList.add('tour-spotlight');
+          var rect = target.getBoundingClientRect();
+          content.style.top = Math.max(rect.bottom + 20, 100) + 'px';
+          content.style.left = Math.max(rect.left, 50) + 'px';
+        }} else {{
+          content.style.top = '50%';
+          content.style.left = '50%';
+          content.style.transform = 'translate(-50%, -50%)';
+        }}
+      }} else {{
+        content.style.top = '50%';
+        content.style.left = '50%';
+        content.style.transform = 'translate(-50%, -50%)';
+      }}
+
+      // Update buttons
+      prevBtn.style.display = index > 0 ? 'block' : 'none';
+      nextBtn.textContent = index === tourSteps.length - 1 ? 'Get Started' : 'Next';
+    }}
+
+    function closeTour() {{
+      overlay.style.display = 'none';
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+      localStorage.setItem('dependencyViewer_tourCompleted', 'true');
+    }}
+
+    nextBtn.onclick = function() {{
+      if (currentStep === tourSteps.length - 1) {{
+        closeTour();
+      }} else {{
+        showStep(currentStep + 1);
+      }}
+    }};
+
+    prevBtn.onclick = function() {{
+      showStep(currentStep - 1);
+    }};
+
+    skipBtn.onclick = closeTour;
+
+    // Show tour
+    overlay.style.display = 'block';
+    showStep(0);
+  }}
+
+  // Show first-edge hint
+  function showFirstEdgeHint() {{
+    if (localStorage.getItem('edgeHintShown')) return;
+
+    setTimeout(function() {{
+      var firstEdge = document.querySelector('.flowchart-link');
+      if (!firstEdge) return;
+
+      firstEdge.classList.add('pulse-hint');
+
+      var hint = document.createElement('div');
+      hint.className = 'edge-hint-label';
+      hint.textContent = 'Click edges to see details';
+      hint.style.top = '100px';
+      hint.style.left = '50%';
+      hint.style.transform = 'translateX(-50%)';
+      document.body.appendChild(hint);
+
+      setTimeout(function() {{
+        firstEdge.classList.remove('pulse-hint');
+        hint.remove();
+        localStorage.setItem('edgeHintShown', 'true');
+      }}, 5000);
+    }}, 1000);
+  }}
+
+  // Initialize tour after short delay to ensure DOM is ready
+  setTimeout(function() {{
+    initTour();
+    showFirstEdgeHint();
+  }}, 500);
 
   // Init sorting on static tables
   initSortableTable(document.getElementById('datasourcesTable'));
