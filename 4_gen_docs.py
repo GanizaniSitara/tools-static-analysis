@@ -2686,10 +2686,20 @@ function showEdgeDetail(fromName, toName) {{
     if (toMeta) html += escHtmlGlobal(toMeta.category);
     html += '</div>';
   }}
-  // Coupling strength
+  // Coupling strength with file list
   if (typeof edgeMeta.count === 'number') {{
     html += '<div style="font-size:0.78rem;color:#005587;margin-top:0.3rem;">Coupling: '
-      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency</div>';
+      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency';
+    if (edgeMeta.coupling_files && edgeMeta.coupling_files.length > 0) {{
+      var fileId = 'coupling-' + Math.random().toString(36).substr(2, 9);
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + fileId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show files &#9660;</button>';
+      html += '<ul id="' + fileId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      for (var i = 0; i < edgeMeta.coupling_files.length; i++) {{
+        html += '<li style="margin:0.15rem 0;">&#10004; ' + escHtmlGlobal(edgeMeta.coupling_files[i]) + '</li>';
+      }}
+      html += '</ul>';
+    }}
+    html += '</div>';
   }}
   // Fan-in / fan-out for both projects
   if (fromMeta && (typeof fromMeta.fanIn === 'number' || typeof fromMeta.fanOut === 'number')) {{
@@ -3115,6 +3125,18 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
+function toggleCouplingFiles(selector) {{
+  var ul = document.querySelector(selector);
+  var btn = ul ? ul.previousElementSibling : null;
+  if (!ul || !btn) return;
+  if (ul.style.display === 'none') {{
+    ul.style.display = 'block';
+    btn.innerHTML = btn.innerHTML.replace('&#9660;', '&#9650;');
+  }} else {{
+    ul.style.display = 'none';
+    btn.innerHTML = btn.innerHTML.replace('&#9650;', '&#9660;');
+  }}
+}}
 function _openViaServer(editor, resolved, line, project, smell) {{
   var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
   if (project) url += '&project=' + encodeURIComponent(project);
@@ -3140,10 +3162,8 @@ document.addEventListener('click', function(e) {{
   if (action.classList.contains('file-studio')) {{
     _openViaServer('studio', resolved, line, project, smell);
   }} else if (action.classList.contains('file-code')) {{
-    // VS Code: try client-side URI first, fall back to server
-    var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
-    if (line) vsUri += ':' + line;
-    window.location.href = vsUri;
+    // VS Code: open via server to get workspace context
+    _openViaServer('code', resolved, line, project, smell);
   }} else if (action.classList.contains('file-claude')) {{
     _openViaServer('claude', resolved, line, project, smell);
   }} else if (action.classList.contains('file-opencode')) {{

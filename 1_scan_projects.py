@@ -800,20 +800,26 @@ def collect_project_namespaces_and_files(
     return project_namespaces, cs_files_by_project
 
 
-def _count_coupling(consumer_files: list[str], target_namespaces: set[str]) -> "int | None":
-    """Count .cs files in consumer that import any namespace from target."""
+def _count_coupling(consumer_files: list[str], target_namespaces: set[str]) -> "tuple[int, list[str]] | tuple[None, list]":
+    """Count .cs files in consumer that import any namespace from target.
+
+    Returns:
+        (count, file_list): tuple of count and list of files with coupling
+    """
     if not target_namespaces:
-        return None  # unknown — don't write 0, write null
+        return (None, [])  # unknown — don't write 0, write null
     count = 0
+    coupled_files = []
     for fpath in consumer_files:
         try:
             text = open(fpath, encoding="utf-8", errors="ignore").read()
             usings = set(_USING_LINE.findall(text))
             if any(u == ns or u.startswith(ns + ".") for u in usings for ns in target_namespaces):
                 count += 1
+                coupled_files.append(fpath)
         except OSError:
             pass
-    return count
+    return (count, coupled_files)
 
 
 # ─── Enhanced data access pattern discovery ──────────────────────────
@@ -2521,9 +2527,11 @@ def build_graph(
             to_proj = target["project"] if target else pr["references"]
             consumer_files = cs_files_by_project.get(pr["project"], [])
             target_ns = project_namespaces.get(to_proj, set())
-            count = _count_coupling(consumer_files, target_ns)
+            count, coupled_files = _count_coupling(consumer_files, target_ns)
             if count is not None:
                 edge["count"] = count
+                # Store file paths - use relative paths from the repo name prefix
+                edge["coupling_files"] = [f.replace("\\", "/") for f in coupled_files]
         edges.append(edge)
 
     # NuGet dependency edges
