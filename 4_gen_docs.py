@@ -27,6 +27,8 @@ def _load_config():
         "enableWslTools": False,
         "wslDistro": "Ubuntu",
         "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "claudeCodePath": "claude",
+        "micromambaEnv": "",
         "openCodePath": "/usr/local/bin/opencode",
         "githubCopilotEnabled": False
     }
@@ -3356,12 +3358,14 @@ function initSortableTable(table) {{
   window._config = {config_json};
 
   // Show WSL tools (OpenCode, Copilot) if enabled in config
-  if (window._config && window._config.enableWslTools) {{
-    var wslTools = document.querySelectorAll('.wsl-tool');
-    wslTools.forEach(function(tool) {{
-      tool.style.display = 'inline-block';
-    }});
-  }}
+  document.addEventListener('DOMContentLoaded', function() {{
+    if (window._config && window._config.enableWslTools) {{
+      var wslTools = document.querySelectorAll('.wsl-tool');
+      wslTools.forEach(function(tool) {{
+        tool.style.display = 'inline-block';
+      }});
+    }}
+  }});
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
