@@ -381,17 +381,17 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             if sys.platform == "win32":
                 # Windows: Use cmd /c start to open new window
                 # Note: start requires window title as first arg (use "" for default)
-                cmd = ["cmd.exe", "/c", "start", "", "cmd", "/k", full_cmd]
+                cmd_str = f'start "" cmd /k {full_cmd}'
                 try:
-                    subprocess.Popen(cmd)
+                    subprocess.Popen(cmd_str, shell=True)
                     self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
                 except OSError as exc:
                     self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
             elif _is_wsl():
                 # WSL: Launch Windows claude.exe via cmd.exe
                 try:
-                    cmd = ["cmd.exe", "/c", "start", "", "cmd", "/k", full_cmd]
-                    subprocess.Popen(cmd)
+                    cmd_str = f'cmd.exe /c start "" cmd /k {full_cmd}'
+                    subprocess.Popen(cmd_str, shell=True)
                     self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows-from-wsl"})
                 except OSError as exc:
                     self._json_response({"error": f"Failed to launch Claude Code from WSL: {exc}"}, 500)
