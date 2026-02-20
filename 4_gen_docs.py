@@ -12,11 +12,37 @@ import os
 import re
 import shutil
 import sys
+import yaml
 from datetime import date
 from pathlib import Path
 
 OUT_DIR = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "output")
 DOCS_DIR = os.path.join(OUT_DIR, "docs")
+
+
+def _load_config():
+    """Load configuration from config.yaml with defaults."""
+    config_path = Path(__file__).parent / "config.yaml"
+    default = {
+        "claudePrompt": "Please analyze this code and propose improvements.",
+        "enableWslTools": False,
+        "wslDistro": "Ubuntu",
+        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "claudeCodePath": "claude",
+        "micromambaEnv": "",
+        "openCodePath": "/usr/local/bin/opencode",
+        "githubCopilotEnabled": False
+    }
+    if not config_path.exists():
+        return default
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            return {**default, **yaml.safe_load(f)}
+    except Exception:
+        return default
+
+
+CONFIG = _load_config()
 
 
 def _load_json(path: str, default=None):
@@ -573,19 +599,22 @@ def _resolve_file_uri(rel_path: str, repo_name: str, repo_roots: dict[str, str])
     return _file_uri(rr + "/" + rp)
 
 
-def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
+def _file_actions_html(path: str, line: int = 0, display: str = "", project: str = "", smell: str = "") -> str:
     """Generate HTML for a file reference with IDE action icons."""
     if not path:
         return f'<span class="mono">{_esc_html(display or "")}</span>'
     disp = _esc_html(display or (f"{path}:{line}" if line else path))
     p = _esc_html(path)
+    proj = _esc_html(project)
+    sm = _esc_html(smell)
     return (
         f'<span class="file-ref">'
         f'<span class="mono" style="color:#53565A;">{disp}</span>'
         f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
-        f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" title="Explore with Claude Code">Claude</a>'
-        f' <a href="#" class="file-action file-opencode" data-path="{p}" data-line="{line}" title="Open in OpenCode">OpenCode</a>'
+        f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
+        f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
+        f' <a href="#" class="file-action file-copilot wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -762,6 +791,12 @@ def generate_viewer_html() -> str:
     repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
     repos_roots_json = _safe_json_for_script(repos_root_lookup)
     repos_json = _safe_json_for_script(project_groups)
+
+    # ── Config flags for AI tool integration ──
+    config_json = _safe_json_for_script({
+        "enableWslTools": CONFIG.get("enableWslTools", False),
+        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False)
+    })
     project_groups_map_json = _safe_json_for_script(project_to_group)
 
     # ── UX inconsistency data ──
@@ -779,6 +814,18 @@ def generate_viewer_html() -> str:
         "toolsExecuted": external_tools_data.get("toolsExecuted", []),
         "toolsSkipped": external_tools_data.get("toolsSkipped", {}),
     })
+
+    # ── Edge metadata (coupling count, NuGet version) for viewer tooltips ──
+    _edge_meta: dict = {}
+    for _e in graph.get("edges", []):
+        _extra = {k: v for k, v in _e.items() if k not in ("from", "to", "type")}
+        if _extra:
+            _edge_meta[f"{_e['from']}||{_e['to']}"] = _extra
+    edge_meta_json = _safe_json_for_script(_edge_meta)
+
+    # ── Circular dependency data ──
+    _cycles = graph.get("summary", {}).get("circularDependencies", [])
+    cycles_json = _safe_json_for_script(_cycles)
 
     # ── NuGet health data ──
     nh_conflicts = nuget_health.get("versionConflicts", [])
@@ -1273,11 +1320,33 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # Cycles warning HTML (embedded at build time)
+    _cycles_warning_html = ""
+    if _cycles:
+        _cycle_items = ""
+        for _cyc in _cycles[:20]:  # cap at 20 for readability
+            _cyc_names = [c.split("/")[-1] for c in _cyc]
+            _cyc_links = " &rarr; ".join(
+                f'<a href="#" class="cycle-proj-link" data-project="{_esc_html(c.split("/")[-1])}">{_esc_html(c.split("/")[-1])}</a>'
+                for c in _cyc
+            )
+            _cycle_items += f'<li>{_cyc_links} <span style="color:#53565A;font-size:0.75rem;">({len(_cyc) - 1} project{"s" if len(_cyc) - 1 != 1 else ""})</span></li>\n'
+        if len(_cycles) > 20:
+            _cycle_items += f'<li style="color:#53565A">... and {len(_cycles) - 20} more</li>\n'
+        _n_cycles = len(_cycles)
+        _word = "dependency" if _n_cycles == 1 else "dependencies"
+        _cycles_warning_html = f"""
+      <div class="cycles-warning" style="background:#fff3cd;border:1px solid #E87722;border-radius:4px;padding:0.75rem 1rem;margin-bottom:1rem;">
+        <strong style="color:#D0002B;">&#9888; {_n_cycles} circular {_word} detected</strong>
+        <ul style="margin:0.4rem 0 0 1.2rem;padding:0;font-size:0.82rem;">
+{_cycle_items}        </ul>
+      </div>"""
+
     # All projects panel
     all_projects_panel = f"""
   <section class="tab-panel" id="panel-allprojects">
     <div class="card">
-      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>
+      <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>{_cycles_warning_html}
       <div class="table-wrap">
         <table id="projectsTable">
           <thead>
@@ -2186,6 +2255,8 @@ def generate_viewer_html() -> str:
   .file-claude:hover {{ background:#b85e3f; }}
   .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
   .file-opencode:hover {{ background:#0f0f1a; }}
+  .file-copilot {{ background:#1f883d; color:#fff !important; }}
+  .file-copilot:hover {{ background:#166d31; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
   .footer {{
@@ -2554,6 +2625,11 @@ function showEdgeDetail(fromName, toName) {{
   var sharedPatternNames = {{}};
   sharedPatterns.forEach(function (p) {{ sharedPatternNames[p.pattern] = (sharedPatternNames[p.pattern] || 0) + 1; }});
 
+  // Look up edge metadata (coupling count, version) from graph edges
+  var fromNodeId = fromMeta ? ((fromMeta.repo ? fromMeta.repo + '/' : '') + fromMeta.project) : fromName;
+  var toNodeId = toMeta ? ((toMeta.repo ? toMeta.repo + '/' : '') + toMeta.project) : toName;
+  var edgeMeta = (window._edgeMeta || {{}})[fromNodeId + '||' + toNodeId] || {{}};
+
   // Build HTML
   var html = '<div class="detail-header"><h3>Dependency Detail</h3>'
     + '<button class="detail-close" id="detailCloseBtn">Close</button></div>';
@@ -2570,6 +2646,22 @@ function showEdgeDetail(fromName, toName) {{
     html += ' &#8594; ';
     if (toMeta) html += escHtmlGlobal(toMeta.category);
     html += '</div>';
+  }}
+  // Coupling strength
+  if (typeof edgeMeta.count === 'number') {{
+    html += '<div style="font-size:0.78rem;color:#005587;margin-top:0.3rem;">Coupling: '
+      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency</div>';
+  }}
+  // Fan-in / fan-out for both projects
+  if (fromMeta && (typeof fromMeta.fanIn === 'number' || typeof fromMeta.fanOut === 'number')) {{
+    html += '<div style="font-size:0.75rem;color:#53565A;margin-top:0.15rem;">'
+      + escHtmlGlobal(fromName) + ': Fan-in <strong>' + (fromMeta.fanIn || 0) + '</strong>'
+      + ' &bull; Fan-out <strong>' + (fromMeta.fanOut || 0) + '</strong></div>';
+  }}
+  if (toMeta && (typeof toMeta.fanIn === 'number' || typeof toMeta.fanOut === 'number')) {{
+    html += '<div style="font-size:0.75rem;color:#53565A;margin-top:0.1rem;">'
+      + escHtmlGlobal(toName) + ': Fan-in <strong>' + (toMeta.fanIn || 0) + '</strong>'
+      + ' &bull; Fan-out <strong>' + (toMeta.fanOut || 0) + '</strong></div>';
   }}
   html += '</div>';
 
@@ -2954,17 +3046,20 @@ function _resolveFromRoots(filePath) {{
   return fp;
 }}
 // Global helper: generate file action icons HTML
-function fileActionsHtml(filePath, line, style) {{
+function fileActionsHtml(filePath, line, style, project, smell) {{
   if (!filePath) return '';
   var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
   var dp = escHtmlGlobal(filePath);
   var dl = line || 0;
+  var proj = escHtmlGlobal(project || '');
+  var sm = escHtmlGlobal(smell || '');
   return '<span class="file-ref">' +
     '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
-    ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" title="Explore with Claude Code">Claude</a>' +
-    ' <a href="#" class="file-action file-opencode" data-path="' + dp + '" data-line="' + dl + '" title="Open in OpenCode">OpenCode</a>' +
+    ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
+    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
+    ' <a href="#" class="file-action file-copilot wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -2981,8 +3076,10 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
-function _openViaServer(editor, resolved, line) {{
+function _openViaServer(editor, resolved, line, project, smell) {{
   var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+  if (project) url += '&project=' + encodeURIComponent(project);
+  if (smell) url += '&smell=' + encodeURIComponent(smell);
   fetch(url).then(function(r) {{ return r.json(); }}).then(function(d) {{
     if (d.error) showToast(d.error, true);
     else showToast('Opening ' + editor + '...', false);
@@ -2997,19 +3094,23 @@ document.addEventListener('click', function(e) {{
   e.preventDefault();
   var path = action.getAttribute('data-path');
   var line = parseInt(action.getAttribute('data-line') || '0', 10);
+  var project = action.getAttribute('data-project') || '';
+  var smell = action.getAttribute('data-smell') || '';
   if (!path) return;
   var resolved = _resolveFromRoots(path);
   if (action.classList.contains('file-studio')) {{
-    _openViaServer('studio', resolved, line);
+    _openViaServer('studio', resolved, line, project, smell);
   }} else if (action.classList.contains('file-code')) {{
     // VS Code: try client-side URI first, fall back to server
     var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
     if (line) vsUri += ':' + line;
     window.location.href = vsUri;
   }} else if (action.classList.contains('file-claude')) {{
-    _openViaServer('claude', resolved, line);
+    _openViaServer('claude', resolved, line, project, smell);
   }} else if (action.classList.contains('file-opencode')) {{
-    _openViaServer('opencode', resolved, line);
+    _openViaServer('opencode', resolved, line, project, smell);
+  }} else if (action.classList.contains('file-copilot')) {{
+    _openViaServer('copilot', resolved, line, project, smell);
   }} else if (action.classList.contains('file-view')) {{
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
@@ -3253,6 +3354,19 @@ function initSortableTable(table) {{
   window._isMultiRepo = {str(is_multi_repo).lower()};
   window._repos = {repos_json};
   window._projectGroupMap = {project_groups_map_json};
+  window._edgeMeta = {edge_meta_json};
+  window._cycles = {cycles_json};
+  window._config = {config_json};
+
+  // Show WSL tools (OpenCode, Copilot) if enabled in config
+  document.addEventListener('DOMContentLoaded', function() {{
+    if (window._config && window._config.enableWslTools) {{
+      var wslTools = document.querySelectorAll('.wsl-tool');
+      wslTools.forEach(function(tool) {{
+        tool.style.display = 'inline-block';
+      }});
+    }}
+  }});
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -3315,6 +3429,30 @@ function initSortableTable(table) {{
   }});
 
   }}); // end finally for flow-paths.json
+
+  // Wire up cycle project links in the All Projects panel
+  (function () {{
+    var panel = document.getElementById('panel-allprojects');
+    if (!panel) return;
+    panel.addEventListener('click', function (e) {{
+      var link = e.target.closest('.cycle-proj-link');
+      if (!link) return;
+      e.preventDefault();
+      var projName = link.getAttribute('data-project');
+      if (!projName) return;
+      // Scroll to matching row in the projects table
+      var rows = document.querySelectorAll('#projectsBody tr');
+      for (var i = 0; i < rows.length; i++) {{
+        var td = rows[i].querySelector('td:first-child');
+        if (td && td.textContent.trim() === projName) {{
+          rows[i].scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+          rows[i].style.outline = '2px solid #D0002B';
+          setTimeout(function (r) {{ r.style.outline = ''; }}, 2000, rows[i]);
+          break;
+        }}
+      }}
+    }});
+  }})();
 
   // Populate hotspots table from embedded data
   (function () {{

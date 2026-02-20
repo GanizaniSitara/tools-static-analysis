@@ -32,6 +32,17 @@ def _load_json(path: str, default=None):
 
 graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
 
+# ─── Heat-map: load refactoring scores ──────────────────────────────
+
+_rt_path = os.path.join(OUT_DIR, "refactoring-targets.json")
+_score_map: dict[str, float] = {}  # node_id (repo/project) → refactoring_value_score
+if os.path.isfile(_rt_path):
+    _rt = _load_json(_rt_path, {})
+    for _p in _rt.get("projects", []):
+        _key = f"{_p['repo']}/{_p['project']}" if _p.get("repo") else _p.get("project", "")
+        if _key:
+            _score_map[_key] = _p.get("refactoring_value_score", 0)
+
 # ─── Helpers ────────────────────────────────────────────────────────
 
 ALL_TYPES = {
@@ -40,6 +51,14 @@ ALL_TYPES = {
 }
 
 project_nodes = [n for n in graph["nodes"] if n.get("type") in ALL_TYPES]
+
+# Compute max refactoring score per category for overview heat-map
+_cat_max_score: dict[str, float] = {}
+for _n in project_nodes:
+    _ncat = _n.get("type", "")
+    _nscore = _score_map.get(_n["id"], 0)
+    if _nscore > _cat_max_score.get(_ncat, 0):
+        _cat_max_score[_ncat] = _nscore
 
 # Deduplicate project ref edges
 unique_project_refs: dict[str, dict] = {}
@@ -56,6 +75,24 @@ is_multi_repo = len(repos) > 1
 
 def sanitize_id(id_str: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_]", "_", id_str)
+
+
+def _node_colour(node_id: str) -> "str | None":
+    """Return Mermaid fill colour based on project refactoring score, or None for default."""
+    score = _score_map.get(node_id, 0)
+    if score > 100:  return "#D0002B"   # red   — high risk
+    if score > 50:   return "#E87722"   # amber — medium
+    if score > 10:   return "#9E8700"   # yellow — low-medium
+    return None                          # default — clean
+
+
+def _category_colour(category: str) -> "str | None":
+    """Return colour based on max project refactoring score in the category."""
+    score = _cat_max_score.get(category, 0)
+    if score > 100:  return "#D0002B"
+    if score > 50:   return "#E87722"
+    if score > 10:   return "#9E8700"
+    return None
 
 
 def short_name(node: dict) -> str:
@@ -105,6 +142,12 @@ def generate_landscape_mermaid() -> str:
         if e["from"] in node_ids and e["to"] in node_ids:
             style = " -.->" if e["type"] == "cross-repo-reference" else " -->"
             lines.append(f"    {sanitize_id(e['from'])}{style} {sanitize_id(e['to'])}")
+
+    # Heat-map: colour nodes by refactoring score
+    for nid in node_ids:
+        colour = _node_colour(nid)
+        if colour:
+            lines.append(f"  style {sanitize_id(nid)} fill:{colour},color:#fff")
 
     return "\n".join(lines)
 
@@ -238,6 +281,12 @@ def generate_category_overview_mermaid() -> str:
     # Emit edges
     for (from_cat, to_cat), count in sorted(cat_edges.items(), key=lambda x: -x[1]):
         lines.append(f'    {sanitize_id(from_cat)} -->|{count}| {sanitize_id(to_cat)}')
+
+    # Heat-map: colour category nodes by max project refactoring score
+    for cat in cat_counts:
+        colour = _category_colour(cat)
+        if colour:
+            lines.append(f"  style {sanitize_id(cat)} fill:{colour},color:#fff")
 
     return "\n".join(lines)
 

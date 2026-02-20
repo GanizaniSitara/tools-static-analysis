@@ -1,0 +1,95 @@
+# ============================================================================
+# Dependency Mapper - AI Tool Integration Configuration
+# ============================================================================
+# Copy this file to config.yaml and customize for your environment
+#
+# Usage:
+#   cp config.example.yaml config.yaml
+#   # Edit config.yaml with your settings
+#
+# Note: config.yaml is gitignored - safe to store local paths/preferences
+# ============================================================================
+
+# AI Tool Prompts
+# ============================================================================
+claudePrompt: |
+  You are analyzing a C# .NET project with architectural smells.
+  Please propose a refactoring solution that:
+  - Addresses the specific smell identified
+  - Maintains existing functionality
+  - Follows SOLID principles and .NET best practices
+  - Considers the broader architectural context
+
+# WSL Tools Configuration
+# ============================================================================
+# Master toggle: When true, AI tools run via WSL instead of Windows native
+enableWslTools: false
+
+# WSL distribution name (check with: wsl -l -v)
+wslDistro: Ubuntu-24.04
+
+# WSL path prefix (usually \\wsl.localhost\<distro> or \\wsl$\<distro>)
+wslPathPrefix: \\wsl.localhost\\Ubuntu-24.04
+
+# Claude Code Configuration
+# ============================================================================
+# Path to Claude Code executable in WSL (can be absolute or from PATH)
+# Examples:
+#   - "claude"                              (from PATH)
+#   - "/home/username/.local/bin/claude"    (absolute path)
+#   - "~/.local/bin/claude"                 (home-relative)
+claudeCodePath: claude
+
+# Micromamba/Conda environment to activate before running Claude Code
+# Leave empty ("") to run in base environment
+# Examples:
+#   - ""            (no environment activation)
+#   - "ai-tools"    (activate ai-tools environment)
+#   - "python311"   (activate python311 environment)
+micromambaEnv: ""
+
+# OpenCode Configuration
+# ============================================================================
+# Path to OpenCode executable in WSL
+# Examples:
+#   - "/usr/local/bin/opencode"
+#   - "~/.local/bin/opencode"
+#   - "opencode"  (if in PATH)
+openCodePath: /usr/local/bin/opencode
+
+# GitHub Copilot Configuration
+# ============================================================================
+# Enable GitHub Copilot CLI integration
+# Requires: gh copilot extension installed in WSL
+# Install: gh extension install github/gh-copilot
+githubCopilotEnabled: true
+
+# ============================================================================
+# Configuration Examples
+# ============================================================================
+#
+# Example 1: Windows-only setup (no WSL)
+# ----------------------------------------
+# enableWslTools: false
+# claudeCodePath: claude  # Uses Windows claude.exe from PATH
+#
+# Example 2: WSL with default environment
+# ----------------------------------------
+# enableWslTools: true
+# wslDistro: Ubuntu-24.04
+# claudeCodePath: claude
+# micromambaEnv: ""  # No conda environment
+#
+# Example 3: WSL with micromamba environment
+# -------------------------------------------
+# enableWslTools: true
+# wslDistro: Ubuntu
+# claudeCodePath: /home/user/.local/bin/claude
+# micromambaEnv: ai-tools  # Activates 'ai-tools' conda env
+#
+# Example 4: Mixed setup (Claude on Windows, OpenCode in WSL)
+# ------------------------------------------------------------
+# enableWslTools: false  # Claude runs on Windows
+# # To use OpenCode, temporarily enable WSL tools when needed
+#
+# ============================================================================
