@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import threading
+import yaml
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
@@ -20,8 +21,8 @@ sys.path.insert(0, SCRIPT_DIR)
 
 
 def _load_config():
-    """Load configuration from config.json with defaults."""
-    config_path = Path(__file__).parent / "config.json"
+    """Load configuration from config.yaml with defaults."""
+    config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
         "enableWslTools": False,
@@ -36,7 +37,7 @@ def _load_config():
         return default
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
-            return {**default, **json.load(f)}
+            return {**default, **yaml.safe_load(f)}
     except Exception:
         return default
 
