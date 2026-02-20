@@ -2728,12 +2728,31 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Shared NuGet packages
+  // Shared NuGet packages with version conflict detection
+  var conflicts = edgeMeta.version_conflicts || [];
+  var conflictMap = {{}};
+  conflicts.forEach(function (c) {{
+    conflictMap[c.package] = c;
+  }});
+
   html += '<div class="detail-section"><h4>Shared NuGet Packages (' + sharedPkgs.length + ')</h4>';
   if (sharedPkgs.length > 0) {{
     html += '<ul class="detail-list">';
     sharedPkgs.slice(0, 15).forEach(function (d) {{
-      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      var conflict = conflictMap[d.package];
+      if (conflict) {{
+        // Version conflict - show warning
+        html += '<li style="background:#FFF3CD;padding:0.2rem 0.4rem;margin:0.2rem 0;border-radius:3px;">';
+        html += '<span style="color:#856404;">&#9888;</span> ' + escHtmlGlobal(d.package) + ' <strong style="color:#856404;">VERSION CONFLICT</strong>';
+        html += '<div style="font-size:0.7rem;margin-left:1.5rem;color:#53565A;margin-top:0.2rem;">';
+        html += '&bull; <span class="from" style="color:#005587">' + escHtmlGlobal(fromName) + '</span> uses: ' + escHtmlGlobal(conflict.from_version) + '<br>';
+        html += '&bull; <span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span> uses: ' + escHtmlGlobal(conflict.to_version);
+        html += '</div>';
+        html += '</li>';
+      }} else {{
+        // No conflict - normal display
+        html += '<li>&#10004; ' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      }}
     }});
     if (sharedPkgs.length > 15) html += '<li style="color:#53565A">... and ' + (sharedPkgs.length - 15) + ' more</li>';
     html += '</ul>';
@@ -2742,7 +2761,7 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Data patterns
+  // Data patterns with file-level details
   var totalFromPatterns = fromDataPatterns.length;
   var totalToPatterns = toDataPatterns.length;
   html += '<div class="detail-section"><h4>Data Patterns</h4>';
@@ -2751,9 +2770,43 @@ function showEdgeDetail(fromName, toName) {{
     + '<span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
   var sharedKeys = Object.keys(sharedPatternNames);
   if (sharedKeys.length > 0) {{
-    html += '<ul class="detail-list">';
-    sharedKeys.forEach(function (p) {{
-      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#53565A">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
+    html += '<ul class="detail-list" style="list-style:none;padding:0;">';
+    sharedKeys.forEach(function (patternName) {{
+      // Find all shared findings for this pattern type
+      var findings = sharedPatterns.filter(function (p) {{ return p.pattern === patternName; }});
+      var findingId = 'pattern-' + Math.random().toString(36).substr(2, 9);
+
+      // Pattern header with count
+      html += '<li style="margin:0.4rem 0;">';
+      html += '<strong>' + escHtmlGlobal(patternName) + '</strong> - ' + findings.length + ' finding' + (findings.length !== 1 ? 's' : '');
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + findingId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show details &#9660;</button>';
+
+      // Expandable finding details
+      html += '<ul id="' + findingId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      findings.slice(0, 10).forEach(function (f) {{
+        var directionIcon = '';
+        if (f.direction === 'read') directionIcon = '&#128065;'; // eye
+        else if (f.direction === 'write') directionIcon = '&#9998;'; // pencil
+        else if (f.direction === 'expose') directionIcon = '&#128200;'; // chart
+        else if (f.direction === 'consume') directionIcon = '&#128226;'; // megaphone
+        else if (f.direction === 'both') directionIcon = '&#8644;'; // left-right arrow
+
+        var endpoint = f.endpoint ? ' <strong>' + escHtmlGlobal(f.endpoint) + '</strong>' : '';
+        var direction = f.direction ? ' (' + escHtmlGlobal(f.direction) + ')' : '';
+
+        html += '<li style="margin:0.15rem 0;">';
+        html += directionIcon + endpoint + direction + ' - ';
+        html += '<a href="#" onclick="event.preventDefault();_openViaServer(\\'code\\', \\'' + escHtmlGlobal(f.file) + '\\', ' + (f.line || 1) + ', \\'' + escHtmlGlobal(f.project || '') + '\\', null);return false;" ';
+        html += 'style="color:#005587;text-decoration:none;">';
+        html += escHtmlGlobal(f.file.split('/').pop()) + ':' + (f.line || 1);
+        html += '</a>';
+        html += '</li>';
+      }});
+      if (findings.length > 10) {{
+        html += '<li style="color:#53565A;font-style:italic;">... and ' + (findings.length - 10) + ' more</li>';
+      }}
+      html += '</ul>';
+      html += '</li>';
     }});
     html += '</ul>';
   }} else {{

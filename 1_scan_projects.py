@@ -2532,6 +2532,34 @@ def build_graph(
                 edge["count"] = count
                 # Store file paths - use relative paths from the repo name prefix
                 edge["coupling_files"] = [f.replace("\\", "/") for f in coupled_files]
+
+        # Version conflict detection for shared NuGet packages
+        version_conflicts = []
+        for pkg_name, info in nuget_packages.items():
+            # Check if both projects consume this package
+            if from_id in info["consumers"] and to_id in info["consumers"]:
+                # Find the specific versions each project uses
+                from_versions = [pd["version"] for pd in package_deps
+                                if f"{pd['repo']}/{pd['project']}" == from_id and pd["package"] == pkg_name]
+                to_versions = [pd["version"] for pd in package_deps
+                              if f"{pd['repo']}/{pd['project']}" == to_id and pd["package"] == pkg_name]
+
+                from_ver = from_versions[0] if from_versions else ""
+                to_ver = to_versions[0] if to_versions else ""
+
+                # If versions differ, it's a conflict
+                if from_ver and to_ver and from_ver != to_ver:
+                    version_conflicts.append({
+                        "package": pkg_name,
+                        "from_version": from_ver,
+                        "to_version": to_ver,
+                        "from_project": from_id,
+                        "to_project": to_id
+                    })
+
+        if version_conflicts:
+            edge["version_conflicts"] = version_conflicts
+
         edges.append(edge)
 
     # NuGet dependency edges
