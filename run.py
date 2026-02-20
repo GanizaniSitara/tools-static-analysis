@@ -482,7 +482,7 @@ def main():
     parser = _ap.ArgumentParser(description="Pipeline: scans, diagrams, docs, web server.")
     parser.add_argument("repos", nargs="?", help="Directory containing repos to scan")
     parser.add_argument("out", nargs="?", default="output", help="Output directory name (default: output)")
-    parser.add_argument("port", nargs="?", type=int, default=8000, help="Web server port (default: 8000)")
+    parser.add_argument("port", nargs="?", type=int, default=8020, help="Web server port (default: 8020)")
     parser.add_argument("--level", choices=["critical", "high", "medium", "low"], default="high",
                         help="Minimum severity level for smell scanner (default: high)")
     parser.add_argument("--serve-only", action="store_true",
