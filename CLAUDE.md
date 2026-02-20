@@ -14,6 +14,9 @@
 - Verify: no errors, sensible output counts, viewer.html JS syntax check passes
 - JS syntax check: extract `<script>` blocks and run `node --check`
 
+## Code Style
+- **Never use emojis** in code, HTML, documentation, or any generated output
+
 ## Project Overview
 - Static analysis tool for .NET solutions: `1_scan_projects.py` → `2_scan_smells.py` → `3_gen_diagrams.py` → `4_gen_docs.py`
 - `1_scan_projects.py`: Scans .csproj/.xaml/.config files — dependencies, project refs, data patterns, field traceability, UX consistency, NuGet health

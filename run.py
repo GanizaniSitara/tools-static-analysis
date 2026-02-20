@@ -305,16 +305,15 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         - false: Run Claude Code natively on Windows (opens new terminal window)
         - true: Run Claude Code via WSL with optional micromamba activation
         """
-        # Find solution directory by walking up from file
-        sln_dir = None
-        current = Path(file_path).parent
-        for _ in range(10):
-            if list(current.glob("*.sln")):
-                sln_dir = str(current)
-                break
-            if current == current.parent:
-                break
-            current = current.parent
+        # Find solution file using existing helper (handles relative paths correctly)
+        sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
+
+        # Get solution directory - require valid solution to avoid opening in wrong directory
+        if not sln_path:
+            self._json_response({"error": "No .sln solution file found for this file"}, 404)
+            return
+
+        sln_dir = str(Path(sln_path).parent)
 
         # Build prompt from config + project + smell
         prompt_parts = [CONFIG["claudePrompt"]]
@@ -328,7 +327,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         if CONFIG.get("claudeCodeUseWsl", False):
             # WSL mode with optional micromamba activation
             wsl_file = _windows_to_wsl_path(file_path)
-            workspace_dir = _windows_to_wsl_path(sln_dir) if sln_dir else _windows_to_wsl_path(str(Path(file_path).parent))
+            workspace_dir = _windows_to_wsl_path(sln_dir)
 
             # Build Claude Code command
             claude_cmd = CONFIG.get("claudeCodePath", "claude")
@@ -361,7 +360,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                 self._json_response({"error": f"Failed to launch Claude Code via WSL: {exc}"}, 500)
         else:
             # Windows native mode - launch in new terminal window
-            workspace_dir = sln_dir if sln_dir else str(Path(file_path).parent)
+            workspace_dir = sln_dir
 
             # Build Claude Code arguments
             claude_args = [
@@ -402,21 +401,17 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             self._json_response({"error": "WSL tools are disabled in config.json"}, 400)
             return
 
+        # Find solution file using existing helper
+        sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
+        if not sln_path:
+            self._json_response({"error": "No .sln solution file found for this file"}, 404)
+            return
+
+        sln_dir = str(Path(sln_path).parent)
+
+        # Convert paths to WSL
         wsl_file = _windows_to_wsl_path(file_path)
-
-        # Find solution directory by walking up from file
-        sln_dir = None
-        current = Path(file_path).parent
-        for _ in range(10):
-            if list(current.glob("*.sln")):
-                sln_dir = _windows_to_wsl_path(str(current))
-                break
-            if current == current.parent:
-                break
-            current = current.parent
-
-        # Fallback to file's directory if no solution found
-        workspace_dir = sln_dir if sln_dir else _windows_to_wsl_path(str(Path(file_path).parent))
+        workspace_dir = _windows_to_wsl_path(sln_dir)
 
         # Build prompt
         prompt_parts = [CONFIG["claudePrompt"]]
