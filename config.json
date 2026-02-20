@@ -1,0 +1,8 @@
+{
+  "claudePrompt": "You are analyzing a C# .NET project with architectural smells. Please propose a refactoring solution.",
+  "enableWslTools": false,
+  "wslDistro": "Ubuntu-24.04",
+  "wslPathPrefix": "\\\\wsl.localhost\\Ubuntu-24.04",
+  "openCodePath": "/usr/local/bin/opencode",
+  "githubCopilotEnabled": true
+}

@@ -9,12 +9,36 @@ import shutil
 import subprocess
 import sys
 import threading
+from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Ensure scanner package is importable
 sys.path.insert(0, SCRIPT_DIR)
+
+
+def _load_config():
+    """Load configuration from config.json with defaults."""
+    config_path = Path(__file__).parent / "config.json"
+    default = {
+        "claudePrompt": "Please analyze this code and propose improvements.",
+        "enableWslTools": False,
+        "wslDistro": "Ubuntu",
+        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "openCodePath": "/usr/local/bin/opencode",
+        "githubCopilotEnabled": False
+    }
+    if not config_path.exists():
+        return default
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            return {**default, **json.load(f)}
+    except Exception:
+        return default
+
+
+CONFIG = _load_config()
 
 
 def _is_wsl() -> bool:
@@ -24,6 +48,26 @@ def _is_wsl() -> bool:
             return "microsoft" in f.read().lower()
     except OSError:
         return False
+
+
+def _windows_to_wsl_path(win_path: str) -> str:
+    """Convert C:\\foo\\bar -> /mnt/c/foo/bar using wslpath."""
+    try:
+        result = subprocess.run(
+            ["wsl", "-d", CONFIG["wslDistro"], "wslpath", "-u", win_path],
+            capture_output=True, text=True, timeout=2
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except Exception:
+        pass
+
+    # Fallback: manual conversion
+    if len(win_path) > 1 and win_path[1] == ':':
+        drive = win_path[0].lower()
+        rest = win_path[2:].replace('\\', '/')
+        return f"/mnt/{drive}{rest}"
+    return win_path.replace('\\', '/')
 
 
 def _find_solution(file_path: str, repo_roots: dict, solutions_map: dict) -> str:
@@ -158,7 +202,9 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
     def _handle_open(self, params: dict):
         editor = params.get("editor", [""])[0]
         file_path = params.get("path", [""])[0]
-        line = int(params.get("line", ["0"])[0])
+        line = int(params.get("line", ["0"])[0]) if params.get("line", ["0"])[0] else None
+        project_name = params.get("project", [None])[0]
+        smell_description = params.get("smell", [None])[0]
 
         if not file_path:
             self._json_error(400, "Missing path parameter")
@@ -169,9 +215,11 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         elif editor == "code":
             self._open_vscode(file_path, line)
         elif editor == "claude":
-            self._open_claude(file_path)
+            self._open_claude(file_path, line, project_name, smell_description)
         elif editor == "opencode":
-            self._open_opencode(file_path)
+            self._open_opencode(file_path, line, project_name, smell_description)
+        elif editor == "copilot":
+            self._open_github_copilot(file_path, line, project_name, smell_description)
         else:
             self._json_error(400, f"Unknown editor: {editor}")
 
@@ -219,119 +267,152 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             )
 
     def _open_vscode(self, file_path: str, line: int):
-        """Open file in VS Code via CLI."""
+        """Open file in VS Code with solution directory as workspace."""
         code_cmd = shutil.which("code")
         if not code_cmd:
             self._json_response({"error": "VS Code (code) not found in PATH"}, 500)
             return
-        goto = f"{file_path}:{line}" if line else file_path
+
+        # Find solution file using existing helper
+        sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
+
+        cmd = [code_cmd]
+        if sln_path:
+            # Open solution directory as workspace
+            cmd.append(str(Path(sln_path).parent))
+
+        # Navigate to specific file and line
+        cmd.extend(["--goto", f"{file_path}:{line or 1}"])
+
         try:
-            subprocess.Popen([code_cmd, "--goto", goto])
-            self._json_response({"status": "ok", "editor": "code"})
+            subprocess.Popen(cmd, start_new_session=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self._json_response({"status": "ok", "editor": "code",
+                               "solution": sln_path if sln_path else None})
         except OSError as exc:
             self._json_response({"error": f"Failed to launch VS Code: {exc}"}, 500)
 
-    def _open_claude(self, file_path: str):
-        """Open Claude Code in a terminal at the file's directory."""
-        dir_path = os.path.dirname(file_path) if os.path.isfile(file_path) else file_path
-        if not os.path.isdir(dir_path):
-            self._json_response({"error": f"Directory not found: {dir_path}"}, 404)
-            return
-
+    def _open_claude(self, file_path: str, line: int = None, project_name: str = None,
+                     smell_description: str = None):
+        """Open Claude Code with context: workspace dir, file:line, and custom prompt."""
         claude_cmd = shutil.which("claude")
         if not claude_cmd:
             self._json_response({"error": "Claude Code CLI (claude) not found in PATH"}, 500)
             return
 
-        # Try terminal emulators in order of preference
-        launched = False
-        shell_cmd = f'cd "{dir_path}" && claude'
-        terminals = [
-            (["gnome-terminal", "--", "bash", "-c", shell_cmd], "gnome-terminal"),
-            (["x-terminal-emulator", "-e", f"bash -c '{shell_cmd}'"], "x-terminal-emulator"),
-            (["xterm", "-e", f"bash -c '{shell_cmd}'"], "xterm"),
-            (["konsole", "-e", f"bash -c '{shell_cmd}'"], "konsole"),
+        # Find solution directory by walking up from file
+        sln_dir = None
+        current = Path(file_path).parent
+        for _ in range(10):
+            if list(current.glob("*.sln")):
+                sln_dir = str(current)
+                break
+            if current == current.parent:
+                break
+            current = current.parent
+
+        # Fallback to file's directory if no solution found
+        workspace_dir = sln_dir if sln_dir else str(Path(file_path).parent)
+
+        # Build command
+        cmd = [claude_cmd]
+        cmd.extend(["--add-dir", workspace_dir])
+        cmd.append(f"@{file_path}" + (f":{line}" if line else ""))
+
+        # Build prompt from config + project + smell
+        prompt_parts = [CONFIG["claudePrompt"]]
+        if project_name:
+            prompt_parts.append(f"\n\nProject: {project_name}")
+        if smell_description:
+            prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+
+        cmd.extend(["--append-system-prompt", "".join(prompt_parts)])
+
+        # Launch directly without terminal emulator (claude handles its own UI)
+        try:
+            subprocess.Popen(cmd, start_new_session=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir})
+        except OSError as exc:
+            self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
+
+    def _open_opencode(self, file_path: str, line: int = None, project_name: str = None,
+                       smell_description: str = None):
+        """Open OpenCode via WSL with context: workspace dir, file:line, and custom prompt."""
+        if not CONFIG["enableWslTools"]:
+            self._json_response({"error": "WSL tools are disabled in config.json"}, 400)
+            return
+
+        wsl_file = _windows_to_wsl_path(file_path)
+
+        # Find solution directory by walking up from file
+        sln_dir = None
+        current = Path(file_path).parent
+        for _ in range(10):
+            if list(current.glob("*.sln")):
+                sln_dir = _windows_to_wsl_path(str(current))
+                break
+            if current == current.parent:
+                break
+            current = current.parent
+
+        # Fallback to file's directory if no solution found
+        workspace_dir = sln_dir if sln_dir else _windows_to_wsl_path(str(Path(file_path).parent))
+
+        # Build prompt
+        prompt_parts = [CONFIG["claudePrompt"]]
+        if project_name:
+            prompt_parts.append(f"\n\nProject: {project_name}")
+        if smell_description:
+            prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+
+        # Execute via WSL
+        wsl_cmd = [
+            "wsl", "-d", CONFIG["wslDistro"], "--",
+            CONFIG["openCodePath"],
+            "--add-dir", workspace_dir,
+            f"@{wsl_file}" + (f":{line}" if line else ""),
+            "--append-system-prompt", "".join(prompt_parts)
         ]
 
-        if sys.platform == "win32":
-            # Windows: use cmd.exe start
-            try:
-                subprocess.Popen(["cmd.exe", "/c", "start", "claude"], cwd=dir_path)
-                launched = True
-            except OSError:
-                pass
-        elif _is_wsl():
-            # WSL: use Windows Terminal or cmd.exe
-            try:
-                win_dir = subprocess.check_output(
-                    ["wslpath", "-w", dir_path], text=True
-                ).strip()
-                subprocess.Popen(
-                    ["cmd.exe", "/c", "start", "wsl.exe", "--cd", dir_path, "claude"]
-                )
-                launched = True
-            except (OSError, subprocess.CalledProcessError):
-                pass
+        try:
+            subprocess.Popen(wsl_cmd, start_new_session=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self._json_response({"status": "ok", "editor": "opencode", "workspace": workspace_dir})
+        except OSError as exc:
+            self._json_response({"error": f"Failed to launch OpenCode: {exc}"}, 500)
 
-        if not launched:
-            for cmd, name in terminals:
-                if shutil.which(cmd[0]):
-                    try:
-                        subprocess.Popen(cmd)
-                        launched = True
-                        break
-                    except OSError:
-                        continue
+    def _open_github_copilot(self, file_path: str, line: int = None, project_name: str = None,
+                             smell_description: str = None):
+        """Ask GitHub Copilot for refactoring suggestions via WSL."""
+        if not CONFIG["enableWslTools"] or not CONFIG["githubCopilotEnabled"]:
+            self._json_response({"error": "GitHub Copilot is disabled in config.json"}, 400)
+            return
 
-        if launched:
-            self._json_response({"status": "ok", "editor": "claude", "directory": dir_path})
-        else:
-            self._json_response(
-                {"error": "No terminal emulator found. Install gnome-terminal, xterm, or konsole."},
-                500,
-            )
+        wsl_file = _windows_to_wsl_path(file_path)
 
-    def _open_opencode(self, file_path: str):
-        """Open OpenCode TUI in a terminal at the file's directory."""
-        dir_path = os.path.dirname(file_path) if os.path.splitext(file_path)[1] else file_path
-        launched = False
-        shell_cmd = f'cd "{dir_path}" && opencode'
-        terminals = [
-            (["gnome-terminal", "--", "bash", "-c", shell_cmd], "gnome-terminal"),
-            (["x-terminal-emulator", "-e", f"bash -c '{shell_cmd}'"], "x-terminal-emulator"),
-            (["xterm", "-e", f"bash -c '{shell_cmd}'"], "xterm"),
-            (["konsole", "-e", f"bash -c '{shell_cmd}'"], "konsole"),
+        # Build context message
+        context_parts = [f"I'm looking at file: {wsl_file}"]
+        if line:
+            context_parts.append(f" (line {line})")
+        if project_name:
+            context_parts.append(f"\n\nProject: {project_name}")
+        if smell_description:
+            context_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+        context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
+
+        wsl_cmd = [
+            "wsl", "-d", CONFIG["wslDistro"], "--",
+            "gh", "copilot", "suggest",
+            "-t", "shell",
+            "".join(context_parts)
         ]
-        if sys.platform == "win32":
-            try:
-                subprocess.Popen(["cmd.exe", "/c", "start", "opencode"], cwd=dir_path)
-                launched = True
-            except OSError:
-                pass
-        elif _is_wsl():
-            try:
-                subprocess.Popen(
-                    ["cmd.exe", "/c", "start", "wsl.exe", "--cd", dir_path, "opencode"]
-                )
-                launched = True
-            except (OSError, subprocess.CalledProcessError):
-                pass
-        if not launched:
-            for cmd, name in terminals:
-                if shutil.which(cmd[0]):
-                    try:
-                        subprocess.Popen(cmd)
-                        launched = True
-                        break
-                    except OSError:
-                        continue
-        if launched:
-            self._json_response({"status": "ok", "editor": "opencode", "directory": dir_path})
-        else:
-            self._json_response(
-                {"error": "No terminal emulator found. Install gnome-terminal, xterm, or konsole."},
-                500,
-            )
+
+        try:
+            subprocess.Popen(wsl_cmd, start_new_session=True)
+            self._json_response({"status": "ok", "editor": "copilot"})
+        except OSError as exc:
+            self._json_response({"error": f"Failed to launch GitHub Copilot: {exc}"}, 500)
 
     # ── Response helpers ──
 

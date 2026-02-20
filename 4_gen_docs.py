@@ -19,6 +19,29 @@ OUT_DIR = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "output")
 DOCS_DIR = os.path.join(OUT_DIR, "docs")
 
 
+def _load_config():
+    """Load configuration from config.json with defaults."""
+    config_path = Path(__file__).parent / "config.json"
+    default = {
+        "claudePrompt": "Please analyze this code and propose improvements.",
+        "enableWslTools": False,
+        "wslDistro": "Ubuntu",
+        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
+        "openCodePath": "/usr/local/bin/opencode",
+        "githubCopilotEnabled": False
+    }
+    if not config_path.exists():
+        return default
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            return {**default, **json.load(f)}
+    except Exception:
+        return default
+
+
+CONFIG = _load_config()
+
+
 def _load_json(path: str, default=None):
     """Load a JSON file, returning *default* on any read/parse error."""
     try:
@@ -573,19 +596,22 @@ def _resolve_file_uri(rel_path: str, repo_name: str, repo_roots: dict[str, str])
     return _file_uri(rr + "/" + rp)
 
 
-def _file_actions_html(path: str, line: int = 0, display: str = "") -> str:
+def _file_actions_html(path: str, line: int = 0, display: str = "", project: str = "", smell: str = "") -> str:
     """Generate HTML for a file reference with IDE action icons."""
     if not path:
         return f'<span class="mono">{_esc_html(display or "")}</span>'
     disp = _esc_html(display or (f"{path}:{line}" if line else path))
     p = _esc_html(path)
+    proj = _esc_html(project)
+    sm = _esc_html(smell)
     return (
         f'<span class="file-ref">'
         f'<span class="mono" style="color:#53565A;">{disp}</span>'
         f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
-        f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" title="Explore with Claude Code">Claude</a>'
-        f' <a href="#" class="file-action file-opencode" data-path="{p}" data-line="{line}" title="Open in OpenCode">OpenCode</a>'
+        f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
+        f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
+        f' <a href="#" class="file-action file-copilot wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -762,6 +788,12 @@ def generate_viewer_html() -> str:
     repos_root_lookup = {r["name"]: r.get("root", "") for r in repos_data} if repos_data else {}
     repos_roots_json = _safe_json_for_script(repos_root_lookup)
     repos_json = _safe_json_for_script(project_groups)
+
+    # ── Config flags for AI tool integration ──
+    config_json = _safe_json_for_script({
+        "enableWslTools": CONFIG.get("enableWslTools", False),
+        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False)
+    })
     project_groups_map_json = _safe_json_for_script(project_to_group)
 
     # ── UX inconsistency data ──
@@ -2220,6 +2252,8 @@ def generate_viewer_html() -> str:
   .file-claude:hover {{ background:#b85e3f; }}
   .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
   .file-opencode:hover {{ background:#0f0f1a; }}
+  .file-copilot {{ background:#1f883d; color:#fff !important; }}
+  .file-copilot:hover {{ background:#166d31; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
   .footer {{
@@ -3009,17 +3043,20 @@ function _resolveFromRoots(filePath) {{
   return fp;
 }}
 // Global helper: generate file action icons HTML
-function fileActionsHtml(filePath, line, style) {{
+function fileActionsHtml(filePath, line, style, project, smell) {{
   if (!filePath) return '';
   var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
   var dp = escHtmlGlobal(filePath);
   var dl = line || 0;
+  var proj = escHtmlGlobal(project || '');
+  var sm = escHtmlGlobal(smell || '');
   return '<span class="file-ref">' +
     '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
-    ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" title="Explore with Claude Code">Claude</a>' +
-    ' <a href="#" class="file-action file-opencode" data-path="' + dp + '" data-line="' + dl + '" title="Open in OpenCode">OpenCode</a>' +
+    ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
+    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
+    ' <a href="#" class="file-action file-copilot wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -3036,8 +3073,10 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
-function _openViaServer(editor, resolved, line) {{
+function _openViaServer(editor, resolved, line, project, smell) {{
   var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+  if (project) url += '&project=' + encodeURIComponent(project);
+  if (smell) url += '&smell=' + encodeURIComponent(smell);
   fetch(url).then(function(r) {{ return r.json(); }}).then(function(d) {{
     if (d.error) showToast(d.error, true);
     else showToast('Opening ' + editor + '...', false);
@@ -3052,19 +3091,23 @@ document.addEventListener('click', function(e) {{
   e.preventDefault();
   var path = action.getAttribute('data-path');
   var line = parseInt(action.getAttribute('data-line') || '0', 10);
+  var project = action.getAttribute('data-project') || '';
+  var smell = action.getAttribute('data-smell') || '';
   if (!path) return;
   var resolved = _resolveFromRoots(path);
   if (action.classList.contains('file-studio')) {{
-    _openViaServer('studio', resolved, line);
+    _openViaServer('studio', resolved, line, project, smell);
   }} else if (action.classList.contains('file-code')) {{
     // VS Code: try client-side URI first, fall back to server
     var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
     if (line) vsUri += ':' + line;
     window.location.href = vsUri;
   }} else if (action.classList.contains('file-claude')) {{
-    _openViaServer('claude', resolved, line);
+    _openViaServer('claude', resolved, line, project, smell);
   }} else if (action.classList.contains('file-opencode')) {{
-    _openViaServer('opencode', resolved, line);
+    _openViaServer('opencode', resolved, line, project, smell);
+  }} else if (action.classList.contains('file-copilot')) {{
+    _openViaServer('copilot', resolved, line, project, smell);
   }} else if (action.classList.contains('file-view')) {{
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
@@ -3310,6 +3353,15 @@ function initSortableTable(table) {{
   window._projectGroupMap = {project_groups_map_json};
   window._edgeMeta = {edge_meta_json};
   window._cycles = {cycles_json};
+  window._config = {config_json};
+
+  // Show WSL tools (OpenCode, Copilot) if enabled in config
+  if (window._config && window._config.enableWslTools) {{
+    var wslTools = document.querySelectorAll('.wsl-tool');
+    wslTools.forEach(function(tool) {{
+      tool.style.display = 'inline-block';
+    }});
+  }}
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
