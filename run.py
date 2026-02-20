@@ -369,19 +369,16 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                 # Different drives - use absolute path
                 rel_file_path = file_path
 
-            # Build Claude Code command string
-            # Use cd /d to change drive and directory, then run claude
-            claude_cmd = f'claude @{rel_file_path}' + (f':{line}' if line else '')
-            claude_cmd += f' --append-system-prompt "{prompt}"'
-
-            full_cmd = f'cd /d "{workspace_dir}" && {claude_cmd}'
+            # Build Claude Code command - use relative path from workspace
+            claude_args = f'@{rel_file_path}' + (f':{line}' if line else '')
+            claude_args += f' --append-system-prompt "{prompt}"'
 
             # Launch claude in a new command window on Windows
             # This allows the TUI to run in its own terminal
             if sys.platform == "win32":
-                # Windows: Use cmd /c start to open new window
-                # Note: start requires window title as first arg (use "" for default)
-                cmd_str = f'start "" cmd /k {full_cmd}'
+                # Windows: Use start /d to set working directory
+                # This is simpler than cd /d && since start supports /d flag
+                cmd_str = f'start "" /d "{workspace_dir}" claude {claude_args}'
                 try:
                     subprocess.Popen(cmd_str, shell=True)
                     self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
