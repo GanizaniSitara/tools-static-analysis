@@ -805,6 +805,23 @@ def generate_viewer_html() -> str:
     ux_summary = ux_inconsistencies.get("summary", {})
     ux_embedded = _safe_json_for_script({"issues": ux_issues, "summary": ux_summary})
 
+    # ── Business layer classifications ──
+    business_layers_data = flow_paths_data.get("businessLayers", {})
+    business_layers_json = _safe_json_for_script(business_layers_data)
+
+    # Build business layer category map
+    layer_summary = flow_paths_data.get("layerSummary", {})
+    def _js_str_bl(s: str) -> str:
+        return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r").replace("</", "<\\/")
+    bl_map_parts = []
+    for layer_name, info in layer_summary.items():
+        count = info['count']
+        escaped_name = _js_str_bl(layer_name)
+        escaped_lower = _js_str_bl(layer_name.lower())
+        entry = f"'{escaped_name} ({count})': {{key:'{escaped_lower}', name:'{escaped_name}', count:{count}, tabId:'layer_{layer_name.lower()}', isBusinessLayer:true}}"
+        bl_map_parts.append(entry)
+    business_layer_map_entries = ", ".join(bl_map_parts)
+
     # ── External tools data ──
     _ext_all_findings = []
     for _et in external_tools_data.get("tools", {}).values():
@@ -2542,6 +2559,30 @@ function attachCategoryNodeClicks(svg) {{
   }});
 }}
 
+function attachProjectNodeClicks(svg) {{
+  var meta = (window._projData || {{}}).meta || [];
+  svg.querySelectorAll('.node').forEach(function (node) {{
+    var textEl = node.querySelector('span, foreignObject div, text');
+    if (!textEl) return;
+    var label = textEl.textContent.trim();
+
+    // Skip category pills
+    if (parseCategoryLabel(label)) return;
+
+    // Check if this is a project node
+    var projectName = label;
+    var projectMeta = meta.find(function (m) {{ return m.project === projectName; }});
+    if (!projectMeta) return;
+
+    node.style.cursor = 'pointer';
+    node.setAttribute('title', 'Click to see ' + projectName + ' details');
+    node.addEventListener('click', function (e) {{
+      e.stopPropagation();
+      showProjectDetail(projectName, projectMeta);
+    }});
+  }});
+}}
+
 function showPillDetail(catInfo, svg) {{
   var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
@@ -2621,6 +2662,118 @@ function showPillDetail(catInfo, svg) {{
       if (tabBtn) tabBtn.click();
     }});
   }});
+}}
+
+function showProjectDetail(projectName, projectMeta) {{
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var refs = d.refs || [], deps = d.deps || [], meta = d.meta || [], dataSrc = d.dataSources || [];
+
+  var html = '<div class="detail-header">';
+  html += '<h3>' + escHtmlGlobal(projectName) + '</h3>';
+  html += '<button class="detail-close">&#10005;</button>';
+  html += '</div>';
+
+  // Project metadata
+  html += '<div class="detail-section">';
+  html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+  html += '<strong>Category:</strong> ' + escHtmlGlobal(projectMeta.category || 'Unknown');
+  html += '</div>';
+  if (projectMeta.framework) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Framework:</strong> ' + escHtmlGlobal(projectMeta.framework);
+    html += '</div>';
+  }}
+  if (projectMeta.repo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Repository:</strong> ' + escHtmlGlobal(projectMeta.repo);
+    html += '</div>';
+  }}
+  if (typeof projectMeta.fanIn === 'number' || typeof projectMeta.fanOut === 'number') {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Fan-in:</strong> ' + (projectMeta.fanIn || 0) + ' &bull; <strong>Fan-out:</strong> ' + (projectMeta.fanOut || 0);
+    html += '</div>';
+  }}
+
+  // Business layer classification
+  var layerInfo = (window._businessLayers || {{}})[projectName];
+  if (layerInfo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Business Layer:</strong> ' + escHtmlGlobal(layerInfo.layer);
+    if (layerInfo.confidence) {{
+      var conf = Math.round(layerInfo.confidence * 100);
+      html += ' <span style="color:#789D4A;">(' + conf + '% confidence)</span>';
+    }}
+    html += '</div>';
+    if (layerInfo.signals && layerInfo.signals.length > 0) {{
+      html += '<div style="font-size:0.7rem;color:#53565A;margin:0.3rem 0 0 1rem;">';
+      html += '<em>Evidence:</em> ' + escHtmlGlobal(layerInfo.signals.join(', '));
+      html += '</div>';
+    }}
+  }}
+  html += '</div>';
+
+  // Direct dependencies (outgoing)
+  var outgoing = refs.filter(function (r) {{ return r.project === projectName; }});
+  if (outgoing.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependencies (' + outgoing.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    outgoing.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.references) + cross + '</li>';
+    }});
+    if (outgoing.length > 15) html += '<li style="color:#53565A">... and ' + (outgoing.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Reverse dependencies (incoming)
+  var incoming = refs.filter(function (r) {{ return r.references === projectName; }});
+  if (incoming.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependents (' + incoming.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    incoming.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.project) + cross + '</li>';
+    }});
+    if (incoming.length > 15) html += '<li style="color:#53565A">... and ' + (incoming.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // NuGet packages
+  var nugetDeps = deps.filter(function (d) {{ return d.project === projectName; }});
+  if (nugetDeps.length > 0) {{
+    html += '<div class="detail-section"><h4>NuGet Packages (' + nugetDeps.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    nugetDeps.slice(0, 15).forEach(function (d) {{
+      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+    }});
+    if (nugetDeps.length > 15) html += '<li style="color:#53565A">... and ' + (nugetDeps.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Data patterns
+  var projectPath = projectMeta.globalPath || projectMeta.path || '';
+  var projectDir = projectPath.substring(0, projectPath.lastIndexOf('/'));
+  var patterns = projectDir ? dataSrc.filter(function (ds) {{ return ds.file && ds.file.indexOf(projectDir + '/') === 0; }}) : [];
+  if (patterns.length > 0) {{
+    html += '<div class="detail-section"><h4>Data Patterns (' + patterns.length + ')</h4>';
+    var patternCounts = {{}};
+    patterns.forEach(function (p) {{ patternCounts[p.pattern] = (patternCounts[p.pattern] || 0) + 1; }});
+    html += '<ul class="detail-list">';
+    Object.keys(patternCounts).slice(0, 10).forEach(function (pn) {{
+      html += '<li>' + escHtmlGlobal(pn) + ' <span style="color:#53565A">(' + patternCounts[pn] + ')</span></li>';
+    }});
+    if (Object.keys(patternCounts).length > 10) {{
+      html += '<li style="color:#53565A">... and ' + (Object.keys(patternCounts).length - 10) + ' more patterns</li>';
+    }}
+    html += '</ul></div>';
+  }}
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = panel.querySelector('.detail-close');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
 }}
 
 function showEdgeDetail(fromName, toName) {{
@@ -2979,13 +3132,28 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
   var meta = d.meta || [];
   var refs = d.refs || [];
 
+  // Check if these are business layer categories
+  var isBusinessLayer = fromCat.isBusinessLayer || toCat.isBusinessLayer;
+  var bl = window._businessLayers || {{}};
+
   // Find projects in each category
   var fromProjects = {{}};
   var toProjects = {{}};
-  meta.forEach(function (m) {{
-    if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
-    if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
-  }});
+
+  if (isBusinessLayer) {{
+    // Use business layer classification
+    Object.keys(bl).forEach(function (projName) {{
+      var layerInfo = bl[projName];
+      if (layerInfo.layer.toLowerCase() === fromCat.key) fromProjects[projName] = true;
+      if (layerInfo.layer.toLowerCase() === toCat.key) toProjects[projName] = true;
+    }});
+  }} else {{
+    // Use technical category
+    meta.forEach(function (m) {{
+      if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
+      if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
+    }});
+  }}
 
   // Filter refs: from-category projects referencing to-category projects
   var crossRefs = refs.filter(function (r) {{
@@ -3231,14 +3399,30 @@ document.addEventListener('click', function(e) {{
 
 function parseCategoryLabel(label) {{
   var catMap = window._categoryMap || {{}};
+  var blMap = window._businessLayerMap || {{}};
+
+  // Check technical categories first
   if (catMap[label]) return catMap[label];
+
+  // Check business layers
+  if (blMap[label]) return blMap[label];
+
   var m = label.match(/^([\\w][\\w\\s]*?)\\s*\\((\\d+)\\)$/);
   if (!m) return null;
   var name = m[1];
+
+  // Try matching technical categories
   var keys = Object.keys(catMap);
   for (var i = 0; i < keys.length; i++) {{
     if (catMap[keys[i]].key === name.toLowerCase()) return catMap[keys[i]];
   }}
+
+  // Try matching business layers
+  var blKeys = Object.keys(blMap);
+  for (var j = 0; j < blKeys.length; j++) {{
+    if (blMap[blKeys[j]].key === name.toLowerCase()) return blMap[blKeys[j]];
+  }}
+
   return null;
 }}
 
@@ -3427,6 +3611,10 @@ function initSortableTable(table) {{
           }}
           attachEdgeTooltips(svg);
           attachCategoryNodeClicks(svg);
+          // Attach project clicks if metadata is already loaded
+          if (window._projData && window._projData.meta && window._projData.meta.length > 0) {{
+            attachProjectNodeClicks(svg);
+          }}
         }}
       }}).catch(function (err) {{
         console.error('Mermaid render error for ' + tabId + ':', err);
@@ -3606,7 +3794,9 @@ function initSortableTable(table) {{
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
+  window._businessLayers = {business_layers_json};
   window._categoryMap = {{ {cat_map_entries} }};
+  window._businessLayerMap = {{ {business_layer_map_entries} }};
   window._hotspotData = {hotspot_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
@@ -3633,6 +3823,11 @@ function initSortableTable(table) {{
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
     window._dataFlow = df;
   }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
+
+  // Load flow-paths.json for business layer classification
+  fetch('flow-paths.json').then(function (r) {{ return r.json(); }}).then(function (fp) {{
+    window._businessLayers = fp.businessLayers || {{}};
+  }}).catch(function () {{ /* flow-paths.json may not exist on older runs */ }});
 
   // Load field-traceability.json
   window._fieldTrace = {{ fieldChains: [], summary: {{}} }};
@@ -3683,6 +3878,11 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
+
+    // Attach project node clicks now that metadata is loaded
+    document.querySelectorAll('.mermaid-wrap svg').forEach(function (svg) {{
+      attachProjectNodeClicks(svg);
+    }});
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
