@@ -110,3 +110,49 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `external-tools.json` | 5_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
 | `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
 | `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |
+
+## Tools & Libraries
+
+### Core Dependencies
+
+**Python Standard Library Only** — The core scanner runs without any external packages:
+- `xml.etree.ElementTree` — Parse .csproj and .xaml files
+- `re` — Pattern matching for code analysis
+- `json` — Data serialization
+- `csv` — Export tabular data
+- `http.server` — Serve viewer with IDE integration endpoints
+- `pathlib` / `os` — File system operations
+
+### Visualization Libraries (Embedded)
+
+The generated `viewer.html` embeds CDN-hosted FOSS libraries:
+- **[Mermaid.js](https://mermaid.js.org/)** (v11) — Diagram rendering (MIT License)
+  - Interactive dependency graphs, flow diagrams, layer diagrams
+- **[Prism.js](https://prismjs.com/)** — Syntax highlighting (MIT License)
+  - Code snippets in AI context files
+
+### Optional External Tools
+
+Install via pip for extended analysis (all optional):
+- **[Semgrep](https://semgrep.dev/)** — Pattern-based security/correctness rules (LGPL 2.1)
+- **[Bandit](https://github.com/PyCQA/bandit)** — Python security linter (Apache 2.0)
+- **[detect-secrets](https://github.com/Yelp/detect-secrets)** — Credential scanner (Apache 2.0)
+- **[Radon](https://github.com/rubik/radon)** — Complexity metrics (MIT License)
+
+### IDE Integration
+
+The viewer includes action buttons that communicate with locally installed tools:
+- **[Claude Code](https://claude.ai/download)** — AI coding agent (via `claude-code` CLI)
+- **[VS Code](https://code.visualstudio.com/)** — Code editor (via `code` CLI)
+- **[Visual Studio 2022](https://visualstudio.microsoft.com/)** — IDE (via `devenv.exe`)
+- **[GitHub Copilot](https://github.com/features/copilot)** — AI pair programmer (via `gh copilot` CLI)
+
+All integrations are optional — buttons only appear if tools are installed.
+
+### Output Formats
+
+- **Mermaid (.mmd)** — Text-based diagrams (renders in GitHub, Notion, Confluence)
+- **GraphViz (.dot)** — Advanced graph layouts (requires `dot` for rendering)
+- **CSV** — Import into Excel, database tools
+- **JSON** — Programmatic consumption, CI/CD pipelines
+- **Markdown** — Documentation, AI agents
