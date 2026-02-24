@@ -22,13 +22,13 @@ The simplest way to run everything is via `run.py`:
 
 ```bash
 # Core pipeline only (no external tools)
-python3 run.py /path/to/repos output-myproject
+python run.py /path/to/repos output-myproject
 
 # Core pipeline + all available external tools
-python3 run.py /path/to/repos output-myproject --tools all
+python run.py /path/to/repos output-myproject --tools all
 
 # Core pipeline + specific tools only
-python3 run.py /path/to/repos output-myproject --tools semgrep,bandit
+python run.py /path/to/repos output-myproject --tools semgrep,bandit
 ```
 
 This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
@@ -37,19 +37,19 @@ This runs all steps in order and starts a web server on port 8000 with IDE integ
 
 ```bash
 # 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
-python3 1_scan_projects.py /path/to/repos output-myproject
+python 1_scan_projects.py /path/to/repos output-myproject
 
 # 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
-python3 2_scan_smells.py /path/to/repos output-myproject --level high
+python 2_scan_smells.py /path/to/repos output-myproject --level high
 
 # 3. (Optional) Run external tools — semgrep, bandit, detect-secrets, radon
-python3 5_external_tools.py /path/to/repos output-myproject --tools all
+python 3_external_tools.py /path/to/repos output-myproject --tools all
 
 # 4. Generate Mermaid/GraphViz diagrams from graph.json
-python3 3_gen_diagrams.py output-myproject
+python 4_gen_diagrams.py output-myproject
 
 # 5. Generate viewer.html, markdown docs, and AI context files
-python3 4_gen_docs.py output-myproject
+python 5_gen_docs.py output-myproject
 ```
 
 Steps 1-2 scan source and can run in parallel. Step 3 (external tools) can run any time after steps 1-2. Step 4 needs graph.json from step 1. Step 5 reads all outputs (including `external-tools.json` if present), so run it last.
@@ -68,7 +68,7 @@ The smell scanner supports log-level-style verbosity via `--level critical|high|
 The `run.py` pipeline also accepts `--level`:
 
 ```bash
-python3 run.py /path/to/repos output-myproject --level medium
+python run.py /path/to/repos output-myproject --level medium
 ```
 
 ### Serve-only mode (`--serve-only`)
@@ -76,7 +76,7 @@ python3 run.py /path/to/repos output-myproject --level medium
 If you've already run the pipeline and just want the web server (with IDE integration endpoints for the Claude/VS Code/View buttons), use `--serve-only` to skip the scan steps:
 
 ```bash
-python3 run.py dummy output-myproject 8001 --serve-only
+python run.py dummy output-myproject 8001 --serve-only
 ```
 
 This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
@@ -107,9 +107,9 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
 | `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
-| `external-tools.json` | 5_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
-| `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
-| `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |
+| `external-tools.json` | 3_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
+| `viewer.html` | 5_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
+| `docs/ai-context/` | 5_gen_docs | Per-project markdown for AI coding agents |
 
 ## Tools & Libraries
 
