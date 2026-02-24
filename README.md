@@ -22,16 +22,19 @@ The simplest way to run everything is via `run.py`:
 
 ```bash
 # Core pipeline only (no external tools)
-python run.py /path/to/repos output-myproject
+python run.py --repos /path/to/repos --out output-myproject
 
 # Core pipeline + all available external tools
-python run.py /path/to/repos output-myproject --tools all
+python run.py --repos /path/to/repos --out output-myproject --tools all
+
+# Core pipeline + custom port
+python run.py --repos /path/to/repos --out output-myproject --port 8021
 
 # Core pipeline + specific tools only
-python run.py /path/to/repos output-myproject --tools semgrep,bandit
+python run.py --repos /path/to/repos --out output-myproject --tools semgrep,bandit
 ```
 
-This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
+This runs all steps in order and starts a web server on port 8020 (default) with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
 
 ## Running individual steps
 
@@ -68,7 +71,7 @@ The smell scanner supports log-level-style verbosity via `--level critical|high|
 The `run.py` pipeline also accepts `--level`:
 
 ```bash
-python run.py /path/to/repos output-myproject --level medium
+python run.py --repos /path/to/repos --out output-myproject --level medium
 ```
 
 ### Serve-only mode (`--serve-only`)
@@ -76,7 +79,7 @@ python run.py /path/to/repos output-myproject --level medium
 If you've already run the pipeline and just want the web server (with IDE integration endpoints for the Claude/VS Code/View buttons), use `--serve-only` to skip the scan steps:
 
 ```bash
-python run.py dummy output-myproject 8001 --serve-only
+python run.py --out output-myproject --port 8001 --serve-only
 ```
 
 This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
