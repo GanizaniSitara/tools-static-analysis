@@ -531,7 +531,7 @@ def main():
         # Step 5: External tools (optional, off by default)
         if args.tools and args.tools.lower() != "none":
             print("\n--- External tools ---")
-            run("5_external_tools.py", repos, out, "--tools", args.tools)
+            run("3_external_tools.py", repos, out, "--tools", args.tools)
 
         # Step 6: Security integrations (optional, off by default)
         if args.integrations and args.integrations.lower() != "none":
@@ -618,11 +618,11 @@ def main():
 
         # Step 3 needs graph.json from step 1
         print("\n--- Step 3: Generating diagrams ---")
-        run("3_gen_diagrams.py", out)
+        run("4_gen_diagrams.py", out)
 
         # Step 4 needs all outputs
         print("\n--- Step 4: Generating docs + viewer ---")
-        run("4_gen_docs.py", out)
+        run("5_gen_docs.py", out)
 
     # Load repos.json for solution discovery
     repos_json_path = os.path.join(out, "repos.json")

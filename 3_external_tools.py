@@ -3,8 +3,8 @@
 External Tools Runner — integrates semgrep, bandit, detect-secrets, and radon.
 
 Usage:
-    python3 5_external_tools.py <repos> <out> --tools semgrep,bandit,detect-secrets,radon
-    python3 5_external_tools.py <repos> <out> --tools all
+    python 3_external_tools.py <repos> <out> --tools semgrep,bandit,detect-secrets,radon
+    python 3_external_tools.py <repos> <out> --tools all
 """
 
 import argparse
