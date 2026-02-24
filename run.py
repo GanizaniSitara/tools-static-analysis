@@ -116,6 +116,30 @@ def _find_solution(file_path: str, repo_roots: dict, solutions_map: dict) -> str
     return ""
 
 
+def _find_devenv() -> str:
+    """Find Visual Studio 2022 devenv.exe in common installation paths."""
+    # First try PATH
+    devenv_cmd = shutil.which("devenv")
+    if devenv_cmd:
+        return devenv_cmd
+
+    # Common VS 2022 installation paths
+    common_paths = [
+        r"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe",
+        r"C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe",
+        r"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe",
+        r"C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe",
+        r"C:\Program Files (x86)\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe",
+        r"C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe",
+    ]
+
+    for path in common_paths:
+        if os.path.isfile(path):
+            return path
+
+    return ""
+
+
 class ViewerHandler(http.server.SimpleHTTPRequestHandler):
     """HTTP handler with /_view and /_open endpoints for IDE integration."""
 
@@ -239,8 +263,13 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         is_wsl = _is_wsl()
 
         if is_win:
-            # Windows native: launch devenv directly
-            cmd = ["devenv", sln]
+            # Windows native: find and launch devenv
+            devenv_path = _find_devenv()
+            if not devenv_path:
+                self._json_response({"error": "devenv.exe not found — is Visual Studio 2022 installed?"}, 500)
+                return
+
+            cmd = [devenv_path, sln]
             if file_path:
                 cmd.extend(["/edit", file_path])
             try:
@@ -282,17 +311,32 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
 
         cmd = [code_cmd]
+        workspace_dir = None
+
         if sln_path:
             # Open solution directory as workspace
-            cmd.append(str(Path(sln_path).parent))
+            workspace_dir = str(Path(sln_path).parent)
+            cmd.append(workspace_dir)
+
+            # Make file path relative to workspace for proper association
+            try:
+                rel_path = os.path.relpath(file_path, workspace_dir)
+                # Use relative path if file is within workspace, otherwise use absolute
+                if not rel_path.startswith(".."):
+                    file_path = rel_path
+            except ValueError:
+                # Different drives on Windows, keep absolute path
+                pass
 
         # Navigate to specific file and line
+        # Using --goto ensures the file opens at the specific line
         cmd.extend(["--goto", f"{file_path}:{line or 1}"])
 
         try:
             subprocess.Popen(cmd, start_new_session=True,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             self._json_response({"status": "ok", "editor": "code",
+                               "workspace": workspace_dir,
                                "solution": sln_path if sln_path else None})
         except OSError as exc:
             self._json_response({"error": f"Failed to launch VS Code: {exc}"}, 500)

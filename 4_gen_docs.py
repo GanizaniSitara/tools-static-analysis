@@ -805,6 +805,23 @@ def generate_viewer_html() -> str:
     ux_summary = ux_inconsistencies.get("summary", {})
     ux_embedded = _safe_json_for_script({"issues": ux_issues, "summary": ux_summary})
 
+    # ── Business layer classifications ──
+    business_layers_data = flow_paths_data.get("businessLayers", {})
+    business_layers_json = _safe_json_for_script(business_layers_data)
+
+    # Build business layer category map
+    layer_summary = flow_paths_data.get("layerSummary", {})
+    def _js_str_bl(s: str) -> str:
+        return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r").replace("</", "<\\/")
+    bl_map_parts = []
+    for layer_name, info in layer_summary.items():
+        count = info['count']
+        escaped_name = _js_str_bl(layer_name)
+        escaped_lower = _js_str_bl(layer_name.lower())
+        entry = f"'{escaped_name} ({count})': {{key:'{escaped_lower}', name:'{escaped_name}', count:{count}, tabId:'layer_{layer_name.lower()}', isBusinessLayer:true}}"
+        bl_map_parts.append(entry)
+    business_layer_map_entries = ", ".join(bl_map_parts)
+
     # ── External tools data ──
     _ext_all_findings = []
     for _et in external_tools_data.get("tools", {}).values():
@@ -927,6 +944,7 @@ def generate_viewer_html() -> str:
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
           </pre>
+          <div class="diagram-legend">Tip: Hover edges to preview, click for detailed analysis</div>
         </div>
         <div class="diagram-sidebar">
           {side_legend}
@@ -2136,6 +2154,30 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-from {{ color: #005587; }}
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
+  .tour-spotlight {{
+    position: relative; z-index: 9999; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
+    border-radius: 8px; pointer-events: none;
+  }}
+  @keyframes pulse-edge {{
+    0%, 100% {{ stroke-width: 2px; opacity: 1; }}
+    50% {{ stroke-width: 4px; opacity: 0.6; }}
+  }}
+  .pulse-hint {{
+    animation: pulse-edge 1.5s ease-in-out 3;
+  }}
+  .edge-hint-label {{
+    position: absolute; background: #005587; color: white;
+    padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem;
+    pointer-events: none; animation: fadeOut 5s forwards; z-index: 1001;
+  }}
+  @keyframes fadeOut {{
+    0%, 80% {{ opacity: 1; }}
+    100% {{ opacity: 0; }}
+  }}
+  .diagram-legend {{
+    text-align: center; padding: 0.5rem; font-size: 0.78rem; color: #53565A;
+    background: #F5F5F5; border-top: 1px solid #E1E1E1; border-radius: 0 0 8px 8px;
+  }}
   .edge-detail-panel {{
     display: none; margin-top: 0.75rem;
     background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
@@ -2335,6 +2377,19 @@ def generate_viewer_html() -> str:
   </div>
 </div>
 
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10002;background:transparent;pointer-events:none;">
+  <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);pointer-events:auto;">
+    <div id="tourStep"></div>
+    <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+      <button id="tourSkip" style="background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Skip Tour</button>
+      <div style="display:flex;gap:0.5rem;">
+        <button id="tourPrev" style="background:#F5F5F5;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;display:none;">Previous</button>
+        <button id="tourNext" style="background:#005587;border:none;color:#FFFFFF;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -2504,6 +2559,30 @@ function attachCategoryNodeClicks(svg) {{
   }});
 }}
 
+function attachProjectNodeClicks(svg) {{
+  var meta = (window._projData || {{}}).meta || [];
+  svg.querySelectorAll('.node').forEach(function (node) {{
+    var textEl = node.querySelector('span, foreignObject div, text');
+    if (!textEl) return;
+    var label = textEl.textContent.trim();
+
+    // Skip category pills
+    if (parseCategoryLabel(label)) return;
+
+    // Check if this is a project node
+    var projectName = label;
+    var projectMeta = meta.find(function (m) {{ return m.project === projectName; }});
+    if (!projectMeta) return;
+
+    node.style.cursor = 'pointer';
+    node.setAttribute('title', 'Click to see ' + projectName + ' details');
+    node.addEventListener('click', function (e) {{
+      e.stopPropagation();
+      showProjectDetail(projectName, projectMeta);
+    }});
+  }});
+}}
+
 function showPillDetail(catInfo, svg) {{
   var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
@@ -2585,6 +2664,118 @@ function showPillDetail(catInfo, svg) {{
   }});
 }}
 
+function showProjectDetail(projectName, projectMeta) {{
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var refs = d.refs || [], deps = d.deps || [], meta = d.meta || [], dataSrc = d.dataSources || [];
+
+  var html = '<div class="detail-header">';
+  html += '<h3>' + escHtmlGlobal(projectName) + '</h3>';
+  html += '<button class="detail-close">&#10005;</button>';
+  html += '</div>';
+
+  // Project metadata
+  html += '<div class="detail-section">';
+  html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+  html += '<strong>Category:</strong> ' + escHtmlGlobal(projectMeta.category || 'Unknown');
+  html += '</div>';
+  if (projectMeta.framework) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Framework:</strong> ' + escHtmlGlobal(projectMeta.framework);
+    html += '</div>';
+  }}
+  if (projectMeta.repo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Repository:</strong> ' + escHtmlGlobal(projectMeta.repo);
+    html += '</div>';
+  }}
+  if (typeof projectMeta.fanIn === 'number' || typeof projectMeta.fanOut === 'number') {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Fan-in:</strong> ' + (projectMeta.fanIn || 0) + ' &bull; <strong>Fan-out:</strong> ' + (projectMeta.fanOut || 0);
+    html += '</div>';
+  }}
+
+  // Business layer classification
+  var layerInfo = (window._businessLayers || {{}})[projectName];
+  if (layerInfo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Business Layer:</strong> ' + escHtmlGlobal(layerInfo.layer);
+    if (layerInfo.confidence) {{
+      var conf = Math.round(layerInfo.confidence * 100);
+      html += ' <span style="color:#789D4A;">(' + conf + '% confidence)</span>';
+    }}
+    html += '</div>';
+    if (layerInfo.signals && layerInfo.signals.length > 0) {{
+      html += '<div style="font-size:0.7rem;color:#53565A;margin:0.3rem 0 0 1rem;">';
+      html += '<em>Evidence:</em> ' + escHtmlGlobal(layerInfo.signals.join(', '));
+      html += '</div>';
+    }}
+  }}
+  html += '</div>';
+
+  // Direct dependencies (outgoing)
+  var outgoing = refs.filter(function (r) {{ return r.project === projectName; }});
+  if (outgoing.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependencies (' + outgoing.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    outgoing.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.references) + cross + '</li>';
+    }});
+    if (outgoing.length > 15) html += '<li style="color:#53565A">... and ' + (outgoing.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Reverse dependencies (incoming)
+  var incoming = refs.filter(function (r) {{ return r.references === projectName; }});
+  if (incoming.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependents (' + incoming.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    incoming.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.project) + cross + '</li>';
+    }});
+    if (incoming.length > 15) html += '<li style="color:#53565A">... and ' + (incoming.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // NuGet packages
+  var nugetDeps = deps.filter(function (d) {{ return d.project === projectName; }});
+  if (nugetDeps.length > 0) {{
+    html += '<div class="detail-section"><h4>NuGet Packages (' + nugetDeps.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    nugetDeps.slice(0, 15).forEach(function (d) {{
+      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+    }});
+    if (nugetDeps.length > 15) html += '<li style="color:#53565A">... and ' + (nugetDeps.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Data patterns
+  var projectPath = projectMeta.globalPath || projectMeta.path || '';
+  var projectDir = projectPath.substring(0, projectPath.lastIndexOf('/'));
+  var patterns = projectDir ? dataSrc.filter(function (ds) {{ return ds.file && ds.file.indexOf(projectDir + '/') === 0; }}) : [];
+  if (patterns.length > 0) {{
+    html += '<div class="detail-section"><h4>Data Patterns (' + patterns.length + ')</h4>';
+    var patternCounts = {{}};
+    patterns.forEach(function (p) {{ patternCounts[p.pattern] = (patternCounts[p.pattern] || 0) + 1; }});
+    html += '<ul class="detail-list">';
+    Object.keys(patternCounts).slice(0, 10).forEach(function (pn) {{
+      html += '<li>' + escHtmlGlobal(pn) + ' <span style="color:#53565A">(' + patternCounts[pn] + ')</span></li>';
+    }});
+    if (Object.keys(patternCounts).length > 10) {{
+      html += '<li style="color:#53565A">... and ' + (Object.keys(patternCounts).length - 10) + ' more patterns</li>';
+    }}
+    html += '</ul></div>';
+  }}
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = panel.querySelector('.detail-close');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+}}
+
 function showEdgeDetail(fromName, toName) {{
   var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
@@ -2648,10 +2839,20 @@ function showEdgeDetail(fromName, toName) {{
     if (toMeta) html += escHtmlGlobal(toMeta.category);
     html += '</div>';
   }}
-  // Coupling strength
+  // Coupling strength with file list
   if (typeof edgeMeta.count === 'number') {{
     html += '<div style="font-size:0.78rem;color:#005587;margin-top:0.3rem;">Coupling: '
-      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency</div>';
+      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency';
+    if (edgeMeta.coupling_files && edgeMeta.coupling_files.length > 0) {{
+      var fileId = 'coupling-' + Math.random().toString(36).substr(2, 9);
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + fileId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show files &#9660;</button>';
+      html += '<ul id="' + fileId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      for (var i = 0; i < edgeMeta.coupling_files.length; i++) {{
+        html += '<li style="margin:0.15rem 0;">&#10004; ' + escHtmlGlobal(edgeMeta.coupling_files[i]) + '</li>';
+      }}
+      html += '</ul>';
+    }}
+    html += '</div>';
   }}
   // Fan-in / fan-out for both projects
   if (fromMeta && (typeof fromMeta.fanIn === 'number' || typeof fromMeta.fanOut === 'number')) {{
@@ -2680,12 +2881,31 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Shared NuGet packages
+  // Shared NuGet packages with version conflict detection
+  var conflicts = edgeMeta.version_conflicts || [];
+  var conflictMap = {{}};
+  conflicts.forEach(function (c) {{
+    conflictMap[c.package] = c;
+  }});
+
   html += '<div class="detail-section"><h4>Shared NuGet Packages (' + sharedPkgs.length + ')</h4>';
   if (sharedPkgs.length > 0) {{
     html += '<ul class="detail-list">';
     sharedPkgs.slice(0, 15).forEach(function (d) {{
-      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      var conflict = conflictMap[d.package];
+      if (conflict) {{
+        // Version conflict - show warning
+        html += '<li style="background:#FFF3CD;padding:0.2rem 0.4rem;margin:0.2rem 0;border-radius:3px;">';
+        html += '<span style="color:#856404;">&#9888;</span> ' + escHtmlGlobal(d.package) + ' <strong style="color:#856404;">VERSION CONFLICT</strong>';
+        html += '<div style="font-size:0.7rem;margin-left:1.5rem;color:#53565A;margin-top:0.2rem;">';
+        html += '&bull; <span class="from" style="color:#005587">' + escHtmlGlobal(fromName) + '</span> uses: ' + escHtmlGlobal(conflict.from_version) + '<br>';
+        html += '&bull; <span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span> uses: ' + escHtmlGlobal(conflict.to_version);
+        html += '</div>';
+        html += '</li>';
+      }} else {{
+        // No conflict - normal display
+        html += '<li>&#10004; ' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      }}
     }});
     if (sharedPkgs.length > 15) html += '<li style="color:#53565A">... and ' + (sharedPkgs.length - 15) + ' more</li>';
     html += '</ul>';
@@ -2694,7 +2914,7 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Data patterns
+  // Data patterns with file-level details
   var totalFromPatterns = fromDataPatterns.length;
   var totalToPatterns = toDataPatterns.length;
   html += '<div class="detail-section"><h4>Data Patterns</h4>';
@@ -2703,9 +2923,43 @@ function showEdgeDetail(fromName, toName) {{
     + '<span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
   var sharedKeys = Object.keys(sharedPatternNames);
   if (sharedKeys.length > 0) {{
-    html += '<ul class="detail-list">';
-    sharedKeys.forEach(function (p) {{
-      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#53565A">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
+    html += '<ul class="detail-list" style="list-style:none;padding:0;">';
+    sharedKeys.forEach(function (patternName) {{
+      // Find all shared findings for this pattern type
+      var findings = sharedPatterns.filter(function (p) {{ return p.pattern === patternName; }});
+      var findingId = 'pattern-' + Math.random().toString(36).substr(2, 9);
+
+      // Pattern header with count
+      html += '<li style="margin:0.4rem 0;">';
+      html += '<strong>' + escHtmlGlobal(patternName) + '</strong> - ' + findings.length + ' finding' + (findings.length !== 1 ? 's' : '');
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + findingId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show details &#9660;</button>';
+
+      // Expandable finding details
+      html += '<ul id="' + findingId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      findings.slice(0, 10).forEach(function (f) {{
+        var directionIcon = '';
+        if (f.direction === 'read') directionIcon = '&#128065;'; // eye
+        else if (f.direction === 'write') directionIcon = '&#9998;'; // pencil
+        else if (f.direction === 'expose') directionIcon = '&#128200;'; // chart
+        else if (f.direction === 'consume') directionIcon = '&#128226;'; // megaphone
+        else if (f.direction === 'both') directionIcon = '&#8644;'; // left-right arrow
+
+        var endpoint = f.endpoint ? ' <strong>' + escHtmlGlobal(f.endpoint) + '</strong>' : '';
+        var direction = f.direction ? ' (' + escHtmlGlobal(f.direction) + ')' : '';
+
+        html += '<li style="margin:0.15rem 0;">';
+        html += directionIcon + endpoint + direction + ' - ';
+        html += '<a href="#" onclick="event.preventDefault();_openViaServer(\\'code\\', \\'' + escHtmlGlobal(f.file) + '\\', ' + (f.line || 1) + ', \\'' + escHtmlGlobal(f.project || '') + '\\', null);return false;" ';
+        html += 'style="color:#005587;text-decoration:none;">';
+        html += escHtmlGlobal(f.file.split('/').pop()) + ':' + (f.line || 1);
+        html += '</a>';
+        html += '</li>';
+      }});
+      if (findings.length > 10) {{
+        html += '<li style="color:#53565A;font-style:italic;">... and ' + (findings.length - 10) + ' more</li>';
+      }}
+      html += '</ul>';
+      html += '</li>';
     }});
     html += '</ul>';
   }} else {{
@@ -2878,13 +3132,28 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
   var meta = d.meta || [];
   var refs = d.refs || [];
 
+  // Check if these are business layer categories
+  var isBusinessLayer = fromCat.isBusinessLayer || toCat.isBusinessLayer;
+  var bl = window._businessLayers || {{}};
+
   // Find projects in each category
   var fromProjects = {{}};
   var toProjects = {{}};
-  meta.forEach(function (m) {{
-    if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
-    if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
-  }});
+
+  if (isBusinessLayer) {{
+    // Use business layer classification
+    Object.keys(bl).forEach(function (projName) {{
+      var layerInfo = bl[projName];
+      if (layerInfo.layer.toLowerCase() === fromCat.key) fromProjects[projName] = true;
+      if (layerInfo.layer.toLowerCase() === toCat.key) toProjects[projName] = true;
+    }});
+  }} else {{
+    // Use technical category
+    meta.forEach(function (m) {{
+      if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
+      if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
+    }});
+  }}
 
   // Filter refs: from-category projects referencing to-category projects
   var crossRefs = refs.filter(function (r) {{
@@ -3077,6 +3346,18 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
+function toggleCouplingFiles(selector) {{
+  var ul = document.querySelector(selector);
+  var btn = ul ? ul.previousElementSibling : null;
+  if (!ul || !btn) return;
+  if (ul.style.display === 'none') {{
+    ul.style.display = 'block';
+    btn.innerHTML = btn.innerHTML.replace('&#9660;', '&#9650;');
+  }} else {{
+    ul.style.display = 'none';
+    btn.innerHTML = btn.innerHTML.replace('&#9650;', '&#9660;');
+  }}
+}}
 function _openViaServer(editor, resolved, line, project, smell) {{
   var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
   if (project) url += '&project=' + encodeURIComponent(project);
@@ -3102,10 +3383,8 @@ document.addEventListener('click', function(e) {{
   if (action.classList.contains('file-studio')) {{
     _openViaServer('studio', resolved, line, project, smell);
   }} else if (action.classList.contains('file-code')) {{
-    // VS Code: try client-side URI first, fall back to server
-    var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
-    if (line) vsUri += ':' + line;
-    window.location.href = vsUri;
+    // VS Code: open via server to get workspace context
+    _openViaServer('code', resolved, line, project, smell);
   }} else if (action.classList.contains('file-claude')) {{
     _openViaServer('claude', resolved, line, project, smell);
   }} else if (action.classList.contains('file-opencode')) {{
@@ -3120,14 +3399,30 @@ document.addEventListener('click', function(e) {{
 
 function parseCategoryLabel(label) {{
   var catMap = window._categoryMap || {{}};
+  var blMap = window._businessLayerMap || {{}};
+
+  // Check technical categories first
   if (catMap[label]) return catMap[label];
+
+  // Check business layers
+  if (blMap[label]) return blMap[label];
+
   var m = label.match(/^([\\w][\\w\\s]*?)\\s*\\((\\d+)\\)$/);
   if (!m) return null;
   var name = m[1];
+
+  // Try matching technical categories
   var keys = Object.keys(catMap);
   for (var i = 0; i < keys.length; i++) {{
     if (catMap[keys[i]].key === name.toLowerCase()) return catMap[keys[i]];
   }}
+
+  // Try matching business layers
+  var blKeys = Object.keys(blMap);
+  for (var j = 0; j < blKeys.length; j++) {{
+    if (blMap[blKeys[j]].key === name.toLowerCase()) return blMap[blKeys[j]];
+  }}
+
   return null;
 }}
 
@@ -3316,6 +3611,10 @@ function initSortableTable(table) {{
           }}
           attachEdgeTooltips(svg);
           attachCategoryNodeClicks(svg);
+          // Attach project clicks if metadata is already loaded
+          if (window._projData && window._projData.meta && window._projData.meta.length > 0) {{
+            attachProjectNodeClicks(svg);
+          }}
         }}
       }}).catch(function (err) {{
         console.error('Mermaid render error for ' + tabId + ':', err);
@@ -3335,6 +3634,155 @@ function initSortableTable(table) {{
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
+  // First-visit guided tour
+  function initTour() {{
+    if (localStorage.getItem('dependencyViewer_tourCompleted')) return;
+
+    var tourSteps = [
+      {{
+        title: 'Welcome to Dependency Analyzer',
+        content: 'This tool helps you understand dependencies, data flows, and code quality across your projects. Let me show you the key features.',
+        highlight: null
+      }},
+      {{
+        title: 'Navigate Diagrams',
+        content: 'Use tabs to explore different views. Zoom with + / - buttons or mouse wheel. Search to filter projects.',
+        highlight: '.tabs'
+      }},
+      {{
+        title: 'Click Edges for Details',
+        content: 'Click any arrow in the diagrams to see detailed analysis: coupling, shared packages, data patterns, and more.',
+        highlight: '.mermaid-wrap'
+      }},
+      {{
+        title: 'AI-Ready Context',
+        content: 'Click the AI Context link to access pre-formatted codebase summaries perfect for feeding to Claude or other AI assistants.',
+        highlight: '.stat-link'
+      }}
+    ];
+
+    var currentStep = 0;
+    var overlay = document.getElementById('tourOverlay');
+    var content = document.getElementById('tourContent');
+    var stepDiv = document.getElementById('tourStep');
+    var nextBtn = document.getElementById('tourNext');
+    var prevBtn = document.getElementById('tourPrev');
+    var skipBtn = document.getElementById('tourSkip');
+
+    function showStep(index) {{
+      if (index < 0 || index >= tourSteps.length) return;
+      currentStep = index;
+      var step = tourSteps[index];
+
+      // Remove previous spotlight
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+
+      // Update content
+      stepDiv.innerHTML = '<h3 style="color:#022D5E;margin:0 0 1rem;">' + step.title + '</h3>' +
+        '<p style="color:#53565A;font-size:0.9rem;line-height:1.6;margin:0;">' + step.content + '</p>' +
+        '<div style="margin-top:0.5rem;font-size:0.75rem;color:#999;">Step ' + (index + 1) + ' of ' + tourSteps.length + '</div>';
+
+      // Position and highlight
+      if (step.highlight) {{
+        var target = document.querySelector(step.highlight);
+        if (target) {{
+          target.classList.add('tour-spotlight');
+          overlay.style.background = 'transparent'; // Spotlight creates darkness
+          var rect = target.getBoundingClientRect();
+
+          // Clear any transform
+          content.style.transform = 'none';
+
+          // Position below target, centered horizontally on screen
+          var top = rect.bottom + 20;
+          var left = Math.max(50, Math.min(window.innerWidth - 550, (window.innerWidth - 500) / 2));
+
+          // Keep within viewport
+          if (top + 300 > window.innerHeight) {{
+            top = Math.max(100, rect.top - 320);
+          }}
+
+          content.style.top = top + 'px';
+          content.style.left = left + 'px';
+        }} else {{
+          overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+          content.style.transform = 'translate(-50%, -50%)';
+          content.style.top = '50%';
+          content.style.left = '50%';
+        }}
+      }} else {{
+        overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+        content.style.transform = 'translate(-50%, -50%)';
+        content.style.top = '50%';
+        content.style.left = '50%';
+      }}
+
+      // Update buttons
+      prevBtn.style.display = index > 0 ? 'block' : 'none';
+      nextBtn.textContent = index === tourSteps.length - 1 ? 'Get Started' : 'Next';
+    }}
+
+    function closeTour() {{
+      overlay.style.display = 'none';
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+      localStorage.setItem('dependencyViewer_tourCompleted', 'true');
+    }}
+
+    nextBtn.onclick = function() {{
+      if (currentStep === tourSteps.length - 1) {{
+        closeTour();
+      }} else {{
+        showStep(currentStep + 1);
+      }}
+    }};
+
+    prevBtn.onclick = function() {{
+      showStep(currentStep - 1);
+    }};
+
+    skipBtn.onclick = closeTour;
+
+    // Show tour
+    overlay.style.display = 'block';
+    showStep(0);
+  }}
+
+  // Show first-edge hint
+  function showFirstEdgeHint() {{
+    if (localStorage.getItem('edgeHintShown')) return;
+
+    setTimeout(function() {{
+      var firstEdge = document.querySelector('.flowchart-link');
+      if (!firstEdge) return;
+
+      firstEdge.classList.add('pulse-hint');
+
+      var hint = document.createElement('div');
+      hint.className = 'edge-hint-label';
+      hint.textContent = 'Click edges to see details';
+      hint.style.top = '100px';
+      hint.style.left = '50%';
+      hint.style.transform = 'translateX(-50%)';
+      document.body.appendChild(hint);
+
+      setTimeout(function() {{
+        firstEdge.classList.remove('pulse-hint');
+        hint.remove();
+        localStorage.setItem('edgeHintShown', 'true');
+      }}, 5000);
+    }}, 1000);
+  }}
+
+  // Initialize tour after short delay to ensure DOM is ready
+  setTimeout(function() {{
+    initTour();
+    showFirstEdgeHint();
+  }}, 500);
+
   // Init sorting on static tables
   initSortableTable(document.getElementById('datasourcesTable'));
   initSortableTable(document.getElementById('connstringsTable'));
@@ -3346,7 +3794,9 @@ function initSortableTable(table) {{
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
+  window._businessLayers = {business_layers_json};
   window._categoryMap = {{ {cat_map_entries} }};
+  window._businessLayerMap = {{ {business_layer_map_entries} }};
   window._hotspotData = {hotspot_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
@@ -3373,6 +3823,11 @@ function initSortableTable(table) {{
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
     window._dataFlow = df;
   }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
+
+  // Load flow-paths.json for business layer classification
+  fetch('flow-paths.json').then(function (r) {{ return r.json(); }}).then(function (fp) {{
+    window._businessLayers = fp.businessLayers || {{}};
+  }}).catch(function () {{ /* flow-paths.json may not exist on older runs */ }});
 
   // Load field-traceability.json
   window._fieldTrace = {{ fieldChains: [], summary: {{}} }};
@@ -3423,6 +3878,11 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
+
+    // Attach project node clicks now that metadata is loaded
+    document.querySelectorAll('.mermaid-wrap svg').forEach(function (svg) {{
+      attachProjectNodeClicks(svg);
+    }});
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
