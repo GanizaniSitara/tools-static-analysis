@@ -21,17 +21,17 @@ These are entirely optional. The pipeline works without them and skips any that 
 The simplest way to run everything is via `run.py`:
 
 ```bash
-# Core pipeline only (no external tools)
-python run.py --repos /path/to/repos --out output-myproject
+# Core pipeline (built-in scanners only)
+python run.py --repos /path/to/repos --out output
 
-# Core pipeline + all available external tools
-python run.py --repos /path/to/repos --out output-myproject --tools all
+# Core pipeline + optional external tools (semgrep, bandit, etc.)
+python run.py --repos /path/to/repos --out output --tools all
 
-# Core pipeline + custom port
-python run.py --repos /path/to/repos --out output-myproject --port 8021
+# Custom port
+python run.py --repos /path/to/repos --out output --port 8021
 
-# Core pipeline + specific tools only
-python run.py --repos /path/to/repos --out output-myproject --tools semgrep,bandit
+# Specific external tools only
+python run.py --repos /path/to/repos --out output --tools semgrep,bandit
 ```
 
 This runs all steps in order and starts a web server on port 8020 (default) with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
@@ -40,22 +40,27 @@ This runs all steps in order and starts a web server on port 8020 (default) with
 
 ```bash
 # 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
-python 1_scan_projects.py /path/to/repos output-myproject
+python 1_scan_projects.py /path/to/repos output
 
-# 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
-python 2_scan_smells.py /path/to/repos output-myproject --level high
+# 2. Scan .cs source with built-in Python detectors — 18 code smell & security patterns
+python 2_scan_smells.py /path/to/repos output --level high
 
 # 3. (Optional) Run external tools — semgrep, bandit, detect-secrets, radon
-python 3_external_tools.py /path/to/repos output-myproject --tools all
+python 3_external_tools.py /path/to/repos output --tools all
 
 # 4. Generate Mermaid/GraphViz diagrams from graph.json
-python 4_gen_diagrams.py output-myproject
+python 4_gen_diagrams.py output
 
 # 5. Generate viewer.html, markdown docs, and AI context files
-python 5_gen_docs.py output-myproject
+python 5_gen_docs.py output
 ```
 
-Steps 1-2 scan source and can run in parallel. Step 3 (external tools) can run any time after steps 1-2. Step 4 needs graph.json from step 1. Step 5 reads all outputs (including `external-tools.json` if present), so run it last.
+**Execution order:**
+- Steps 1-2 scan source and can run in parallel
+- Step 2 uses **built-in Python-based detectors** (no dependencies)
+- Step 3 uses **optional external tools** (requires installation)
+- Step 4 needs graph.json from step 1
+- Step 5 reads all outputs, so run it last
 
 ### Severity levels (`--level`)
 
@@ -71,7 +76,7 @@ The smell scanner supports log-level-style verbosity via `--level critical|high|
 The `run.py` pipeline also accepts `--level`:
 
 ```bash
-python run.py --repos /path/to/repos --out output-myproject --level medium
+python run.py --repos /path/to/repos --out output --level medium
 ```
 
 ### Serve-only mode (`--serve-only`)
@@ -79,7 +84,7 @@ python run.py --repos /path/to/repos --out output-myproject --level medium
 If you've already run the pipeline and just want the web server (with IDE integration endpoints for the Claude/VS Code/View buttons), use `--serve-only` to skip the scan steps:
 
 ```bash
-python run.py --out output-myproject --port 8001 --serve-only
+python run.py --out output --port 8020 --serve-only
 ```
 
 This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
@@ -97,7 +102,7 @@ Off by default. Pass `--tools all` to run every installed tool, or a comma-separ
 
 Findings appear in an **External Tools** tab in the viewer, and security-category findings are also merged into the **Security** tab. Output is written to `external-tools.json`.
 
-## Outputs (in `output-myproject/`)
+## Outputs (in `output/`)
 
 | File | Producer | Description |
 |------|----------|-------------|
