@@ -3133,7 +3133,25 @@ function _probeCompanion(cb) {{
     }});
 }}
 // Probe on page load so we know before the first click
-_probeCompanion();
+_probeCompanion(function(ok) {{
+  if (!ok) return;
+  // After companion is detected, check tool availability
+  fetch(_companionBase + '/_check', {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (!d.tools) return;
+      window._companionTools = d.tools;
+      if (d.config && d.config.enableWslTools) {{
+        if (d.tools.opencode === false) {{
+          showToast('OpenCode not found in WSL. Check openCodePath in config.yaml', true);
+        }}
+        if (d.config.githubCopilotEnabled && d.tools.copilot === false) {{
+          showToast('Copilot CLI not found in WSL. Install: npm i -g @github/copilot', true);
+        }}
+      }}
+    }})
+    .catch(function() {{ /* ignore */ }});
+}});
 
 function _showCompanionBanner() {{
   var id = 'companionBanner';
