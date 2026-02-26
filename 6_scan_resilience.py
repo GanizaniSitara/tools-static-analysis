@@ -270,14 +270,14 @@ def scan_positive_patterns(content: str) -> dict[str, int]:
 _RE_ASYNC_HTTP = re.compile(
     r'\.\s*(GetAsync|PostAsync|PutAsync|DeleteAsync|SendAsync|'
     r'GetStringAsync|GetStreamAsync|GetByteArrayAsync|'
-    r'PostAsJsonAsync|PutAsJsonAsync|PatchAsync)\s*\('
+    r'PostAsJsonAsync|PutAsJsonAsync|PatchAsync)\s*[\(<]'
 )
 _RE_ASYNC_DB = re.compile(
     r'\.\s*(SaveChangesAsync|ExecuteAsync|QueryAsync|'
     r'QueryFirstAsync|QuerySingleAsync|QueryMultipleAsync|'
     r'ExecuteScalarAsync|ExecuteReaderAsync|'
     r'FindAsync|ToListAsync|FirstOrDefaultAsync|'
-    r'SingleOrDefaultAsync|AnyAsync|CountAsync)\s*\('
+    r'SingleOrDefaultAsync|AnyAsync|CountAsync)\s*[\(<]'
 )
 
 
