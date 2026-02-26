@@ -928,8 +928,9 @@ def detect_python_calls(path: str, content: str, lines: list[str]) -> list[dict]
     )
 
     # 4. Generic script-engine invocation with a .py file reference
+    # Matches .py at end of string or followed by space/quote (e.g., "script.py --args")
     py_script_ref = re.compile(
-        r"""["'][^"']*\.py["']""",
+        r"""["'][^"']*\.py(?:\s|["'])""",
     )
 
     # Track which patterns we've already reported per line to avoid duplicates
