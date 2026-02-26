@@ -96,6 +96,52 @@ copilotMode: standalone
 #   - "/home/user/.npm-global/bin/copilot"
 copilotCliPath: copilot
 
+# Fix Workflow Configuration
+# ============================================================================
+# The fix workflow enables a full lifecycle: click Fix in the viewer ->
+# checkout code -> create branch -> AI fixes -> developer reviews ->
+# run tests -> submit for review (SVN patch or Git PR).
+
+# Version control system: "svn" or "git"
+vcsType: svn
+
+# Repository URL (SVN trunk URL or Git clone URL)
+# Examples:
+#   - "https://svn.example.com/repos/project/trunk"   (SVN)
+#   - "git@github.com:org/repo.git"                    (Git)
+repoUrl: ""
+
+# SVN branch base URL (only used when vcsType: svn)
+# Fix branches are created under this path.
+# Example: "https://svn.example.com/repos/project/branches"
+svnBranchBase: ""
+
+# Local root folder on the developer's machine where repos are checked out.
+# The companion will checkout/clone into developerRoot/<repo-name>/
+# Leave empty ("") to disable the fix workflow.
+# Examples:
+#   - "C:\\repos"              (Windows)
+#   - "/home/user/repos"       (Linux/WSL)
+developerRoot: ""
+
+# Branch name prefix for fix branches
+# A deterministic ID is appended based on the smell + file + line
+fixBranchPrefix: "fix/smell-"
+
+# Target branch for Git PRs (only used when vcsType: git)
+prTargetBranch: main
+
+# Command to run tests after a fix is applied
+# Leave empty ("") to skip test execution
+# Examples:
+#   - "dotnet test"
+#   - "dotnet test --no-build"
+#   - "npm test"
+testCommand: ""
+
+# Automatically run tests when a fix is submitted
+autoRunTests: true
+
 # ============================================================================
 # Configuration Examples
 # ============================================================================
@@ -137,5 +183,24 @@ copilotCliPath: copilot
 # copilotCliPath: copilot
 # # When the companion agent runs on Linux natively, it auto-detects
 # # the platform and runs tools directly without the wsl -d wrapper.
+#
+# Example 5: Full fix workflow with SVN
+# ----------------------------------------
+# vcsType: svn
+# repoUrl: "https://svn.example.com/repos/eShop/trunk"
+# svnBranchBase: "https://svn.example.com/repos/eShop/branches"
+# developerRoot: "C:\\repos"
+# fixBranchPrefix: "fix/smell-"
+# testCommand: "dotnet test"
+# autoRunTests: true
+#
+# Example 6: Full fix workflow with Git/GitHub
+# -----------------------------------------------
+# vcsType: git
+# repoUrl: "git@github.com:org/eShop.git"
+# developerRoot: "/home/user/repos"
+# prTargetBranch: main
+# testCommand: "dotnet test"
+# autoRunTests: true
 #
 # ============================================================================

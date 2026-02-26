@@ -23,6 +23,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
 const os = require("os");
+const fixWorkflow = require("./fix-workflow");
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -42,6 +43,15 @@ const DEFAULT_CONFIG = {
   githubCopilotEnabled: false,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
+  // Fix workflow
+  vcsType: "svn",
+  repoUrl: "",
+  svnBranchBase: "",
+  developerRoot: "",
+  fixBranchPrefix: "fix/smell-",
+  prTargetBranch: "main",
+  testCommand: "",
+  autoRunTests: true,
 };
 
 function loadConfig(configPath) {
@@ -514,6 +524,88 @@ function handleRequest(req, res, config) {
     return;
   }
 
+  // ---- Fix workflow endpoints ----
+
+  if (pathname === "/_fix/start") {
+    const q = parsed.query;
+    const result = fixWorkflow.startFix({
+      smellType: q.smell_type || "",
+      filePath: q.path || "",
+      line: parseInt(q.line || "0", 10),
+      project: q.project || "",
+      smell: q.smell || "",
+      editor: q.editor || "claude",
+    }, config);
+
+    if (result.error) {
+      sendJSON(res, 400, result);
+      return;
+    }
+
+    // After branching, launch the chosen editor in the fix working copy
+    const fix = result.state;
+    const fixDir = fix.localDir;
+    const fixFile = path.join(fixDir, path.basename(fix.filePath || ""));
+    const done = (err, data) => {
+      if (err) {
+        result.editorError = String(err);
+      } else {
+        result.editorLaunch = data;
+      }
+      sendJSON(res, 200, result);
+    };
+
+    const editor = fix.editor || "claude";
+    switch (editor) {
+      case "claude":
+        openClaude(fixFile, fix.line, fix.project, fix.smell, config, done);
+        break;
+      case "opencode":
+        openOpenCode(fixFile, fix.line, fix.project, fix.smell, config, done);
+        break;
+      case "copilot":
+        openCopilot(fixFile, fix.line, fix.project, fix.smell, config, done);
+        break;
+      case "code":
+        openVSCode(fixFile, fix.line, done);
+        break;
+      default:
+        sendJSON(res, 200, result);
+    }
+    return;
+  }
+
+  if (pathname === "/_fix/status") {
+    const q = parsed.query;
+    const id = q.id || "";
+    if (!id) {
+      sendJSON(res, 400, { error: "Missing id parameter" });
+      return;
+    }
+    const result = fixWorkflow.getFixStatus(id, config);
+    sendJSON(res, result.error ? 404 : 200, result);
+    return;
+  }
+
+  if (pathname === "/_fix/submit") {
+    const q = parsed.query;
+    const id = q.id || "";
+    if (!id) {
+      sendJSON(res, 400, { error: "Missing id parameter" });
+      return;
+    }
+    const result = fixWorkflow.submitFix(id, config);
+    sendJSON(res, result.error ? 400 : 200, result);
+    return;
+  }
+
+  if (pathname === "/_fix/list") {
+    sendJSON(res, 200, { fixes: fixWorkflow.listFixes() });
+    return;
+  }
+
+  // ---- Editor launch endpoints ----
+
   if (pathname === "/_open") {
     const q = parsed.query;
     const editor = q.editor || "";
@@ -615,6 +707,9 @@ function main() {
   const opts = parseArgs();
   const config = loadConfig(opts.config);
 
+  // Initialize fix workflow state persistence
+  fixWorkflow.initPersistence(path.resolve(__dirname, ".."));
+
   console.log("");
   console.log("Tools Viewer Companion Agent");
   console.log("============================");
@@ -632,6 +727,13 @@ function main() {
           ? "gh copilot (legacy extension)"
           : (config.copilotCliPath || "copilot") + " (standalone CLI)"));
     }
+  }
+  if (config.developerRoot) {
+    console.log("  Fix workflow:");
+    console.log("    VCS:       " + (config.vcsType || "svn"));
+    console.log("    Dev root:  " + config.developerRoot);
+    if (config.repoUrl) console.log("    Repo URL:  " + config.repoUrl);
+    if (config.testCommand) console.log("    Tests:     " + config.testCommand);
   }
   console.log("");
   console.log("  The hosted viewer will connect to http://localhost:" + opts.port);

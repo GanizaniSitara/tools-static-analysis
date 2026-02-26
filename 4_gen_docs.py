@@ -35,7 +35,15 @@ def _load_config():
         "openCodeNonInteractive": False,
         "githubCopilotEnabled": False,
         "copilotMode": "standalone",
-        "copilotCliPath": "copilot"
+        "copilotCliPath": "copilot",
+        "vcsType": "svn",
+        "repoUrl": "",
+        "svnBranchBase": "",
+        "developerRoot": "",
+        "fixBranchPrefix": "fix/smell-",
+        "prTargetBranch": "main",
+        "testCommand": "",
+        "autoRunTests": True
     }
     if not config_path.exists():
         return default
@@ -619,6 +627,7 @@ def _file_actions_html(path: str, line: int = 0, display: str = "", project: str
         f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
         f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
         f' <a href="#" class="file-action file-copilot wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
+        f' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -801,7 +810,8 @@ def generate_viewer_html() -> str:
     # ── Config flags for AI tool integration ──
     config_json = _safe_json_for_script({
         "enableWslTools": CONFIG.get("enableWslTools", False),
-        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False)
+        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False),
+        "fixWorkflowEnabled": bool(CONFIG.get("developerRoot", "")),
     })
     project_groups_map_json = _safe_json_for_script(project_to_group)
 
@@ -2265,6 +2275,26 @@ def generate_viewer_html() -> str:
   .file-copilot:hover {{ background:#166d31; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
+  .file-fix {{ background:#c62828; color:#fff !important; }}
+  .file-fix:hover {{ background:#a01e1e; }}
+  .fix-modal-overlay {{ display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:20000; justify-content:center; align-items:center; }}
+  .fix-modal-overlay.active {{ display:flex; }}
+  .fix-modal {{ background:#fff; border-radius:8px; padding:1.5rem 2rem; max-width:540px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:system-ui,sans-serif; max-height:80vh; overflow-y:auto; }}
+  .fix-modal h3 {{ margin:0 0 1rem; font-size:1.1rem; color:#022D5E; }}
+  .fix-modal .fix-step {{ display:flex; align-items:center; gap:0.6rem; padding:0.5rem 0; font-size:0.85rem; color:#555; }}
+  .fix-modal .fix-step.active {{ color:#022D5E; font-weight:600; }}
+  .fix-modal .fix-step.done {{ color:#1a8a3f; }}
+  .fix-modal .fix-step.fail {{ color:#c62828; }}
+  .fix-modal .fix-step-icon {{ width:20px; text-align:center; font-weight:700; }}
+  .fix-modal .fix-actions {{ margin-top:1.2rem; display:flex; gap:0.6rem; }}
+  .fix-modal button {{ padding:0.45rem 1rem; border-radius:4px; border:none; cursor:pointer; font-size:0.85rem; font-weight:600; }}
+  .fix-modal .btn-primary {{ background:#022D5E; color:#fff; }}
+  .fix-modal .btn-primary:hover {{ background:#01234a; }}
+  .fix-modal .btn-secondary {{ background:#e8e8e8; color:#333; }}
+  .fix-modal .btn-secondary:hover {{ background:#d0d0d0; }}
+  .fix-modal .fix-result {{ margin-top:1rem; padding:0.8rem; border-radius:4px; font-size:0.8rem; font-family:'SF Mono','Consolas',monospace; white-space:pre-wrap; max-height:200px; overflow-y:auto; }}
+  .fix-modal .fix-result.success {{ background:#e8f5e9; color:#1b5e20; }}
+  .fix-modal .fix-result.failure {{ background:#fbe9e7; color:#bf360c; }}
   .footer {{
     text-align: center; padding: 1.5rem 2rem; color: #53565A;
     font-size: 0.78rem; font-style: italic; border-top: 1px solid #E1E1E1;
@@ -3066,6 +3096,7 @@ function fileActionsHtml(filePath, line, style, project, smell) {{
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
     ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
     ' <a href="#" class="file-action file-copilot wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
+    ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -3166,6 +3197,182 @@ function _openViaServer(editor, resolved, line, project, smell) {{
     }});
   }});
 }}
+
+// ---------------------------------------------------------------------------
+// Fix Workflow UI
+// ---------------------------------------------------------------------------
+
+var _fixModal = null;
+var _fixPollTimer = null;
+var _activeFixId = null;
+
+function _getFixModal() {{
+  if (_fixModal) return _fixModal;
+  var overlay = document.createElement('div');
+  overlay.className = 'fix-modal-overlay';
+  overlay.innerHTML =
+    '<div class="fix-modal">' +
+    '<h3 id="fixModalTitle">Fix Workflow</h3>' +
+    '<div id="fixSteps"></div>' +
+    '<div id="fixResult" class="fix-result" style="display:none;"></div>' +
+    '<div class="fix-actions">' +
+    '<button id="fixSubmitBtn" class="btn-primary" style="display:none;">Submit Fix</button>' +
+    '<button id="fixCloseBtn" class="btn-secondary">Close</button>' +
+    '</div>' +
+    '</div>';
+  overlay.addEventListener('click', function(e) {{
+    if (e.target === overlay) _closeFixModal();
+  }});
+  document.body.appendChild(overlay);
+  document.getElementById('fixCloseBtn').addEventListener('click', _closeFixModal);
+  document.getElementById('fixSubmitBtn').addEventListener('click', _submitFix);
+  _fixModal = overlay;
+  return overlay;
+}}
+
+var _fixStepLabels = [
+  {{ key: 'checkout', label: 'Checking out code' }},
+  {{ key: 'branching', label: 'Creating fix branch' }},
+  {{ key: 'fixing', label: 'AI tool fixing (review when ready)' }},
+  {{ key: 'review', label: 'Ready for review' }},
+  {{ key: 'testing', label: 'Running tests' }},
+  {{ key: 'done', label: 'Complete' }}
+];
+
+function _renderFixSteps(currentStatus) {{
+  var html = '';
+  var reached = false;
+  var failed = (currentStatus === 'failed' || currentStatus === 'test_failed');
+  for (var i = 0; i < _fixStepLabels.length; i++) {{
+    var step = _fixStepLabels[i];
+    var cls = 'fix-step';
+    var icon = '-';
+    if (step.key === currentStatus) {{
+      cls += ' active';
+      icon = '...';
+      reached = true;
+    }} else if (!reached) {{
+      cls += ' done';
+      icon = 'OK';
+    }}
+    if (failed && step.key === currentStatus) {{
+      cls = 'fix-step fail';
+      icon = 'X';
+    }}
+    html += '<div class="' + cls + '"><span class="fix-step-icon">' + icon + '</span> ' + step.label + '</div>';
+    if (reached && !failed) break;
+  }}
+  if (failed) {{
+    html += '<div class="fix-step fail"><span class="fix-step-icon">X</span> Failed</div>';
+  }}
+  document.getElementById('fixSteps').innerHTML = html;
+
+  // Show submit button when in review state
+  var submitBtn = document.getElementById('fixSubmitBtn');
+  submitBtn.style.display = (currentStatus === 'review' || currentStatus === 'fixing') ? 'inline-block' : 'none';
+}}
+
+function _startFixWorkflow(filePath, line, project, smell) {{
+  var modal = _getFixModal();
+  document.getElementById('fixModalTitle').textContent = 'Fix: ' + (smell || 'architectural smell');
+  document.getElementById('fixResult').style.display = 'none';
+  _renderFixSteps('checkout');
+  modal.classList.add('active');
+
+  var qs = '/_fix/start?path=' + encodeURIComponent(filePath) +
+    '&line=' + (line || 0) +
+    '&smell=' + encodeURIComponent(smell || '') +
+    '&project=' + encodeURIComponent(project || '') +
+    '&editor=claude';
+
+  var base = _companionOk ? _companionBase : '';
+  fetch(base + qs, {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (d.error) {{
+        _renderFixSteps('failed');
+        _showFixResult(d.error, false);
+        return;
+      }}
+      _activeFixId = d.id;
+      _renderFixSteps(d.state ? d.state.status : 'fixing');
+      showToast('Fix started on branch: ' + (d.branchName || ''));
+      // Start polling for status
+      _startFixPoll();
+    }})
+    .catch(function(err) {{
+      _renderFixSteps('failed');
+      _showFixResult('Could not reach companion agent. Is it running?', false);
+    }});
+}}
+
+function _startFixPoll() {{
+  if (_fixPollTimer) clearInterval(_fixPollTimer);
+  _fixPollTimer = setInterval(function() {{
+    if (!_activeFixId) {{ clearInterval(_fixPollTimer); return; }}
+    var base = _companionOk ? _companionBase : '';
+    fetch(base + '/_fix/status?id=' + encodeURIComponent(_activeFixId), {{ mode: 'cors' }})
+      .then(function(r) {{ return r.json(); }})
+      .then(function(d) {{
+        if (!d.state) return;
+        _renderFixSteps(d.state.status);
+        if (d.state.status === 'done' || d.state.status === 'failed' || d.state.status === 'test_failed') {{
+          clearInterval(_fixPollTimer);
+          if (d.state.status === 'done') {{
+            var msg = 'Fix complete.';
+            if (d.state.prUrl) msg += ' PR: ' + d.state.prUrl;
+            if (d.state.patchFile) msg += ' Patch: ' + d.state.patchFile;
+            _showFixResult(msg, true);
+          }} else if (d.state.status === 'test_failed') {{
+            _showFixResult('Tests failed:\n' + (d.state.testOutput || ''), false);
+          }} else {{
+            _showFixResult('Error: ' + (d.state.error || 'Unknown'), false);
+          }}
+        }}
+      }})
+      .catch(function() {{ /* ignore poll errors */ }});
+  }}, 3000);
+}}
+
+function _submitFix() {{
+  if (!_activeFixId) return;
+  _renderFixSteps('testing');
+  document.getElementById('fixSubmitBtn').style.display = 'none';
+  var base = _companionOk ? _companionBase : '';
+  fetch(base + '/_fix/submit?id=' + encodeURIComponent(_activeFixId), {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (d.error) {{
+        _renderFixSteps(d.status === 'test_failed' ? 'test_failed' : 'failed');
+        _showFixResult(d.error + (d.testOutput ? '\n\n' + d.testOutput : ''), false);
+        return;
+      }}
+      _renderFixSteps('done');
+      var msg = 'Fix submitted.';
+      if (d.prUrl) msg += '\nPR: ' + d.prUrl;
+      if (d.patchFile) msg += '\nPatch saved: ' + d.patchFile;
+      _showFixResult(msg, true);
+    }})
+    .catch(function(err) {{
+      _renderFixSteps('failed');
+      _showFixResult('Submit failed: ' + err.message, false);
+    }});
+}}
+
+function _showFixResult(text, isSuccess) {{
+  var el = document.getElementById('fixResult');
+  el.style.display = 'block';
+  el.className = 'fix-result ' + (isSuccess ? 'success' : 'failure');
+  el.textContent = text;
+}}
+
+function _closeFixModal() {{
+  if (_fixPollTimer) clearInterval(_fixPollTimer);
+  _activeFixId = null;
+  var modal = _getFixModal();
+  modal.classList.remove('active');
+}}
+
 // Delegated click handler for file action icons
 document.addEventListener('click', function(e) {{
   var action = e.target.closest('.file-action');
@@ -3190,6 +3397,8 @@ document.addEventListener('click', function(e) {{
     _openViaServer('opencode', resolved, line, project, smell);
   }} else if (action.classList.contains('file-copilot')) {{
     _openViaServer('copilot', resolved, line, project, smell);
+  }} else if (action.classList.contains('file-fix')) {{
+    _startFixWorkflow(resolved, line, project, smell);
   }} else if (action.classList.contains('file-view')) {{
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
@@ -3442,6 +3651,12 @@ function initSortableTable(table) {{
     if (window._config && window._config.enableWslTools) {{
       var wslTools = document.querySelectorAll('.wsl-tool');
       wslTools.forEach(function(tool) {{
+        tool.style.display = 'inline-block';
+      }});
+    }}
+    if (window._config && window._config.fixWorkflowEnabled) {{
+      var fixTools = document.querySelectorAll('.fix-workflow-tool');
+      fixTools.forEach(function(tool) {{
         tool.style.display = 'inline-block';
       }});
     }}
