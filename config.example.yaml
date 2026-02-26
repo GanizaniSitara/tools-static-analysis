@@ -131,6 +131,14 @@ fixBranchPrefix: "fix/smell-"
 # Target branch for Git PRs (only used when vcsType: git)
 prTargetBranch: main
 
+# Command to build the project before running tests
+# Leave empty ("") to skip the build step
+# Runs before testCommand so you get a clear build-vs-test failure signal
+# Examples:
+#   - "dotnet build"
+#   - "dotnet build --no-restore"
+buildCommand: ""
+
 # Command to run tests after a fix is applied
 # Leave empty ("") to skip test execution
 # Examples:
@@ -138,6 +146,10 @@ prTargetBranch: main
 #   - "dotnet test --no-build"
 #   - "npm test"
 testCommand: ""
+
+# Build/test execution timeout in seconds (default: 300 = 5 minutes)
+# Increase for large solutions with many test projects
+testTimeoutSec: 300
 
 # Automatically run tests when a fix is submitted
 autoRunTests: true
@@ -191,7 +203,9 @@ autoRunTests: true
 # svnBranchBase: "https://svn.example.com/repos/eShop/branches"
 # developerRoot: "C:\\repos"
 # fixBranchPrefix: "fix/smell-"
-# testCommand: "dotnet test"
+# buildCommand: "dotnet build"
+# testCommand: "dotnet test --no-build"
+# testTimeoutSec: 600
 # autoRunTests: true
 #
 # Example 6: Full fix workflow with Git/GitHub
@@ -200,7 +214,9 @@ autoRunTests: true
 # repoUrl: "git@github.com:org/eShop.git"
 # developerRoot: "/home/user/repos"
 # prTargetBranch: main
-# testCommand: "dotnet test"
+# buildCommand: "dotnet build"
+# testCommand: "dotnet test --no-build"
+# testTimeoutSec: 600
 # autoRunTests: true
 #
 # ============================================================================

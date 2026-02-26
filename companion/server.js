@@ -52,6 +52,8 @@ const DEFAULT_CONFIG = {
   prTargetBranch: "main",
   testCommand: "",
   autoRunTests: true,
+  buildCommand: "",
+  testTimeoutSec: "300",
 };
 
 function loadConfig(configPath) {

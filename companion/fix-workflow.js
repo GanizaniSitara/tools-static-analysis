@@ -28,7 +28,8 @@ const os = require("os");
  * In-memory fix state, keyed by fix ID.
  * Persisted to .companion-fixes.json in the project root.
  *
- * States: checkout -> branched -> fixing -> review -> testing -> done | failed
+ * States: checkout -> branching -> fixing -> review -> building -> testing -> submitting -> done
+ *         Failures: failed | build_failed | test_failed
  */
 const fixes = {};
 let persistPath = null;
@@ -382,14 +383,40 @@ function submitFix(id, config) {
       vcs.commit(localDir, msg);
     }
 
-    // Step 4: Run tests
+    // Step 4a: Build (if configured)
+    const buildCmd = config.buildCommand || "";
+    const timeoutMs = (parseInt(config.testTimeoutSec, 10) || 300) * 1000;
+
+    if (buildCmd) {
+      setFix(id, { status: "building" });
+      try {
+        const buildOutput = shellRun(buildCmd, { cwd: localDir, timeout: timeoutMs });
+        setFix(id, { buildResult: "passed", buildOutput: buildOutput.slice(-4000) });
+      } catch (buildErr) {
+        const errMsg = buildErr.message.slice(-4000);
+        setFix(id, {
+          status: "build_failed",
+          buildResult: "failed",
+          buildOutput: errMsg,
+        });
+        return {
+          status: "build_failed",
+          error: "Build failed",
+          id,
+          buildOutput: errMsg,
+          state: fixes[id],
+        };
+      }
+    }
+
+    // Step 4b: Run tests (if configured)
     if (testCmd) {
       setFix(id, { status: "testing" });
       try {
-        const testOutput = shellRun(testCmd, { cwd: localDir, timeout: 300000 });
-        setFix(id, { testResult: "passed", testOutput: testOutput.slice(-2000) });
+        const testOutput = shellRun(testCmd, { cwd: localDir, timeout: timeoutMs });
+        setFix(id, { testResult: "passed", testOutput: testOutput.slice(-4000) });
       } catch (testErr) {
-        const errMsg = testErr.message.slice(-2000);
+        const errMsg = testErr.message.slice(-4000);
         setFix(id, {
           status: "test_failed",
           testResult: "failed",
@@ -397,11 +424,17 @@ function submitFix(id, config) {
         });
         return {
           status: "test_failed",
+          error: "Tests failed",
           id,
           testOutput: errMsg,
           state: fixes[id],
         };
       }
+    }
+
+    // If neither build nor test configured, mark as skipped
+    if (!buildCmd && !testCmd) {
+      setFix(id, { testResult: "skipped", buildResult: "skipped" });
     }
 
     // Step 5: Submit for review
@@ -412,11 +445,22 @@ function submitFix(id, config) {
       vcs.push(localDir, fix.branchName);
       const prTitle = "Fix: " + (fix.smellType || fix.smell || "smell") +
         " in " + path.basename(fix.filePath || "");
+
+      const current = getFix(id);
+      const buildStatus = current.buildResult === "passed"
+        ? "passed (" + buildCmd + ")"
+        : current.buildResult === "skipped" ? "skipped (no buildCommand)" : "N/A";
+      const testStatus = current.testResult === "passed"
+        ? "passed (" + testCmd + ")"
+        : current.testResult === "skipped" ? "skipped (no testCommand)" : "N/A";
+
       const prBody = "Automated fix for architectural smell.\n\n" +
         "**Smell:** " + (fix.smell || fix.smellType || "N/A") + "\n" +
         "**File:** " + (fix.filePath || "N/A") + "\n" +
         "**Line:** " + (fix.line || "N/A") + "\n" +
-        "**Project:** " + (fix.project || "N/A");
+        "**Project:** " + (fix.project || "N/A") + "\n\n" +
+        "**Build:** " + buildStatus + "\n" +
+        "**Tests:** " + testStatus;
       const prResult = vcs.createPR(
         localDir, prTitle, prBody,
         config.prTargetBranch || "main"

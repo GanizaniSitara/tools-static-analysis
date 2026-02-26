@@ -3253,6 +3253,7 @@ var _fixStepLabels = [
   {{ key: 'branching', label: 'Creating fix branch' }},
   {{ key: 'fixing', label: 'AI tool fixing (review when ready)' }},
   {{ key: 'review', label: 'Ready for review' }},
+  {{ key: 'building', label: 'Building project' }},
   {{ key: 'testing', label: 'Running tests' }},
   {{ key: 'done', label: 'Complete' }}
 ];
@@ -3260,7 +3261,7 @@ var _fixStepLabels = [
 function _renderFixSteps(currentStatus) {{
   var html = '';
   var reached = false;
-  var failed = (currentStatus === 'failed' || currentStatus === 'test_failed');
+  var failed = (currentStatus === 'failed' || currentStatus === 'build_failed' || currentStatus === 'test_failed');
   for (var i = 0; i < _fixStepLabels.length; i++) {{
     var step = _fixStepLabels[i];
     var cls = 'fix-step';
@@ -3334,13 +3335,15 @@ function _startFixPoll() {{
       .then(function(d) {{
         if (!d.state) return;
         _renderFixSteps(d.state.status);
-        if (d.state.status === 'done' || d.state.status === 'failed' || d.state.status === 'test_failed') {{
+        if (d.state.status === 'done' || d.state.status === 'failed' || d.state.status === 'build_failed' || d.state.status === 'test_failed') {{
           clearInterval(_fixPollTimer);
           if (d.state.status === 'done') {{
             var msg = 'Fix complete.';
             if (d.state.prUrl) msg += ' PR: ' + d.state.prUrl;
             if (d.state.patchFile) msg += ' Patch: ' + d.state.patchFile;
             _showFixResult(msg, true);
+          }} else if (d.state.status === 'build_failed') {{
+            _showFixResult('Build failed:\n' + (d.state.buildOutput || ''), false);
           }} else if (d.state.status === 'test_failed') {{
             _showFixResult('Tests failed:\n' + (d.state.testOutput || ''), false);
           }} else {{
@@ -3354,15 +3357,18 @@ function _startFixPoll() {{
 
 function _submitFix() {{
   if (!_activeFixId) return;
-  _renderFixSteps('testing');
+  _renderFixSteps('building');
   document.getElementById('fixSubmitBtn').style.display = 'none';
   var base = _companionOk ? _companionBase : '';
   fetch(base + '/_fix/submit?id=' + encodeURIComponent(_activeFixId), {{ mode: 'cors' }})
     .then(function(r) {{ return r.json(); }})
     .then(function(d) {{
       if (d.error) {{
-        _renderFixSteps(d.status === 'test_failed' ? 'test_failed' : 'failed');
-        _showFixResult(d.error + (d.testOutput ? '\n\n' + d.testOutput : ''), false);
+        var failStatus = d.status === 'build_failed' ? 'build_failed'
+          : d.status === 'test_failed' ? 'test_failed' : 'failed';
+        _renderFixSteps(failStatus);
+        var detail = d.buildOutput || d.testOutput || '';
+        _showFixResult(d.error + (detail ? '\n\n' + detail : ''), false);
         return;
       }}
       _renderFixSteps('done');
