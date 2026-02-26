@@ -782,10 +782,12 @@ def generate_viewer_html() -> str:
         if trimmed_files:
             entry["files"] = trimmed_files
         cq_projects_trimmed.append(entry)
+    smell_prompts = refactoring_data.get("smellPrompts", {})
     cq_embedded = _safe_json_for_script({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
+        "smellPrompts": smell_prompts,
     })
 
     # ── Repo root lookup for file:// links ──
@@ -3582,6 +3584,17 @@ function initSortableTable(table) {{
       return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sev || '') + '</span>';
     }}
 
+    var smellPrompts = cqData.smellPrompts || {{}};
+    function buildSmellPrompt(smellType, file, line, context, project) {{
+      var tmpl = smellPrompts[smellType];
+      if (!tmpl) return smellType;
+      return tmpl
+        .replace(/\{{file\}}/g, file || '')
+        .replace(/\{{line\}}/g, String(line || 0))
+        .replace(/\{{context\}}/g, context || '')
+        .replace(/\{{project\}}/g, project || '');
+    }}
+
     function buildFileDetail(p) {{
       var files = p.files || [];
       if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
@@ -3593,7 +3606,8 @@ function initSortableTable(table) {{
         var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
           var sc = sevColors[s.severity] || '#53565A';
-          var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;') : escHtml(fname);
+          var smellPrompt = buildSmellPrompt(s.type, fPath, s.line || 0, s.context || '', p.project || '');
+          var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;', p.project || '', smellPrompt) : escHtml(fname);
           h += '<tr style="border-bottom:1px solid #F5F5F5;">';
           h += '<td style="padding:0.25rem 0.5rem;">' + fActions + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
@@ -3776,10 +3790,21 @@ function initSortableTable(table) {{
     // Sort: critical first, then high
     var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
     secFindings.sort(function (a, b) {{ return (sevOrder[a.severity] || 9) - (sevOrder[b.severity] || 9); }});
+    var smellPrompts = cqData.smellPrompts || {{}};
+    function buildSecPrompt(smellType, file, line, context, project) {{
+      var tmpl = smellPrompts[smellType];
+      if (!tmpl) return smellType;
+      return tmpl
+        .replace(/\{{file\}}/g, file || '')
+        .replace(/\{{line\}}/g, String(line || 0))
+        .replace(/\{{context\}}/g, context || '')
+        .replace(/\{{project\}}/g, project || '');
+    }}
     secFindings.forEach(function (sf) {{
       var tr = document.createElement('tr');
       var c = sevColors[sf.severity] || '#53565A';
-      var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;') : escHtml(sf.file);
+      var smellPrompt = buildSecPrompt(sf.type, sf.file, sf.line, sf.context, sf.project);
+      var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;', sf.project, smellPrompt) : escHtml(sf.file);
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
       tr.style.borderLeft = '3px solid ' + c;

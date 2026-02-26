@@ -315,13 +315,20 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         sln_dir = str(Path(sln_path).parent)
 
-        # Build prompt from config + project + smell
-        prompt_parts = [CONFIG["claudePrompt"]]
-        if project_name:
-            prompt_parts.append(f"\n\nProject: {project_name}")
-        if smell_description:
-            prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
-        prompt = "".join(prompt_parts)
+        # Build prompt: use focused smell prompt if provided, else generic config prompt
+        if smell_description and '\n' in smell_description:
+            # Focused prompt from smell prompt templates (contains newlines and structured instructions)
+            prompt = smell_description
+            if project_name:
+                prompt += f"\n\nProject: {project_name}"
+        else:
+            # Fallback to generic config prompt
+            prompt_parts = [CONFIG["claudePrompt"]]
+            if project_name:
+                prompt_parts.append(f"\n\nProject: {project_name}")
+            if smell_description:
+                prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+            prompt = "".join(prompt_parts)
 
         # Choose between Windows native or WSL execution
         if CONFIG.get("claudeCodeUseWsl", False):
@@ -418,12 +425,18 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         wsl_file = _windows_to_wsl_path(file_path)
         workspace_dir = _windows_to_wsl_path(sln_dir)
 
-        # Build prompt
-        prompt_parts = [CONFIG["claudePrompt"]]
-        if project_name:
-            prompt_parts.append(f"\n\nProject: {project_name}")
-        if smell_description:
-            prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+        # Build prompt: use focused smell prompt if provided, else generic config prompt
+        if smell_description and '\n' in smell_description:
+            prompt = smell_description
+            if project_name:
+                prompt += f"\n\nProject: {project_name}"
+        else:
+            prompt_parts = [CONFIG["claudePrompt"]]
+            if project_name:
+                prompt_parts.append(f"\n\nProject: {project_name}")
+            if smell_description:
+                prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+            prompt = "".join(prompt_parts)
 
         # Execute via WSL
         wsl_cmd = [
@@ -431,7 +444,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             CONFIG["openCodePath"],
             "--add-dir", workspace_dir,
             f"@{wsl_file}" + (f":{line}" if line else ""),
-            "--append-system-prompt", "".join(prompt_parts)
+            "--append-system-prompt", prompt
         ]
 
         try:
@@ -450,21 +463,28 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         wsl_file = _windows_to_wsl_path(file_path)
 
-        # Build context message
-        context_parts = [f"I'm looking at file: {wsl_file}"]
-        if line:
-            context_parts.append(f" (line {line})")
-        if project_name:
-            context_parts.append(f"\n\nProject: {project_name}")
-        if smell_description:
-            context_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
-        context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
+        # Build context message: use focused prompt if provided, else generic
+        if smell_description and '\n' in smell_description:
+            context = f"I'm looking at file: {wsl_file}"
+            if line:
+                context += f" (line {line})"
+            context += f"\n\n{smell_description}"
+        else:
+            context_parts = [f"I'm looking at file: {wsl_file}"]
+            if line:
+                context_parts.append(f" (line {line})")
+            if project_name:
+                context_parts.append(f"\n\nProject: {project_name}")
+            if smell_description:
+                context_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
+            context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
+            context = "".join(context_parts)
 
         wsl_cmd = [
             "wsl", "-d", CONFIG["wslDistro"], "--",
             "gh", "copilot", "suggest",
             "-t", "shell",
-            "".join(context_parts)
+            context
         ]
 
         try:
