@@ -558,6 +558,10 @@ def main():
         print("\n--- Step 2: Scanning smells ---")
         run("2_scan_smells.py", repos, out, "--level", level)
 
+        # Resilience analysis (needs data-sources.json, dependencies.csv from step 1)
+        print("\n--- Scanning resilience ---")
+        run("6_scan_resilience.py", repos, out)
+
         # Step 5: External tools (optional, off by default)
         if args.tools and args.tools.lower() != "none":
             print("\n--- External tools ---")
