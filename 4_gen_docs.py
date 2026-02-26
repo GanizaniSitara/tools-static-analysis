@@ -92,6 +92,7 @@ ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
 external_tools_data: dict = _load_json(os.path.join(OUT_DIR, "external-tools.json"), {})
+resilience_data: dict = _load_json(os.path.join(OUT_DIR, "resilience-findings.json"), {})
 
 # Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
 language_data: dict[str, dict] = {}
@@ -831,6 +832,13 @@ def generate_viewer_html() -> str:
         "toolsSkipped": external_tools_data.get("toolsSkipped", {}),
     })
 
+    # ── Resilience data ──
+    resilience_embedded = _safe_json_for_script({
+        "projects": resilience_data.get("projects", []),
+        "summary": resilience_data.get("summary", {}),
+        "resiliencePrompts": resilience_data.get("resiliencePrompts", {}),
+    })
+
     # ── Edge metadata (coupling count, NuGet version) for viewer tooltips ──
     _edge_meta: dict = {}
     for _e in graph.get("edges", []):
@@ -867,6 +875,9 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
     if refactoring_projects:
         all_tab_ids.append(("codequality", "Code Quality"))
+    resilience_projects = resilience_data.get("projects", [])
+    if resilience_projects:
+        all_tab_ids.append(("resilience", "Resilience"))
     # Security tab: show if any security-category smells exist (built-in or external tools)
     _has_security_findings = any(
         s.get("category") == "security"
@@ -1503,6 +1514,69 @@ def generate_viewer_html() -> str:
         </table>
       </div>
       {f'<div style="margin-top:1.5rem;"><div class="card-title"><span class="icon">&#9670;</span> Refactoring Targets</div>{cq_tier_html}</div>' if cq_tier_html else ''}
+    </div>
+  </section>
+"""
+
+    # ── Resilience panel ──
+    resilience_panel = ""
+    if resilience_projects:
+        _res_summary = resilience_data.get("summary", {})
+        _res_total = _res_summary.get("totalFindings", 0)
+        _res_sev = _res_summary.get("findingsBySeverity", {})
+        _res_high = _res_sev.get("high", 0)
+        _res_med = _res_sev.get("medium", 0)
+        _res_low = _res_sev.get("low", 0)
+        _res_avg = _res_summary.get("avgResilienceScore", 0)
+        _res_ext = _res_summary.get("projectsWithExternalCalls", 0)
+        _res_polly = _res_summary.get("projectsWithPolly", 0)
+        resilience_panel = f"""
+  <section class="tab-panel" id="panel-resilience">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Resilience Analysis</div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Avg Score</div>
+          <div style="font-size:1.1rem;font-weight:700;color:{'#D0002B' if _res_avg < 40 else '#9E8700' if _res_avg < 70 else '#2E7D32'};margin-top:0.2rem;">{_res_avg}/100</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Ext Call Projects</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_res_ext}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">With Polly</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#2E7D32;margin-top:0.2rem;">{_res_polly}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">High</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_res_high}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_res_med}</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Findings</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_res_total}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="resTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="num">Score</th>
+              <th data-sort-type="num">Ext Calls</th>
+              <th data-sort-type="num">Findings</th>
+              <th data-sort-type="text">Polly</th>
+              <th data-sort-type="text">Policies</th>
+            </tr>
+          </thead>
+          <tbody id="resBody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 """
@@ -2404,6 +2478,7 @@ def generate_viewer_html() -> str:
 {e2eflows_panel}
 {fieldtrace_panel}
 {codequality_panel}
+{resilience_panel}
 {security_panel}
 {uxconsistency_panel}
 {hotspots_panel}
@@ -3663,6 +3738,7 @@ function initSortableTable(table) {{
   window._uxData = {ux_embedded};
   window._repoRoots = {repos_roots_json};
   window._externalToolsData = {ext_tools_embedded};
+  window._resilienceData = {resilience_embedded};
   window._isMultiRepo = {str(is_multi_repo).lower()};
   window._repos = {repos_json};
   window._projectGroupMap = {project_groups_map_json};
@@ -4073,6 +4149,95 @@ function initSortableTable(table) {{
       row.style.display = show ? '' : 'none';
     }});
   }}
+
+  // ── Resilience IIFE ──
+  (function () {{
+    var rd = window._resilienceData || {{}};
+    var projects = rd.projects || [];
+    var tbody = document.getElementById('resBody');
+    if (!tbody || projects.length === 0) return;
+    var sevColors = {{ high: '#D0002B', medium: '#E87722', low: '#53565A' }};
+    function scoreColor(s) {{ return s < 40 ? '#D0002B' : s < 70 ? '#9E8700' : '#2E7D32'; }}
+    function sevBadge(sev) {{
+      var c = sevColors[sev] || '#53565A';
+      return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sev || '') + '</span>';
+    }}
+    var prompts = rd.resiliencePrompts || {{}};
+    function buildResPrompt(ftype, file, line, context, project) {{
+      var tmpl = prompts[ftype];
+      if (!tmpl) return ftype;
+      return tmpl.replace(/\{{file\}}/g, file || '').replace(/\{{line\}}/g, String(line || 0)).replace(/\{{context\}}/g, context || '').replace(/\{{project\}}/g, project || '');
+    }}
+    function buildResDetail(p) {{
+      var findings = p.findings || [];
+      if (findings.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No findings</div>';
+      var repoRoots = window._repoRoots || {{}};
+      var root = repoRoots[p.repo || ''] || '';
+      var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Type</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      findings.forEach(function(f) {{
+        var fPath = f.file || '';
+        var sc = sevColors[f.severity] || '#53565A';
+        var prompt = buildResPrompt(f.type, fPath, f.line || 0, f.context || '', p.project || '');
+        var fActions = fPath ? fileActionsHtml(fPath, f.line || 0, 'font-size:0.75rem;color:#005587;', p.project || '', prompt) : '';
+        h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+        h += '<td style="padding:0.25rem 0.5rem;">' + (fActions || escHtml(fPath || 'project-level')) + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (f.line || '') + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;">' + sevBadge(f.severity) + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(f.type) + '</span></td>';
+        h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(f.context || '') + '</td>';
+        h += '</tr>';
+      }});
+      h += '</tbody></table>';
+      // Positive patterns
+      var rp = p.resiliencePatterns || {{}};
+      var posKeys = Object.keys(rp).filter(function(k) {{ return rp[k] > 0; }});
+      if (posKeys.length > 0) {{
+        h += '<div style="margin-top:0.5rem;"><strong style="font-size:0.75rem;color:#2E7D32;">Positive patterns:</strong> ';
+        posKeys.forEach(function(k) {{ h += '<span style="display:inline-block;padding:0.1rem 0.4rem;margin:0.1rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:#E8F5E9;color:#2E7D32;">' + escHtml(k) + ': ' + rp[k] + '</span>'; }});
+        h += '</div>';
+      }}
+      return h;
+    }}
+    projects.forEach(function(p) {{
+      var tr = document.createElement('tr');
+      var sc = p.resilienceScore || 0;
+      var policies = p.policySummary || {{}};
+      var activePolicies = Object.keys(policies).filter(function(k) {{ return policies[k]; }}).join(', ') || 'None';
+      var hasFindings = p.findingCount > 0;
+      tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '')).toLowerCase());
+      if (hasFindings) tr.style.cursor = 'pointer';
+      tr.innerHTML =
+        '<td><strong>' + (hasFindings ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
+        '<td>' + escHtml(p.category || '') + '</td>' +
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor(sc) + '">' + sc + '</td>' +
+        '<td style="text-align:center">' + (p.externalCallCount || 0) + '</td>' +
+        '<td style="text-align:center">' + (p.findingCount || 0) + '</td>' +
+        '<td>' + (p.pollyPackages && p.pollyPackages.length > 0 ? '<span style="color:#2E7D32;font-weight:600;">Yes</span>' : '<span style="color:#D0002B;">No</span>') + '</td>' +
+        '<td style="font-size:0.78rem;">' + escHtml(activePolicies) + '</td>';
+      tbody.appendChild(tr);
+      if (hasFindings) {{
+        var detailRow = document.createElement('tr');
+        detailRow.className = 'detail-row';
+        detailRow.style.display = 'none';
+        var detailTd = document.createElement('td');
+        detailTd.colSpan = 7;
+        detailTd.style.padding = '0.5rem 1rem';
+        detailTd.style.background = '#FAFAFA';
+        detailRow.appendChild(detailTd);
+        tbody.appendChild(detailRow);
+        tr.addEventListener('click', (function(dr, td, proj) {{
+          var loaded = false;
+          return function() {{
+            if (!loaded) {{ td.innerHTML = buildResDetail(proj); loaded = true; }}
+            dr.style.display = dr.style.display === 'none' ? '' : 'none';
+            var arrow = this.querySelector('span');
+            if (arrow) arrow.innerHTML = dr.style.display === 'none' ? '&#9654;' : '&#9660;';
+          }};
+        }})(detailRow, detailTd, p));
+      }}
+    }});
+  }})();
 
   // ── Security IIFE ──
   (function () {{
