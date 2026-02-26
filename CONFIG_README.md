@@ -50,14 +50,35 @@ Micromamba/conda environment name to activate before running Claude Code.
 - `python311` - Activate the `python311` environment
 
 ### `openCodePath` (string)
-Path to OpenCode executable in WSL.
+Path to OpenCode executable (in WSL or native Linux).
+
+**Examples:**
+- `opencode` - Use from PATH
+- `/usr/local/bin/opencode` - Absolute path
+
+### `openCodeNonInteractive` (boolean)
+Launch mode for OpenCode.
+
+- `false` - TUI mode (opens interactive terminal UI) - default
+- `true` - Non-interactive mode (uses `opencode -p "<prompt>"`)
 
 ### `githubCopilotEnabled` (boolean)
-Enable GitHub Copilot CLI integration via WSL.
+Enable GitHub Copilot CLI integration.
 
-**Requires:** `gh copilot` extension installed
+**Requires:** An active GitHub Copilot subscription (Pro, Pro+, Business, or Enterprise).
+
+### `copilotMode` (string)
+Which Copilot CLI to use.
+
+- `standalone` - New standalone CLI (`npm i -g @github/copilot`) - recommended
+- `gh-extension` - Legacy `gh copilot` extension (deprecated Oct 2025)
+
+### `copilotCliPath` (string)
+Path to the standalone Copilot CLI executable. Only used when `copilotMode: standalone`.
+
+**Install:**
 ```bash
-gh extension install github/gh-copilot
+npm install -g @github/copilot
 ```
 
 ## Configuration Modes
@@ -82,6 +103,29 @@ enableWslTools: true
 wslDistro: Ubuntu
 claudeCodePath: /home/user/.local/bin/claude
 micromambaEnv: ai-tools  # Activates conda environment
+```
+
+### Mode 4: WSL with All AI Tools
+```yaml
+enableWslTools: true
+wslDistro: Ubuntu-24.04
+claudeCodePath: claude
+openCodePath: opencode
+openCodeNonInteractive: false
+githubCopilotEnabled: true
+copilotMode: standalone
+copilotCliPath: copilot
+```
+
+### Mode 5: Native Linux (companion runs inside WSL directly)
+```yaml
+enableWslTools: true      # Still needed to show buttons in viewer
+claudeCodeUseWsl: false
+openCodePath: opencode
+githubCopilotEnabled: true
+copilotMode: standalone
+copilotCliPath: copilot
+# The companion auto-detects Linux and runs tools directly (no wsl -d wrapper)
 ```
 
 ## Testing Your Configuration
@@ -112,6 +156,9 @@ micromambaEnv: ai-tools  # Activates conda environment
 - Verify WSL distro name: `wsl -l -v`
 - Check tool paths: `wsl -d Ubuntu-24.04 -- which claude`
 - Test path conversion: `wsl -d Ubuntu-24.04 -- wslpath -u 'C:\path'`
+- Check OpenCode: `wsl -d Ubuntu-24.04 -- opencode --version`
+- Check Copilot CLI: `wsl -d Ubuntu-24.04 -- copilot --version`
+- For legacy Copilot: `wsl -d Ubuntu-24.04 -- gh copilot --version`
 
 ### Micromamba not activating
 - Ensure micromamba is installed: `wsl -d Ubuntu-24.04 -- micromamba --version`

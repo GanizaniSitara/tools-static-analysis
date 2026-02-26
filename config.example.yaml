@@ -61,21 +61,40 @@ claudeCodePath: claude
 #   - "python311"   (activate python311 environment)
 micromambaEnv: ""
 
-# OpenCode Configuration
+# OpenCode Configuration (https://opencode.ai)
 # ============================================================================
-# Path to OpenCode executable in WSL
+# Path to OpenCode executable (in WSL or native Linux)
+# OpenCode is a Go-based AI coding agent with a TUI
+# Install: see https://opencode.ai/docs/
 # Examples:
+#   - "opencode"              (if in PATH)
 #   - "/usr/local/bin/opencode"
 #   - "~/.local/bin/opencode"
-#   - "opencode"  (if in PATH)
-openCodePath: /usr/local/bin/opencode
+openCodePath: opencode
 
-# GitHub Copilot Configuration
+# Launch mode for OpenCode
+# false = TUI mode (opens interactive terminal UI) - default
+# true  = Non-interactive mode (uses opencode -p "<prompt>")
+openCodeNonInteractive: false
+
+# GitHub Copilot CLI Configuration
 # ============================================================================
 # Enable GitHub Copilot CLI integration
-# Requires: gh copilot extension installed in WSL
-# Install: gh extension install github/gh-copilot
+# Requires an active GitHub Copilot subscription (Pro, Pro+, Business, Enterprise)
 githubCopilotEnabled: true
+
+# Copilot CLI mode:
+#   "standalone"    = New standalone CLI (npm i -g @github/copilot) - recommended
+#   "gh-extension"  = Legacy gh copilot extension (deprecated Oct 2025)
+copilotMode: standalone
+
+# Path to the standalone Copilot CLI executable
+# Only used when copilotMode: standalone
+# Install: npm install -g @github/copilot
+# Examples:
+#   - "copilot"                       (if in PATH)
+#   - "/home/user/.npm-global/bin/copilot"
+copilotCliPath: copilot
 
 # ============================================================================
 # Configuration Examples
@@ -86,23 +105,37 @@ githubCopilotEnabled: true
 # enableWslTools: false
 # claudeCodePath: claude  # Uses Windows claude.exe from PATH
 #
-# Example 2: WSL with default environment
+# Example 2: WSL with all AI tools
 # ----------------------------------------
 # enableWslTools: true
 # wslDistro: Ubuntu-24.04
 # claudeCodePath: claude
-# micromambaEnv: ""  # No conda environment
+# micromambaEnv: ""
+# openCodePath: opencode
+# openCodeNonInteractive: false
+# githubCopilotEnabled: true
+# copilotMode: standalone
+# copilotCliPath: copilot
 #
-# Example 3: WSL with micromamba environment
-# -------------------------------------------
+# Example 3: WSL with micromamba + legacy gh copilot
+# ---------------------------------------------------
 # enableWslTools: true
 # wslDistro: Ubuntu
 # claudeCodePath: /home/user/.local/bin/claude
-# micromambaEnv: ai-tools  # Activates 'ai-tools' conda env
+# micromambaEnv: ai-tools
+# githubCopilotEnabled: true
+# copilotMode: gh-extension  # Uses deprecated gh copilot extension
 #
-# Example 4: Mixed setup (Claude on Windows, OpenCode in WSL)
-# ------------------------------------------------------------
-# enableWslTools: false  # Claude runs on Windows
-# # To use OpenCode, temporarily enable WSL tools when needed
+# Example 4: Native Linux (companion runs inside WSL/Linux directly)
+# -------------------------------------------------------------------
+# enableWslTools: true  # Still needed to show buttons in viewer
+# claudeCodeUseWsl: false
+# claudeCodePath: claude
+# openCodePath: opencode
+# githubCopilotEnabled: true
+# copilotMode: standalone
+# copilotCliPath: copilot
+# # When the companion agent runs on Linux natively, it auto-detects
+# # the platform and runs tools directly without the wsl -d wrapper.
 #
 # ============================================================================

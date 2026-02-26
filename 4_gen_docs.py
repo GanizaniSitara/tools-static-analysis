@@ -31,8 +31,11 @@ def _load_config():
         "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
         "micromambaEnv": "",
-        "openCodePath": "/usr/local/bin/opencode",
-        "githubCopilotEnabled": False
+        "openCodePath": "opencode",
+        "openCodeNonInteractive": False,
+        "githubCopilotEnabled": False,
+        "copilotMode": "standalone",
+        "copilotCliPath": "copilot"
     }
     if not config_path.exists():
         return default
