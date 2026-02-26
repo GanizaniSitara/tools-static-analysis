@@ -888,6 +888,83 @@ def detect_insecure_random(path: str, content: str, lines: list[str]) -> list[di
     return smells
 
 
+# ─── Cross-Technology Call Detection ──────────────────────────────────
+
+def detect_python_calls(path: str, content: str, lines: list[str]) -> list[dict]:
+    """Detect C# code that invokes Python via process execution or interop libraries.
+
+    Detects:
+      - Process.Start / ProcessStartInfo launching python/python3
+      - Python.NET (Python.Runtime, PythonEngine, PyObject, Py.GIL, using/import)
+      - IronPython (IronPython.*, CreateEngine, Microsoft.Scripting)
+      - Embedded script execution referencing .py files or python interpreters
+    """
+    smells = []
+
+    # Pre-compiled patterns for efficiency
+    # 1. Process-based invocation: Process.Start("python" ...) or FileName = "python"
+    process_python = re.compile(
+        r"""(?:Process\.Start|ProcessStartInfo)\s*\(?\s*["']python[3"]?["']"""
+        r"""|FileName\s*=\s*["'](?:[^"']*[/\\])?python[3"]?(?:\.exe)?["']""",
+        re.IGNORECASE,
+    )
+
+    # 2. Python.NET library usage
+    pythonnet = re.compile(
+        r"""\busing\s+Python\.Runtime\b"""
+        r"""|\bPythonEngine\s*\."""
+        r"""|\bPyObject\b"""
+        r"""|\bPy\s*\.\s*GIL\b"""
+        r"""|\bPyModule\b"""
+        r"""|\bPyScope\b""",
+    )
+
+    # 3. IronPython
+    ironpython = re.compile(
+        r"""\bIronPython\b"""
+        r"""|\bMicrosoft\.Scripting\b"""
+        r"""|\bCreateEngine\s*\(\s*\)\s*.*[Pp]ython"""
+        r"""|\bPython\.CreateRuntime\b""",
+    )
+
+    # 4. Generic script-engine invocation with a .py file reference
+    py_script_ref = re.compile(
+        r"""["'][^"']*\.py["']""",
+    )
+
+    # Track which patterns we've already reported per line to avoid duplicates
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
+            continue
+
+        mechanism = None
+
+        if process_python.search(line):
+            mechanism = "process_exec"
+        elif pythonnet.search(line):
+            mechanism = "python_net"
+        elif ironpython.search(line):
+            mechanism = "ironpython"
+        elif py_script_ref.search(line):
+            # Only flag .py file references if there's also a process/script context
+            context_start = max(0, i - 5)
+            context_end = min(len(lines), i + 6)
+            nearby = ' '.join(lines[context_start:context_end])
+            if re.search(r'\b(Process|Script|Execute|Run|Start|Invoke|Engine)\b', nearby):
+                mechanism = "py_script_ref"
+
+        if mechanism:
+            smells.append({
+                "type": "python_call",
+                "line": i + 1,
+                "context": line.strip()[:120],
+                "mechanism": mechanism,
+            })
+
+    return smells
+
+
 # ─── Detector Registry ────────────────────────────────────────────────
 
 SEVERITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
@@ -911,6 +988,8 @@ DETECTOR_REGISTRY = [
     {"name": "long_parameter_list",       "fn": detect_long_parameter_list,       "severity": "medium",  "category": "quality"},
     {"name": "precision_unsafe_math",     "fn": detect_precision_unsafe_math,     "severity": "medium",  "category": "quality"},
     {"name": "deep_inheritance",          "fn": detect_deep_inheritance,          "severity": "medium",  "category": "quality"},
+    # Medium — Interop / Cross-Technology
+    {"name": "python_call",               "fn": detect_python_calls,              "severity": "medium",  "category": "interop"},
     # Low — Style/Noise
     {"name": "magic_number",              "fn": detect_magic_numbers,             "severity": "low",     "category": "style"},
     {"name": "missing_null_check",        "fn": detect_missing_null_checks,       "severity": "low",     "category": "style"},
@@ -1361,7 +1440,9 @@ def generate_claude_targets(projects: list) -> dict:
             focus_areas.append("god methods (>100 lines)")
         if any(smell["type"] == "exception_swallowing" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("exception swallowing")
-        
+        if any(smell["type"] == "python_call" for f in project["files"] for smell in f["smells"]):
+            focus_areas.append("Python interop calls (cross-technology boundary)")
+
         prompt = f"Review {project['project']} for refactoring."
         if focus_areas:
             prompt += f" Focus on: {', '.join(focus_areas)}."
