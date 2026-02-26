@@ -3079,15 +3079,88 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
+// -- Companion agent detection & IDE launch --
+var _companionBase = 'http://127.0.0.1:19280';
+var _companionOk = null; // null = unknown, true/false after probe
+var _companionProbed = false;
+
+function _probeCompanion(cb) {{
+  if (_companionProbed) {{ if (cb) cb(_companionOk); return; }}
+  _companionProbed = true;
+  fetch(_companionBase + '/_ping', {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      _companionOk = d && d.status === 'ok';
+      if (cb) cb(_companionOk);
+    }})
+    .catch(function() {{
+      _companionOk = false;
+      if (cb) cb(false);
+    }});
+}}
+// Probe on page load so we know before the first click
+_probeCompanion();
+
+function _showCompanionBanner() {{
+  var id = 'companionBanner';
+  if (document.getElementById(id)) return;
+  var banner = document.createElement('div');
+  banner.id = id;
+  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.7rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;';
+  banner.innerHTML = '<div><strong>Companion agent not detected.</strong> To launch editors from this viewer, run: ' +
+    '<code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;margin:0 4px;">node companion/server.js</code> ' +
+    'in the tools-static-analysis directory on your machine.</div>' +
+    '<button onclick="this.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:2px 10px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;">Dismiss</button>';
+  document.body.appendChild(banner);
+}}
+
 function _openViaServer(editor, resolved, line, project, smell) {{
-  var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
-  if (project) url += '&project=' + encodeURIComponent(project);
-  if (smell) url += '&smell=' + encodeURIComponent(smell);
-  fetch(url).then(function(r) {{ return r.json(); }}).then(function(d) {{
+  var qs = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+  if (project) qs += '&project=' + encodeURIComponent(project);
+  if (smell) qs += '&smell=' + encodeURIComponent(smell);
+
+  function tryFetch(baseUrl) {{
+    return fetch(baseUrl + qs, {{ mode: 'cors' }})
+      .then(function(r) {{ return r.json(); }});
+  }}
+
+  function onSuccess(d) {{
     if (d.error) showToast(d.error, true);
     else showToast('Opening ' + editor + '...', false);
+  }}
+
+  // If companion status already known, use that
+  if (_companionOk === true) {{
+    tryFetch(_companionBase).then(onSuccess).catch(function() {{
+      // Companion went away; re-probe and try run.py server
+      _companionOk = null; _companionProbed = false;
+      tryFetch('').then(onSuccess).catch(function() {{
+        _showCompanionBanner();
+        showToast('No server available. Start the companion agent.', true);
+      }});
+    }});
+    return;
+  }}
+
+  if (_companionOk === false) {{
+    // Try same-origin run.py first, then show banner
+    tryFetch('').then(onSuccess).catch(function() {{
+      _showCompanionBanner();
+      showToast('No server available. Start the companion agent.', true);
+    }});
+    return;
+  }}
+
+  // Unknown: try companion, fall back to run.py, then show banner
+  tryFetch(_companionBase).then(function(d) {{
+    _companionOk = true;
+    onSuccess(d);
   }}).catch(function() {{
-    showToast('Server not available — are you using run.py?', true);
+    _companionOk = false;
+    tryFetch('').then(onSuccess).catch(function() {{
+      _showCompanionBanner();
+      showToast('No server available. Start the companion agent.', true);
+    }});
   }});
 }}
 // Delegated click handler for file action icons
