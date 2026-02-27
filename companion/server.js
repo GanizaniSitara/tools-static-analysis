@@ -36,7 +36,7 @@ const DEFAULT_CONFIG = {
   githubCopilotEnabled: true,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
-  copilotModel: "claude-opus-4.6-fast",
+  copilotModel: "claude-opus-4.6",
   // Fix workflow
   vcsType: "svn",
   repoUrl: "",
@@ -319,7 +319,7 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   const isWin = os.platform() === "win32";
   const mode = config.copilotMode || "standalone";
   const copilotPath = config.copilotCliPath || "copilot";
-  const copilotModel = config.copilotModel || "claude-opus-4.6-fast";
+  const copilotModel = config.copilotModel || "claude-opus-4.6";
 
   if (mode === "gh-extension") {
     // Legacy gh copilot extension -- limited flags, just pass context
@@ -347,22 +347,32 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   }
 
   // Standalone mode: use -i (interactive + execute prompt) instead of -p (exits)
-  // Build a detailed prompt since Copilot CLI has no --system-prompt flag
-  let prompt = "You are analyzing a C# .NET project with architectural issues.\n\n";
-  prompt += "FILE: " + filePath + "\n";
-  if (line) prompt += "LINE: " + line + "\n";
-  if (project) prompt += "PROJECT: " + project + "\n";
-  if (smell && smell.includes("\n")) {
-    prompt += "\n" + smell + "\n";
-  } else if (smell) {
-    prompt += "\nISSUE: " + smell + "\n";
+  // Build prompt using same claudePrompt config that Claude Code uses, since
+  // Copilot CLI has no --system-prompt flag (instructions are baked into the prompt).
+
+  // Make path relative to workspace
+  let relFile;
+  try {
+    relFile = path.relative(workspace, filePath);
+    if (relFile.startsWith("..")) relFile = filePath;
+  } catch (_) {
+    relFile = filePath;
   }
-  prompt += "\nPlease:\n";
-  prompt += "1. Read the file and understand the context around the indicated line\n";
-  prompt += "2. Analyze the architectural smell / code issue described above\n";
-  prompt += "3. Propose a concrete refactoring that addresses the issue\n";
-  prompt += "4. Maintain existing functionality, follow SOLID principles and .NET best practices\n";
-  prompt += "5. Show the specific code changes needed";
+
+  let prompt;
+  if (smell && smell.includes("\n")) {
+    // Focused smell prompt (pre-built by the viewer) -- use as-is, same as Claude
+    prompt = smell;
+    if (project) prompt += "\n\nProject: " + project;
+  } else {
+    // Generic prompt from config -- same structure Claude receives
+    prompt = config.claudePrompt || "You are analyzing a C# .NET project with architectural smells.\nPlease propose a refactoring solution that:\n- Addresses the specific smell identified\n- Maintains existing functionality\n- Follows SOLID principles and .NET best practices\n- Considers the broader architectural context";
+    if (project) prompt += "\n\nProject: " + project;
+    if (smell) prompt += "\n\nArchitectural Smell:\n" + smell;
+  }
+  prompt += "\n\nFile: " + relFile;
+  if (line) prompt += " (line " + line + ")";
+  prompt += "\n\nPlease read the file above and propose concrete code changes to address the issue.";
 
   if (isWin) {
     const escapedPrompt = prompt.replace(/"/g, '\\"');

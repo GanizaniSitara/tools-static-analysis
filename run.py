@@ -29,7 +29,7 @@ def _load_config():
         "githubCopilotEnabled": True,
         "copilotMode": "standalone",
         "copilotCliPath": "copilot",
-        "copilotModel": "claude-opus-4.6-fast",
+        "copilotModel": "claude-opus-4.6",
     }
     if not config_path.exists():
         return default
@@ -315,7 +315,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         copilot_path = CONFIG.get("copilotCliPath", "copilot")
         copilot_mode = CONFIG.get("copilotMode", "standalone")
-        copilot_model = CONFIG.get("copilotModel", "claude-opus-4.6-fast")
+        copilot_model = CONFIG.get("copilotModel", "claude-opus-4.6")
 
         sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
         work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)
@@ -352,24 +352,32 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         # Standalone mode: use -i (interactive + execute prompt) instead of -p (exits)
-        # Build a detailed prompt since Copilot CLI has no --system-prompt flag
-        prompt_parts = ["You are analyzing a C# .NET project with architectural issues.\n"]
-        prompt_parts.append(f"FILE: {file_path}")
-        if line:
-            prompt_parts.append(f"LINE: {line}")
-        if project_name:
-            prompt_parts.append(f"PROJECT: {project_name}")
+        # Build prompt using same claudePrompt config that Claude Code uses, since
+        # Copilot CLI has no --system-prompt flag (instructions baked into the prompt).
+
+        # Make path relative to workspace
+        try:
+            rel_file = os.path.relpath(file_path, work_dir)
+        except ValueError:
+            rel_file = file_path
+
         if smell_description and '\n' in smell_description:
-            prompt_parts.append(f"\n{smell_description}")
-        elif smell_description:
-            prompt_parts.append(f"\nISSUE: {smell_description}")
-        prompt_parts.append("\nPlease:")
-        prompt_parts.append("1. Read the file and understand the context around the indicated line")
-        prompt_parts.append("2. Analyze the architectural smell / code issue described above")
-        prompt_parts.append("3. Propose a concrete refactoring that addresses the issue")
-        prompt_parts.append("4. Maintain existing functionality, follow SOLID principles and .NET best practices")
-        prompt_parts.append("5. Show the specific code changes needed")
-        prompt = "\n".join(prompt_parts)
+            # Focused smell prompt (pre-built by the viewer) -- use as-is, same as Claude
+            prompt = smell_description
+            if project_name:
+                prompt += f"\n\nProject: {project_name}"
+        else:
+            # Generic prompt from config -- same structure Claude receives
+            prompt = CONFIG["claudePrompt"]
+            if project_name:
+                prompt += f"\n\nProject: {project_name}"
+            if smell_description:
+                prompt += f"\n\nArchitectural Smell:\n{smell_description}"
+
+        prompt += f"\n\nFile: {rel_file}"
+        if line:
+            prompt += f" (line {line})"
+        prompt += "\n\nPlease read the file above and propose concrete code changes to address the issue."
 
         # Use -i for interactive mode (stays open), --model for Opus, --add-dir for workspace
         copilot_args = [
