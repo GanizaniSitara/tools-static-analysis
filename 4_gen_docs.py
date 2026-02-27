@@ -25,7 +25,7 @@ def _load_config():
     config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
-        "enableWslTools": True,
+        "enableWslTools": False,
         "wslDistro": "Ubuntu",
         "wslPathPrefix": "\\\\wsl$\\Ubuntu",
         "claudeCodeUseWsl": False,
@@ -627,7 +627,7 @@ def _file_actions_html(path: str, line: int = 0, display: str = "", project: str
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
         f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
         f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
-        f' <a href="#" class="file-action file-copilot wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
+        f' <a href="#" class="file-action file-copilot copilot-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
         f' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
@@ -2345,8 +2345,8 @@ def generate_viewer_html() -> str:
   .file-claude:hover {{ background:#b85e3f; }}
   .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
   .file-opencode:hover {{ background:#0f0f1a; }}
-  .file-copilot {{ background:#1f883d; color:#fff !important; }}
-  .file-copilot:hover {{ background:#166d31; }}
+  .file-copilot {{ background:#8957e5; color:#fff !important; }}
+  .file-copilot:hover {{ background:#7042c4; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
   .file-fix {{ background:#c62828; color:#fff !important; }}
@@ -3170,7 +3170,7 @@ function fileActionsHtml(filePath, line, style, project, smell) {{
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
     ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
-    ' <a href="#" class="file-action file-copilot wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
+    ' <a href="#" class="file-action file-copilot copilot-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
     ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
@@ -3220,9 +3220,9 @@ _probeCompanion(function(ok) {{
         if (d.tools.opencode === false) {{
           showToast('OpenCode not found in WSL. Check openCodePath in config.yaml', true);
         }}
-        if (d.config.githubCopilotEnabled && d.tools.copilot === false) {{
-          showToast('Copilot CLI not found in WSL. Install: npm i -g @github/copilot', true);
-        }}
+      }}
+      if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
+        showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
       }}
     }})
     .catch(function() {{ /* ignore */ }});
@@ -3746,19 +3746,16 @@ function initSortableTable(table) {{
   window._cycles = {cycles_json};
   window._config = {config_json};
 
-  // Show WSL tools (OpenCode, Copilot) if enabled in config
+  // Show tool buttons based on config flags
   document.addEventListener('DOMContentLoaded', function() {{
     if (window._config && window._config.enableWslTools) {{
-      var wslTools = document.querySelectorAll('.wsl-tool');
-      wslTools.forEach(function(tool) {{
-        tool.style.display = 'inline-block';
-      }});
+      document.querySelectorAll('.wsl-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
+    }}
+    if (window._config && window._config.githubCopilotEnabled) {{
+      document.querySelectorAll('.copilot-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
     }}
     if (window._config && window._config.fixWorkflowEnabled) {{
-      var fixTools = document.querySelectorAll('.fix-workflow-tool');
-      fixTools.forEach(function(tool) {{
-        tool.style.display = 'inline-block';
-      }});
+      document.querySelectorAll('.fix-workflow-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
     }}
   }});
 

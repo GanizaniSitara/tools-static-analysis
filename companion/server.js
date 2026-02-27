@@ -32,7 +32,7 @@ const fixWorkflow = require("./fix-workflow");
 const DEFAULT_CONFIG = {
   claudePrompt:
     "Please analyze this code and propose improvements.",
-  enableWslTools: true,
+  enableWslTools: false,
   wslDistro: "Ubuntu",
   wslPathPrefix: "\\\\wsl$\\Ubuntu",
   claudeCodeUseWsl: false,
@@ -461,10 +461,7 @@ function openOpenCode(filePath, line, project, smell, config, callback) {
 
 function openCopilot(filePath, line, project, smell, config, callback) {
   if (!config.githubCopilotEnabled) {
-    return callback("GitHub Copilot is not enabled in config");
-  }
-  if (!config.enableWslTools) {
-    return callback("WSL tools are disabled in config. Set enableWslTools: true");
+    return callback("GitHub Copilot is not enabled in config. Set githubCopilotEnabled: true");
   }
   const workspace = findWorkspace(filePath);
   const isWin = os.platform() === "win32";
@@ -554,13 +551,12 @@ function handleRequest(req, res, config) {
 
     // Check tool availability (either natively or via WSL)
     const checks = [];
-    if (config.enableWslTools) {
-      const distro = config.wslDistro || "Ubuntu";
-      const opencodePath = config.openCodePath || "opencode";
-      const copilotPath = config.copilotCliPath || "copilot";
+    const distro = config.wslDistro || "Ubuntu";
+    const opencodePath = config.openCodePath || "opencode";
+    const copilotPath = config.copilotCliPath || "copilot";
 
+    if (config.enableWslTools) {
       if (isWin) {
-        // Validate tools exist inside WSL
         checks.push(
           new Promise((resolve) => {
             const child = spawn("wsl", [
@@ -576,35 +572,36 @@ function handleRequest(req, res, config) {
             child.on("error", () => { tools.opencode = false; resolve(); });
           })
         );
-
-        if (config.githubCopilotEnabled) {
-          const copilotCmd = config.copilotMode === "gh-extension"
-            ? "gh copilot --version"
-            : "which " + copilotPath;
-          checks.push(
-            new Promise((resolve) => {
-              const child = spawn("wsl", [
-                "-d", distro, "--", "bash", "-lc",
-                copilotCmd + " 2>/dev/null && echo FOUND || echo MISSING"
-              ]);
-              let out = "";
-              child.stdout.on("data", (d) => { out += d; });
-              child.on("close", () => {
-                tools.copilot = out.trim().includes("FOUND");
-                resolve();
-              });
-              child.on("error", () => { tools.copilot = false; resolve(); });
-            })
-          );
-        }
       } else {
-        // Native Linux: just check PATH
         tools.opencode = !!which(opencodePath);
-        if (config.githubCopilotEnabled) {
-          tools.copilot = config.copilotMode === "gh-extension"
-            ? !!which("gh")
-            : !!which(copilotPath);
-        }
+      }
+    }
+
+    // Copilot availability checked independently of enableWslTools
+    if (config.githubCopilotEnabled) {
+      if (isWin) {
+        const copilotCmd = config.copilotMode === "gh-extension"
+          ? "gh copilot --version"
+          : "which " + copilotPath;
+        checks.push(
+          new Promise((resolve) => {
+            const child = spawn("wsl", [
+              "-d", distro, "--", "bash", "-lc",
+              copilotCmd + " 2>/dev/null && echo FOUND || echo MISSING"
+            ]);
+            let out = "";
+            child.stdout.on("data", (d) => { out += d; });
+            child.on("close", () => {
+              tools.copilot = out.trim().includes("FOUND");
+              resolve();
+            });
+            child.on("error", () => { tools.copilot = false; resolve(); });
+          })
+        );
+      } else {
+        tools.copilot = config.copilotMode === "gh-extension"
+          ? !!which("gh")
+          : !!which(copilotPath);
       }
     }
 
@@ -822,13 +819,13 @@ function main() {
     console.log("  WSL tools:  enabled (" + config.wslDistro + ")");
     console.log("  OpenCode:   " + (config.openCodePath || "opencode") +
       (config.openCodeNonInteractive ? " (non-interactive)" : " (TUI)"));
-    if (config.githubCopilotEnabled) {
-      const cMode = config.copilotMode || "standalone";
-      console.log("  Copilot:    " +
-        (cMode === "gh-extension"
-          ? "gh copilot (legacy extension)"
-          : (config.copilotCliPath || "copilot") + " (standalone CLI)"));
-    }
+  }
+  if (config.githubCopilotEnabled) {
+    const cMode = config.copilotMode || "standalone";
+    console.log("  Copilot:    " +
+      (cMode === "gh-extension"
+        ? "gh copilot (legacy extension)"
+        : (config.copilotCliPath || "copilot") + " (standalone CLI)"));
   }
   if (config.developerRoot) {
     console.log("  Fix workflow:");
