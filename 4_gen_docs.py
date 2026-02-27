@@ -3977,10 +3977,10 @@ function initSortableTable(table) {{
       var tmpl = smellPrompts[smellType];
       if (!tmpl) return smellType;
       return tmpl
-        .replace(/\{{file\}}/g, file || '')
-        .replace(/\{{line\}}/g, String(line || 0))
-        .replace(/\{{context\}}/g, context || '')
-        .replace(/\{{project\}}/g, project || '');
+        .replace(/\\{{file\\}}/g, file || '')
+        .replace(/\\{{line\\}}/g, String(line || 0))
+        .replace(/\\{{context\\}}/g, context || '')
+        .replace(/\\{{project\\}}/g, project || '');
     }}
 
     function buildFileDetail(p) {{
@@ -4163,7 +4163,7 @@ function initSortableTable(table) {{
     function buildResPrompt(ftype, file, line, context, project) {{
       var tmpl = prompts[ftype];
       if (!tmpl) return ftype;
-      return tmpl.replace(/\{{file\}}/g, file || '').replace(/\{{line\}}/g, String(line || 0)).replace(/\{{context\}}/g, context || '').replace(/\{{project\}}/g, project || '');
+      return tmpl.replace(/\\{{file\\}}/g, file || '').replace(/\\{{line\\}}/g, String(line || 0)).replace(/\\{{context\\}}/g, context || '').replace(/\\{{project\\}}/g, project || '');
     }}
     function buildResDetail(p) {{
       var findings = p.findings || [];
@@ -4272,10 +4272,10 @@ function initSortableTable(table) {{
       var tmpl = smellPrompts[smellType];
       if (!tmpl) return smellType;
       return tmpl
-        .replace(/\{{file\}}/g, file || '')
-        .replace(/\{{line\}}/g, String(line || 0))
-        .replace(/\{{context\}}/g, context || '')
-        .replace(/\{{project\}}/g, project || '');
+        .replace(/\\{{file\\}}/g, file || '')
+        .replace(/\\{{line\\}}/g, String(line || 0))
+        .replace(/\\{{context\\}}/g, context || '')
+        .replace(/\\{{project\\}}/g, project || '');
     }}
     secFindings.forEach(function (sf) {{
       var tr = document.createElement('tr');
