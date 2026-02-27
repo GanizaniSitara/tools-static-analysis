@@ -25,14 +25,7 @@ def _load_config():
     config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
-        "enableWslTools": False,
-        "wslDistro": "Ubuntu",
-        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
-        "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
-        "micromambaEnv": "",
-        "openCodePath": "opencode",
-        "openCodeNonInteractive": False,
         "githubCopilotEnabled": True,
         "copilotMode": "standalone",
         "copilotCliPath": "copilot",
@@ -626,7 +619,6 @@ def _file_actions_html(path: str, line: int = 0, display: str = "", project: str
         f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
         f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
-        f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
         f' <a href="#" class="file-action file-copilot copilot-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
         f' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
@@ -810,7 +802,6 @@ def generate_viewer_html() -> str:
 
     # ── Config flags for AI tool integration ──
     config_json = _safe_json_for_script({
-        "enableWslTools": CONFIG.get("enableWslTools", False),
         "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False),
         "fixWorkflowEnabled": bool(CONFIG.get("developerRoot", "")),
     })
@@ -2360,16 +2351,12 @@ def generate_viewer_html() -> str:
   .file-code:hover {{ background:#005a9e; }}
   .file-claude {{ background:#da7756; color:#fff !important; }}
   .file-claude:hover {{ background:#b85e3f; }}
-  .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
-  .file-opencode:hover {{ background:#0f0f1a; }}
   .file-copilot {{ background:#8957e5; color:#fff !important; }}
   .file-copilot:hover {{ background:#7042c4; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
-  .wsl-tool {{ display:none !important; }}
   .copilot-tool {{ display:none !important; }}
   .fix-workflow-tool {{ display:none !important; }}
-  {'  .wsl-tool { display:inline-block !important; }' if CONFIG.get('enableWslTools') else ''}
   {'  .copilot-tool { display:inline-block !important; }' if CONFIG.get('githubCopilotEnabled') else ''}
   {'  .fix-workflow-tool { display:inline-block !important; }' if CONFIG.get('developerRoot') else ''}
   .file-fix {{ background:#c62828; color:#fff !important; }}
@@ -3195,7 +3182,6 @@ function fileActionsHtml(filePath, line, style, project, smell) {{
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
-    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode">OpenCode</a>' +
     ' <a href="#" class="file-action file-copilot copilot-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot">Copilot</a>' +
     ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review">Fix</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
@@ -3242,11 +3228,6 @@ _probeCompanion(function(ok) {{
     .then(function(d) {{
       if (!d.tools) return;
       window._companionTools = d.tools;
-      if (d.config && d.config.enableWslTools) {{
-        if (d.tools.opencode === false) {{
-          showToast('OpenCode not found in WSL. Check openCodePath in config.yaml', true);
-        }}
-      }}
       if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
         showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
       }}
@@ -3518,8 +3499,6 @@ document.addEventListener('click', function(e) {{
     window.location.href = vsUri;
   }} else if (action.classList.contains('file-claude')) {{
     _openViaServer('claude', resolved, line, project, smell);
-  }} else if (action.classList.contains('file-opencode')) {{
-    _openViaServer('opencode', resolved, line, project, smell);
   }} else if (action.classList.contains('file-copilot')) {{
     _openViaServer('copilot', resolved, line, project, smell);
   }} else if (action.classList.contains('file-fix')) {{
@@ -3772,7 +3751,7 @@ function initSortableTable(table) {{
   window._cycles = {cycles_json};
   window._config = {config_json};
 
-  // Tool button visibility (wsl-tool, copilot-tool, fix-workflow-tool) is
+  // Tool button visibility (copilot-tool, fix-workflow-tool) is
   // controlled by CSS rules generated from config.yaml at build time.
 
   // Load data-flow.json for edge detail panel

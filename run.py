@@ -25,13 +25,7 @@ def _load_config():
     config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
-        "enableWslTools": False,
-        "wslDistro": "Ubuntu",
-        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
-        "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
-        "micromambaEnv": "",
-        "openCodePath": "/usr/local/bin/opencode",
         "githubCopilotEnabled": True,
         "copilotMode": "standalone",
         "copilotCliPath": "copilot",
@@ -46,35 +40,6 @@ def _load_config():
 
 
 CONFIG = _load_config()
-
-
-def _is_wsl() -> bool:
-    """Detect if running under Windows Subsystem for Linux."""
-    try:
-        with open("/proc/version", "r") as f:
-            return "microsoft" in f.read().lower()
-    except OSError:
-        return False
-
-
-def _windows_to_wsl_path(win_path: str) -> str:
-    """Convert C:\\foo\\bar -> /mnt/c/foo/bar using wslpath."""
-    try:
-        result = subprocess.run(
-            ["wsl", "-d", CONFIG["wslDistro"], "wslpath", "-u", win_path],
-            capture_output=True, text=True, timeout=2
-        )
-        if result.returncode == 0:
-            return result.stdout.strip()
-    except Exception:
-        pass
-
-    # Fallback: manual conversion
-    if len(win_path) > 1 and win_path[1] == ':':
-        drive = win_path[0].lower()
-        rest = win_path[2:].replace('\\', '/')
-        return f"/mnt/{drive}{rest}"
-    return win_path.replace('\\', '/')
 
 
 def _find_solution(file_path: str, repo_roots: dict, solutions_map: dict) -> str:
@@ -234,8 +199,6 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             self._open_vscode(file_path, line)
         elif editor == "claude":
             self._open_claude(file_path, line, project_name, smell_description)
-        elif editor == "opencode":
-            self._open_opencode(file_path, line, project_name, smell_description)
         elif editor == "copilot":
             self._open_github_copilot(file_path, line, project_name, smell_description)
         else:
@@ -248,11 +211,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             self._json_response({"error": "No .sln solution file found for this file"}, 404)
             return
 
-        is_win = sys.platform == "win32"
-        is_wsl = _is_wsl()
-
-        if is_win:
-            # Windows native: launch devenv directly
+        if sys.platform == "win32":
             cmd = ["devenv", sln]
             if file_path:
                 cmd.extend(["/edit", file_path])
@@ -260,25 +219,8 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                 subprocess.Popen(cmd, creationflags=subprocess.DETACHED_PROCESS)
                 self._json_response({"status": "ok", "editor": "studio", "solution": sln})
             except FileNotFoundError:
-                self._json_response({"error": "devenv.exe not found — is Visual Studio 2022 installed?"}, 500)
-        elif is_wsl:
-            # WSL: convert paths to Windows and call devenv.exe
-            try:
-                win_sln = subprocess.check_output(
-                    ["wslpath", "-w", sln], text=True
-                ).strip()
-                win_file = subprocess.check_output(
-                    ["wslpath", "-w", file_path], text=True
-                ).strip()
-                cmd = ["cmd.exe", "/c", "start", "", "devenv.exe", win_sln, "/edit", win_file]
-                subprocess.Popen(cmd)
-                self._json_response({"status": "ok", "editor": "studio", "solution": win_sln})
-            except FileNotFoundError:
-                self._json_response({"error": "WSL path conversion failed — is wslpath available?"}, 500)
-            except subprocess.CalledProcessError as exc:
-                self._json_response({"error": f"Failed to convert path: {exc}"}, 500)
+                self._json_response({"error": "devenv.exe not found -- is Visual Studio 2022 installed?"}, 500)
         else:
-            # Native Linux: Visual Studio not available, suggest VS Code
             self._json_response(
                 {"error": "Visual Studio 2022 is not available on Linux. Use Code (VS Code) instead."},
                 501,
@@ -312,131 +254,13 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
     def _open_claude(self, file_path: str, line: int = None, project_name: str = None,
                      smell_description: str = None):
-        """Open Claude Code with context: workspace dir, file:line, and custom prompt.
-
-        Uses claudeCodeUseWsl toggle:
-        - false: Run Claude Code natively on Windows (opens new terminal window)
-        - true: Run Claude Code via WSL with optional micromamba activation
-        """
-        # Find solution file using existing helper (handles relative paths correctly)
-        sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
-
-        # Get solution directory - require valid solution to avoid opening in wrong directory
-        if not sln_path:
-            self._json_response({"error": "No .sln solution file found for this file"}, 404)
-            return
-
-        sln_dir = str(Path(sln_path).parent)
-
-        # Build prompt: use focused smell prompt if provided, else generic config prompt
-        if smell_description and '\n' in smell_description:
-            # Focused prompt from smell prompt templates (contains newlines and structured instructions)
-            prompt = smell_description
-            if project_name:
-                prompt += f"\n\nProject: {project_name}"
-        else:
-            # Fallback to generic config prompt
-            prompt_parts = [CONFIG["claudePrompt"]]
-            if project_name:
-                prompt_parts.append(f"\n\nProject: {project_name}")
-            if smell_description:
-                prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
-            prompt = "".join(prompt_parts)
-
-        # Choose between Windows native or WSL execution
-        if CONFIG.get("claudeCodeUseWsl", False):
-            # WSL mode with optional micromamba activation
-            wsl_file = _windows_to_wsl_path(file_path)
-            workspace_dir = _windows_to_wsl_path(sln_dir)
-
-            # Build Claude Code command
-            claude_cmd = CONFIG.get("claudeCodePath", "claude")
-            claude_args = f"{claude_cmd} --add-dir {shlex.quote(workspace_dir)} @{wsl_file}"
-            if line:
-                claude_args += f":{line}"
-            claude_args += f" --append-system-prompt {shlex.quote(prompt)}"
-
-            # Build WSL command with optional micromamba activation
-            micromamba_env = CONFIG.get("micromambaEnv", "")
-            if micromamba_env:
-                # Activate micromamba environment before running claude
-                wsl_cmd = [
-                    "wsl", "-d", CONFIG["wslDistro"], "--", "bash", "-c",
-                    f'eval "$(micromamba shell hook --shell bash)" && micromamba activate {micromamba_env} && {claude_args}'
-                ]
-            else:
-                # Run without environment activation
-                wsl_cmd = [
-                    "wsl", "-d", CONFIG["wslDistro"], "--", "bash", "-c",
-                    claude_args
-                ]
-
-            try:
-                subprocess.Popen(wsl_cmd, start_new_session=True,
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                env_info = f" (micromamba: {micromamba_env})" if micromamba_env else " (WSL)"
-                self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "wsl" + env_info})
-            except OSError as exc:
-                self._json_response({"error": f"Failed to launch Claude Code via WSL: {exc}"}, 500)
-        else:
-            # Windows native mode - launch in new terminal window
-            workspace_dir = sln_dir
-
-            # Make file path relative to solution directory for Claude
-            try:
-                rel_file_path = os.path.relpath(file_path, workspace_dir)
-            except ValueError:
-                # Different drives - use absolute path
-                rel_file_path = file_path
-
-            # Build Claude Code command - use relative path from workspace
-            claude_args = f'@{rel_file_path}' + (f':{line}' if line else '')
-            claude_args += f' --append-system-prompt "{prompt}"'
-
-            # Launch claude in a new command window on Windows
-            # This allows the TUI to run in its own terminal
-            if sys.platform == "win32":
-                # Windows: Use start /d to set working directory
-                # This is simpler than cd /d && since start supports /d flag
-                cmd_str = f'start "" /d "{workspace_dir}" claude {claude_args}'
-                try:
-                    subprocess.Popen(cmd_str, shell=True)
-                    self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
-                except OSError as exc:
-                    self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
-            elif _is_wsl():
-                # WSL: Launch Windows claude.exe via cmd.exe
-                try:
-                    cmd_str = f'cmd.exe /c start "" cmd /k {full_cmd}'
-                    subprocess.Popen(cmd_str, shell=True)
-                    self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows-from-wsl"})
-                except OSError as exc:
-                    self._json_response({"error": f"Failed to launch Claude Code from WSL: {exc}"}, 500)
-            else:
-                # Native Linux: Claude Code not typically used here, suggest WSL mode
-                self._json_response(
-                    {"error": "Claude Code Windows mode requires Windows or WSL. Set claudeCodeUseWsl: true in config.yaml to use WSL mode."},
-                    501
-                )
-
-    def _open_opencode(self, file_path: str, line: int = None, project_name: str = None,
-                       smell_description: str = None):
-        """Open OpenCode via WSL with context: workspace dir, file:line, and custom prompt."""
-        if not CONFIG["enableWslTools"]:
-            self._json_response({"error": "WSL tools are disabled in config.json"}, 400)
-            return
-
-        # Find solution file using existing helper
+        """Open Claude Code with context: workspace dir, file:line, and custom prompt."""
         sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
         if not sln_path:
             self._json_response({"error": "No .sln solution file found for this file"}, 404)
             return
 
-        sln_dir = str(Path(sln_path).parent)
-
-        # Convert paths to WSL
-        wsl_file = _windows_to_wsl_path(file_path)
-        workspace_dir = _windows_to_wsl_path(sln_dir)
+        workspace_dir = str(Path(sln_path).parent)
 
         # Build prompt: use focused smell prompt if provided, else generic config prompt
         if smell_description and '\n' in smell_description:
@@ -451,31 +275,39 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                 prompt_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
             prompt = "".join(prompt_parts)
 
-        # Execute via WSL
-        wsl_cmd = [
-            "wsl", "-d", CONFIG["wslDistro"], "--",
-            CONFIG["openCodePath"],
-            "--add-dir", workspace_dir,
-            f"@{wsl_file}" + (f":{line}" if line else ""),
-            "--append-system-prompt", prompt
-        ]
-
+        # Make file path relative to solution directory for Claude
         try:
-            subprocess.Popen(wsl_cmd, start_new_session=True,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            self._json_response({"status": "ok", "editor": "opencode", "workspace": workspace_dir})
-        except OSError as exc:
-            self._json_response({"error": f"Failed to launch OpenCode: {exc}"}, 500)
+            rel_file_path = os.path.relpath(file_path, workspace_dir)
+        except ValueError:
+            rel_file_path = file_path
+
+        claude_args = f'@{rel_file_path}' + (f':{line}' if line else '')
+        claude_args += f' --append-system-prompt "{prompt}"'
+
+        if sys.platform == "win32":
+            cmd_str = f'start "" /d "{workspace_dir}" claude {claude_args}'
+            try:
+                subprocess.Popen(cmd_str, shell=True)
+                self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "windows"})
+            except OSError as exc:
+                self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
+        else:
+            # Linux/macOS native
+            claude_cmd = CONFIG.get("claudeCodePath", "claude")
+            cmd = f'{claude_cmd} --add-dir {shlex.quote(workspace_dir)} @{file_path}'
+            if line:
+                cmd += f':{line}'
+            cmd += f' --append-system-prompt {shlex.quote(prompt)}'
+            try:
+                subprocess.Popen(["bash", "-c", cmd], start_new_session=True,
+                               cwd=workspace_dir)
+                self._json_response({"status": "ok", "editor": "claude", "workspace": workspace_dir, "mode": "native"})
+            except OSError as exc:
+                self._json_response({"error": f"Failed to launch Claude Code: {exc}"}, 500)
 
     def _open_github_copilot(self, file_path: str, line: int = None, project_name: str = None,
                              smell_description: str = None):
-        """Ask GitHub Copilot CLI for refactoring suggestions.
-
-        Supports three modes based on platform and config:
-        - Windows native: runs copilot CLI directly in a new terminal
-        - WSL: runs copilot CLI via WSL
-        - Linux native: runs copilot CLI directly
-        """
+        """Ask GitHub Copilot CLI for refactoring suggestions."""
         if not CONFIG.get("githubCopilotEnabled"):
             self._json_response({"error": "GitHub Copilot is disabled in config.yaml"}, 400)
             return
@@ -500,21 +332,15 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
             context = "".join(context_parts)
 
-        use_wsl = CONFIG.get("enableWslTools") and CONFIG.get("claudeCodeUseWsl")
-
         # Build command args based on copilot mode
         if copilot_mode == "gh-extension":
             copilot_args = ["suggest", "-t", "shell", context]
         else:
-            # standalone: copilot -p "prompt"
             copilot_args = ["-p", context]
 
-        if sys.platform == "win32" and not use_wsl:
-            # Windows native: launch copilot in a new terminal window
+        if sys.platform == "win32":
             sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
             work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)
-
-            # Escape double quotes in context for the cmd shell
             safe_context = context.replace('"', '\\"')
             if copilot_mode == "gh-extension":
                 cmd_str = f'start "" /d "{work_dir}" gh copilot suggest -t shell "{safe_context}"'
@@ -526,35 +352,6 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                                      "copilotMode": copilot_mode})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
-        elif use_wsl:
-            # WSL mode
-            wsl_file = _windows_to_wsl_path(file_path)
-            # Rebuild context with WSL path
-            if smell_description and '\n' in smell_description:
-                context = f"I'm looking at file: {wsl_file}"
-                if line:
-                    context += f" (line {line})"
-                context += f"\n\n{smell_description}"
-            else:
-                context_parts[0] = f"I'm looking at file: {wsl_file}"
-                context = "".join(context_parts)
-
-            # Rebuild args with updated context
-            if copilot_mode == "gh-extension":
-                wsl_copilot_args = ["gh", "copilot", "suggest", "-t", "shell", context]
-            else:
-                wsl_copilot_args = [copilot_path, "-p", context]
-
-            wsl_cmd = [
-                "wsl", "-d", CONFIG["wslDistro"], "--",
-                *wsl_copilot_args
-            ]
-            try:
-                subprocess.Popen(wsl_cmd, start_new_session=True)
-                self._json_response({"status": "ok", "editor": "copilot", "mode": "wsl",
-                                     "copilotMode": copilot_mode})
-            except OSError as exc:
-                self._json_response({"error": f"Failed to launch Copilot via WSL: {exc}"}, 500)
         else:
             # Linux/macOS native
             try:

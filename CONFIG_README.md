@@ -26,41 +26,13 @@ This directory uses YAML configuration for AI tool integration settings.
 
 ## Key Settings
 
-### `enableWslTools` (boolean)
-Master toggle for WSL integration. When `true`, AI tools run via WSL instead of Windows native.
-
-**Examples:**
-- `false` - Use Windows native tools (default)
-- `true` - Use WSL for all AI tools
-
 ### `claudeCodePath` (string)
-Path to Claude Code executable in WSL.
+Path to Claude Code executable.
 
 **Examples:**
-- `claude` - Use from PATH
+- `claude` - Use from PATH (default)
 - `/home/user/.local/bin/claude` - Absolute path
 - `~/.local/bin/claude` - Home-relative path
-
-### `micromambaEnv` (string)
-Micromamba/conda environment name to activate before running Claude Code.
-
-**Examples:**
-- `""` - No environment activation (default)
-- `ai-tools` - Activate the `ai-tools` environment
-- `python311` - Activate the `python311` environment
-
-### `openCodePath` (string)
-Path to OpenCode executable (in WSL or native Linux).
-
-**Examples:**
-- `opencode` - Use from PATH
-- `/usr/local/bin/opencode` - Absolute path
-
-### `openCodeNonInteractive` (boolean)
-Launch mode for OpenCode.
-
-- `false` - TUI mode (opens interactive terminal UI) - default
-- `true` - Non-interactive mode (uses `opencode -p "<prompt>"`)
 
 ### `githubCopilotEnabled` (boolean)
 Enable GitHub Copilot CLI integration.
@@ -81,51 +53,60 @@ Path to the standalone Copilot CLI executable. Only used when `copilotMode: stan
 npm install -g @github/copilot
 ```
 
-## Configuration Modes
+### Fix Workflow Settings
 
-### Mode 1: Windows Only
-```yaml
-enableWslTools: false
-claudeCodePath: claude  # Uses Windows claude.exe
-```
+| Setting | Type | Description |
+|---------|------|-------------|
+| `vcsType` | string | Version control system: `svn` or `git` |
+| `repoUrl` | string | Repository URL (SVN trunk or Git clone URL) |
+| `svnBranchBase` | string | SVN branch base URL (SVN only) |
+| `developerRoot` | string | Local root folder for checkouts |
+| `fixBranchPrefix` | string | Branch name prefix for fix branches |
+| `prTargetBranch` | string | Target branch for Git PRs (Git only) |
+| `buildCommand` | string | Command to build the project before tests |
+| `testCommand` | string | Command to run tests after a fix |
+| `testTimeoutSec` | int | Build/test timeout in seconds (default: 300) |
+| `autoRunTests` | boolean | Automatically run tests on fix submission |
 
-### Mode 2: WSL with Default Environment
+## Configuration Examples
+
+### Minimal (defaults)
 ```yaml
-enableWslTools: true
-wslDistro: Ubuntu-24.04
 claudeCodePath: claude
-micromambaEnv: ""  # No conda environment
-```
-
-### Mode 3: WSL with Micromamba Environment
-```yaml
-enableWslTools: true
-wslDistro: Ubuntu
-claudeCodePath: /home/user/.local/bin/claude
-micromambaEnv: ai-tools  # Activates conda environment
-```
-
-### Mode 4: WSL with All AI Tools
-```yaml
-enableWslTools: true
-wslDistro: Ubuntu-24.04
-claudeCodePath: claude
-openCodePath: opencode
-openCodeNonInteractive: false
 githubCopilotEnabled: true
 copilotMode: standalone
 copilotCliPath: copilot
 ```
 
-### Mode 5: Native Linux (companion runs inside WSL directly)
+### With legacy Copilot extension
 ```yaml
-enableWslTools: true      # Still needed to show buttons in viewer
-claudeCodeUseWsl: false
-openCodePath: opencode
 githubCopilotEnabled: true
-copilotMode: standalone
-copilotCliPath: copilot
-# The companion auto-detects Linux and runs tools directly (no wsl -d wrapper)
+copilotMode: gh-extension
+```
+
+### Full fix workflow (Git/GitHub)
+```yaml
+vcsType: git
+repoUrl: "git@github.com:org/eShop.git"
+developerRoot: "/home/user/repos"
+prTargetBranch: main
+buildCommand: "dotnet build"
+testCommand: "dotnet test --no-build"
+testTimeoutSec: 600
+autoRunTests: true
+```
+
+### Full fix workflow (SVN)
+```yaml
+vcsType: svn
+repoUrl: "https://svn.example.com/repos/eShop/trunk"
+svnBranchBase: "https://svn.example.com/repos/eShop/branches"
+developerRoot: "C:\\repos"
+fixBranchPrefix: "fix/smell-"
+buildCommand: "dotnet build"
+testCommand: "dotnet test --no-build"
+testTimeoutSec: 600
+autoRunTests: true
 ```
 
 ## Testing Your Configuration
@@ -143,8 +124,8 @@ copilotCliPath: copilot
    ```
 
 3. **Verify button visibility:**
-   - When `enableWslTools: false` → See 4 buttons (Studio, Code, Claude, View)
-   - When `enableWslTools: true` → See 6 buttons (+ OpenCode, Copilot)
+   - Claude button: always visible
+   - Copilot button: visible when `githubCopilotEnabled: true`
 
 ## Troubleshooting
 
@@ -152,18 +133,9 @@ copilotCliPath: copilot
 - Ensure `config.yaml` exists (not just `config.example.yaml`)
 - Check YAML syntax: `python3 -c "import yaml; yaml.safe_load(open('config.yaml'))"`
 
-### WSL tools not working
-- Verify WSL distro name: `wsl -l -v`
-- Check tool paths: `wsl -d Ubuntu-24.04 -- which claude`
-- Test path conversion: `wsl -d Ubuntu-24.04 -- wslpath -u 'C:\path'`
-- Check OpenCode: `wsl -d Ubuntu-24.04 -- opencode --version`
-- Check Copilot CLI: `wsl -d Ubuntu-24.04 -- copilot --version`
-- For legacy Copilot: `wsl -d Ubuntu-24.04 -- gh copilot --version`
-
-### Micromamba not activating
-- Ensure micromamba is installed: `wsl -d Ubuntu-24.04 -- micromamba --version`
-- Check environment exists: `wsl -d Ubuntu-24.04 -- micromamba env list`
-- Test activation: `wsl -d Ubuntu-24.04 -- bash -c 'eval "$(micromamba shell hook --shell bash)" && micromamba activate myenv && which python'`
+### Copilot CLI not working
+- Standalone mode: `copilot --version` (install: `npm i -g @github/copilot`)
+- Legacy mode: `gh copilot --version` (requires `gh` CLI with copilot extension)
 
 ## Security Note
 

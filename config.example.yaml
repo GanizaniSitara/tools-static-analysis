@@ -20,63 +20,10 @@ claudePrompt: |
   - Follows SOLID principles and .NET best practices
   - Considers the broader architectural context
 
-# WSL Tools Configuration
-# ============================================================================
-# Master toggle for OpenCode (requires WSL)
-# Does NOT affect Claude Code (see claudeCodeUseWsl below)
-# Does NOT affect GitHub Copilot (see githubCopilotEnabled below)
-enableWslTools: false
-
-# WSL distribution name (check with: wsl -l -v)
-wslDistro: Ubuntu-24.04
-
-# WSL path prefix (usually \\wsl.localhost\<distro> or \\wsl$\<distro>)
-wslPathPrefix: \\wsl.localhost\\Ubuntu-24.04
-
 # Claude Code Configuration
 # ============================================================================
-# Separate toggle for Claude Code execution mode
-# true  = Run Claude Code via WSL (with optional micromamba)
-# false = Run Claude Code on Windows native (default)
-#
-# This is independent of enableWslTools, allowing you to:
-#   - Use Windows Claude Code + WSL OpenCode/Copilot
-#   - Use WSL Claude Code + Windows-only setup
-claudeCodeUseWsl: false
-
 # Path to Claude Code executable
-# - If claudeCodeUseWsl=false: Windows PATH (e.g., "claude" finds claude.exe)
-# - If claudeCodeUseWsl=true: WSL path (e.g., "/home/user/.local/bin/claude")
-# Examples:
-#   - "claude"                              (from PATH - Windows or WSL)
-#   - "/home/username/.local/bin/claude"    (WSL absolute path)
-#   - "~/.local/bin/claude"                 (WSL home-relative)
 claudeCodePath: claude
-
-# Micromamba/Conda environment to activate before running Claude Code
-# Only applies when claudeCodeUseWsl=true
-# Leave empty ("") to run in base environment
-# Examples:
-#   - ""            (no environment activation)
-#   - "ai-tools"    (activate ai-tools environment)
-#   - "python311"   (activate python311 environment)
-micromambaEnv: ""
-
-# OpenCode Configuration (https://opencode.ai)
-# ============================================================================
-# Path to OpenCode executable (in WSL or native Linux)
-# OpenCode is a Go-based AI coding agent with a TUI
-# Install: see https://opencode.ai/docs/
-# Examples:
-#   - "opencode"              (if in PATH)
-#   - "/usr/local/bin/opencode"
-#   - "~/.local/bin/opencode"
-openCodePath: opencode
-
-# Launch mode for OpenCode
-# false = TUI mode (opens interactive terminal UI) - default
-# true  = Non-interactive mode (uses opencode -p "<prompt>")
-openCodeNonInteractive: false
 
 # GitHub Copilot CLI Configuration
 # ============================================================================
@@ -92,9 +39,6 @@ copilotMode: standalone
 # Path to the standalone Copilot CLI executable
 # Only used when copilotMode: standalone
 # Install: npm install -g @github/copilot
-# Examples:
-#   - "copilot"                       (if in PATH)
-#   - "/home/user/.npm-global/bin/copilot"
 copilotCliPath: copilot
 
 # Fix Workflow Configuration
@@ -122,7 +66,7 @@ svnBranchBase: ""
 # Leave empty ("") to disable the fix workflow.
 # Examples:
 #   - "C:\\repos"              (Windows)
-#   - "/home/user/repos"       (Linux/WSL)
+#   - "/home/user/repos"       (Linux)
 developerRoot: ""
 
 # Branch name prefix for fix branches
@@ -159,45 +103,18 @@ autoRunTests: true
 # Configuration Examples
 # ============================================================================
 #
-# Example 1: Windows-only setup (no WSL)
+# Example 1: Minimal setup (defaults)
 # ----------------------------------------
-# enableWslTools: false
-# claudeCodePath: claude  # Uses Windows claude.exe from PATH
-#
-# Example 2: WSL with all AI tools
-# ----------------------------------------
-# enableWslTools: true
-# wslDistro: Ubuntu-24.04
 # claudeCodePath: claude
-# micromambaEnv: ""
-# openCodePath: opencode
-# openCodeNonInteractive: false
 # githubCopilotEnabled: true
 # copilotMode: standalone
-# copilotCliPath: copilot
 #
-# Example 3: WSL with micromamba + legacy gh copilot
-# ---------------------------------------------------
-# enableWslTools: true
-# wslDistro: Ubuntu
-# claudeCodePath: /home/user/.local/bin/claude
-# micromambaEnv: ai-tools
+# Example 2: With legacy gh copilot extension
+# ---------------------------------------------
 # githubCopilotEnabled: true
-# copilotMode: gh-extension  # Uses deprecated gh copilot extension
+# copilotMode: gh-extension
 #
-# Example 4: Native Linux (companion runs inside WSL/Linux directly)
-# -------------------------------------------------------------------
-# enableWslTools: true  # Still needed to show buttons in viewer
-# claudeCodeUseWsl: false
-# claudeCodePath: claude
-# openCodePath: opencode
-# githubCopilotEnabled: true
-# copilotMode: standalone
-# copilotCliPath: copilot
-# # When the companion agent runs on Linux natively, it auto-detects
-# # the platform and runs tools directly without the wsl -d wrapper.
-#
-# Example 5: Full fix workflow with SVN
+# Example 3: Full fix workflow with SVN
 # ----------------------------------------
 # vcsType: svn
 # repoUrl: "https://svn.example.com/repos/eShop/trunk"
@@ -209,7 +126,7 @@ autoRunTests: true
 # testTimeoutSec: 600
 # autoRunTests: true
 #
-# Example 6: Full fix workflow with Git/GitHub
+# Example 4: Full fix workflow with Git/GitHub
 # -----------------------------------------------
 # vcsType: git
 # repoUrl: "git@github.com:org/eShop.git"

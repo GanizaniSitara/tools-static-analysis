@@ -32,14 +32,7 @@ const fixWorkflow = require("./fix-workflow");
 const DEFAULT_CONFIG = {
   claudePrompt:
     "Please analyze this code and propose improvements.",
-  enableWslTools: false,
-  wslDistro: "Ubuntu",
-  wslPathPrefix: "\\\\wsl$\\Ubuntu",
-  claudeCodeUseWsl: false,
   claudeCodePath: "claude",
-  micromambaEnv: "",
-  openCodePath: "opencode",
-  openCodeNonInteractive: false,
   githubCopilotEnabled: true,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
@@ -121,16 +114,6 @@ function which(cmd) {
   return null;
 }
 
-function windowsToWslPath(winPath, distro) {
-  // Convert C:\foo\bar to /mnt/c/foo/bar
-  let p = winPath.replace(/\\/g, "/");
-  const m = p.match(/^([A-Za-z]):\//);
-  if (m) {
-    p = "/mnt/" + m[1].toLowerCase() + "/" + p.slice(3);
-  }
-  return p;
-}
-
 /**
  * Walk up from filePath looking for a .sln, then .csproj.
  * Returns the directory containing the solution/project marker, or filePath's parent.
@@ -199,50 +182,6 @@ function openClaude(filePath, line, project, smell, config, callback) {
   let fileRef = "@" + relFile;
   if (line) fileRef += ":" + line;
 
-  if (config.claudeCodeUseWsl) {
-    // WSL mode
-    const distro = config.wslDistro || "Ubuntu";
-    const wslWorkspace = windowsToWslPath(workspace, distro);
-    const wslFile = windowsToWslPath(filePath, distro);
-
-    let wslFileRef = "@" + wslFile;
-    if (line) wslFileRef += ":" + line;
-
-    let claudeArgs =
-      claudeCmd +
-      " --add-dir " +
-      shellQuote(wslWorkspace) +
-      " " +
-      wslFileRef +
-      " --append-system-prompt " +
-      shellQuote(prompt);
-
-    const micromambaEnv = config.micromambaEnv || "";
-    let shellCmd;
-    if (micromambaEnv) {
-      shellCmd =
-        'eval "$(micromamba shell hook --shell bash)" && micromamba activate ' +
-        micromambaEnv +
-        " && " +
-        claudeArgs;
-    } else {
-      shellCmd = claudeArgs;
-    }
-
-    spawn("wsl", ["-d", distro, "--", "bash", "-c", shellCmd], {
-      detached: true,
-      stdio: "ignore",
-    }).unref();
-
-    return callback(null, {
-      status: "ok",
-      editor: "claude",
-      workspace: wslWorkspace,
-      mode: "wsl",
-    });
-  }
-
-  // Native mode
   const isWin = os.platform() === "win32";
   if (isWin) {
     const escapedPrompt = prompt.replace(/"/g, '\\"');
@@ -309,18 +248,6 @@ function openClaude(filePath, line, project, smell, config, callback) {
 }
 
 /**
- * Build a shell preamble that optionally activates a micromamba/conda env.
- * Returns a prefix string like: 'eval "$(micromamba ...)" && micromamba activate foo && '
- * or an empty string if no env is configured.
- */
-function envPreamble(config) {
-  const env = config.micromambaEnv || "";
-  if (!env) return "";
-  return 'eval "$(micromamba shell hook --shell bash)" && micromamba activate ' +
-    env + " && ";
-}
-
-/**
  * Launch a TUI application in a real terminal window.
  *
  * On Windows: uses Windows Terminal (wt.exe) if available, falls back to
@@ -329,23 +256,17 @@ function envPreamble(config) {
  *
  * On Linux/macOS: tries well-known terminal emulators in preference order.
  */
-function launchInTerminal(shellCmd, targetDir, config, wslWrap) {
+function launchInTerminal(shellCmd, targetDir, config) {
   const isWin = os.platform() === "win32";
 
-  if (isWin && wslWrap) {
-    const distro = config.wslDistro || "Ubuntu";
+  if (isWin) {
     // Prefer Windows Terminal (wt.exe) for proper PTY support
     if (which("wt")) {
-      // wt launches a new tab/window with WSL profile
-      spawn("wt", [
-        "wsl", "-d", distro, "--cd", targetDir,
-        "--", "bash", "-lc", shellCmd
-      ], { detached: true, stdio: "ignore" }).unref();
+      spawn("wt", ["cmd", "/k", "cd /d \"" + targetDir + "\" && " + shellCmd], {
+        detached: true, stdio: "ignore",
+      }).unref();
     } else {
-      // Fallback: cmd /c start allocates a new console window
-      const cmdStr =
-        'start "OpenCode" wsl -d ' + distro +
-        ' -- bash -lc ' + shellQuote(shellCmd);
+      const cmdStr = 'start "" cmd /k "cd /d \\"' + targetDir + '\\" && ' + shellCmd + '"';
       spawn("cmd", ["/c", cmdStr], {
         detached: true, stdio: "ignore",
       }).unref();
@@ -389,76 +310,6 @@ function launchInTerminal(shellCmd, targetDir, config, wslWrap) {
   }
 }
 
-function openOpenCode(filePath, line, project, smell, config, callback) {
-  if (!config.enableWslTools) {
-    return callback("WSL tools are disabled in config. Set enableWslTools: true");
-  }
-  const workspace = findWorkspace(filePath);
-  const opencodePath = config.openCodePath || "opencode";
-  const isWin = os.platform() === "win32";
-
-  // Build prompt with file context
-  let prompt = config.claudePrompt || "";
-  if (smell && smell.includes("\n")) {
-    prompt = smell;
-    if (project) prompt += "\n\nProject: " + project;
-  } else {
-    if (project) prompt += "\n\nProject: " + project;
-    if (smell) prompt += "\n\nArchitectural Smell:\n" + smell;
-  }
-
-  // Resolve paths
-  let targetDir, targetFile;
-  if (isWin) {
-    targetDir = windowsToWslPath(workspace);
-    targetFile = windowsToWslPath(filePath);
-  } else {
-    targetDir = workspace;
-    targetFile = filePath;
-  }
-
-  let fileRef = targetFile;
-  if (line) fileRef += ":" + line;
-
-  // Include file reference in the prompt since OpenCode uses -p, not positional args
-  let fullPrompt = "File: " + fileRef + "\n\n" + prompt;
-
-  // Build the shell command with optional env activation
-  const preamble = envPreamble(config);
-
-  if (config.openCodeNonInteractive) {
-    // Non-interactive: opencode -p "<prompt>" (no TUI needed)
-    const shellCmd = preamble +
-      "cd " + shellQuote(targetDir) + " && " +
-      opencodePath + " -p " + shellQuote(fullPrompt);
-
-    if (isWin) {
-      const distro = config.wslDistro || "Ubuntu";
-      spawn("wsl", ["-d", distro, "--", "bash", "-lc", shellCmd], {
-        detached: true, stdio: "ignore",
-      }).unref();
-    } else {
-      spawn("bash", ["-lc", shellCmd], {
-        detached: true, stdio: "ignore",
-      }).unref();
-    }
-  } else {
-    // TUI mode: needs a real terminal
-    const shellCmd = preamble +
-      "cd " + shellQuote(targetDir) + " && " + opencodePath;
-
-    launchInTerminal(shellCmd, targetDir, config, isWin);
-  }
-
-  return callback(null, {
-    status: "ok",
-    editor: "opencode",
-    workspace: targetDir,
-    mode: isWin ? "wsl" : "native",
-    interactive: !config.openCodeNonInteractive,
-  });
-}
-
 function openCopilot(filePath, line, project, smell, config, callback) {
   if (!config.githubCopilotEnabled) {
     return callback("GitHub Copilot is not enabled in config. Set githubCopilotEnabled: true");
@@ -467,26 +318,14 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   const isWin = os.platform() === "win32";
   const mode = config.copilotMode || "standalone";
   const copilotPath = config.copilotCliPath || "copilot";
-  const useWsl = config.enableWslTools && config.claudeCodeUseWsl;
-
-  // Resolve paths: use WSL paths only when explicitly using WSL mode
-  let targetDir, targetFile;
-  if (isWin && useWsl) {
-    targetDir = windowsToWslPath(workspace);
-    targetFile = windowsToWslPath(filePath);
-  } else {
-    targetDir = workspace;
-    targetFile = filePath;
-  }
 
   // Build context/prompt
-  let context = "Analyze file " + targetFile;
+  let context = "Analyze file " + filePath;
   if (line) context += " at line " + line;
   if (smell) context += ". Issue: " + smell;
   if (project) context += " (Project: " + project + ")";
 
-  if (isWin && !useWsl) {
-    // Windows native: launch copilot directly in a new terminal
+  if (isWin) {
     let winCmd;
     if (mode === "gh-extension") {
       winCmd = 'cd /d "' + workspace + '" && gh copilot suggest -t shell "' + context.replace(/"/g, '\\"') + '"';
@@ -504,27 +343,21 @@ function openCopilot(filePath, line, project, smell, config, callback) {
     });
   }
 
-  // WSL or native Linux/macOS
-  const preamble = envPreamble(config);
-
+  // Native Linux/macOS
   let shellCmd;
   if (mode === "gh-extension") {
-    // Legacy: gh copilot suggest (deprecated Oct 2025, kept for compatibility)
-    shellCmd = preamble +
-      "cd " + shellQuote(targetDir) + " && " +
+    shellCmd = "cd " + shellQuote(workspace) + " && " +
       "gh copilot suggest -t shell " + shellQuote(context);
   } else {
-    // Standalone: copilot -p "<prompt>" (npm i -g @github/copilot)
-    shellCmd = preamble +
-      "cd " + shellQuote(targetDir) + " && " +
+    shellCmd = "cd " + shellQuote(workspace) + " && " +
       copilotPath + " -p " + shellQuote(context);
   }
 
-  launchInTerminal(shellCmd, targetDir, config, isWin && useWsl);
+  launchInTerminal(shellCmd, workspace, config);
 
   return callback(null, {
-    status: "ok", editor: "copilot", workspace: targetDir,
-    mode: (isWin && useWsl) ? "wsl" : "native", copilotMode: mode,
+    status: "ok", editor: "copilot", workspace: workspace,
+    mode: "native", copilotMode: mode,
   });
 }
 
@@ -556,91 +389,23 @@ function handleRequest(req, res, config) {
 
   if (pathname === "/_check") {
     const tools = {};
-    const isWin = os.platform() === "win32";
-
-    // Check WSL availability on Windows
-    if (isWin) {
-      tools.wsl = !!which("wsl");
-      tools.wt = !!which("wt");
-    }
-
-    // Check tool availability (either natively or via WSL)
-    const checks = [];
-    const distro = config.wslDistro || "Ubuntu";
-    const opencodePath = config.openCodePath || "opencode";
     const copilotPath = config.copilotCliPath || "copilot";
 
-    if (config.enableWslTools) {
-      if (isWin) {
-        checks.push(
-          new Promise((resolve) => {
-            const child = spawn("wsl", [
-              "-d", distro, "--", "bash", "-lc",
-              "which " + opencodePath + " 2>/dev/null && echo FOUND || echo MISSING"
-            ]);
-            let out = "";
-            child.stdout.on("data", (d) => { out += d; });
-            child.on("close", () => {
-              tools.opencode = out.trim().includes("FOUND");
-              resolve();
-            });
-            child.on("error", () => { tools.opencode = false; resolve(); });
-          })
-        );
-      } else {
-        tools.opencode = !!which(opencodePath);
-      }
-    }
-
-    // Copilot availability checked independently of enableWslTools
     if (config.githubCopilotEnabled) {
-      if (isWin) {
-        // Check natively on Windows first, then fall back to WSL
-        const nativeCopilot = !!which(copilotPath);
-        if (nativeCopilot) {
-          tools.copilot = true;
-        } else {
-          // Fall back: check via WSL
-          const copilotCmd = config.copilotMode === "gh-extension"
-            ? "gh copilot --version"
-            : "which " + copilotPath;
-          checks.push(
-            new Promise((resolve) => {
-              const child = spawn("wsl", [
-                "-d", distro, "--", "bash", "-lc",
-                copilotCmd + " 2>/dev/null && echo FOUND || echo MISSING"
-              ]);
-              let out = "";
-              child.stdout.on("data", (d) => { out += d; });
-              child.on("close", () => {
-                tools.copilot = out.trim().includes("FOUND");
-                resolve();
-              });
-              child.on("error", () => { tools.copilot = false; resolve(); });
-            })
-          );
-        }
-      } else {
-        tools.copilot = config.copilotMode === "gh-extension"
-          ? !!which("gh")
-          : !!which(copilotPath);
-      }
+      tools.copilot = config.copilotMode === "gh-extension"
+        ? !!which("gh")
+        : !!which(copilotPath);
     }
 
-    Promise.all(checks).then(() => {
-      sendJSON(res, 200, {
-        status: "ok",
-        platform: os.platform(),
-        tools,
-        config: {
-          enableWslTools: config.enableWslTools,
-          githubCopilotEnabled: config.githubCopilotEnabled,
-          copilotMode: config.copilotMode,
-          openCodePath: config.openCodePath,
-          copilotCliPath: config.copilotCliPath,
-          wslDistro: config.wslDistro,
-        },
-      });
+    sendJSON(res, 200, {
+      status: "ok",
+      platform: os.platform(),
+      tools,
+      config: {
+        githubCopilotEnabled: config.githubCopilotEnabled,
+        copilotMode: config.copilotMode,
+        copilotCliPath: config.copilotCliPath,
+      },
     });
     return;
   }
@@ -680,9 +445,6 @@ function handleRequest(req, res, config) {
     switch (editor) {
       case "claude":
         openClaude(fixFile, fix.line, fix.project, fix.smell, config, done);
-        break;
-      case "opencode":
-        openOpenCode(fixFile, fix.line, fix.project, fix.smell, config, done);
         break;
       case "copilot":
         openCopilot(fixFile, fix.line, fix.project, fix.smell, config, done);
@@ -751,9 +513,6 @@ function handleRequest(req, res, config) {
         break;
       case "claude":
         openClaude(filePath, line, project, smell, config, done);
-        break;
-      case "opencode":
-        openOpenCode(filePath, line, project, smell, config, done);
         break;
       case "copilot":
         openCopilot(filePath, line, project, smell, config, done);
@@ -835,13 +594,7 @@ function main() {
   console.log("Tools Viewer Companion Agent");
   console.log("============================");
   console.log("  Port:       " + opts.port);
-  console.log("  Claude:     " + (config.claudeCodePath || "claude") +
-    (config.claudeCodeUseWsl ? " (via WSL)" : ""));
-  if (config.enableWslTools) {
-    console.log("  WSL tools:  enabled (" + config.wslDistro + ")");
-    console.log("  OpenCode:   " + (config.openCodePath || "opencode") +
-      (config.openCodeNonInteractive ? " (non-interactive)" : " (TUI)"));
-  }
+  console.log("  Claude:     " + (config.claudeCodePath || "claude"));
   if (config.githubCopilotEnabled) {
     const cMode = config.copilotMode || "standalone";
     console.log("  Copilot:    " +
