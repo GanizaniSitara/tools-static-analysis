@@ -4090,6 +4090,8 @@ function initSortableTable(table) {{
           }});
           if (!showing) {{
             if (!detailTd.innerHTML) detailTd.innerHTML = buildFileDetail(p);
+            // Apply active severity/smell filters to newly loaded detail rows
+            filterCqDetailRows(detailTr);
             detailTr.style.display = '';
             var arrow = tr.querySelector('td:first-child span');
             if (arrow) arrow.textContent = '\u25BC';
@@ -4184,28 +4186,31 @@ function initSortableTable(table) {{
       row.style.display = show ? '' : 'none';
     }});
     // Filter individual smells inside expanded detail rows
-    if (sevFilter || smellFilter) {{
-      document.querySelectorAll('.cq-detail-row td table tbody tr').forEach(function(dr) {{
-        var cells = dr.querySelectorAll('td');
-        if (cells.length < 4) return;
-        var sevCell = cells[2]; // Severity column
-        var smellCell = cells[3]; // Smell column
-        var drShow = true;
-        if (sevFilter) {{
-          var cellSev = (sevCell.textContent || '').trim().toLowerCase();
-          if (cellSev !== sevFilter) drShow = false;
-        }}
-        if (smellFilter) {{
-          var cellSmell = (smellCell.textContent || '').trim().toLowerCase();
-          if (cellSmell !== smellFilter) drShow = false;
-        }}
-        dr.style.display = drShow ? '' : 'none';
-      }});
-    }} else {{
-      document.querySelectorAll('.cq-detail-row td table tbody tr').forEach(function(dr) {{
-        dr.style.display = '';
-      }});
-    }}
+    document.querySelectorAll('.cq-detail-row').forEach(function(detailRow) {{
+      filterCqDetailRows(detailRow);
+    }});
+  }}
+
+  // Shared helper: filter inner smell rows in a CQ detail row
+  function filterCqDetailRows(detailRow) {{
+    var activeSevBadge = document.querySelector('.cq-sev-badge.cq-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var activeBadge = document.querySelector('.cq-badge.cq-badge-active');
+    var smellFilter = activeBadge ? activeBadge.getAttribute('data-smell').toLowerCase() : '';
+    detailRow.querySelectorAll('table tbody tr').forEach(function(dr) {{
+      var cells = dr.querySelectorAll('td');
+      if (cells.length < 4) return;
+      var drShow = true;
+      if (sevFilter) {{
+        var cellSev = (cells[2].textContent || '').trim().toLowerCase();
+        if (cellSev !== sevFilter) drShow = false;
+      }}
+      if (smellFilter) {{
+        var cellSmell = (cells[3].textContent || '').trim().toLowerCase();
+        if (cellSmell !== smellFilter) drShow = false;
+      }}
+      dr.style.display = drShow ? '' : 'none';
+    }});
   }}
 
   // ── Resilience IIFE ──
@@ -4297,6 +4302,8 @@ function initSortableTable(table) {{
             dr.style.display = dr.style.display === 'none' ? '' : 'none';
             var arrow = this.querySelector('span');
             if (arrow) arrow.innerHTML = dr.style.display === 'none' ? '&#9654;' : '&#9660;';
+            // Apply active severity filter to detail rows
+            if (dr.style.display !== 'none') filterResDetailRows(dr);
           }};
         }})(detailRow, detailTd, p));
       }}
@@ -4349,19 +4356,25 @@ function initSortableTable(table) {{
       row.style.display = show ? '' : 'none';
     }});
     // Filter individual findings inside expanded detail rows
-    if (sevFilter) {{
-      document.querySelectorAll('.res-detail-row td table tbody tr').forEach(function(dr) {{
-        var cells = dr.querySelectorAll('td');
-        if (cells.length < 3) return;
-        var sevCell = cells[2]; // Severity column
-        var cellSev = (sevCell.textContent || '').trim().toLowerCase();
+    document.querySelectorAll('.res-detail-row').forEach(function(detailRow) {{
+      filterResDetailRows(detailRow);
+    }});
+  }}
+
+  // Shared helper: filter inner finding rows in a Resilience detail row
+  function filterResDetailRows(detailRow) {{
+    var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    detailRow.querySelectorAll('table tbody tr').forEach(function(dr) {{
+      var cells = dr.querySelectorAll('td');
+      if (cells.length < 3) return;
+      if (sevFilter) {{
+        var cellSev = (cells[2].textContent || '').trim().toLowerCase();
         dr.style.display = (cellSev === sevFilter) ? '' : 'none';
-      }});
-    }} else {{
-      document.querySelectorAll('.res-detail-row td table tbody tr').forEach(function(dr) {{
+      }} else {{
         dr.style.display = '';
-      }});
-    }}
+      }}
+    }});
   }}
 
   // ── Security IIFE ──
