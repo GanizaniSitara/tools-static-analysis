@@ -1457,26 +1457,26 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-codequality">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Code Quality Analysis <span style="font-size:0.72rem;font-weight:400;color:#53565A;margin-left:0.5rem;">Level: {cq_scan_level}</span></div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Smells</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_total_smells}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:#D0002B;">
+          <div class="stat-label" style="color:#53565A;">Total Smells</div>
+          <div class="stat-value">{cq_total_smells}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_critical_count}</div>
+        <div class="stat-card" data-sev-filter="critical" data-panel="cq" style="color:#D0002B;">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value">{cq_critical_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{cq_high_count}</div>
+        <div class="stat-card" data-sev-filter="high" data-panel="cq" style="color:#E87722;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{cq_high_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#9E8700;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{cq_medium_count}</div>
+        <div class="stat-card" data-sev-filter="medium" data-panel="cq" style="color:#9E8700;">
+          <div class="stat-label">Medium</div>
+          <div class="stat-value">{cq_medium_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Low</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{cq_low_count}</div>
+        <div class="stat-card" data-sev-filter="low" data-panel="cq" style="color:#53565A;">
+          <div class="stat-label">Low</div>
+          <div class="stat-value">{cq_low_count}</div>
         </div>
       </div>
       <div id="cqFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
@@ -1533,30 +1533,30 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-resilience">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Resilience Analysis</div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Avg Score</div>
-          <div style="font-size:1.1rem;font-weight:700;color:{'#D0002B' if _res_avg < 40 else '#9E8700' if _res_avg < 70 else '#2E7D32'};margin-top:0.2rem;">{_res_avg}/100</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:{'#D0002B' if _res_avg < 40 else '#9E8700' if _res_avg < 70 else '#2E7D32'};">
+          <div class="stat-label" style="color:#53565A;">Avg Score</div>
+          <div class="stat-value">{_res_avg}/100</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Ext Call Projects</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_res_ext}</div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Ext Call Projects</div>
+          <div class="stat-value">{_res_ext}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">With Polly</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#2E7D32;margin-top:0.2rem;">{_res_polly}</div>
+        <div class="stat-card" style="color:#2E7D32;">
+          <div class="stat-label" style="color:#53565A;">With Polly</div>
+          <div class="stat-value">{_res_polly}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">High</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_res_high}</div>
+        <div class="stat-card" data-sev-filter="high" data-panel="res" style="color:#D0002B;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{_res_high}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_res_med}</div>
+        <div class="stat-card" data-sev-filter="medium" data-panel="res" style="color:#E87722;">
+          <div class="stat-label">Medium</div>
+          <div class="stat-value">{_res_med}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Findings</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_res_total}</div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Total Findings</div>
+          <div class="stat-value">{_res_total}</div>
         </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
@@ -1587,44 +1587,53 @@ def generate_viewer_html() -> str:
     security_panel = ""
     if _has_security_findings:
         # Count security findings by severity (built-in + external tools)
-        _sec_critical = 0
-        _sec_high = 0
-        _sec_total = 0
+        _sec_sev_counts = {}
         for _rp in refactoring_projects:
             for _rf in _rp.get("files", []):
                 for _s in _rf.get("smells", []):
                     if _s.get("category") == "security":
-                        _sec_total += 1
-                        if _s.get("severity") == "critical":
-                            _sec_critical += 1
-                        elif _s.get("severity") == "high":
-                            _sec_high += 1
+                        sv = _s.get("severity", "medium")
+                        _sec_sev_counts[sv] = _sec_sev_counts.get(sv, 0) + 1
         for _et in external_tools_data.get("tools", {}).values():
             for _ef in _et.get("findings", []):
                 if _ef.get("category") == "security":
-                    _sec_total += 1
-                    if _ef.get("severity") == "critical":
-                        _sec_critical += 1
-                    elif _ef.get("severity") == "high":
-                        _sec_high += 1
+                    sv = _ef.get("severity", "medium")
+                    _sec_sev_counts[sv] = _sec_sev_counts.get(sv, 0) + 1
+        _sec_critical = _sec_sev_counts.get("critical", 0)
+        _sec_high = _sec_sev_counts.get("high", 0)
+        _sec_medium = _sec_sev_counts.get("medium", 0)
+        _sec_low = _sec_sev_counts.get("low", 0)
+        _sec_total = sum(_sec_sev_counts.values())
+
+        # Security severity filter badges
+        _sec_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
+        _sec_sev_badges_html = ""
+        for _ssev in ["critical", "high", "medium", "low"]:
+            _scnt = _sec_sev_counts.get(_ssev, 0)
+            if _scnt:
+                _sc = _sec_sev_badge_colors[_ssev]
+                _sec_sev_badges_html += f'<button type="button" class="sec-sev-badge" data-severity="{_ssev}" style="background:rgba({_hex_to_rgb(_sc)},0.15);color:{_sc};">{_ssev.title()}: {_scnt}</button>\n        '
 
         security_panel = f"""
   <section class="tab-panel" id="panel-security">
     <div class="card">
       <div class="card-title"><span class="icon" style="color:#D0002B;">&#9888;</span> Security Findings</div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_sec_critical}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" data-sev-filter="critical" data-panel="sec" style="color:#D0002B;background:#FFF5F5;border-color:#FCA5A5;">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value">{_sec_critical}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_sec_high}</div>
+        <div class="stat-card" data-sev-filter="high" data-panel="sec" style="color:#E87722;background:#FFF7ED;border-color:#FDBA74;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{_sec_high}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Security</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_sec_total}</div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Total Security</div>
+          <div class="stat-value">{_sec_total}</div>
         </div>
+      </div>
+      <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {_sec_sev_badges_html}
       </div>
       <div class="table-wrap">
         <table id="securityTable">
@@ -1668,22 +1677,22 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-uxconsistency">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> UX Consistency Analysis</div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Issues</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_total}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:#D0002B;">
+          <div class="stat-label" style="color:#53565A;">Total Issues</div>
+          <div class="stat-value">{ux_total}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Errors</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_by_severity.get('error', 0)}</div>
+        <div class="stat-card" data-sev-filter="error" data-panel="ux" style="color:#D0002B;">
+          <div class="stat-label">Errors</div>
+          <div class="stat-value">{ux_by_severity.get('error', 0)}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Warnings</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{ux_by_severity.get('warning', 0)}</div>
+        <div class="stat-card" data-sev-filter="warning" data-panel="ux" style="color:#9E8700;">
+          <div class="stat-label">Warnings</div>
+          <div class="stat-value">{ux_by_severity.get('warning', 0)}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Info</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{ux_by_severity.get('info', 0)}</div>
+        <div class="stat-card" data-sev-filter="info" data-panel="ux" style="color:#53565A;">
+          <div class="stat-label">Info</div>
+          <div class="stat-value">{ux_by_severity.get('info', 0)}</div>
         </div>
       </div>
       <div id="uxFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
@@ -2300,11 +2309,37 @@ def generate_viewer_html() -> str:
     border:none;
   }}
   .res-sev-badge-active {{ outline:2px solid currentColor; }}
+  .sec-sev-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    border:none;
+  }}
+  .sec-sev-badge-active {{ outline:2px solid currentColor; }}
   .ux-badge {{
     display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
     font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
   }}
   .ux-badge-active {{ outline:2px solid currentColor; }}
+  .stat-card {{
+    flex:1; min-width:100px; background:#F5F5F5; border:1px solid #E1E1E1;
+    border-radius:8px; padding:0.5rem 0.75rem; transition:border-color .15s, box-shadow .15s;
+  }}
+  .stat-card[data-sev-filter] {{
+    cursor:pointer;
+  }}
+  .stat-card[data-sev-filter]:hover {{
+    border-color:#005587; box-shadow:0 0 0 2px rgba(0,85,135,0.12);
+  }}
+  .stat-card-active {{
+    border-color:currentColor !important; box-shadow:0 0 0 2px rgba(0,85,135,0.18) !important;
+    outline:2px solid currentColor;
+  }}
+  .stat-card .stat-label {{
+    font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em;
+  }}
+  .stat-card .stat-value {{
+    font-size:1rem; font-weight:700; margin-top:0.15rem;
+  }}
   .hs-dropdown {{
     padding:0.35rem 0.6rem; border-radius:6px; border:1px solid #E1E1E1;
     background:#FFFFFF; color:#333333; font-size:0.82rem; outline:none;
@@ -4140,6 +4175,29 @@ function initSortableTable(table) {{
       }}
       row.style.display = show ? '' : 'none';
     }});
+    // Filter individual smells inside expanded detail rows
+    if (sevFilter || smellFilter) {{
+      document.querySelectorAll('.cq-detail-row td table tbody tr').forEach(function(dr) {{
+        var cells = dr.querySelectorAll('td');
+        if (cells.length < 4) return;
+        var sevCell = cells[2]; // Severity column
+        var smellCell = cells[3]; // Smell column
+        var drShow = true;
+        if (sevFilter) {{
+          var cellSev = (sevCell.textContent || '').trim().toLowerCase();
+          if (cellSev !== sevFilter) drShow = false;
+        }}
+        if (smellFilter) {{
+          var cellSmell = (smellCell.textContent || '').trim().toLowerCase();
+          if (cellSmell !== smellFilter) drShow = false;
+        }}
+        dr.style.display = drShow ? '' : 'none';
+      }});
+    }} else {{
+      document.querySelectorAll('.cq-detail-row td table tbody tr').forEach(function(dr) {{
+        dr.style.display = '';
+      }});
+    }}
   }}
 
   // ── Resilience IIFE ──
@@ -4275,6 +4333,20 @@ function initSortableTable(table) {{
       }}
       row.style.display = show ? '' : 'none';
     }});
+    // Filter individual findings inside expanded detail rows
+    if (sevFilter) {{
+      document.querySelectorAll('.res-detail-row td table tbody tr').forEach(function(dr) {{
+        var cells = dr.querySelectorAll('td');
+        if (cells.length < 3) return;
+        var sevCell = cells[2]; // Severity column
+        var cellSev = (sevCell.textContent || '').trim().toLowerCase();
+        dr.style.display = (cellSev === sevFilter) ? '' : 'none';
+      }});
+    }} else {{
+      document.querySelectorAll('.res-detail-row td table tbody tr').forEach(function(dr) {{
+        dr.style.display = '';
+      }});
+    }}
   }}
 
   // ── Security IIFE ──
@@ -4325,6 +4397,7 @@ function initSortableTable(table) {{
       var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;', sf.project, smellPrompt) : escHtml(sf.file);
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
+      tr.setAttribute('data-severity', (sf.severity || '').toLowerCase());
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
         '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
@@ -4335,6 +4408,16 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('securityTable'));
+
+    // Security severity badge click handlers
+    document.querySelectorAll('.sec-sev-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('sec-sev-badge-active');
+        document.querySelectorAll('.sec-sev-badge').forEach(function (b) {{ b.classList.remove('sec-sev-badge-active'); }});
+        if (!isActive) badge.classList.add('sec-sev-badge-active');
+        applySecurityFilters();
+      }});
+    }});
   }})();
 
   // ── External Tools IIFE ──
@@ -4580,9 +4663,12 @@ function initSortableTable(table) {{
     var repo = getActiveRepo();
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
+    var activeSevBadge = document.querySelector('.sec-sev-badge.sec-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     document.querySelectorAll('#securityBody tr').forEach(function(row) {{
       var show = true;
       if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
       if (show && searchQuery) {{
         var text = row.getAttribute('data-search') || '';
         if (text && text.indexOf(searchQuery) === -1) show = false;
@@ -4682,6 +4768,71 @@ function initSortableTable(table) {{
       row.style.display = show ? '' : 'none';
     }});
   }}
+
+  // ── Stat card click handlers ──
+  // Clicking a severity stat card activates the corresponding filter badge
+  document.querySelectorAll('.stat-card[data-sev-filter]').forEach(function(card) {{
+    card.addEventListener('click', function() {{
+      var sev = card.getAttribute('data-sev-filter');
+      var panel = card.getAttribute('data-panel');
+      var badgeClass, activeClass, filterFn;
+      if (panel === 'cq') {{
+        badgeClass = '.cq-sev-badge'; activeClass = 'cq-sev-badge-active'; filterFn = applyCqFilters;
+      }} else if (panel === 'res') {{
+        badgeClass = '.res-sev-badge'; activeClass = 'res-sev-badge-active'; filterFn = applyResFilters;
+      }} else if (panel === 'sec') {{
+        badgeClass = '.sec-sev-badge'; activeClass = 'sec-sev-badge-active'; filterFn = applySecurityFilters;
+      }} else if (panel === 'ux') {{
+        badgeClass = '.ux-badge[data-severity]'; activeClass = 'ux-badge-active'; filterFn = applyUxFilters;
+      }} else {{
+        return;
+      }}
+      // Find matching badge for this severity
+      var targetBadge = null;
+      document.querySelectorAll(badgeClass).forEach(function(b) {{
+        if (b.getAttribute('data-severity') === sev) targetBadge = b;
+      }});
+      // Check if this card is already active (toggle off)
+      var wasActive = card.classList.contains('stat-card-active');
+      // Clear all stat cards in this panel
+      document.querySelectorAll('.stat-card[data-panel="' + panel + '"]').forEach(function(c) {{
+        c.classList.remove('stat-card-active');
+      }});
+      // Clear all badges in this panel
+      document.querySelectorAll(badgeClass).forEach(function(b) {{
+        b.classList.remove(activeClass);
+      }});
+      if (!wasActive) {{
+        card.classList.add('stat-card-active');
+        if (targetBadge) targetBadge.classList.add(activeClass);
+      }}
+      filterFn();
+    }});
+  }});
+
+  // Keep stat cards in sync when badge buttons are clicked directly
+  function syncStatCards(panel, badgeClass, activeClass) {{
+    document.querySelectorAll(badgeClass).forEach(function(badge) {{
+      badge.addEventListener('click', function() {{
+        // After the badge's own handler runs, sync stat cards
+        setTimeout(function() {{
+          var activeBadge = document.querySelector(badgeClass + '.' + activeClass);
+          var activeSev = activeBadge ? activeBadge.getAttribute('data-severity') : '';
+          document.querySelectorAll('.stat-card[data-panel="' + panel + '"]').forEach(function(c) {{
+            if (activeSev && c.getAttribute('data-sev-filter') === activeSev) {{
+              c.classList.add('stat-card-active');
+            }} else {{
+              c.classList.remove('stat-card-active');
+            }}
+          }});
+        }}, 0);
+      }});
+    }});
+  }}
+  syncStatCards('cq', '.cq-sev-badge', 'cq-sev-badge-active');
+  syncStatCards('res', '.res-sev-badge', 'res-sev-badge-active');
+  syncStatCards('sec', '.sec-sev-badge', 'sec-sev-badge-active');
+  syncStatCards('ux', '.ux-badge[data-severity]', 'ux-badge-active');
 
   // ── Global repo filter dropdown ──
   var repoSelect = document.getElementById('globalRepoFilter');
