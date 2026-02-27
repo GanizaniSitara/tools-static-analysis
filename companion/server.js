@@ -32,7 +32,7 @@ const fixWorkflow = require("./fix-workflow");
 const DEFAULT_CONFIG = {
   claudePrompt:
     "Please analyze this code and propose improvements.",
-  enableWslTools: false,
+  enableWslTools: true,
   wslDistro: "Ubuntu",
   wslPathPrefix: "\\\\wsl$\\Ubuntu",
   claudeCodeUseWsl: false,
@@ -40,7 +40,7 @@ const DEFAULT_CONFIG = {
   micromambaEnv: "",
   openCodePath: "opencode",
   openCodeNonInteractive: false,
-  githubCopilotEnabled: false,
+  githubCopilotEnabled: true,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
   // Fix workflow

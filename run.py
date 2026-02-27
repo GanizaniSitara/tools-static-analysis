@@ -25,14 +25,14 @@ def _load_config():
     config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
-        "enableWslTools": False,
+        "enableWslTools": True,
         "wslDistro": "Ubuntu",
         "wslPathPrefix": "\\\\wsl$\\Ubuntu",
         "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
         "micromambaEnv": "",
         "openCodePath": "/usr/local/bin/opencode",
-        "githubCopilotEnabled": False
+        "githubCopilotEnabled": True
     }
     if not config_path.exists():
         return default

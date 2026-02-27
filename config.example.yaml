@@ -24,7 +24,7 @@ claudePrompt: |
 # ============================================================================
 # Master toggle for OpenCode and GitHub Copilot
 # Does NOT affect Claude Code (see claudeCodeUseWsl below)
-enableWslTools: false
+enableWslTools: true
 
 # WSL distribution name (check with: wsl -l -v)
 wslDistro: Ubuntu-24.04
