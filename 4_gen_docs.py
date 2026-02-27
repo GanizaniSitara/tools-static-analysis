@@ -1530,6 +1530,14 @@ def generate_viewer_html() -> str:
         _res_avg = _res_summary.get("avgResilienceScore", 0)
         _res_ext = _res_summary.get("projectsWithExternalCalls", 0)
         _res_polly = _res_summary.get("projectsWithPolly", 0)
+        _res_sev_badge_colors = {"high": "#D0002B", "medium": "#E87722", "low": "#53565A"}
+        _res_sev_badges_html = ""
+        for _rsev in ["high", "medium", "low"]:
+            _rcnt = _res_sev.get(_rsev, 0)
+            if _rcnt:
+                _rc = _res_sev_badge_colors[_rsev]
+                _res_sev_badges_html += f'<button type="button" class="res-sev-badge" data-severity="{_rsev}" style="background:rgba({_hex_to_rgb(_rc)},0.15);color:{_rc};">{_rsev.title()}: {_rcnt}</button>\n        '
+
         resilience_panel = f"""
   <section class="tab-panel" id="panel-resilience">
     <div class="card">
@@ -1559,6 +1567,9 @@ def generate_viewer_html() -> str:
           <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Findings</div>
           <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_res_total}</div>
         </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {_res_sev_badges_html}
       </div>
       <div class="table-wrap">
         <table id="resTable">
@@ -2292,6 +2303,12 @@ def generate_viewer_html() -> str:
     border:none;
   }}
   .cq-sev-badge-active {{ outline:2px solid currentColor; }}
+  .res-sev-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    border:none;
+  }}
+  .res-sev-badge-active {{ outline:2px solid currentColor; }}
   .ux-badge {{
     display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
     font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
@@ -3749,18 +3766,16 @@ function initSortableTable(table) {{
   window._cycles = {cycles_json};
   window._config = {config_json};
 
-  // Show tool buttons based on config flags
-  document.addEventListener('DOMContentLoaded', function() {{
-    if (window._config && window._config.enableWslTools) {{
-      document.querySelectorAll('.wsl-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-    }}
-    if (window._config && window._config.githubCopilotEnabled) {{
-      document.querySelectorAll('.copilot-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-    }}
-    if (window._config && window._config.fixWorkflowEnabled) {{
-      document.querySelectorAll('.fix-workflow-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-    }}
-  }});
+  // Show tool buttons based on config flags (runs immediately — DOM is already ready)
+  if (window._config && window._config.enableWslTools) {{
+    document.querySelectorAll('.wsl-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
+  }}
+  if (window._config && window._config.githubCopilotEnabled) {{
+    document.querySelectorAll('.copilot-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
+  }}
+  if (window._config && window._config.fixWorkflowEnabled) {{
+    document.querySelectorAll('.fix-workflow-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
+  }}
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
@@ -4154,6 +4169,7 @@ function initSortableTable(table) {{
   (function () {{
     var rd = window._resilienceData || {{}};
     var projects = rd.projects || [];
+    var grp = window._projectGroupMap || {{}};
     var tbody = document.getElementById('resBody');
     if (!tbody || projects.length === 0) return;
     var sevColors = {{ high: '#D0002B', medium: '#E87722', low: '#53565A' }};
@@ -4205,7 +4221,12 @@ function initSortableTable(table) {{
       var policies = p.policySummary || {{}};
       var activePolicies = Object.keys(policies).filter(function(k) {{ return policies[k]; }}).join(', ') || 'None';
       var hasFindings = p.findingCount > 0;
+      // Collect severity set for filtering
+      var sevSet = {{}};
+      (p.findings || []).forEach(function(f) {{ if (f.severity) sevSet[f.severity] = true; }});
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '')).toLowerCase());
+      tr.setAttribute('data-severities', Object.keys(sevSet).join(',').toLowerCase());
+      tr.setAttribute('data-repo', grp[p.project] || '');
       if (hasFindings) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFindings ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -4218,7 +4239,7 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
       if (hasFindings) {{
         var detailRow = document.createElement('tr');
-        detailRow.className = 'detail-row';
+        detailRow.className = 'res-detail-row';
         detailRow.style.display = 'none';
         var detailTd = document.createElement('td');
         detailTd.colSpan = 7;
@@ -4237,7 +4258,47 @@ function initSortableTable(table) {{
         }})(detailRow, detailTd, p));
       }}
     }});
+
+    // Severity badge click handlers
+    document.querySelectorAll('.res-sev-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('res-sev-badge-active');
+        document.querySelectorAll('.res-sev-badge').forEach(function (b) {{ b.classList.remove('res-sev-badge-active'); }});
+        if (!isActive) badge.classList.add('res-sev-badge-active');
+        applyResFilters();
+      }});
+    }});
+    initSortableTable(document.getElementById('resTable'));
   }})();
+
+  function applyResFilters() {{
+    var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
+    var repoFilter = getActiveRepo();
+
+    // Collapse all detail rows on filter change
+    document.querySelectorAll('.res-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+    document.querySelectorAll('#resBody tr[data-search] span').forEach(function(s) {{
+      if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+    }});
+
+    var rows = document.querySelectorAll('#resBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var show = true;
+      if (repoFilter && row.getAttribute('data-repo') !== repoFilter) show = false;
+      if (sevFilter) {{
+        var rowSevs = row.getAttribute('data-severities') || '';
+        if (rowSevs.indexOf(sevFilter) === -1) show = false;
+      }}
+      if (searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
+    }});
+  }}
 
   // ── Security IIFE ──
   (function () {{
@@ -4528,6 +4589,7 @@ function initSortableTable(table) {{
     applyHotspotFilters();
     applyCqFilters();
     applyUxFilters();
+    applyResFilters();
   }});
 
   // ── Tab-specific filter functions for tabs without existing filters ──
@@ -4618,6 +4680,7 @@ function initSortableTable(table) {{
       applyHotspotFilters();
       applyCqFilters();
       applyUxFilters();
+      applyResFilters();
       applySecurityFilters();
       applyExtToolsFilters();
       applyTestsFilter();
