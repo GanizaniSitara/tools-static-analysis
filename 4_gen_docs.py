@@ -2366,6 +2366,12 @@ def generate_viewer_html() -> str:
   .file-copilot:hover {{ background:#7042c4; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
+  .wsl-tool {{ display:none !important; }}
+  .copilot-tool {{ display:none !important; }}
+  .fix-workflow-tool {{ display:none !important; }}
+  {'  .wsl-tool { display:inline-block !important; }' if CONFIG.get('enableWslTools') else ''}
+  {'  .copilot-tool { display:inline-block !important; }' if CONFIG.get('githubCopilotEnabled') else ''}
+  {'  .fix-workflow-tool { display:inline-block !important; }' if CONFIG.get('developerRoot') else ''}
   .file-fix {{ background:#c62828; color:#fff !important; }}
   .file-fix:hover {{ background:#a01e1e; }}
   .fix-modal-overlay {{ display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:20000; justify-content:center; align-items:center; }}
@@ -3189,9 +3195,9 @@ function fileActionsHtml(filePath, line, style, project, smell) {{
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
-    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
-    ' <a href="#" class="file-action file-copilot copilot-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
-    ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>' +
+    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode">OpenCode</a>' +
+    ' <a href="#" class="file-action file-copilot copilot-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot">Copilot</a>' +
+    ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review">Fix</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -3766,16 +3772,8 @@ function initSortableTable(table) {{
   window._cycles = {cycles_json};
   window._config = {config_json};
 
-  // Show tool buttons based on config flags (runs immediately — DOM is already ready)
-  if (window._config && window._config.enableWslTools) {{
-    document.querySelectorAll('.wsl-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-  }}
-  if (window._config && window._config.githubCopilotEnabled) {{
-    document.querySelectorAll('.copilot-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-  }}
-  if (window._config && window._config.fixWorkflowEnabled) {{
-    document.querySelectorAll('.fix-workflow-tool').forEach(function(t) {{ t.style.display = 'inline-block'; }});
-  }}
+  // Tool button visibility (wsl-tool, copilot-tool, fix-workflow-tool) is
+  // controlled by CSS rules generated from config.yaml at build time.
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
