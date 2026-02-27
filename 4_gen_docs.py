@@ -3131,6 +3131,9 @@ function escHtmlGlobal(s) {{
   d.textContent = s || '';
   return d.innerHTML;
 }}
+function escAttr(s) {{
+  return escHtmlGlobal(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}}
 
 // ── File path resolution ──
 function _resolveFilePath(repoRoot, relFile) {{
@@ -3160,10 +3163,10 @@ function _resolveFromRoots(filePath) {{
 function fileActionsHtml(filePath, line, style, project, smell) {{
   if (!filePath) return '';
   var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
-  var dp = escHtmlGlobal(filePath);
+  var dp = escAttr(filePath);
   var dl = line || 0;
-  var proj = escHtmlGlobal(project || '');
-  var sm = escHtmlGlobal(smell || '');
+  var proj = escAttr(project || '');
+  var sm = escAttr(smell || '');
   return '<span class="file-ref">' +
     '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
@@ -3873,8 +3876,8 @@ function initSortableTable(table) {{
       var highestPri = 0;
       (m.smells || []).forEach(function (s) {{
         var c = smellColors[s.level] || '#53565A';
-        riskDots += '<span title="' + escHtml(s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
-        riskLabels += '<div style="font-size:0.7rem;color:' + c + ';line-height:1.3;" title="' + escHtml(s.explanation) + '">' + escHtml(s.label) + '</div>';
+        riskDots += '<span title="' + escAttr(s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+        riskLabels += '<div style="font-size:0.7rem;color:' + c + ';line-height:1.3;" title="' + escAttr(s.explanation) + '">' + escHtml(s.label) + '</div>';
         var pri = riskPriority[s.level] || 0;
         if (pri > highestPri) {{ highestPri = pri; highestRisk = s.level; }}
       }});

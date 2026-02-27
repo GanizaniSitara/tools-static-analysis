@@ -123,6 +123,9 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
     repo_roots: dict = {}
     solutions_map: dict = {}
 
+    # Set by main() so /_stop can shut down the server
+    _server_ref = None
+
     def do_GET(self):
         parsed = urlparse(self.path)
         if parsed.path == "/_view":
@@ -134,6 +137,14 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         if parsed.path == "/_open":
             params = parse_qs(parsed.query)
             self._handle_open(params)
+            return
+        if parsed.path == "/_stop":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"Server stopping.\n")
+            print("\nServer stopped via /_stop endpoint.")
+            threading.Thread(target=self._server_ref.shutdown, daemon=True).start()
             return
         super().do_GET()
 
@@ -662,13 +673,22 @@ def main():
             print(f"  Warning: could not parse repos.json: {exc}")
 
     print(f"\n=== Done. Opening viewer at http://localhost:{port}/viewer.html ===\n")
+    print(f"    Stop server: visit http://localhost:{port}/_stop")
+    print(f"    Or press Ctrl+C\n")
 
     os.chdir(out)
     server = http.server.HTTPServer(("", port), ViewerHandler)
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
+    ViewerHandler._server_ref = server
+
+    import signal
+    def _shutdown_handler(sig, frame):
         print("\nServer stopped.")
+        threading.Thread(target=server.shutdown, daemon=True).start()
+    signal.signal(signal.SIGINT, _shutdown_handler)
+    if hasattr(signal, "SIGBREAK"):          # Windows Ctrl+Break
+        signal.signal(signal.SIGBREAK, _shutdown_handler)
+
+    server.serve_forever()
 
 
 if __name__ == "__main__":
