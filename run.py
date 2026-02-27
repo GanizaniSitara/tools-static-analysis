@@ -29,7 +29,7 @@ def _load_config():
         "githubCopilotEnabled": True,
         "copilotMode": "standalone",
         "copilotCliPath": "copilot",
-        "copilotModel": "claude-opus-4-6",
+        "copilotModel": "claude-opus-4.6-fast",
     }
     if not config_path.exists():
         return default
@@ -315,7 +315,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         copilot_path = CONFIG.get("copilotCliPath", "copilot")
         copilot_mode = CONFIG.get("copilotMode", "standalone")
-        copilot_model = CONFIG.get("copilotModel", "claude-opus-4-6")
+        copilot_model = CONFIG.get("copilotModel", "claude-opus-4.6-fast")
 
         sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
         work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)

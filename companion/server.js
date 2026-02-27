@@ -36,7 +36,7 @@ const DEFAULT_CONFIG = {
   githubCopilotEnabled: true,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
-  copilotModel: "claude-opus-4-6",
+  copilotModel: "claude-opus-4.6-fast",
   // Fix workflow
   vcsType: "svn",
   repoUrl: "",
@@ -319,7 +319,7 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   const isWin = os.platform() === "win32";
   const mode = config.copilotMode || "standalone";
   const copilotPath = config.copilotCliPath || "copilot";
-  const copilotModel = config.copilotModel || "claude-opus-4-6";
+  const copilotModel = config.copilotModel || "claude-opus-4.6-fast";
 
   if (mode === "gh-extension") {
     // Legacy gh copilot extension -- limited flags, just pass context

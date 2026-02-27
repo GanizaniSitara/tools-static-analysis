@@ -42,9 +42,9 @@ copilotMode: standalone
 copilotCliPath: copilot
 
 # AI model for Copilot CLI to use (requires Copilot Pro/Pro+ for premium models)
-# Examples: "claude-opus-4-6", "claude-sonnet-4-6", "gpt-5"
+# Examples: "claude-opus-4.6-fast", "claude-sonnet-4-6", "gpt-5"
 # Run `copilot help config` for a list of available model names
-copilotModel: claude-opus-4-6
+copilotModel: claude-opus-4.6-fast
 
 # Fix Workflow Configuration
 # ============================================================================

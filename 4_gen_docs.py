@@ -1416,7 +1416,7 @@ def generate_viewer_html() -> str:
 
         # Severity filter badges
         cq_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
-        cq_sev_badges_html = ""
+        cq_sev_badges_html = '<button type="button" class="cq-sev-badge cq-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         for sev in ["critical", "high", "medium", "low"]:
             cnt = cq_sev_counts.get(sev, 0)
             if cnt:
@@ -1522,7 +1522,7 @@ def generate_viewer_html() -> str:
         _res_ext = _res_summary.get("projectsWithExternalCalls", 0)
         _res_polly = _res_summary.get("projectsWithPolly", 0)
         _res_sev_badge_colors = {"high": "#D0002B", "medium": "#E87722", "low": "#53565A"}
-        _res_sev_badges_html = ""
+        _res_sev_badges_html = '<button type="button" class="res-sev-badge res-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         for _rsev in ["high", "medium", "low"]:
             _rcnt = _res_sev.get(_rsev, 0)
             if _rcnt:
@@ -1607,7 +1607,7 @@ def generate_viewer_html() -> str:
 
         # Security severity filter badges
         _sec_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
-        _sec_sev_badges_html = ""
+        _sec_sev_badges_html = '<button type="button" class="sec-sev-badge sec-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         for _ssev in ["critical", "high", "medium", "low"]:
             _scnt = _sec_sev_counts.get(_ssev, 0)
             if _scnt:
@@ -1661,7 +1661,7 @@ def generate_viewer_html() -> str:
         ux_by_type = ux_summary.get("byType", {})
         ux_total = ux_summary.get("totalIssues", len(ux_issues))
 
-        ux_severity_badges = ""
+        ux_severity_badges = '<button type="button" class="ux-badge ux-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         sev_colors = {"error": "#D0002B", "warning": "#9E8700", "info": "#53565A"}
         for sev in ["error", "warning", "info"]:
             cnt = ux_by_severity.get(sev, 0)
@@ -2335,10 +2335,10 @@ def generate_viewer_html() -> str:
     outline:2px solid currentColor;
   }}
   .stat-card .stat-label {{
-    font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em;
+    font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em; color:#53565A;
   }}
   .stat-card .stat-value {{
-    font-size:1rem; font-weight:700; margin-top:0.15rem;
+    font-size:1rem; font-weight:700; margin-top:0.15rem; color:inherit;
   }}
   .hs-dropdown {{
     padding:0.35rem 0.6rem; border-radius:6px; border:1px solid #E1E1E1;
@@ -4123,12 +4123,20 @@ function initSortableTable(table) {{
       }});
     }});
 
-    // Severity badge click handlers
+    // Severity badge click handlers (with All pill)
     document.querySelectorAll('.cq-sev-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('cq-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
         document.querySelectorAll('.cq-sev-badge').forEach(function (b) {{ b.classList.remove('cq-sev-badge-active'); }});
-        if (!isActive) badge.classList.add('cq-sev-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('cq-sev-badge-active');
+        }}
+        // If nothing active after toggle-off, re-activate All
+        if (!document.querySelector('.cq-sev-badge.cq-sev-badge-active')) {{
+          var allBtn = document.querySelector('.cq-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('cq-sev-badge-active');
+        }}
         applyCqFilters();
       }});
     }});
@@ -4294,12 +4302,19 @@ function initSortableTable(table) {{
       }}
     }});
 
-    // Severity badge click handlers
+    // Severity badge click handlers (with All pill)
     document.querySelectorAll('.res-sev-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('res-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
         document.querySelectorAll('.res-sev-badge').forEach(function (b) {{ b.classList.remove('res-sev-badge-active'); }});
-        if (!isActive) badge.classList.add('res-sev-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('res-sev-badge-active');
+        }}
+        if (!document.querySelector('.res-sev-badge.res-sev-badge-active')) {{
+          var allBtn = document.querySelector('.res-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('res-sev-badge-active');
+        }}
         applyResFilters();
       }});
     }});
@@ -4409,12 +4424,19 @@ function initSortableTable(table) {{
     }});
     initSortableTable(document.getElementById('securityTable'));
 
-    // Security severity badge click handlers
+    // Security severity badge click handlers (with All pill)
     document.querySelectorAll('.sec-sev-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('sec-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
         document.querySelectorAll('.sec-sev-badge').forEach(function (b) {{ b.classList.remove('sec-sev-badge-active'); }});
-        if (!isActive) badge.classList.add('sec-sev-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('sec-sev-badge-active');
+        }}
+        if (!document.querySelector('.sec-sev-badge.sec-sev-badge-active')) {{
+          var allBtn = document.querySelector('.sec-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('sec-sev-badge-active');
+        }}
         applySecurityFilters();
       }});
     }});
@@ -4551,12 +4573,19 @@ function initSortableTable(table) {{
     }});
     initSortableTable(document.getElementById('uxTable'));
 
-    // Badge click handlers
+    // Badge click handlers (with All pill)
     document.querySelectorAll('.ux-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('ux-badge-active');
+        var isAll = !badge.getAttribute('data-severity') && !badge.getAttribute('data-type');
         document.querySelectorAll('.ux-badge').forEach(function (b) {{ b.classList.remove('ux-badge-active'); }});
-        if (!isActive) badge.classList.add('ux-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('ux-badge-active');
+        }}
+        if (!document.querySelector('.ux-badge.ux-badge-active')) {{
+          var allBtn = document.querySelector('.ux-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('ux-badge-active');
+        }}
         applyUxFilters();
       }});
     }});
@@ -4805,6 +4834,10 @@ function initSortableTable(table) {{
       if (!wasActive) {{
         card.classList.add('stat-card-active');
         if (targetBadge) targetBadge.classList.add(activeClass);
+      }} else {{
+        // Re-activate the All pill when deselecting
+        var allBtn = document.querySelector(badgeClass + '[data-severity=""]');
+        if (allBtn) allBtn.classList.add(activeClass);
       }}
       filterFn();
     }});
