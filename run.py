@@ -29,6 +29,7 @@ def _load_config():
         "githubCopilotEnabled": True,
         "copilotMode": "standalone",
         "copilotCliPath": "copilot",
+        "copilotModel": "claude-opus-4-6",
     }
     if not config_path.exists():
         return default
@@ -307,60 +308,96 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
     def _open_github_copilot(self, file_path: str, line: int = None, project_name: str = None,
                              smell_description: str = None):
-        """Ask GitHub Copilot CLI for refactoring suggestions."""
+        """Launch GitHub Copilot CLI in interactive mode with context."""
         if not CONFIG.get("githubCopilotEnabled"):
             self._json_response({"error": "GitHub Copilot is disabled in config.yaml"}, 400)
             return
 
         copilot_path = CONFIG.get("copilotCliPath", "copilot")
         copilot_mode = CONFIG.get("copilotMode", "standalone")
+        copilot_model = CONFIG.get("copilotModel", "claude-opus-4-6")
 
-        # Build context message
-        if smell_description and '\n' in smell_description:
-            context = f"I'm looking at file: {file_path}"
-            if line:
-                context += f" (line {line})"
-            context += f"\n\n{smell_description}"
-        else:
-            context_parts = [f"I'm looking at file: {file_path}"]
-            if line:
-                context_parts.append(f" (line {line})")
-            if project_name:
-                context_parts.append(f"\n\nProject: {project_name}")
-            if smell_description:
-                context_parts.append(f"\n\nArchitectural Smell:\n{smell_description}")
-            context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
-            context = "".join(context_parts)
+        sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
+        work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)
 
-        # Build command args based on copilot mode
         if copilot_mode == "gh-extension":
-            copilot_args = ["suggest", "-t", "shell", context]
-        else:
-            copilot_args = ["-p", context]
+            # Legacy gh copilot extension -- limited flags
+            context = f"Analyze file {file_path}"
+            if line:
+                context += f" at line {line}"
+            if smell_description:
+                context += f". Issue: {smell_description}"
+            if project_name:
+                context += f" (Project: {project_name})"
+
+            if sys.platform == "win32":
+                safe_context = context.replace('"', '\\"')
+                cmd_str = f'start "" /d "{work_dir}" gh copilot suggest -t shell "{safe_context}"'
+                try:
+                    subprocess.Popen(cmd_str, shell=True)
+                    self._json_response({"status": "ok", "editor": "copilot", "mode": "windows",
+                                         "copilotMode": copilot_mode})
+                except OSError as exc:
+                    self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
+            else:
+                try:
+                    subprocess.Popen(
+                        ["gh", "copilot", "suggest", "-t", "shell", context],
+                        cwd=work_dir, start_new_session=True
+                    )
+                    self._json_response({"status": "ok", "editor": "copilot", "mode": "native",
+                                         "copilotMode": copilot_mode})
+                except OSError as exc:
+                    self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
+            return
+
+        # Standalone mode: use -i (interactive + execute prompt) instead of -p (exits)
+        # Build a detailed prompt since Copilot CLI has no --system-prompt flag
+        prompt_parts = ["You are analyzing a C# .NET project with architectural issues.\n"]
+        prompt_parts.append(f"FILE: {file_path}")
+        if line:
+            prompt_parts.append(f"LINE: {line}")
+        if project_name:
+            prompt_parts.append(f"PROJECT: {project_name}")
+        if smell_description and '\n' in smell_description:
+            prompt_parts.append(f"\n{smell_description}")
+        elif smell_description:
+            prompt_parts.append(f"\nISSUE: {smell_description}")
+        prompt_parts.append("\nPlease:")
+        prompt_parts.append("1. Read the file and understand the context around the indicated line")
+        prompt_parts.append("2. Analyze the architectural smell / code issue described above")
+        prompt_parts.append("3. Propose a concrete refactoring that addresses the issue")
+        prompt_parts.append("4. Maintain existing functionality, follow SOLID principles and .NET best practices")
+        prompt_parts.append("5. Show the specific code changes needed")
+        prompt = "\n".join(prompt_parts)
+
+        # Use -i for interactive mode (stays open), --model for Opus, --add-dir for workspace
+        copilot_args = [
+            "--model", copilot_model,
+            "--add-dir", work_dir,
+            "-i", prompt,
+        ]
 
         if sys.platform == "win32":
-            sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
-            work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)
-            safe_context = context.replace('"', '\\"')
-            if copilot_mode == "gh-extension":
-                cmd_str = f'start "" /d "{work_dir}" gh copilot suggest -t shell "{safe_context}"'
-            else:
-                cmd_str = f'start "" /d "{work_dir}" {copilot_path} -p "{safe_context}"'
+            safe_prompt = prompt.replace('"', '\\"')
+            cmd_str = (f'start "" /d "{work_dir}" {copilot_path}'
+                       f' --model {copilot_model}'
+                       f' --add-dir "{work_dir}"'
+                       f' -i "{safe_prompt}"')
             try:
                 subprocess.Popen(cmd_str, shell=True)
                 self._json_response({"status": "ok", "editor": "copilot", "mode": "windows",
-                                     "copilotMode": copilot_mode})
+                                     "copilotMode": copilot_mode, "model": copilot_model})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
         else:
-            # Linux/macOS native
             try:
                 subprocess.Popen(
                     [copilot_path] + copilot_args,
-                    start_new_session=True
+                    cwd=work_dir, start_new_session=True
                 )
                 self._json_response({"status": "ok", "editor": "copilot", "mode": "native",
-                                     "copilotMode": copilot_mode})
+                                     "copilotMode": copilot_mode, "model": copilot_model})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
 

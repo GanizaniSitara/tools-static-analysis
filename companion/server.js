@@ -36,6 +36,7 @@ const DEFAULT_CONFIG = {
   githubCopilotEnabled: true,
   copilotMode: "standalone",
   copilotCliPath: "copilot",
+  copilotModel: "claude-opus-4-6",
   // Fix workflow
   vcsType: "svn",
   repoUrl: "",
@@ -318,46 +319,74 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   const isWin = os.platform() === "win32";
   const mode = config.copilotMode || "standalone";
   const copilotPath = config.copilotCliPath || "copilot";
+  const copilotModel = config.copilotModel || "claude-opus-4-6";
 
-  // Build context/prompt
-  let context = "Analyze file " + filePath;
-  if (line) context += " at line " + line;
-  if (smell) context += ". Issue: " + smell;
-  if (project) context += " (Project: " + project + ")";
+  if (mode === "gh-extension") {
+    // Legacy gh copilot extension -- limited flags, just pass context
+    let context = "Analyze file " + filePath;
+    if (line) context += " at line " + line;
+    if (smell) context += ". Issue: " + smell;
+    if (project) context += " (Project: " + project + ")";
+
+    if (isWin) {
+      const winCmd = 'cd /d "' + workspace + '" && gh copilot suggest -t shell "' + context.replace(/"/g, '\\"') + '"';
+      if (which("wt")) {
+        spawn("wt", ["cmd", "/k", winCmd], { detached: true, stdio: "ignore" }).unref();
+      } else {
+        spawn("cmd", ["/c", 'start "" cmd /k ' + winCmd], { detached: true, stdio: "ignore" }).unref();
+      }
+    } else {
+      const shellCmd = "cd " + shellQuote(workspace) + " && " +
+        "gh copilot suggest -t shell " + shellQuote(context);
+      launchInTerminal(shellCmd, workspace, config);
+    }
+    return callback(null, {
+      status: "ok", editor: "copilot", workspace: workspace,
+      mode: isWin ? "windows" : "native", copilotMode: mode,
+    });
+  }
+
+  // Standalone mode: use -i (interactive + execute prompt) instead of -p (exits)
+  // Build a detailed prompt since Copilot CLI has no --system-prompt flag
+  let prompt = "You are analyzing a C# .NET project with architectural issues.\n\n";
+  prompt += "FILE: " + filePath + "\n";
+  if (line) prompt += "LINE: " + line + "\n";
+  if (project) prompt += "PROJECT: " + project + "\n";
+  if (smell && smell.includes("\n")) {
+    prompt += "\n" + smell + "\n";
+  } else if (smell) {
+    prompt += "\nISSUE: " + smell + "\n";
+  }
+  prompt += "\nPlease:\n";
+  prompt += "1. Read the file and understand the context around the indicated line\n";
+  prompt += "2. Analyze the architectural smell / code issue described above\n";
+  prompt += "3. Propose a concrete refactoring that addresses the issue\n";
+  prompt += "4. Maintain existing functionality, follow SOLID principles and .NET best practices\n";
+  prompt += "5. Show the specific code changes needed";
 
   if (isWin) {
-    let winCmd;
-    if (mode === "gh-extension") {
-      winCmd = 'cd /d "' + workspace + '" && gh copilot suggest -t shell "' + context.replace(/"/g, '\\"') + '"';
-    } else {
-      winCmd = 'cd /d "' + workspace + '" && ' + copilotPath + ' -p "' + context.replace(/"/g, '\\"') + '"';
-    }
+    const escapedPrompt = prompt.replace(/"/g, '\\"');
+    const winCmd = 'cd /d "' + workspace + '" && ' + copilotPath +
+      " --model " + copilotModel +
+      " --add-dir " + '"' + workspace + '"' +
+      ' -i "' + escapedPrompt + '"';
     if (which("wt")) {
       spawn("wt", ["cmd", "/k", winCmd], { detached: true, stdio: "ignore" }).unref();
     } else {
       spawn("cmd", ["/c", 'start "" cmd /k ' + winCmd], { detached: true, stdio: "ignore" }).unref();
     }
-    return callback(null, {
-      status: "ok", editor: "copilot", workspace: workspace,
-      mode: "windows", copilotMode: mode,
-    });
-  }
-
-  // Native Linux/macOS
-  let shellCmd;
-  if (mode === "gh-extension") {
-    shellCmd = "cd " + shellQuote(workspace) + " && " +
-      "gh copilot suggest -t shell " + shellQuote(context);
   } else {
-    shellCmd = "cd " + shellQuote(workspace) + " && " +
-      copilotPath + " -p " + shellQuote(context);
+    const shellCmd = copilotPath +
+      " --model " + copilotModel +
+      " --add-dir " + shellQuote(workspace) +
+      " -i " + shellQuote(prompt);
+    launchInTerminal(shellCmd, workspace, config);
   }
-
-  launchInTerminal(shellCmd, workspace, config);
 
   return callback(null, {
     status: "ok", editor: "copilot", workspace: workspace,
-    mode: "native", copilotMode: mode,
+    mode: isWin ? "windows" : "native", copilotMode: mode,
+    model: copilotModel,
   });
 }
 
