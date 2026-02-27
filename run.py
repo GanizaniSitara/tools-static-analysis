@@ -467,21 +467,27 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
     def _open_github_copilot(self, file_path: str, line: int = None, project_name: str = None,
                              smell_description: str = None):
-        """Ask GitHub Copilot for refactoring suggestions via WSL."""
-        if not CONFIG["enableWslTools"] or not CONFIG["githubCopilotEnabled"]:
-            self._json_response({"error": "GitHub Copilot is disabled in config.json"}, 400)
+        """Ask GitHub Copilot CLI for refactoring suggestions.
+
+        Supports three modes based on platform and config:
+        - Windows native: runs copilot CLI directly in a new terminal
+        - WSL: runs copilot CLI via WSL
+        - Linux native: runs copilot CLI directly
+        """
+        if not CONFIG.get("githubCopilotEnabled"):
+            self._json_response({"error": "GitHub Copilot is disabled in config.yaml"}, 400)
             return
 
-        wsl_file = _windows_to_wsl_path(file_path)
+        copilot_path = CONFIG.get("copilotCliPath", "copilot")
 
-        # Build context message: use focused prompt if provided, else generic
+        # Build context message
         if smell_description and '\n' in smell_description:
-            context = f"I'm looking at file: {wsl_file}"
+            context = f"I'm looking at file: {file_path}"
             if line:
                 context += f" (line {line})"
             context += f"\n\n{smell_description}"
         else:
-            context_parts = [f"I'm looking at file: {wsl_file}"]
+            context_parts = [f"I'm looking at file: {file_path}"]
             if line:
                 context_parts.append(f" (line {line})")
             if project_name:
@@ -491,18 +497,53 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             context_parts.append("\n\nPlease suggest a refactoring to address this issue.")
             context = "".join(context_parts)
 
-        wsl_cmd = [
-            "wsl", "-d", CONFIG["wslDistro"], "--",
-            "gh", "copilot", "suggest",
-            "-t", "shell",
-            context
-        ]
+        use_wsl = CONFIG.get("enableWslTools") and CONFIG.get("claudeCodeUseWsl")
 
-        try:
-            subprocess.Popen(wsl_cmd, start_new_session=True)
-            self._json_response({"status": "ok", "editor": "copilot"})
-        except OSError as exc:
-            self._json_response({"error": f"Failed to launch GitHub Copilot: {exc}"}, 500)
+        if sys.platform == "win32" and not use_wsl:
+            # Windows native: launch copilot in a new terminal window
+            sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
+            work_dir = str(Path(sln_path).parent) if sln_path else os.path.dirname(file_path)
+
+            # Escape double quotes in context for the cmd shell
+            safe_context = context.replace('"', '\\"')
+            cmd_str = f'start "" /d "{work_dir}" {copilot_path} suggest -t shell "{safe_context}"'
+            try:
+                subprocess.Popen(cmd_str, shell=True)
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "windows"})
+            except OSError as exc:
+                self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
+        elif use_wsl:
+            # WSL mode
+            wsl_file = _windows_to_wsl_path(file_path)
+            # Rebuild context with WSL path
+            if smell_description and '\n' in smell_description:
+                context = f"I'm looking at file: {wsl_file}"
+                if line:
+                    context += f" (line {line})"
+                context += f"\n\n{smell_description}"
+            else:
+                context_parts[0] = f"I'm looking at file: {wsl_file}"
+                context = "".join(context_parts)
+
+            wsl_cmd = [
+                "wsl", "-d", CONFIG["wslDistro"], "--",
+                copilot_path, "suggest", "-t", "shell", context
+            ]
+            try:
+                subprocess.Popen(wsl_cmd, start_new_session=True)
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "wsl"})
+            except OSError as exc:
+                self._json_response({"error": f"Failed to launch Copilot via WSL: {exc}"}, 500)
+        else:
+            # Linux/macOS native
+            try:
+                subprocess.Popen(
+                    [copilot_path, "suggest", "-t", "shell", context],
+                    start_new_session=True
+                )
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "native"})
+            except OSError as exc:
+                self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
 
     # ── Response helpers ──
 

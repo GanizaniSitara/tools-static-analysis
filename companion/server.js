@@ -467,10 +467,11 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   const isWin = os.platform() === "win32";
   const mode = config.copilotMode || "standalone";
   const copilotPath = config.copilotCliPath || "copilot";
+  const useWsl = config.enableWslTools && config.claudeCodeUseWsl;
 
-  // Resolve paths
+  // Resolve paths: use WSL paths only when explicitly using WSL mode
   let targetDir, targetFile;
-  if (isWin) {
+  if (isWin && useWsl) {
     targetDir = windowsToWslPath(workspace);
     targetFile = windowsToWslPath(filePath);
   } else {
@@ -484,7 +485,26 @@ function openCopilot(filePath, line, project, smell, config, callback) {
   if (smell) context += ". Issue: " + smell;
   if (project) context += " (Project: " + project + ")";
 
-  // Optional env activation (e.g., nvm for Node.js 22+ required by standalone CLI)
+  if (isWin && !useWsl) {
+    // Windows native: launch copilot directly in a new terminal
+    let winCmd;
+    if (mode === "gh-extension") {
+      winCmd = 'cd /d "' + workspace + '" && gh copilot suggest -t shell "' + context.replace(/"/g, '\\"') + '"';
+    } else {
+      winCmd = 'cd /d "' + workspace + '" && ' + copilotPath + ' -p "' + context.replace(/"/g, '\\"') + '"';
+    }
+    if (which("wt")) {
+      spawn("wt", ["cmd", "/k", winCmd], { detached: true, stdio: "ignore" }).unref();
+    } else {
+      spawn("cmd", ["/c", 'start "" cmd /k ' + winCmd], { detached: true, stdio: "ignore" }).unref();
+    }
+    return callback(null, {
+      status: "ok", editor: "copilot", workspace: workspace,
+      mode: "windows", copilotMode: mode,
+    });
+  }
+
+  // WSL or native Linux/macOS
   const preamble = envPreamble(config);
 
   let shellCmd;
@@ -495,21 +515,16 @@ function openCopilot(filePath, line, project, smell, config, callback) {
       "gh copilot suggest -t shell " + shellQuote(context);
   } else {
     // Standalone: copilot -p "<prompt>" (npm i -g @github/copilot)
-    // The standalone CLI is interactive by default (TUI), -p makes it non-interactive
     shellCmd = preamble +
       "cd " + shellQuote(targetDir) + " && " +
       copilotPath + " -p " + shellQuote(context);
   }
 
-  // Copilot CLI always needs a terminal (both modes are interactive TUI apps)
-  launchInTerminal(shellCmd, targetDir, config, isWin);
+  launchInTerminal(shellCmd, targetDir, config, isWin && useWsl);
 
   return callback(null, {
-    status: "ok",
-    editor: "copilot",
-    workspace: targetDir,
-    mode: isWin ? "wsl" : "native",
-    copilotMode: mode,
+    status: "ok", editor: "copilot", workspace: targetDir,
+    mode: (isWin && useWsl) ? "wsl" : "native", copilotMode: mode,
   });
 }
 
@@ -580,24 +595,31 @@ function handleRequest(req, res, config) {
     // Copilot availability checked independently of enableWslTools
     if (config.githubCopilotEnabled) {
       if (isWin) {
-        const copilotCmd = config.copilotMode === "gh-extension"
-          ? "gh copilot --version"
-          : "which " + copilotPath;
-        checks.push(
-          new Promise((resolve) => {
-            const child = spawn("wsl", [
-              "-d", distro, "--", "bash", "-lc",
-              copilotCmd + " 2>/dev/null && echo FOUND || echo MISSING"
-            ]);
-            let out = "";
-            child.stdout.on("data", (d) => { out += d; });
-            child.on("close", () => {
-              tools.copilot = out.trim().includes("FOUND");
-              resolve();
-            });
-            child.on("error", () => { tools.copilot = false; resolve(); });
-          })
-        );
+        // Check natively on Windows first, then fall back to WSL
+        const nativeCopilot = !!which(copilotPath);
+        if (nativeCopilot) {
+          tools.copilot = true;
+        } else {
+          // Fall back: check via WSL
+          const copilotCmd = config.copilotMode === "gh-extension"
+            ? "gh copilot --version"
+            : "which " + copilotPath;
+          checks.push(
+            new Promise((resolve) => {
+              const child = spawn("wsl", [
+                "-d", distro, "--", "bash", "-lc",
+                copilotCmd + " 2>/dev/null && echo FOUND || echo MISSING"
+              ]);
+              let out = "";
+              child.stdout.on("data", (d) => { out += d; });
+              child.on("close", () => {
+                tools.copilot = out.trim().includes("FOUND");
+                resolve();
+              });
+              child.on("error", () => { tools.copilot = false; resolve(); });
+            })
+          );
+        }
       } else {
         tools.copilot = config.copilotMode === "gh-extension"
           ? !!which("gh")
