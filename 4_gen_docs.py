@@ -86,6 +86,7 @@ nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
 external_tools_data: dict = _load_json(os.path.join(OUT_DIR, "external-tools.json"), {})
 resilience_data: dict = _load_json(os.path.join(OUT_DIR, "resilience-findings.json"), {})
+triage_data: dict = _load_json(os.path.join(OUT_DIR, "triage.json"), {})
 
 # Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
 language_data: dict[str, dict] = {}
@@ -779,7 +780,9 @@ def generate_viewer_html() -> str:
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
                                "context": (s.get("context") or "")[:100],
                                "severity": s.get("severity", ""),
-                               "category": s.get("category", "")} for s in smells]
+                               "category": s.get("category", ""),
+                               "findingId": s.get("findingId", ""),
+                               "triageStatus": s.get("triageStatus", "unreviewed")} for s in smells]
             if trimmed_smells:
                 trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
@@ -788,11 +791,13 @@ def generate_viewer_html() -> str:
             entry["files"] = trimmed_files
         cq_projects_trimmed.append(entry)
     smell_prompts = refactoring_data.get("smellPrompts", {})
+    triage_dispositions = triage_data.get("dispositions", {})
     cq_embedded = _safe_json_for_script({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
         "smellPrompts": smell_prompts,
+        "triage": triage_dispositions,
     })
 
     # ── Repo root lookup for file:// links ──
@@ -1409,6 +1414,14 @@ def generate_viewer_html() -> str:
         cq_low_count = cq_sev_counts.get("low", 0)
         cq_scan_level = _esc_html(refactoring_summary.get("level", "high"))
 
+        # Triage counts for summary cards
+        cq_triage_counts = refactoring_summary.get("triageCounts", {})
+        cq_triaged = cq_total_smells - cq_triage_counts.get("unreviewed", cq_total_smells)
+        cq_false_pos = cq_triage_counts.get("false_positive", 0)
+        cq_confirmed = cq_triage_counts.get("confirmed", 0)
+        cq_accepted = cq_triage_counts.get("accepted_risk", 0)
+        cq_fixed = cq_triage_counts.get("fixed", 0)
+
         # Smell type badges
         cq_badge_html = ""
         for st in cq_top_smell_types:
@@ -1478,13 +1491,20 @@ def generate_viewer_html() -> str:
           <div class="stat-label">Low</div>
           <div class="stat-value">{cq_low_count}</div>
         </div>
+        <div class="stat-card" style="color:#005587;border-left:3px solid #005587;">
+          <div class="stat-label" style="color:#53565A;">Triaged</div>
+          <div class="stat-value">{cq_triaged}/{cq_total_smells}</div>
+        </div>
       </div>
       <div id="cqFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {cq_sev_badges_html}
         <span style="color:#E1E1E1;">|</span>
         {cq_badge_html}
+        <span style="color:#E1E1E1;">|</span>
+        <select id="cqTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
         <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
+        <button type="button" id="cqExportTriage" style="margin-left:auto;padding:0.3rem 0.75rem;border:1px solid #005587;border-radius:4px;background:#fff;color:#005587;font-size:0.78rem;font-weight:600;cursor:pointer;" title="Export triage decisions as JSON">Export Triage</button>
       </div>
       <div class="table-wrap">
         <table id="cqTable">
@@ -1634,6 +1654,8 @@ def generate_viewer_html() -> str:
       </div>
       <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_sec_sev_badges_html}
+        <span style="color:#E1E1E1;">|</span>
+        <select id="secTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
       </div>
       <div class="table-wrap">
         <table id="securityTable">
@@ -1644,6 +1666,7 @@ def generate_viewer_html() -> str:
               <th data-sort-type="text">Detector</th>
               <th data-sort-type="text">Severity</th>
               <th data-sort-type="text">Context</th>
+              <th data-sort-type="text">Triage</th>
             </tr>
           </thead>
           <tbody id="securityBody">
@@ -4003,6 +4026,55 @@ function initSortableTable(table) {{
     }}
 
     var smellPrompts = cqData.smellPrompts || {{}};
+    // Triage data store — mutable copy of embedded dispositions
+    var triageStore = JSON.parse(JSON.stringify(cqData.triage || {{}}));
+    var triageStatusColors = {{
+      unreviewed: '#53565A',
+      confirmed: '#D0002B',
+      false_positive: '#009639',
+      accepted_risk: '#9E8700',
+      fixed: '#005587'
+    }};
+    var triageStatusLabels = {{
+      unreviewed: 'Unreviewed',
+      confirmed: 'Confirmed',
+      false_positive: 'False Positive',
+      accepted_risk: 'Accepted Risk',
+      fixed: 'Fixed'
+    }};
+    var triageDirty = false;
+
+    function triageBadge(status) {{
+      var c = triageStatusColors[status] || '#53565A';
+      var label = triageStatusLabels[status] || status || 'Unreviewed';
+      return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(label) + '</span>';
+    }}
+
+    function triageSelect(findingId, currentStatus) {{
+      var opts = ['unreviewed', 'confirmed', 'false_positive', 'accepted_risk', 'fixed'];
+      var h = '<select class="triage-select" data-finding-id="' + escHtml(findingId) + '" style="font-size:0.72rem;padding:0.15rem 0.3rem;border:1px solid #E1E1E1;border-radius:4px;cursor:pointer;">';
+      opts.forEach(function(o) {{
+        var sel = o === (currentStatus || 'unreviewed') ? ' selected' : '';
+        h += '<option value="' + o + '"' + sel + '>' + (triageStatusLabels[o] || o) + '</option>';
+      }});
+      h += '</select>';
+      h += '<input type="text" class="triage-reason" data-finding-id="' + escHtml(findingId) + '" placeholder="Reason..." style="font-size:0.72rem;padding:0.15rem 0.3rem;border:1px solid #E1E1E1;border-radius:4px;width:120px;margin-left:0.25rem;" value="' + escHtml((triageStore[findingId] || {{}}).reason || '') + '">';
+      return h;
+    }}
+
+    function updateTriageEntry(findingId, status, reason) {{
+      if (!triageStore[findingId]) {{
+        triageStore[findingId] = {{ status: 'unreviewed', reason: '', decidedBy: '', date: '', context: '' }};
+      }}
+      triageStore[findingId].status = status;
+      if (reason !== undefined) triageStore[findingId].reason = reason;
+      triageStore[findingId].date = new Date().toISOString().split('T')[0];
+      triageDirty = true;
+      // Update the export button appearance
+      var btn = document.getElementById('cqExportTriage');
+      if (btn) btn.style.background = '#E8F0FE';
+    }}
+
     function buildSmellPrompt(smellType, file, line, context, project) {{
       var tmpl = smellPrompts[smellType];
       if (!tmpl) return smellType;
@@ -4018,7 +4090,7 @@ function initSortableTable(table) {{
       if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
       var root = repoRoots[p.repo || ''] || '';
       var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
-      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Triage</th></tr></thead><tbody>';
       files.forEach(function(f) {{
         var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
         var fPath = f.file || '';
@@ -4026,12 +4098,15 @@ function initSortableTable(table) {{
           var sc = sevColors[s.severity] || '#53565A';
           var smellPrompt = buildSmellPrompt(s.type, fPath, s.line || 0, s.context || '', p.project || '');
           var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;', p.project || '', smellPrompt) : escHtml(fname);
-          h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+          var fid = s.findingId || '';
+          var tStatus = s.triageStatus || (triageStore[fid] || {{}}).status || 'unreviewed';
+          h += '<tr style="border-bottom:1px solid #F5F5F5;" data-triage-status="' + escHtml(tStatus) + '" data-finding-id="' + escHtml(fid) + '">';
           h += '<td style="padding:0.25rem 0.5rem;">' + fActions + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;">' + sevBadge(s.severity) + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
           h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;white-space:nowrap;">' + triageSelect(fid, tStatus) + '</td>';
           h += '</tr>';
         }});
       }});
@@ -4047,16 +4122,22 @@ function initSortableTable(table) {{
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
       var hasFiles = p.files && p.files.length > 0;
-      // Collect severity set for this project
+      // Collect severity and triage sets for this project
       var sevSet = {{}};
-      (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{ if (s.severity) sevSet[s.severity] = true; }}); }});
+      var triageSet = {{}};
+      (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{
+        if (s.severity) sevSet[s.severity] = true;
+        triageSet[s.triageStatus || 'unreviewed'] = true;
+      }}); }});
       var sevList = Object.keys(sevSet).join(',');
+      var triageList = Object.keys(triageSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
       tr.setAttribute('data-severities', sevList.toLowerCase());
+      tr.setAttribute('data-triage-statuses', triageList.toLowerCase());
       if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -4147,6 +4228,64 @@ function initSortableTable(table) {{
     if (cqCatSelect) cqCatSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     var cqTestSelect = document.getElementById('cqTestsFilter');
     if (cqTestSelect) cqTestSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+    var cqTriageSelect = document.getElementById('cqTriageFilter');
+    if (cqTriageSelect) cqTriageSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+
+    // Triage event delegation on tbody — handle select/input changes in detail rows
+    tbody.addEventListener('change', function (e) {{
+      var sel = e.target;
+      if (sel.classList && sel.classList.contains('triage-select')) {{
+        var fid = sel.getAttribute('data-finding-id');
+        var newStatus = sel.value;
+        if (fid) {{
+          updateTriageEntry(fid, newStatus);
+          // Update the data attribute on the parent row for filtering
+          var row = sel.closest('tr');
+          if (row) row.setAttribute('data-triage-status', newStatus);
+        }}
+        e.stopPropagation();
+      }}
+    }});
+    tbody.addEventListener('input', function (e) {{
+      var inp = e.target;
+      if (inp.classList && inp.classList.contains('triage-reason')) {{
+        var fid = inp.getAttribute('data-finding-id');
+        if (fid) {{
+          updateTriageEntry(fid, undefined, inp.value);
+        }}
+        e.stopPropagation();
+      }}
+    }});
+    // Prevent clicks on triage controls from toggling the detail row
+    tbody.addEventListener('click', function (e) {{
+      if (e.target.classList && (e.target.classList.contains('triage-select') || e.target.classList.contains('triage-reason'))) {{
+        e.stopPropagation();
+      }}
+    }});
+
+    // Export Triage button
+    var exportBtn = document.getElementById('cqExportTriage');
+    if (exportBtn) {{
+      exportBtn.addEventListener('click', function (e) {{
+        e.stopPropagation();
+        var data = {{
+          version: 1,
+          generated: new Date().toISOString().split('T')[0],
+          dispositions: triageStore
+        }};
+        var blob = new Blob([JSON.stringify(data, null, 2)], {{ type: 'application/json' }});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'triage.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        exportBtn.style.background = '#fff';
+        triageDirty = false;
+      }});
+    }}
   }})();
 
   function applyCqFilters() {{
@@ -4156,6 +4295,7 @@ function initSortableTable(table) {{
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
     var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
+    var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -4177,6 +4317,10 @@ function initSortableTable(table) {{
         var rowSevs = row.getAttribute('data-severities') || '';
         if (rowSevs.indexOf(sevFilter) === -1) show = false;
       }}
+      if (triageFilter) {{
+        var rowTriage = row.getAttribute('data-triage-statuses') || '';
+        if (rowTriage.indexOf(triageFilter) === -1) show = false;
+      }}
       if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
       if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
       if (searchQuery) {{
@@ -4197,6 +4341,7 @@ function initSortableTable(table) {{
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var activeBadge = document.querySelector('.cq-badge.cq-badge-active');
     var smellFilter = activeBadge ? activeBadge.getAttribute('data-smell').toLowerCase() : '';
+    var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
     detailRow.querySelectorAll('table tbody tr').forEach(function(dr) {{
       var cells = dr.querySelectorAll('td');
       if (cells.length < 4) return;
@@ -4208,6 +4353,10 @@ function initSortableTable(table) {{
       if (smellFilter) {{
         var cellSmell = (cells[3].textContent || '').trim().toLowerCase();
         if (cellSmell !== smellFilter) drShow = false;
+      }}
+      if (triageFilter) {{
+        var rowTriage = dr.getAttribute('data-triage-status') || 'unreviewed';
+        if (rowTriage !== triageFilter) drShow = false;
       }}
       dr.style.display = drShow ? '' : 'none';
     }});
@@ -4390,11 +4539,14 @@ function initSortableTable(table) {{
 
     var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
     var secFindings = [];
+    var triageStore = (window._codeQualityData || {{}}).triage || {{}};
+    var triageStatusLabels = {{ unreviewed: 'Unreviewed', confirmed: 'Confirmed', false_positive: 'False Positive', accepted_risk: 'Accepted Risk', fixed: 'Fixed' }};
+    var triageStatusColors = {{ unreviewed: '#53565A', confirmed: '#D0002B', false_positive: '#009639', accepted_risk: '#9E8700', fixed: '#005587' }};
     projects.forEach(function (p) {{
       (p.files || []).forEach(function (f) {{
         (f.smells || []).forEach(function (s) {{
           if (s.category === 'security') {{
-            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '' }});
+            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed' }});
           }}
         }});
       }});
@@ -4402,7 +4554,7 @@ function initSortableTable(table) {{
     // Merge external tool security findings
     (extData.findings || []).forEach(function (ef) {{
       if (ef.category === 'security') {{
-        secFindings.push({{ project: '', repo: '', file: ef.file || '', line: ef.line || 0, type: '[' + (ef.tool || '') + '] ' + (ef.ruleId || ''), severity: ef.severity || '', context: ef.message || '' }});
+        secFindings.push({{ project: '', repo: '', file: ef.file || '', line: ef.line || 0, type: '[' + (ef.tool || '') + '] ' + (ef.ruleId || ''), severity: ef.severity || '', context: ef.message || '', findingId: '', triageStatus: 'unreviewed' }});
       }}
     }});
     // Sort: critical first, then high
@@ -4423,16 +4575,21 @@ function initSortableTable(table) {{
       var c = sevColors[sf.severity] || '#53565A';
       var smellPrompt = buildSecPrompt(sf.type, sf.file, sf.line, sf.context, sf.project);
       var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;', sf.project, smellPrompt) : escHtml(sf.file);
+      var ts = sf.triageStatus || 'unreviewed';
+      var tc = triageStatusColors[ts] || '#53565A';
+      var tl = triageStatusLabels[ts] || ts;
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
       tr.setAttribute('data-severity', (sf.severity || '').toLowerCase());
+      tr.setAttribute('data-triage-status', ts);
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
         '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
         '<td style="padding:0.4rem 0.5rem;text-align:center;">' + sf.line + '</td>' +
         '<td style="padding:0.4rem 0.5rem;">' + escHtml(sf.type) + '</td>' +
         '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sf.severity) + '</span></td>' +
-        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(sf.context) + '</td>';
+        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(sf.context) + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(tc) + ',0.15);color:' + tc + ';">' + escHtml(tl) + '</span></td>';
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('securityTable'));
@@ -4453,6 +4610,9 @@ function initSortableTable(table) {{
         applySecurityFilters();
       }});
     }});
+    // Security triage filter handler
+    var secTriageSelect = document.getElementById('secTriageFilter');
+    if (secTriageSelect) secTriageSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
   }})();
 
   // ── External Tools IIFE ──
@@ -4707,10 +4867,12 @@ function initSortableTable(table) {{
     searchQuery = searchQuery.trim().toLowerCase();
     var activeSevBadge = document.querySelector('.sec-sev-badge.sec-sev-badge-active');
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var triageFilter = (document.getElementById('secTriageFilter') || {{}}).value || '';
     document.querySelectorAll('#securityBody tr').forEach(function(row) {{
       var show = true;
       if (repo && row.getAttribute('data-repo') !== repo) show = false;
       if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
+      if (triageFilter && row.getAttribute('data-triage-status') !== triageFilter) show = false;
       if (show && searchQuery) {{
         var text = row.getAttribute('data-search') || '';
         if (text && text.indexOf(searchQuery) === -1) show = false;
