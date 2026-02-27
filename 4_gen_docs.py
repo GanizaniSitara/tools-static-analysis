@@ -3421,9 +3421,9 @@ function _startFixPoll() {{
             if (d.state.patchFile) msg += ' Patch: ' + d.state.patchFile;
             _showFixResult(msg, true);
           }} else if (d.state.status === 'build_failed') {{
-            _showFixResult('Build failed:\n' + (d.state.buildOutput || ''), false);
+            _showFixResult('Build failed:\\n' + (d.state.buildOutput || ''), false);
           }} else if (d.state.status === 'test_failed') {{
-            _showFixResult('Tests failed:\n' + (d.state.testOutput || ''), false);
+            _showFixResult('Tests failed:\\n' + (d.state.testOutput || ''), false);
           }} else {{
             _showFixResult('Error: ' + (d.state.error || 'Unknown'), false);
           }}
@@ -3446,13 +3446,13 @@ function _submitFix() {{
           : d.status === 'test_failed' ? 'test_failed' : 'failed';
         _renderFixSteps(failStatus);
         var detail = d.buildOutput || d.testOutput || '';
-        _showFixResult(d.error + (detail ? '\n\n' + detail : ''), false);
+        _showFixResult(d.error + (detail ? '\\n\\n' + detail : ''), false);
         return;
       }}
       _renderFixSteps('done');
       var msg = 'Fix submitted.';
-      if (d.prUrl) msg += '\nPR: ' + d.prUrl;
-      if (d.patchFile) msg += '\nPatch saved: ' + d.patchFile;
+      if (d.prUrl) msg += '\\nPR: ' + d.prUrl;
+      if (d.patchFile) msg += '\\nPatch saved: ' + d.patchFile;
       _showFixResult(msg, true);
     }})
     .catch(function(err) {{
