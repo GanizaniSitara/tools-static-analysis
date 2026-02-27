@@ -1185,6 +1185,145 @@ SMELL_PROMPTS = {
 }
 
 
+# ─── Triage Persistence ───────────────────────────────────────────────
+
+TRIAGE_VERSION = 1
+TRIAGE_FILE = "triage.json"
+TRIAGE_STATUSES = {"unreviewed", "confirmed", "false_positive", "accepted_risk", "fixed"}
+
+
+def make_finding_id(file_path: str, smell: dict) -> str:
+    """Generate a stable finding ID from file path and smell data.
+
+    Format: {type}::{normalized_path}:{line}
+    """
+    normalized = file_path.replace("\\", "/")
+    return f"{smell['type']}::{normalized}:{smell.get('line', 0)}"
+
+
+def load_triage(out_dir: str) -> dict:
+    """Load existing triage.json from output directory."""
+    triage_path = os.path.join(out_dir, TRIAGE_FILE)
+    try:
+        data = json.loads(Path(triage_path).read_text(encoding="utf-8"))
+        if data.get("version") != TRIAGE_VERSION:
+            print(f"  Warning: triage.json version mismatch (expected {TRIAGE_VERSION})")
+        return data.get("dispositions", {})
+    except FileNotFoundError:
+        return {}
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"  Warning: could not load {triage_path}: {exc}")
+        return {}
+
+
+def save_triage(out_dir: str, dispositions: dict):
+    """Save triage.json to output directory."""
+    triage_path = os.path.join(out_dir, TRIAGE_FILE)
+    data = {
+        "version": TRIAGE_VERSION,
+        "generated": date.today().isoformat(),
+        "dispositions": dispositions,
+    }
+    try:
+        Path(triage_path).write_text(
+            json.dumps(data, indent=2), encoding="utf-8"
+        )
+        print(f"Saved: {triage_path}")
+    except OSError as e:
+        print(f"ERROR: Failed to save {triage_path}: {e}", file=sys.stderr)
+
+
+def apply_triage(projects: list, dispositions: dict) -> dict:
+    """Apply existing triage dispositions to scan results.
+
+    For each finding, looks up the finding ID in the dispositions dict.
+    If a line-exact match isn't found, tries fuzzy matching by context
+    within a +/-5 line window.
+
+    Returns updated dispositions dict (with new findings added as unreviewed).
+    """
+    updated = dict(dispositions)  # preserve existing entries
+    stats = {"matched": 0, "new": 0, "stale": 0}
+
+    # Build a reverse index: (type, normalized_path) -> [(line, context, id)]
+    # for fuzzy matching when line numbers shift
+    existing_by_file: dict[tuple, list] = {}
+    for fid, disp in dispositions.items():
+        parts = fid.split("::", 1)
+        if len(parts) != 2:
+            continue
+        smell_type = parts[0]
+        file_line = parts[1]
+        colon_idx = file_line.rfind(":")
+        if colon_idx == -1:
+            continue
+        fpath = file_line[:colon_idx]
+        try:
+            line_num = int(file_line[colon_idx + 1:])
+        except ValueError:
+            continue
+        key = (smell_type, fpath)
+        if key not in existing_by_file:
+            existing_by_file[key] = []
+        existing_by_file[key].append((line_num, disp.get("context", ""), fid))
+
+    matched_ids = set()
+
+    for project in projects:
+        for file_data in project.get("files", []):
+            file_path = file_data.get("path", "")
+            for smell in file_data.get("smells", []):
+                fid = make_finding_id(file_path, smell)
+                smell["findingId"] = fid
+
+                if fid in updated:
+                    # Exact match
+                    smell["triageStatus"] = updated[fid].get("status", "unreviewed")
+                    matched_ids.add(fid)
+                    stats["matched"] += 1
+                else:
+                    # Try fuzzy match: same type+file, context match within 5 lines
+                    norm_path = file_path.replace("\\", "/")
+                    key = (smell["type"], norm_path)
+                    fuzzy_match = None
+                    if key in existing_by_file:
+                        smell_line = smell.get("line", 0)
+                        smell_ctx = smell.get("context", "")
+                        for old_line, old_ctx, old_id in existing_by_file[key]:
+                            if old_id in matched_ids:
+                                continue
+                            if abs(old_line - smell_line) <= 5 and old_ctx and old_ctx == smell_ctx:
+                                fuzzy_match = old_id
+                                break
+
+                    if fuzzy_match and fuzzy_match in updated:
+                        # Migrate the disposition to the new finding ID
+                        old_disp = updated[fuzzy_match]
+                        smell["triageStatus"] = old_disp.get("status", "unreviewed")
+                        updated[fid] = dict(old_disp)
+                        updated[fid]["context"] = smell.get("context", "")
+                        matched_ids.add(fuzzy_match)
+                        matched_ids.add(fid)
+                        stats["matched"] += 1
+                    else:
+                        # New finding
+                        smell["triageStatus"] = "unreviewed"
+                        updated[fid] = {
+                            "status": "unreviewed",
+                            "reason": "",
+                            "decidedBy": "",
+                            "date": "",
+                            "context": smell.get("context", ""),
+                        }
+                        stats["new"] += 1
+
+    # Count stale dispositions (in triage but not matched to any current finding)
+    stats["stale"] = sum(1 for fid in dispositions if fid not in matched_ids)
+
+    print(f"  Triage: {stats['matched']} matched, {stats['new']} new, {stats['stale']} stale")
+    return updated
+
+
 def analyze_file(filepath: str, scan_root: str, level: str = "high") -> dict | None:
     """Analyze a single C# file for complexity and smells."""
     content = safe_read_text(filepath)
@@ -1824,21 +1963,28 @@ def main():
     # Analyze all files
     result = analyze_all_files(SCAN_ROOT, level=SCAN_LEVEL)
     projects = result["projects"]
-    
+
+    # Load and apply triage dispositions
+    print("\nApplying triage dispositions...")
+    existing_triage = load_triage(OUT_DIR)
+    updated_triage = apply_triage(projects, existing_triage)
+
     # Compute summary statistics
     total_files_with_smells = sum(1 for p in projects for f in p["files"] if f["smell_count"] > 0)
     total_smells = sum(p["smell_count"] for p in projects)
 
-    # Count smell types and severity counts across all projects
+    # Count smell types, severity counts, and triage status across all projects
     all_smell_types = defaultdict(int)
     severity_counts = defaultdict(int)
     category_counts = defaultdict(int)
+    triage_counts = defaultdict(int)
     for project in projects:
         for file in project["files"]:
             for smell in file["smells"]:
                 all_smell_types[smell["type"]] += 1
                 severity_counts[smell.get("severity", "low")] += 1
                 category_counts[smell.get("category", "style")] += 1
+                triage_counts[smell.get("triageStatus", "unreviewed")] += 1
 
     top_smell_types = [
         {"smell": smell, "count": count}
@@ -1855,17 +2001,18 @@ def main():
         "topProjectsByScore": top_projects,
         "severityCounts": dict(severity_counts),
         "categoryCounts": dict(category_counts),
+        "triageCounts": dict(triage_counts),
         "level": SCAN_LEVEL,
     }
-    
+
     # Generate Claude Code targets
     claude_targets = generate_claude_targets(projects)
-    
+
     # Clean up internal fields before output
     for project in projects:
         # Remove smell_counts (internal use only)
         project.pop("smell_counts", None)
-    
+
     # Prepare output
     output_data = {
         "generated": date.today().isoformat(),
@@ -1875,13 +2022,15 @@ def main():
         "claudeCodeTargets": claude_targets,
         "smellPrompts": SMELL_PROMPTS,
     }
-    
+
     # Save outputs
     print("\nGenerating outputs...")
     json_path = os.path.join(OUT_DIR, "refactoring-targets.json")
     md_path = os.path.join(OUT_DIR, "refactoring-report.md")
-    
+    triage_path = os.path.join(OUT_DIR, TRIAGE_FILE)
+
     save_json_output(output_data, json_path)
+    save_triage(OUT_DIR, updated_triage)
     generate_markdown_report(
         {
             "projects": projects,
@@ -1890,11 +2039,15 @@ def main():
         },
         md_path
     )
-    
+
+    triaged = total_smells - triage_counts.get("unreviewed", 0)
     print("\n" + "=" * 70)
     print("Analysis complete!")
     print(f"  - {len(projects)} projects analyzed")
     print(f"  - {total_smells} total smells detected")
+    print(f"  - {triaged}/{total_smells} findings triaged")
+    if triage_counts.get("false_positive"):
+        print(f"  - {triage_counts['false_positive']} marked as false positive")
     if projects:
         print(f"  - Top project: {projects[0]['project']} (score: {projects[0]['refactoring_value_score']})")
     print("=" * 70)
