@@ -4588,6 +4588,12 @@ function initSortableTable(table) {{
     applyCqFilters();
     applyUxFilters();
     applyResFilters();
+    applySecurityFilters();
+    applyExtToolsFilters();
+    applyTestsFilter();
+    applyNugetFilter();
+    applyE2eFlowsFilter();
+    applyDataSourcesFilter();
   }});
 
   // ── Tab-specific filter functions for tabs without existing filters ──
@@ -4637,31 +4643,64 @@ function initSortableTable(table) {{
 
   function applyTestsFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#testsTable tbody tr').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyNugetFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#nhLegacyTable tbody tr').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyE2eFlowsFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#flowPathsBody .flow-row').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyDataSourcesFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#datasourcesTable tbody tr').forEach(function(row) {{
-      if (!repo) {{ row.style.display = ''; return; }}
-      var rowRepos = row.getAttribute('data-repo') || '';
-      row.style.display = (rowRepos.indexOf(repo) !== -1) ? '' : 'none';
+      var show = true;
+      if (repo) {{
+        var rowRepos = row.getAttribute('data-repo') || '';
+        if (rowRepos.indexOf(repo) === -1) show = false;
+      }}
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 

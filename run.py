@@ -32,7 +32,9 @@ def _load_config():
         "claudeCodePath": "claude",
         "micromambaEnv": "",
         "openCodePath": "/usr/local/bin/opencode",
-        "githubCopilotEnabled": True
+        "githubCopilotEnabled": True,
+        "copilotMode": "standalone",
+        "copilotCliPath": "copilot",
     }
     if not config_path.exists():
         return default
@@ -479,6 +481,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         copilot_path = CONFIG.get("copilotCliPath", "copilot")
+        copilot_mode = CONFIG.get("copilotMode", "standalone")
 
         # Build context message
         if smell_description and '\n' in smell_description:
@@ -499,6 +502,13 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
         use_wsl = CONFIG.get("enableWslTools") and CONFIG.get("claudeCodeUseWsl")
 
+        # Build command args based on copilot mode
+        if copilot_mode == "gh-extension":
+            copilot_args = ["suggest", "-t", "shell", context]
+        else:
+            # standalone: copilot -p "prompt"
+            copilot_args = ["-p", context]
+
         if sys.platform == "win32" and not use_wsl:
             # Windows native: launch copilot in a new terminal window
             sln_path = _find_solution(file_path, self.repo_roots, self.solutions_map)
@@ -506,10 +516,14 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 
             # Escape double quotes in context for the cmd shell
             safe_context = context.replace('"', '\\"')
-            cmd_str = f'start "" /d "{work_dir}" {copilot_path} suggest -t shell "{safe_context}"'
+            if copilot_mode == "gh-extension":
+                cmd_str = f'start "" /d "{work_dir}" gh copilot suggest -t shell "{safe_context}"'
+            else:
+                cmd_str = f'start "" /d "{work_dir}" {copilot_path} -p "{safe_context}"'
             try:
                 subprocess.Popen(cmd_str, shell=True)
-                self._json_response({"status": "ok", "editor": "copilot", "mode": "windows"})
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "windows",
+                                     "copilotMode": copilot_mode})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
         elif use_wsl:
@@ -525,23 +539,31 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
                 context_parts[0] = f"I'm looking at file: {wsl_file}"
                 context = "".join(context_parts)
 
+            # Rebuild args with updated context
+            if copilot_mode == "gh-extension":
+                wsl_copilot_args = ["gh", "copilot", "suggest", "-t", "shell", context]
+            else:
+                wsl_copilot_args = [copilot_path, "-p", context]
+
             wsl_cmd = [
                 "wsl", "-d", CONFIG["wslDistro"], "--",
-                copilot_path, "suggest", "-t", "shell", context
+                *wsl_copilot_args
             ]
             try:
                 subprocess.Popen(wsl_cmd, start_new_session=True)
-                self._json_response({"status": "ok", "editor": "copilot", "mode": "wsl"})
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "wsl",
+                                     "copilotMode": copilot_mode})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot via WSL: {exc}"}, 500)
         else:
             # Linux/macOS native
             try:
                 subprocess.Popen(
-                    [copilot_path, "suggest", "-t", "shell", context],
+                    [copilot_path] + copilot_args,
                     start_new_session=True
                 )
-                self._json_response({"status": "ok", "editor": "copilot", "mode": "native"})
+                self._json_response({"status": "ok", "editor": "copilot", "mode": "native",
+                                     "copilotMode": copilot_mode})
             except OSError as exc:
                 self._json_response({"error": f"Failed to launch Copilot: {exc}"}, 500)
 
