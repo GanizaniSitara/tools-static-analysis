@@ -682,6 +682,36 @@ def detect_hardcoded_secrets(path: str, content: str, lines: list[str]) -> list[
         r'(\{[^}]+\}|<[^>]+>|\$\{|%[^%]+%|your[_-]|example|placeholder|changeme|xxx|todo|replace)',
         re.IGNORECASE
     )
+    # Values that are just key names / labels, not actual secrets
+    keyname_pattern = re.compile(
+        r'^(password|passwd|pwd|apikey|api_key|secret|secretkey|secret_key|connectionstring|'
+        r'access_key|token|auth_token|private_key|username|user|host|server|database|port|'
+        r'data source|initial catalog|integrated security|trusted_connection|'
+        r'persist security info|multipleactiveresultsets|encrypt|trustservercertificate)$',
+        re.IGNORECASE
+    )
+    # Methods that remove/mask/sanitize secrets — not storing them
+    sanitizer_pattern = re.compile(
+        r'\b(remove|strip|mask|redact|sanitize|hide|clear|blank|replace|obfuscate)\w*'
+        r'(password|secret|credential|sensitive|connection)',
+        re.IGNORECASE
+    )
+    # Detect if the file-level or method-level context is a sanitizer
+    # Check the enclosing method name once per method scope
+    method_sig_pattern = re.compile(
+        r'\b(?:public|private|protected|internal|static)\s+\S+\s+(\w+)\s*\(',
+    )
+
+    # Build a line -> enclosing method name map (approximate)
+    enclosing_method: dict[int, str] = {}
+    current_method = ""
+    brace_depth = 0
+    for idx, ln in enumerate(lines):
+        msig = method_sig_pattern.search(ln)
+        if msig:
+            current_method = msig.group(1)
+        enclosing_method[idx] = current_method
+
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
@@ -689,6 +719,13 @@ def detect_hardcoded_secrets(path: str, content: str, lines: list[str]) -> list[
         for m in secret_pattern.finditer(line):
             value = m.group(2)
             if placeholder_pattern.search(value):
+                continue
+            # Skip if the "secret" value is just a key name (e.g. const string PASSWORD = "password")
+            if keyname_pattern.match(value.strip()):
+                continue
+            # Skip if inside a method that removes/masks secrets
+            method_name = enclosing_method.get(i, "")
+            if method_name and sanitizer_pattern.search(method_name):
                 continue
             smells.append({
                 "type": "hardcoded_secret",
@@ -777,20 +814,72 @@ def detect_command_injection(path: str, content: str, lines: list[str]) -> list[
 
 
 def detect_weak_crypto(path: str, content: str, lines: list[str]) -> list[dict]:
-    """Detect use of weak cryptographic algorithms."""
+    """Detect use of weak cryptographic algorithms.
+
+    MD5 and SHA1 are only flagged when used in a security-relevant context
+    (passwords, signatures, tokens, certificates). Non-security uses like
+    checksums, cache keys, ETags, and content hashing are not flagged.
+    DES, TripleDES, and RC2 are always flagged (they are symmetric ciphers
+    with no legitimate non-security use case).
+    """
     smells = []
-    weak_algos = re.compile(
-        r'\b(MD5|SHA1|DES|TripleDES|RC2)\s*\.\s*Create\b'
+    # Symmetric ciphers — always weak, always flag
+    always_weak = re.compile(r'\b(DES|TripleDES|RC2)\s*\.\s*Create\b')
+    # Hash algorithms — weak only in security contexts
+    weak_hash = re.compile(r'\b(MD5|SHA1)\s*\.\s*Create\b')
+    # Method/variable names suggesting non-security hashing
+    nonsecurity_context = re.compile(
+        r'(checksum|HashString|content.?hash|cache.?key|etag|fingerprint|'
+        r'dedup|bucket|GetMd5|CalcHash|file.?hash|Md5Hash)',
+        re.IGNORECASE
     )
+    # Method/variable names suggesting security usage
+    security_context = re.compile(
+        r'(password|credential|token|signature|sign|verify|cert|'
+        r'hmac|encrypt|decrypt|auth|nonce|salt|pbkdf|derive.?key)',
+        re.IGNORECASE
+    )
+
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
             continue
-        if weak_algos.search(line):
+
+        # Always flag DES/TripleDES/RC2
+        if always_weak.search(line):
             smells.append({
                 "type": "weak_crypto",
                 "line": i + 1,
-                "context": line.strip()[:80],
+                "context": stripped[:80],
+            })
+            continue
+
+        # For MD5/SHA1, check surrounding context (5 lines before/after)
+        if weak_hash.search(line):
+            context_start = max(0, i - 5)
+            context_end = min(len(lines), i + 6)
+            context_text = "\n".join(lines[context_start:context_end])
+
+            has_security = security_context.search(context_text)
+            has_nonsecurity = nonsecurity_context.search(context_text)
+
+            # Security context takes priority — always flag
+            if has_security:
+                smells.append({
+                    "type": "weak_crypto",
+                    "line": i + 1,
+                    "context": stripped[:80],
+                })
+                continue
+            # Clear non-security usage — skip
+            if has_nonsecurity:
+                continue
+            # Ambiguous — flag but with lower confidence (still report it;
+            # triage system lets users mark as accepted_risk if non-security)
+            smells.append({
+                "type": "weak_crypto",
+                "line": i + 1,
+                "context": stripped[:80],
             })
     return smells
 
@@ -1011,7 +1100,9 @@ SMELL_PROMPTS = {
         "File: {file} (line {line})\n"
         "Context: {context}\n\n"
         "TASK: Evaluate ONLY this hardcoded secret. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether the value is a real secret (password, API key, connection string) or a false positive (placeholder, test data, non-sensitive config).\n"
+        "1. Confirm whether the value is a real secret (password, API key, connection string) or a false positive.\n"
+        "   Common false positives: key-name constants used for parsing (e.g. const string PASSWORD = \"password\"),\n"
+        "   connection string builders/parsers, secret removal/masking/redaction methods, logging placeholders.\n"
         "2. If it is a real secret, propose a fix: move to environment variable, Azure Key Vault, user-secrets, or IConfiguration injection.\n"
         "3. Show the minimal code change needed -- do not refactor surrounding code."
     ),
@@ -1048,7 +1139,9 @@ SMELL_PROMPTS = {
         "Context: {context}\n\n"
         "TASK: Evaluate ONLY this weak crypto usage. Do NOT review the rest of the file for other issues.\n"
         "1. Identify the algorithm (MD5, SHA1, DES, TripleDES, RC2).\n"
-        "2. Determine whether it is used for security (signatures, passwords) or non-security (checksums, cache keys).\n"
+        "2. Determine whether it is used for security (signatures, passwords, tokens, certificates)\n"
+        "   or non-security purposes (checksums, cache keys, ETags, content fingerprints, deduplication).\n"
+        "   MD5/SHA1 for non-security hashing is generally acceptable and not a vulnerability.\n"
         "3. If security-relevant, replace with SHA-256/SHA-512 (hashing), AES-256 (encryption), or PBKDF2/Argon2 (passwords).\n"
         "4. Show the minimal code change needed -- do not refactor surrounding code."
     ),
