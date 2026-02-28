@@ -2437,6 +2437,13 @@ def generate_viewer_html() -> str:
   .fix-modal .fix-result {{ margin-top:1rem; padding:0.8rem; border-radius:4px; font-size:0.8rem; font-family:'SF Mono','Consolas',monospace; white-space:pre-wrap; max-height:200px; overflow-y:auto; }}
   .fix-modal .fix-result.success {{ background:#e8f5e9; color:#1b5e20; }}
   .fix-modal .fix-result.failure {{ background:#fbe9e7; color:#bf360c; }}
+  .fix-modal .fix-commands {{ margin-top:1rem; padding:0.8rem; border-radius:4px; background:#f5f5f5; border:1px solid #ddd; font-size:0.8rem; display:none; }}
+  .fix-modal .fix-commands h4 {{ margin:0 0 0.6rem; font-size:0.85rem; color:#333; font-weight:600; }}
+  .fix-modal .fix-cmd {{ display:flex; align-items:flex-start; gap:0.4rem; margin-bottom:0.5rem; }}
+  .fix-modal .fix-cmd-text {{ flex:1; font-family:'SF Mono','Consolas',monospace; font-size:0.78rem; padding:0.3rem 0.5rem; background:#fff; border:1px solid #ccc; border-radius:3px; word-break:break-all; white-space:pre-wrap; }}
+  .fix-modal .fix-cmd-desc {{ font-size:0.72rem; color:#777; margin-bottom:0.3rem; }}
+  .fix-modal .fix-cmd-copy {{ flex-shrink:0; padding:0.2rem 0.5rem; font-size:0.72rem; background:#e8e8e8; border:1px solid #ccc; border-radius:3px; cursor:pointer; font-family:system-ui,sans-serif; }}
+  .fix-modal .fix-cmd-copy:hover {{ background:#d0d0d0; }}
   .footer {{
     text-align: center; padding: 1.5rem 2rem; color: #53565A;
     font-size: 0.78rem; font-style: italic; border-top: 1px solid #E1E1E1;
@@ -3373,6 +3380,7 @@ function _getFixModal() {{
     '<h3 id="fixModalTitle">Fix Workflow</h3>' +
     '<div id="fixSteps"></div>' +
     '<div id="fixResult" class="fix-result" style="display:none;"></div>' +
+    '<div id="fixCommands" class="fix-commands"></div>' +
     '<div class="fix-actions">' +
     '<button id="fixSubmitBtn" class="btn-primary" style="display:none;">Submit Fix</button>' +
     '<button id="fixCloseBtn" class="btn-secondary">Close</button>' +
@@ -3435,6 +3443,7 @@ function _startFixWorkflow(filePath, line, project, smell) {{
   var modal = _getFixModal();
   document.getElementById('fixModalTitle').textContent = 'Fix: ' + (smell || 'architectural smell');
   document.getElementById('fixResult').style.display = 'none';
+  document.getElementById('fixCommands').style.display = 'none';
   _renderFixSteps('checkout');
   modal.classList.add('active');
 
@@ -3451,10 +3460,12 @@ function _startFixWorkflow(filePath, line, project, smell) {{
       if (d.error) {{
         _renderFixSteps('failed');
         _showFixResult(d.error, false);
+        _showFixCommands(d.commands || null);
         return;
       }}
       _activeFixId = d.id;
       _renderFixSteps(d.state ? d.state.status : 'fixing');
+      _showFixCommands(null);
       showToast('Fix started on branch: ' + (d.branchName || ''));
       // Start polling for status
       _startFixPoll();
@@ -3523,6 +3534,55 @@ function _submitFix() {{
     }});
 }}
 
+function _showFixCommands(commands) {{
+  var el = document.getElementById('fixCommands');
+  if (!commands || !commands.length) {{
+    el.style.display = 'none';
+    return;
+  }}
+  var html = '<h4>Run these commands manually:</h4>';
+  for (var i = 0; i < commands.length; i++) {{
+    var c = commands[i];
+    var desc = c.description ? '<div class="fix-cmd-desc">' + _esc(c.description) +
+      (c.cwd ? ' (in ' + _esc(c.cwd) + ')' : '') + '</div>' : '';
+    html += desc +
+      '<div class="fix-cmd">' +
+      '<span class="fix-cmd-text">' + _esc(c.cmd) + '</span>' +
+      '<button class="fix-cmd-copy" onclick="_copyCmd(this)" title="Copy to clipboard">Copy</button>' +
+      '</div>';
+  }}
+  el.innerHTML = html;
+  el.style.display = 'block';
+}}
+
+function _esc(s) {{
+  var d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}}
+
+function _copyCmd(btn) {{
+  var text = btn.previousElementSibling.textContent;
+  if (navigator.clipboard) {{
+    navigator.clipboard.writeText(text).then(function() {{
+      btn.textContent = 'Copied';
+      setTimeout(function() {{ btn.textContent = 'Copy'; }}, 1500);
+    }});
+  }} else {{
+    // Fallback for older browsers / non-HTTPS
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied';
+    setTimeout(function() {{ btn.textContent = 'Copy'; }}, 1500);
+  }}
+}}
+
 function _showFixResult(text, isSuccess) {{
   var el = document.getElementById('fixResult');
   el.style.display = 'block';
@@ -3535,6 +3595,7 @@ function _closeFixModal() {{
   _activeFixId = null;
   var modal = _getFixModal();
   modal.classList.remove('active');
+  document.getElementById('fixCommands').style.display = 'none';
 }}
 
 // Delegated click handler for file action icons

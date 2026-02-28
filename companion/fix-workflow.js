@@ -270,6 +270,72 @@ function getVCS(type) {
   return svn;
 }
 
+/**
+ * Build the shell commands a developer would need to run manually
+ * for a fix, in case the automatic workflow can't execute them.
+ * Returns an array of { cmd, description } objects.
+ */
+function buildCommands(config, branchName, localDir) {
+  const vcsType = config.vcsType || "svn";
+  const repoUrl = config.repoUrl || "";
+  const commands = [];
+
+  if (vcsType === "svn") {
+    const svnBranchBase = (config.svnBranchBase || "").replace(/\/+$/, "");
+    const branchUrl = svnBranchBase + "/" + branchName;
+
+    // Step 1: ensure working copy
+    if (!fs.existsSync(path.join(localDir, ".svn"))) {
+      commands.push({
+        cmd: "svn checkout " + repoUrl + " " + localDir,
+        description: "Check out the repository",
+      });
+    } else {
+      commands.push({
+        cmd: "svn update",
+        description: "Update working copy to latest revision",
+        cwd: localDir,
+      });
+    }
+
+    // Step 2: create branch on server
+    commands.push({
+      cmd: "svn copy " + repoUrl + " " + branchUrl +
+        ' -m "Create fix branch: ' + branchName + '"',
+      description: "Create fix branch (server-side copy)",
+    });
+
+    // Step 3: switch working copy to branch
+    commands.push({
+      cmd: "svn switch " + branchUrl,
+      description: "Switch working copy to the fix branch",
+      cwd: localDir,
+    });
+  } else {
+    // Git
+    if (!fs.existsSync(path.join(localDir, ".git"))) {
+      commands.push({
+        cmd: "git clone " + repoUrl + " " + localDir,
+        description: "Clone the repository",
+      });
+    } else {
+      commands.push({
+        cmd: "git pull --ff-only",
+        description: "Pull latest changes",
+        cwd: localDir,
+      });
+    }
+
+    commands.push({
+      cmd: "git checkout -b " + branchName,
+      description: "Create and switch to fix branch",
+      cwd: localDir,
+    });
+  }
+
+  return commands;
+}
+
 // ---------------------------------------------------------------------------
 // Fix lifecycle operations
 // ---------------------------------------------------------------------------
@@ -296,6 +362,9 @@ function startFix(params, config) {
   const repoName = repoUrl.split("/").filter(Boolean).pop() || "project";
   const localDir = path.join(devRoot, repoName);
 
+  // Always build the manual commands so the developer can see/run them
+  const commands = buildCommands(config, branchName, localDir);
+
   try {
     // Step 1: Ensure checkout
     setFix(id, {
@@ -314,7 +383,7 @@ function startFix(params, config) {
       const svnBranchBase = config.svnBranchBase || "";
       if (!svnBranchBase) {
         setFix(id, { status: "failed", error: "svnBranchBase not configured" });
-        return { error: "svnBranchBase not configured. Set it in config.yaml.", id };
+        return { error: "svnBranchBase not configured. Set it in config.yaml.", id, commands };
       }
       const trunkUrl = repoUrl;
       const branchUrl = svnBranchBase.replace(/\/+$/, "") + "/" + branchName;
@@ -335,12 +404,13 @@ function startFix(params, config) {
       id,
       localDir,
       branchName,
+      commands,
       state: fixes[id],
     };
 
   } catch (err) {
     setFix(id, { status: "failed", error: err.message });
-    return { error: err.message, id };
+    return { error: err.message, id, commands };
   }
 }
 
@@ -516,4 +586,5 @@ module.exports = {
   getFixStatus,
   submitFix,
   getVCS,
+  buildCommands,
 };
