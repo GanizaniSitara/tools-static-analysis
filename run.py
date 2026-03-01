@@ -505,6 +505,8 @@ def main():
                         help="Skip pipeline, just start the web server on existing output")
     parser.add_argument("--tools", default="none",
                         help="External tools: semgrep,bandit,detect-secrets,radon,all,none (default: none)")
+    parser.add_argument("--integrations", default="none",
+                        help="Security platforms: armorcode,sonarqube,all,none (default: none)")
     args = parser.parse_args()
 
     if not args.serve_only and not args.repos:
@@ -542,6 +544,15 @@ def main():
         if args.tools and args.tools.lower() != "none":
             print("\n--- External tools ---")
             run("5_external_tools.py", repos, out, "--tools", args.tools)
+
+        # Step 6: Security integrations (optional, off by default)
+        if args.integrations and args.integrations.lower() != "none":
+            print("\n--- Security integrations ---")
+            integration_args = [out, "--platforms", args.integrations]
+            # If external tools ran, also export those findings to platforms
+            if args.tools and args.tools.lower() != "none":
+                integration_args.extend(["--export", "external-tools.json"])
+            run("6_security_integrations.py", *integration_args)
 
         # Run language scanners (auto-discovered plugins)
         print("\n--- Language scanners ---")

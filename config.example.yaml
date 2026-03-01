@@ -77,6 +77,36 @@ openCodePath: /usr/local/bin/opencode
 # Install: gh extension install github/gh-copilot
 githubCopilotEnabled: true
 
+# Security Platform Integrations
+# ============================================================================
+# Configure connections to ArmorCode and SonarQube.
+# When credentials are not set, integrations run in demo mode with mock data.
+#
+# Usage via pipeline:
+#   python3 run.py <repos> <out> --integrations all
+#   python3 run.py <repos> <out> --integrations armorcode,sonarqube
+#
+# Usage standalone:
+#   python3 6_security_integrations.py <out> --platforms all
+integrations:
+  armorcode:
+    # ArmorCode ASPM tenant URL and API token
+    # api_url: https://acme.armorcode.ai/api/v1
+    # api_token: your-armorcode-api-token
+    # product: your-product-name
+    api_url: ""
+    api_token: ""
+    product: ""
+  sonarqube:
+    # SonarQube server URL and user token
+    # Community Edition: docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+    # api_url: http://localhost:9000
+    # api_token: squ_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # project_key: my-project
+    api_url: ""
+    api_token: ""
+    project_key: ""
+
 # ============================================================================
 # Configuration Examples
 # ============================================================================
