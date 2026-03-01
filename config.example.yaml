@@ -90,8 +90,11 @@ githubCopilotEnabled: true
 #   python3 6_security_integrations.py <out> --platforms all
 integrations:
   armorcode:
-    # ArmorCode ASPM tenant URL and API token
-    # api_url: https://acme.armorcode.ai/api/v1
+    # ArmorCode ASPM API (https://github.com/armor-code/acsdk)
+    # api_url defaults to https://app.armorcode.com/api — override only for on-prem
+    # api_token: generate in ArmorCode Platform > Settings > API Keys
+    # product: scope findings to a specific ArmorCode product (optional)
+    # api_url: https://app.armorcode.com/api
     # api_token: your-armorcode-api-token
     # product: your-product-name
     api_url: ""

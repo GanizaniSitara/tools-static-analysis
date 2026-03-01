@@ -7,8 +7,9 @@ aggregates findings from multiple security tools. This adapter supports:
 - Importing aggregated findings from ArmorCode
 - Demo mode with realistic mock data when no API credentials are available
 
-API reference: ArmorCode uses a REST API with Bearer token authentication.
-Base URL pattern: https://<tenant>.armorcode.ai/api/v1/
+API base URL: https://app.armorcode.com/api/
+Authentication: Bearer token (generate via ArmorCode Platform > API Key page)
+Python SDK: pip install git+https://github.com/armor-code/acsdk
 """
 
 from __future__ import annotations
@@ -19,6 +20,9 @@ from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 from .base import SecurityIntegration
+
+# Default ArmorCode API base URL
+_DEFAULT_BASE_URL = "https://app.armorcode.com/api"
 
 # Demo findings simulating what ArmorCode would aggregate from multiple tools
 _DEMO_FINDINGS = [
@@ -128,9 +132,11 @@ _DEMO_FINDINGS = [
 class ArmorCodeIntegration(SecurityIntegration):
     """ArmorCode ASPM adapter.
 
+    Uses the same REST API as the official ArmorCode Python SDK (acsdk).
+
     Config keys:
-        api_url:   ArmorCode tenant API URL (e.g. https://acme.armorcode.ai/api/v1)
-        api_token: Bearer token for authentication
+        api_url:   ArmorCode API base URL (default: https://app.armorcode.com/api)
+        api_token: API key (generate in ArmorCode Platform > Settings > API Keys)
         product:   ArmorCode product name to scope findings
     """
 
@@ -138,7 +144,30 @@ class ArmorCodeIntegration(SecurityIntegration):
     display_name = "ArmorCode"
 
     def _has_credentials(self) -> bool:
-        return bool(self.config.get("api_url") and self.config.get("api_token"))
+        return bool(self.config.get("api_token"))
+
+    @property
+    def _base_url(self) -> str:
+        url = self.config.get("api_url", _DEFAULT_BASE_URL).rstrip("/")
+        return url
+
+    def _request(self, path: str, method: str = "GET",
+                 data: dict | None = None, timeout: int = 30) -> dict:
+        """Make an authenticated request to the ArmorCode API."""
+        url = f"{self._base_url}{path}"
+        body = json.dumps(data).encode("utf-8") if data else None
+        req = Request(
+            url,
+            data=body,
+            headers={
+                "Authorization": f"Token {self.config['api_token']}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            method=method,
+        )
+        with urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read())
 
     def test_connection(self) -> dict:
         if self._demo_mode:
@@ -148,23 +177,18 @@ class ArmorCodeIntegration(SecurityIntegration):
                 "demo": True,
             }
         try:
-            req = Request(
-                f"{self.config['api_url']}/health",
-                headers={"Authorization": f"Bearer {self.config['api_token']}"},
-            )
-            with urlopen(req, timeout=10) as resp:
-                if resp.status == 200:
-                    return {"connected": True, "message": "Connected to ArmorCode", "demo": False}
-                return {
-                    "connected": False,
-                    "message": f"ArmorCode responded with status {resp.status}",
-                    "demo": False,
-                }
+            # Use the products endpoint as a connectivity check —
+            # the SDK doesn't expose a dedicated health endpoint
+            self._request("/products?size=1")
+            return {"connected": True, "message": "Connected to ArmorCode", "demo": False}
         except (URLError, OSError) as exc:
             return {"connected": False, "message": f"Connection failed: {exc}", "demo": False}
 
     def export_findings(self, findings: list[dict], metadata: dict | None = None) -> dict:
         """Push findings to ArmorCode.
+
+        Uses POST /user/findings/ which is the findings ingestion endpoint
+        documented in the ArmorCode SDK.
 
         In demo mode, simulates a successful export and returns what
         the API response would look like.
@@ -190,25 +214,15 @@ class ArmorCodeIntegration(SecurityIntegration):
                 },
             }
 
-        # Live API call
-        req = Request(
-            f"{self.config['api_url']}/findings/import",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={
-                "Authorization": f"Bearer {self.config['api_token']}",
-                "Content-Type": "application/json",
-            },
-            method="POST",
-        )
+        # Live API call — POST /user/findings/
         try:
-            with urlopen(req, timeout=30) as resp:
-                body = json.loads(resp.read())
-                return {
-                    "status": "success",
-                    "platform": "armorcode",
-                    "findingsExported": len(findings),
-                    "response": body,
-                }
+            body = self._request("/user/findings/", method="POST", data=payload)
+            return {
+                "status": "success",
+                "platform": "armorcode",
+                "findingsExported": len(findings),
+                "response": body,
+            }
         except (URLError, OSError, json.JSONDecodeError) as exc:
             return {
                 "status": "error",
@@ -219,6 +233,9 @@ class ArmorCodeIntegration(SecurityIntegration):
 
     def import_findings(self, **kwargs) -> dict:
         """Pull findings from ArmorCode.
+
+        Uses GET /user/findings/ (with optional product filter) which is the
+        findings retrieval endpoint documented in the ArmorCode SDK.
 
         In demo mode, returns realistic mock findings covering SAST, SCA,
         DAST, secrets, IaC, and risk aggregation categories.
@@ -241,38 +258,98 @@ class ArmorCodeIntegration(SecurityIntegration):
                 },
             }
 
-        # Live API call
-        url = f"{self.config['api_url']}/findings"
-        if product:
-            url += f"?product={product}"
-        req = Request(
-            url,
-            headers={"Authorization": f"Bearer {self.config['api_token']}"},
-        )
+        # Live API call — GET /user/findings/ with pagination
+        findings = []
+        page = 0
+        while True:
+            path = f"/user/findings/?page={page}&size=100"
+            if product:
+                path += f"&product={product}"
+            try:
+                data = self._request(path)
+            except (URLError, OSError, json.JSONDecodeError) as exc:
+                return {
+                    "tool": "armorcode",
+                    "version": "api",
+                    "status": "error",
+                    "demo": False,
+                    "findingCount": len(findings),
+                    "findings": findings[:500],
+                    "truncated": False,
+                    "message": f"Import failed on page {page}: {exc}",
+                }
+
+            batch = self._transform_from_import(data)
+            findings.extend(batch)
+
+            # ArmorCode uses page-based pagination; stop when a page is short
+            if len(batch) < 100 or page >= 4:
+                break
+            page += 1
+
+        return {
+            "tool": "armorcode",
+            "version": "api",
+            "status": "success",
+            "demo": False,
+            "findingCount": len(findings),
+            "findings": findings[:500],
+            "truncated": len(findings) > 500,
+        }
+
+    def get_alerts(self, **kwargs) -> dict:
+        """Fetch alerts from ArmorCode (GET /alerts).
+
+        ArmorCode alerts are higher-level notifications that may aggregate
+        multiple findings.
+        """
+        if self._demo_mode:
+            return {"status": "demo", "demo": True, "alerts": [], "alertCount": 0}
+
         try:
-            with urlopen(req, timeout=30) as resp:
-                data = json.loads(resp.read())
-            findings = self._transform_from_import(data)
+            data = self._request("/alerts?size=50")
+            alerts = data.get("content", data.get("results", []))
             return {
-                "tool": "armorcode",
-                "version": "api",
                 "status": "success",
                 "demo": False,
-                "findingCount": len(findings),
-                "findings": findings[:500],
-                "truncated": len(findings) > 500,
+                "alerts": alerts[:100],
+                "alertCount": len(alerts),
             }
         except (URLError, OSError, json.JSONDecodeError) as exc:
+            return {"status": "error", "demo": False, "alerts": [], "alertCount": 0,
+                    "message": f"Failed: {exc}"}
+
+    def get_products(self) -> dict:
+        """List products configured in ArmorCode (GET /products)."""
+        if self._demo_mode:
+            return {"status": "demo", "demo": True, "products": []}
+
+        try:
+            data = self._request("/products?size=50")
             return {
-                "tool": "armorcode",
-                "version": "api",
-                "status": "error",
+                "status": "success",
                 "demo": False,
-                "findingCount": 0,
-                "findings": [],
-                "truncated": False,
-                "message": f"Import failed: {exc}",
+                "products": data.get("content", data.get("results", [])),
             }
+        except (URLError, OSError, json.JSONDecodeError) as exc:
+            return {"status": "error", "demo": False, "products": [],
+                    "message": f"Failed: {exc}"}
+
+    def get_security_tools(self) -> dict:
+        """List configured security tools in ArmorCode (GET /securityTools)."""
+        if self._demo_mode:
+            return {"status": "demo", "demo": True, "tools": []}
+
+        try:
+            data = self._request("/securityTools?size=50")
+            return {
+                "status": "success",
+                "demo": False,
+                "tools": data.get("content", data.get("results", [])),
+            }
+        except (URLError, OSError, json.JSONDecodeError) as exc:
+            return {"status": "error", "demo": False, "tools": [],
+                    "message": f"Failed: {exc}"}
 
     # -- internal helpers --
 
@@ -293,9 +370,13 @@ class ArmorCodeIntegration(SecurityIntegration):
         return out
 
     def _transform_from_import(self, data: dict) -> list[dict]:
-        """Transform ArmorCode API response to our normalized format."""
+        """Transform ArmorCode API response to our normalized format.
+
+        ArmorCode returns findings in a paginated response with 'content'
+        (Spring-style) or 'results' key.
+        """
         findings = []
-        for item in data.get("findings", data.get("results", [])):
+        for item in data.get("content", data.get("findings", data.get("results", []))):
             findings.append({
                 "tool": "armorcode",
                 "ruleId": item.get("rule_id", item.get("id", "")),
