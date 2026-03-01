@@ -18,8 +18,8 @@
 
 set -euo pipefail
 
-SONAR_URL="http://localhost:9000"
-SONAR_TOKEN="sqa_bc81e73194e5b2e8c2fbd12a7639dc5941c21595"
+SONAR_URL="${SONAR_URL:-http://localhost:9000}"
+SONAR_TOKEN="${SONAR_TOKEN:?ERROR: Set SONAR_TOKEN environment variable first (e.g. export SONAR_TOKEN=sqa_xxx)}"
 
 # ---------------------------------------------------------------------------
 # Args
