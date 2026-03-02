@@ -158,7 +158,15 @@ def main():
         count = import_result.get("findingCount", 0)
         results[platform_name] = import_result
         all_imported_findings.extend(import_result.get("findings", []))
-        print(f"  {adapter.display_name}: {count} findings imported")
+
+        # Show per-project breakdown if available
+        per_project = import_result.get("projects", {})
+        if per_project and len(per_project) > 1:
+            print(f"  {adapter.display_name}: {count} findings from {len(per_project)} projects:")
+            for pk, pr in per_project.items():
+                print(f"    {pk}: {pr.get('findingCount', 0)} findings ({pr.get('status', '?')})")
+        else:
+            print(f"  {adapter.display_name}: {count} findings imported")
 
         # Export local findings if requested
         if args.export:

@@ -105,10 +105,12 @@ integrations:
     # Community Edition: docker run -d --name sonarqube -p 9000:9000 sonarqube:community
     # api_url: http://localhost:9000
     # api_token: squ_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    # project_key: my-project
+    #
+    # project_key: optional — if omitted, auto-discovers ALL projects on the server.
+    # Set to restrict to a single project (e.g. "my-project").
     api_url: ""
     api_token: ""
-    project_key: ""
+    # project_key: ""
 
 # ============================================================================
 # Configuration Examples

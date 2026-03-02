@@ -215,6 +215,47 @@ class TestSonarQubeDemo(unittest.TestCase):
         self.assertIn("metrics", result)
 
 
+class TestSonarQubeDiscovery(unittest.TestCase):
+    """Test SonarQube project auto-discovery."""
+
+    def test_discover_projects_demo(self):
+        adapter = SonarQubeIntegration({})
+        projects = adapter.discover_projects()
+        self.assertIsInstance(projects, list)
+        self.assertGreater(len(projects), 0)
+        self.assertIn("key", projects[0])
+        self.assertIn("name", projects[0])
+
+    def test_discover_projects_live_no_server(self):
+        """Discovery fails gracefully when server is unreachable."""
+        adapter = SonarQubeIntegration({
+            "api_url": "http://localhost:9999",
+            "api_token": "squ_test",
+        })
+        projects = adapter.discover_projects()
+        self.assertIsInstance(projects, list)
+        self.assertEqual(len(projects), 0)
+
+    def test_import_no_project_key_demo(self):
+        """Demo mode works without project_key."""
+        adapter = SonarQubeIntegration({})
+        result = adapter.import_findings()
+        self.assertEqual(result["status"], "success")
+        self.assertTrue(result["demo"])
+        self.assertGreater(result["findingCount"], 0)
+
+    def test_import_no_project_key_live_no_server(self):
+        """Live mode without project_key attempts discovery, fails gracefully."""
+        adapter = SonarQubeIntegration({
+            "api_url": "http://localhost:9999",
+            "api_token": "squ_test",
+        })
+        result = adapter.import_findings()
+        self.assertEqual(result["status"], "error")
+        self.assertFalse(result["demo"])
+        self.assertIn("projects", result)
+
+
 class TestSonarQubeLive(unittest.TestCase):
     """Test SonarQube adapter with credentials (but no real server)."""
 

@@ -276,8 +276,40 @@ class SonarQubeIntegration(SecurityIntegration):
             "report": report,
         }
 
+    def discover_projects(self) -> list[dict]:
+        """List all projects on the SonarQube server.
+
+        Returns a list of project dicts with keys: key, name, qualifier,
+        lastAnalysisDate, revision (when available).
+        In demo mode returns a single mock project.
+        """
+        if self._demo_mode:
+            return [{"key": "demo-project", "name": "Demo Project",
+                     "qualifier": "TRK", "lastAnalysisDate": "2026-01-15T10:30:00+0000"}]
+        try:
+            page, projects = 1, []
+            while True:
+                url = f"{self.config['api_url']}/api/projects/search?ps=500&p={page}"
+                req = Request(url, headers={"Authorization": self._auth_header()})
+                with urlopen(req, timeout=15) as resp:
+                    data = json.loads(resp.read())
+                projects.extend(data.get("components", []))
+                paging = data.get("paging", {})
+                total = paging.get("total", 0)
+                if page * 500 >= total or page >= 10:
+                    break
+                page += 1
+            return projects
+        except (URLError, OSError, json.JSONDecodeError) as exc:
+            print(f"  SonarQube: project discovery failed: {exc}")
+            return []
+
     def import_findings(self, **kwargs) -> dict:
         """Pull findings from SonarQube via its Web API.
+
+        When project_key is set (in config or kwargs), fetches that single
+        project. Otherwise, auto-discovers all projects on the server and
+        imports findings from each.
 
         In demo mode, returns realistic mock findings matching SonarQube
         rule IDs for C# projects.
@@ -297,20 +329,55 @@ class SonarQubeIntegration(SecurityIntegration):
                 "metrics": _DEMO_METRICS,
             }
 
-        if not project_key:
-            return {
-                "tool": "sonarqube",
-                "version": "api",
-                "status": "error",
-                "demo": False,
-                "findingCount": 0,
-                "findings": [],
-                "truncated": False,
-                "message": "No project_key configured — set sonarqube.project_key in config",
-            }
+        # Determine which projects to scan
+        if project_key:
+            project_keys = [project_key]
+        else:
+            projects = self.discover_projects()
+            if not projects:
+                return {
+                    "tool": "sonarqube",
+                    "version": "api",
+                    "status": "error",
+                    "demo": False,
+                    "findingCount": 0,
+                    "findings": [],
+                    "truncated": False,
+                    "projects": {},
+                    "message": "No projects found on SonarQube server",
+                }
+            project_keys = [p["key"] for p in projects]
+            print(f"  SonarQube: auto-discovered {len(project_keys)} projects: {', '.join(project_keys)}")
 
-        # Fetch issues via Web API
-        findings = []
+        # Import from each project
+        all_findings: list[dict] = []
+        project_results: dict[str, dict] = {}
+
+        for pk in project_keys:
+            result = self._import_project_findings(pk)
+            project_results[pk] = {
+                "findingCount": result["findingCount"],
+                "status": result["status"],
+                "metrics": result.get("metrics", {}),
+            }
+            if result.get("message"):
+                project_results[pk]["message"] = result["message"]
+            all_findings.extend(result.get("findings", []))
+
+        return {
+            "tool": "sonarqube",
+            "version": "api",
+            "status": "success",
+            "demo": False,
+            "findingCount": len(all_findings),
+            "findings": all_findings[:2000],
+            "truncated": len(all_findings) > 2000,
+            "projects": project_results,
+        }
+
+    def _import_project_findings(self, project_key: str) -> dict:
+        """Fetch findings for a single SonarQube project."""
+        findings: list[dict] = []
         page = 1
         while True:
             url = (
@@ -325,35 +392,28 @@ class SonarQubeIntegration(SecurityIntegration):
                     data = json.loads(resp.read())
             except (URLError, OSError, json.JSONDecodeError) as exc:
                 return {
-                    "tool": "sonarqube",
-                    "version": "api",
-                    "status": "error",
-                    "demo": False,
                     "findingCount": len(findings),
+                    "status": "error",
                     "findings": findings[:500],
-                    "truncated": False,
                     "message": f"API error on page {page}: {exc}",
                 }
 
             for issue in data.get("issues", []):
-                findings.append(self._transform_issue(issue))
+                finding = self._transform_issue(issue)
+                finding["project"] = project_key
+                findings.append(finding)
 
             total = data.get("total", 0)
             if page * 100 >= total or page >= 5:
                 break
             page += 1
 
-        # Fetch quality gate status
         metrics = self._fetch_quality_gate(project_key)
 
         return {
-            "tool": "sonarqube",
-            "version": "api",
-            "status": "success",
-            "demo": False,
             "findingCount": len(findings),
+            "status": "success",
             "findings": findings[:500],
-            "truncated": len(findings) > 500,
             "metrics": metrics,
         }
 
