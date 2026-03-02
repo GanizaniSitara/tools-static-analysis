@@ -1,0 +1,10 @@
+{
+  "name": "tools-viewer-companion",
+  "version": "1.0.0",
+  "description": "Local companion agent for the hosted static-analysis viewer. Launches Claude Code, OpenCode, and other editors from browser links.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}

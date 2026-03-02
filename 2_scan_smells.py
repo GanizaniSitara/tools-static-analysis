@@ -682,6 +682,36 @@ def detect_hardcoded_secrets(path: str, content: str, lines: list[str]) -> list[
         r'(\{[^}]+\}|<[^>]+>|\$\{|%[^%]+%|your[_-]|example|placeholder|changeme|xxx|todo|replace)',
         re.IGNORECASE
     )
+    # Values that are just key names / labels, not actual secrets
+    keyname_pattern = re.compile(
+        r'^(password|passwd|pwd|apikey|api_key|secret|secretkey|secret_key|connectionstring|'
+        r'access_key|token|auth_token|private_key|username|user|host|server|database|port|'
+        r'data source|initial catalog|integrated security|trusted_connection|'
+        r'persist security info|multipleactiveresultsets|encrypt|trustservercertificate)$',
+        re.IGNORECASE
+    )
+    # Methods that remove/mask/sanitize secrets — not storing them
+    sanitizer_pattern = re.compile(
+        r'\b(remove|strip|mask|redact|sanitize|hide|clear|blank|replace|obfuscate)\w*'
+        r'(password|secret|credential|sensitive|connection)',
+        re.IGNORECASE
+    )
+    # Detect if the file-level or method-level context is a sanitizer
+    # Check the enclosing method name once per method scope
+    method_sig_pattern = re.compile(
+        r'\b(?:public|private|protected|internal|static)\s+\S+\s+(\w+)\s*\(',
+    )
+
+    # Build a line -> enclosing method name map (approximate)
+    enclosing_method: dict[int, str] = {}
+    current_method = ""
+    brace_depth = 0
+    for idx, ln in enumerate(lines):
+        msig = method_sig_pattern.search(ln)
+        if msig:
+            current_method = msig.group(1)
+        enclosing_method[idx] = current_method
+
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
@@ -689,6 +719,13 @@ def detect_hardcoded_secrets(path: str, content: str, lines: list[str]) -> list[
         for m in secret_pattern.finditer(line):
             value = m.group(2)
             if placeholder_pattern.search(value):
+                continue
+            # Skip if the "secret" value is just a key name (e.g. const string PASSWORD = "password")
+            if keyname_pattern.match(value.strip()):
+                continue
+            # Skip if inside a method that removes/masks secrets
+            method_name = enclosing_method.get(i, "")
+            if method_name and sanitizer_pattern.search(method_name):
                 continue
             smells.append({
                 "type": "hardcoded_secret",
@@ -777,20 +814,72 @@ def detect_command_injection(path: str, content: str, lines: list[str]) -> list[
 
 
 def detect_weak_crypto(path: str, content: str, lines: list[str]) -> list[dict]:
-    """Detect use of weak cryptographic algorithms."""
+    """Detect use of weak cryptographic algorithms.
+
+    MD5 and SHA1 are only flagged when used in a security-relevant context
+    (passwords, signatures, tokens, certificates). Non-security uses like
+    checksums, cache keys, ETags, and content hashing are not flagged.
+    DES, TripleDES, and RC2 are always flagged (they are symmetric ciphers
+    with no legitimate non-security use case).
+    """
     smells = []
-    weak_algos = re.compile(
-        r'\b(MD5|SHA1|DES|TripleDES|RC2)\s*\.\s*Create\b'
+    # Symmetric ciphers — always weak, always flag
+    always_weak = re.compile(r'\b(DES|TripleDES|RC2)\s*\.\s*Create\b')
+    # Hash algorithms — weak only in security contexts
+    weak_hash = re.compile(r'\b(MD5|SHA1)\s*\.\s*Create\b')
+    # Method/variable names suggesting non-security hashing
+    nonsecurity_context = re.compile(
+        r'(checksum|HashString|content.?hash|cache.?key|etag|fingerprint|'
+        r'dedup|bucket|GetMd5|CalcHash|file.?hash|Md5Hash)',
+        re.IGNORECASE
     )
+    # Method/variable names suggesting security usage
+    security_context = re.compile(
+        r'(password|credential|token|signature|sign|verify|cert|'
+        r'hmac|encrypt|decrypt|auth|nonce|salt|pbkdf|derive.?key)',
+        re.IGNORECASE
+    )
+
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
             continue
-        if weak_algos.search(line):
+
+        # Always flag DES/TripleDES/RC2
+        if always_weak.search(line):
             smells.append({
                 "type": "weak_crypto",
                 "line": i + 1,
-                "context": line.strip()[:80],
+                "context": stripped[:80],
+            })
+            continue
+
+        # For MD5/SHA1, check surrounding context (5 lines before/after)
+        if weak_hash.search(line):
+            context_start = max(0, i - 5)
+            context_end = min(len(lines), i + 6)
+            context_text = "\n".join(lines[context_start:context_end])
+
+            has_security = security_context.search(context_text)
+            has_nonsecurity = nonsecurity_context.search(context_text)
+
+            # Security context takes priority — always flag
+            if has_security:
+                smells.append({
+                    "type": "weak_crypto",
+                    "line": i + 1,
+                    "context": stripped[:80],
+                })
+                continue
+            # Clear non-security usage — skip
+            if has_nonsecurity:
+                continue
+            # Ambiguous — flag but with lower confidence (still report it;
+            # triage system lets users mark as accepted_risk if non-security)
+            smells.append({
+                "type": "weak_crypto",
+                "line": i + 1,
+                "context": stripped[:80],
             })
     return smells
 
@@ -888,6 +977,84 @@ def detect_insecure_random(path: str, content: str, lines: list[str]) -> list[di
     return smells
 
 
+# ─── Cross-Technology Call Detection ──────────────────────────────────
+
+def detect_python_calls(path: str, content: str, lines: list[str]) -> list[dict]:
+    """Detect C# code that invokes Python via process execution or interop libraries.
+
+    Detects:
+      - Process.Start / ProcessStartInfo launching python/python3
+      - Python.NET (Python.Runtime, PythonEngine, PyObject, Py.GIL, using/import)
+      - IronPython (IronPython.*, CreateEngine, Microsoft.Scripting)
+      - Embedded script execution referencing .py files or python interpreters
+    """
+    smells = []
+
+    # Pre-compiled patterns for efficiency
+    # 1. Process-based invocation: Process.Start("python" ...) or FileName = "python"
+    process_python = re.compile(
+        r"""(?:Process\.Start|ProcessStartInfo)\s*\(?\s*["']python[3"]?["']"""
+        r"""|FileName\s*=\s*["'](?:[^"']*[/\\])?python[3"]?(?:\.exe)?["']""",
+        re.IGNORECASE,
+    )
+
+    # 2. Python.NET library usage
+    pythonnet = re.compile(
+        r"""\busing\s+Python\.Runtime\b"""
+        r"""|\bPythonEngine\s*\."""
+        r"""|\bPyObject\b"""
+        r"""|\bPy\s*\.\s*GIL\b"""
+        r"""|\bPyModule\b"""
+        r"""|\bPyScope\b""",
+    )
+
+    # 3. IronPython
+    ironpython = re.compile(
+        r"""\bIronPython\b"""
+        r"""|\bMicrosoft\.Scripting\b"""
+        r"""|\bCreateEngine\s*\(\s*\)\s*.*[Pp]ython"""
+        r"""|\bPython\.CreateRuntime\b""",
+    )
+
+    # 4. Generic script-engine invocation with a .py file reference
+    # Matches .py at end of string or followed by space/quote (e.g., "script.py --args")
+    py_script_ref = re.compile(
+        r"""["'][^"']*\.py(?:\s|["'])""",
+    )
+
+    # Track which patterns we've already reported per line to avoid duplicates
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith('//') or stripped.startswith('/*') or stripped.startswith('*'):
+            continue
+
+        mechanism = None
+
+        if process_python.search(line):
+            mechanism = "process_exec"
+        elif pythonnet.search(line):
+            mechanism = "python_net"
+        elif ironpython.search(line):
+            mechanism = "ironpython"
+        elif py_script_ref.search(line):
+            # Only flag .py file references if there's also a process/script context
+            context_start = max(0, i - 5)
+            context_end = min(len(lines), i + 6)
+            nearby = ' '.join(lines[context_start:context_end])
+            if re.search(r'\b(Process|Script|Execute|Run|Start|Invoke|Engine)\b', nearby):
+                mechanism = "py_script_ref"
+
+        if mechanism:
+            smells.append({
+                "type": "python_call",
+                "line": i + 1,
+                "context": line.strip()[:120],
+                "mechanism": mechanism,
+            })
+
+    return smells
+
+
 # ─── Detector Registry ────────────────────────────────────────────────
 
 SEVERITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
@@ -911,6 +1078,8 @@ DETECTOR_REGISTRY = [
     {"name": "long_parameter_list",       "fn": detect_long_parameter_list,       "severity": "medium",  "category": "quality"},
     {"name": "precision_unsafe_math",     "fn": detect_precision_unsafe_math,     "severity": "medium",  "category": "quality"},
     {"name": "deep_inheritance",          "fn": detect_deep_inheritance,          "severity": "medium",  "category": "quality"},
+    # Medium — Interop / Cross-Technology
+    {"name": "python_call",               "fn": detect_python_calls,              "severity": "medium",  "category": "interop"},
     # Low — Style/Noise
     {"name": "magic_number",              "fn": detect_magic_numbers,             "severity": "low",     "category": "style"},
     {"name": "missing_null_check",        "fn": detect_missing_null_checks,       "severity": "low",     "category": "style"},
@@ -919,6 +1088,333 @@ DETECTOR_REGISTRY = [
 
 
 SEVERITY_WEIGHTS = {"critical": 15, "high": 8, "medium": 3, "low": 1}
+
+# ─── Per-Smell LLM Prompt Templates ──────────────────────────────────
+# Each prompt is laser-focused: it instructs the LLM to ONLY evaluate and fix
+# the specific finding, not review the whole file for unrelated issues.
+# Placeholders: {file}, {line}, {context}, {project}
+
+SMELL_PROMPTS = {
+    "hardcoded_secret": (
+        "SECURITY FINDING: Hardcoded secret detected.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this hardcoded secret. Do NOT review the rest of the file for other issues.\n"
+        "1. Confirm whether the value is a real secret (password, API key, connection string) or a false positive.\n"
+        "   Common false positives: key-name constants used for parsing (e.g. const string PASSWORD = \"password\"),\n"
+        "   connection string builders/parsers, secret removal/masking/redaction methods, logging placeholders.\n"
+        "2. If it is a real secret, propose a fix: move to environment variable, Azure Key Vault, user-secrets, or IConfiguration injection.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "sql_injection": (
+        "SECURITY FINDING: Potential SQL injection via string concatenation/interpolation.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this SQL injection risk. Do NOT review the rest of the file for other issues.\n"
+        "1. Confirm whether user-controlled input reaches this SQL string.\n"
+        "2. If vulnerable, rewrite using parameterized queries (@param, SqlParameter, or EF Core interpolated SQL).\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "insecure_deserialization": (
+        "SECURITY FINDING: Insecure deserialization detected.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this deserialization issue. Do NOT review the rest of the file for other issues.\n"
+        "1. Identify the dangerous type (BinaryFormatter, SoapFormatter, TypeNameHandling.All, etc.).\n"
+        "2. Propose a safe replacement: System.Text.Json, JsonSerializer with safe settings, or a custom binder.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "command_injection": (
+        "SECURITY FINDING: Potential command injection via Process.Start with string concatenation.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this command injection risk. Do NOT review the rest of the file for other issues.\n"
+        "1. Check whether user-controlled input flows into the process arguments.\n"
+        "2. If vulnerable, propose using an argument array (no shell), input validation, or allowlisting.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "weak_crypto": (
+        "SECURITY FINDING: Weak cryptographic algorithm in use.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this weak crypto usage. Do NOT review the rest of the file for other issues.\n"
+        "1. Identify the algorithm (MD5, SHA1, DES, TripleDES, RC2).\n"
+        "2. Determine whether it is used for security (signatures, passwords, tokens, certificates)\n"
+        "   or non-security purposes (checksums, cache keys, ETags, content fingerprints, deduplication).\n"
+        "   MD5/SHA1 for non-security hashing is generally acceptable and not a vulnerability.\n"
+        "3. If security-relevant, replace with SHA-256/SHA-512 (hashing), AES-256 (encryption), or PBKDF2/Argon2 (passwords).\n"
+        "4. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "open_redirect": (
+        "SECURITY FINDING: Potential open redirect.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this redirect. Do NOT review the rest of the file for other issues.\n"
+        "1. Confirm whether user input (returnUrl, redirectUrl, Request params) reaches the Redirect() call.\n"
+        "2. If vulnerable, replace with LocalRedirect(), add Url.IsLocalUrl() validation, or use an allowlist.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "xss": (
+        "SECURITY FINDING: Potential cross-site scripting (XSS).\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this XSS risk. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine the vector: Html.Raw with user input, Response.Write, or missing [ValidateAntiForgeryToken].\n"
+        "2. For Html.Raw: encode via HtmlEncoder or use Razor's default encoding.\n"
+        "3. For missing anti-forgery: add [ValidateAntiForgeryToken] to the POST action.\n"
+        "4. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "insecure_random": (
+        "SECURITY FINDING: System.Random used in a security-sensitive context.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this random number usage. Do NOT review the rest of the file for other issues.\n"
+        "1. Confirm whether the value is used for tokens, passwords, nonces, or other security purposes.\n"
+        "2. If so, replace System.Random with RandomNumberGenerator (System.Security.Cryptography).\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "exception_swallowing": (
+        "BUG: Empty catch block swallows exception silently.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this empty catch block. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine what the catch block should do: log, rethrow, wrap, or handle the exception.\n"
+        "2. Based on the surrounding context, propose the appropriate handler (ILogger, rethrow with throw;, etc.).\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "sync_over_async": (
+        "BUG: Sync-over-async anti-pattern detected.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this sync-over-async call. Do NOT review the rest of the file for other issues.\n"
+        "1. Identify the pattern: .Result, .Wait(), or .GetAwaiter().GetResult().\n"
+        "2. Determine if the calling method can be made async (add async/await up the call chain).\n"
+        "3. If it cannot be async (e.g., constructor, event handler), explain the threading risk and propose a safe alternative.\n"
+        "4. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "god_method": (
+        "CODE QUALITY: Method exceeds 100 lines.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this oversized method. Do NOT review the rest of the file for other issues.\n"
+        "1. Identify logical blocks within the method that can be extracted into smaller methods.\n"
+        "2. Propose an extract-method refactoring that preserves behavior.\n"
+        "3. Show the method decomposition plan -- do not refactor other methods in the file."
+    ),
+    "deep_nesting": (
+        "CODE QUALITY: Excessive nesting depth (>4 levels).\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this deeply nested code. Do NOT review the rest of the file for other issues.\n"
+        "1. Identify guard clauses, early returns, or method extraction to reduce nesting.\n"
+        "2. Propose a restructured version using inversion of control flow.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "long_parameter_list": (
+        "CODE QUALITY: Method has more than 5 parameters.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this parameter list. Do NOT review the rest of the file for other issues.\n"
+        "1. Group related parameters into a parameter object, record, or Options class.\n"
+        "2. Consider whether Builder pattern or method overloads would be more appropriate.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "precision_unsafe_math": (
+        "CODE QUALITY: float/double used where decimal precision may be required.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this precision issue. Do NOT review the rest of the file for other issues.\n"
+        "1. Confirm whether this variable participates in financial calculations (price, amount, rate, margin).\n"
+        "2. If so, change the type from float/double to decimal.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "deep_inheritance": (
+        "CODE QUALITY: Class implements many interfaces or has complex inheritance.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this inheritance hierarchy. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine if the interfaces indicate too many responsibilities (violating Interface Segregation).\n"
+        "2. Consider composition over inheritance or splitting the class.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "python_call": (
+        "CROSS-TECHNOLOGY: C# code invokes Python.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this Python interop call. Do NOT review the rest of the file for other issues.\n"
+        "1. Document the purpose of the Python call (calculation engine, data processing, ML model, etc.).\n"
+        "2. Assess error handling: what happens if the Python process fails, times out, or returns unexpected output?\n"
+        "3. Check for input sanitization if C# data is passed to the Python script.\n"
+        "4. Evaluate whether this is the right integration approach or if a gRPC/REST/message-queue boundary would be safer.\n"
+        "5. Show any minimal improvements needed -- do not refactor surrounding code."
+    ),
+    "magic_number": (
+        "STYLE: Hardcoded numeric literal in logic.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this magic number. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine the meaning of the number from context.\n"
+        "2. Extract it to a named constant with a descriptive name.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "missing_null_check": (
+        "STYLE: Public method parameter lacks null check.\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this null-check gap. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine if the parameter is nullable and needs validation.\n"
+        "2. Add ArgumentNullException.ThrowIfNull() or a null-check guard clause.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+    "mutable_shared_state": (
+        "STYLE: Static mutable field (potential thread-safety issue).\n"
+        "File: {file} (line {line})\n"
+        "Context: {context}\n\n"
+        "TASK: Evaluate ONLY this static mutable field. Do NOT review the rest of the file for other issues.\n"
+        "1. Determine if the field is accessed from multiple threads.\n"
+        "2. If so, make it readonly, use ConcurrentDictionary, Lazy<T>, or add synchronization.\n"
+        "3. Show the minimal code change needed -- do not refactor surrounding code."
+    ),
+}
+
+
+# ─── Triage Persistence ───────────────────────────────────────────────
+
+TRIAGE_VERSION = 1
+TRIAGE_FILE = "triage.json"
+TRIAGE_STATUSES = {"unreviewed", "confirmed", "false_positive", "accepted_risk", "fixed"}
+
+
+def make_finding_id(file_path: str, smell: dict) -> str:
+    """Generate a stable finding ID from file path and smell data.
+
+    Format: {type}::{normalized_path}:{line}
+    """
+    normalized = file_path.replace("\\", "/")
+    return f"{smell['type']}::{normalized}:{smell.get('line', 0)}"
+
+
+def load_triage(out_dir: str) -> dict:
+    """Load existing triage.json from output directory."""
+    triage_path = os.path.join(out_dir, TRIAGE_FILE)
+    try:
+        data = json.loads(Path(triage_path).read_text(encoding="utf-8"))
+        if data.get("version") != TRIAGE_VERSION:
+            print(f"  Warning: triage.json version mismatch (expected {TRIAGE_VERSION})")
+        return data.get("dispositions", {})
+    except FileNotFoundError:
+        return {}
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"  Warning: could not load {triage_path}: {exc}")
+        return {}
+
+
+def save_triage(out_dir: str, dispositions: dict):
+    """Save triage.json to output directory."""
+    triage_path = os.path.join(out_dir, TRIAGE_FILE)
+    data = {
+        "version": TRIAGE_VERSION,
+        "generated": date.today().isoformat(),
+        "dispositions": dispositions,
+    }
+    try:
+        Path(triage_path).write_text(
+            json.dumps(data, indent=2), encoding="utf-8"
+        )
+        print(f"Saved: {triage_path}")
+    except OSError as e:
+        print(f"ERROR: Failed to save {triage_path}: {e}", file=sys.stderr)
+
+
+def apply_triage(projects: list, dispositions: dict) -> dict:
+    """Apply existing triage dispositions to scan results.
+
+    For each finding, looks up the finding ID in the dispositions dict.
+    If a line-exact match isn't found, tries fuzzy matching by context
+    within a +/-5 line window.
+
+    Returns updated dispositions dict (with new findings added as unreviewed).
+    """
+    updated = dict(dispositions)  # preserve existing entries
+    stats = {"matched": 0, "new": 0, "stale": 0}
+
+    # Build a reverse index: (type, normalized_path) -> [(line, context, id)]
+    # for fuzzy matching when line numbers shift
+    existing_by_file: dict[tuple, list] = {}
+    for fid, disp in dispositions.items():
+        parts = fid.split("::", 1)
+        if len(parts) != 2:
+            continue
+        smell_type = parts[0]
+        file_line = parts[1]
+        colon_idx = file_line.rfind(":")
+        if colon_idx == -1:
+            continue
+        fpath = file_line[:colon_idx]
+        try:
+            line_num = int(file_line[colon_idx + 1:])
+        except ValueError:
+            continue
+        key = (smell_type, fpath)
+        if key not in existing_by_file:
+            existing_by_file[key] = []
+        existing_by_file[key].append((line_num, disp.get("context", ""), fid))
+
+    matched_ids = set()
+
+    for project in projects:
+        for file_data in project.get("files", []):
+            file_path = file_data.get("path", "")
+            for smell in file_data.get("smells", []):
+                fid = make_finding_id(file_path, smell)
+                smell["findingId"] = fid
+
+                if fid in updated:
+                    # Exact match
+                    smell["triageStatus"] = updated[fid].get("status", "unreviewed")
+                    matched_ids.add(fid)
+                    stats["matched"] += 1
+                else:
+                    # Try fuzzy match: same type+file, context match within 5 lines
+                    norm_path = file_path.replace("\\", "/")
+                    key = (smell["type"], norm_path)
+                    fuzzy_match = None
+                    if key in existing_by_file:
+                        smell_line = smell.get("line", 0)
+                        smell_ctx = smell.get("context", "")
+                        for old_line, old_ctx, old_id in existing_by_file[key]:
+                            if old_id in matched_ids:
+                                continue
+                            if abs(old_line - smell_line) <= 5 and old_ctx and old_ctx == smell_ctx:
+                                fuzzy_match = old_id
+                                break
+
+                    if fuzzy_match and fuzzy_match in updated:
+                        # Migrate the disposition to the new finding ID
+                        old_disp = updated[fuzzy_match]
+                        smell["triageStatus"] = old_disp.get("status", "unreviewed")
+                        updated[fid] = dict(old_disp)
+                        updated[fid]["context"] = smell.get("context", "")
+                        matched_ids.add(fuzzy_match)
+                        matched_ids.add(fid)
+                        stats["matched"] += 1
+                    else:
+                        # New finding
+                        smell["triageStatus"] = "unreviewed"
+                        updated[fid] = {
+                            "status": "unreviewed",
+                            "reason": "",
+                            "decidedBy": "",
+                            "date": "",
+                            "context": smell.get("context", ""),
+                        }
+                        stats["new"] += 1
+
+    # Count stale dispositions (in triage but not matched to any current finding)
+    stats["stale"] = sum(1 for fid in dispositions if fid not in matched_ids)
+
+    print(f"  Triage: {stats['matched']} matched, {stats['new']} new, {stats['stale']} stale")
+    return updated
 
 
 def analyze_file(filepath: str, scan_root: str, level: str = "high") -> dict | None:
@@ -1361,7 +1857,9 @@ def generate_claude_targets(projects: list) -> dict:
             focus_areas.append("god methods (>100 lines)")
         if any(smell["type"] == "exception_swallowing" for f in project["files"] for smell in f["smells"]):
             focus_areas.append("exception swallowing")
-        
+        if any(smell["type"] == "python_call" for f in project["files"] for smell in f["smells"]):
+            focus_areas.append("Python interop calls (cross-technology boundary)")
+
         prompt = f"Review {project['project']} for refactoring."
         if focus_areas:
             prompt += f" Focus on: {', '.join(focus_areas)}."
@@ -1558,21 +2056,28 @@ def main():
     # Analyze all files
     result = analyze_all_files(SCAN_ROOT, level=SCAN_LEVEL)
     projects = result["projects"]
-    
+
+    # Load and apply triage dispositions
+    print("\nApplying triage dispositions...")
+    existing_triage = load_triage(OUT_DIR)
+    updated_triage = apply_triage(projects, existing_triage)
+
     # Compute summary statistics
     total_files_with_smells = sum(1 for p in projects for f in p["files"] if f["smell_count"] > 0)
     total_smells = sum(p["smell_count"] for p in projects)
 
-    # Count smell types and severity counts across all projects
+    # Count smell types, severity counts, and triage status across all projects
     all_smell_types = defaultdict(int)
     severity_counts = defaultdict(int)
     category_counts = defaultdict(int)
+    triage_counts = defaultdict(int)
     for project in projects:
         for file in project["files"]:
             for smell in file["smells"]:
                 all_smell_types[smell["type"]] += 1
                 severity_counts[smell.get("severity", "low")] += 1
                 category_counts[smell.get("category", "style")] += 1
+                triage_counts[smell.get("triageStatus", "unreviewed")] += 1
 
     top_smell_types = [
         {"smell": smell, "count": count}
@@ -1589,17 +2094,18 @@ def main():
         "topProjectsByScore": top_projects,
         "severityCounts": dict(severity_counts),
         "categoryCounts": dict(category_counts),
+        "triageCounts": dict(triage_counts),
         "level": SCAN_LEVEL,
     }
-    
+
     # Generate Claude Code targets
     claude_targets = generate_claude_targets(projects)
-    
+
     # Clean up internal fields before output
     for project in projects:
         # Remove smell_counts (internal use only)
         project.pop("smell_counts", None)
-    
+
     # Prepare output
     output_data = {
         "generated": date.today().isoformat(),
@@ -1607,14 +2113,17 @@ def main():
         "summary": summary,
         "projects": projects,
         "claudeCodeTargets": claude_targets,
+        "smellPrompts": SMELL_PROMPTS,
     }
-    
+
     # Save outputs
     print("\nGenerating outputs...")
     json_path = os.path.join(OUT_DIR, "refactoring-targets.json")
     md_path = os.path.join(OUT_DIR, "refactoring-report.md")
-    
+    triage_path = os.path.join(OUT_DIR, TRIAGE_FILE)
+
     save_json_output(output_data, json_path)
+    save_triage(OUT_DIR, updated_triage)
     generate_markdown_report(
         {
             "projects": projects,
@@ -1623,11 +2132,15 @@ def main():
         },
         md_path
     )
-    
+
+    triaged = total_smells - triage_counts.get("unreviewed", 0)
     print("\n" + "=" * 70)
     print("Analysis complete!")
     print(f"  - {len(projects)} projects analyzed")
     print(f"  - {total_smells} total smells detected")
+    print(f"  - {triaged}/{total_smells} findings triaged")
+    if triage_counts.get("false_positive"):
+        print(f"  - {triage_counts['false_positive']} marked as false positive")
     if projects:
         print(f"  - Top project: {projects[0]['project']} (score: {projects[0]['refactoring_value_score']})")
     print("=" * 70)
