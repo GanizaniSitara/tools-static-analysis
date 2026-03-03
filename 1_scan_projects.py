@@ -800,20 +800,26 @@ def collect_project_namespaces_and_files(
     return project_namespaces, cs_files_by_project
 
 
-def _count_coupling(consumer_files: list[str], target_namespaces: set[str]) -> "int | None":
-    """Count .cs files in consumer that import any namespace from target."""
+def _count_coupling(consumer_files: list[str], target_namespaces: set[str]) -> "tuple[int, list[str]] | tuple[None, list]":
+    """Count .cs files in consumer that import any namespace from target.
+
+    Returns:
+        (count, file_list): tuple of count and list of files with coupling
+    """
     if not target_namespaces:
-        return None  # unknown — don't write 0, write null
+        return (None, [])  # unknown — don't write 0, write null
     count = 0
+    coupled_files = []
     for fpath in consumer_files:
         try:
             text = open(fpath, encoding="utf-8", errors="ignore").read()
             usings = set(_USING_LINE.findall(text))
             if any(u == ns or u.startswith(ns + ".") for u in usings for ns in target_namespaces):
                 count += 1
+                coupled_files.append(fpath)
         except OSError:
             pass
-    return count
+    return (count, coupled_files)
 
 
 # ─── Enhanced data access pattern discovery ──────────────────────────
@@ -2521,9 +2527,39 @@ def build_graph(
             to_proj = target["project"] if target else pr["references"]
             consumer_files = cs_files_by_project.get(pr["project"], [])
             target_ns = project_namespaces.get(to_proj, set())
-            count = _count_coupling(consumer_files, target_ns)
+            count, coupled_files = _count_coupling(consumer_files, target_ns)
             if count is not None:
                 edge["count"] = count
+                # Store file paths - use relative paths from the repo name prefix
+                edge["coupling_files"] = [f.replace("\\", "/") for f in coupled_files]
+
+        # Version conflict detection for shared NuGet packages
+        version_conflicts = []
+        for pkg_name, info in nuget_packages.items():
+            # Check if both projects consume this package
+            if from_id in info["consumers"] and to_id in info["consumers"]:
+                # Find the specific versions each project uses
+                from_versions = [pd["version"] for pd in package_deps
+                                if f"{pd['repo']}/{pd['project']}" == from_id and pd["package"] == pkg_name]
+                to_versions = [pd["version"] for pd in package_deps
+                              if f"{pd['repo']}/{pd['project']}" == to_id and pd["package"] == pkg_name]
+
+                from_ver = from_versions[0] if from_versions else ""
+                to_ver = to_versions[0] if to_versions else ""
+
+                # If versions differ, it's a conflict
+                if from_ver and to_ver and from_ver != to_ver:
+                    version_conflicts.append({
+                        "package": pkg_name,
+                        "from_version": from_ver,
+                        "to_version": to_ver,
+                        "from_project": from_id,
+                        "to_project": to_id
+                    })
+
+        if version_conflicts:
+            edge["version_conflicts"] = version_conflicts
+
         edges.append(edge)
 
     # NuGet dependency edges
