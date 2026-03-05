@@ -1727,7 +1727,7 @@ def generate_viewer_html() -> str:
       <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_sec_sev_badges_html}
         <span style="color:#E1E1E1;">|</span>
-        <select id="secLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option></select>
+        <select id="secLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
         <span style="color:#E1E1E1;">|</span>
         <select id="secTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
       </div>
