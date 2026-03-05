@@ -1673,6 +1673,8 @@ def generate_viewer_html() -> str:
       <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_sec_sev_badges_html}
         <span style="color:#E1E1E1;">|</span>
+        <select id="secLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option></select>
+        <span style="color:#E1E1E1;">|</span>
         <select id="secTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
       </div>
       <div class="table-wrap">
@@ -5102,7 +5104,7 @@ function initSortableTable(table) {{
       (p.files || []).forEach(function (f) {{
         (f.smells || []).forEach(function (s) {{
           if (s.category === 'security') {{
-            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed' }});
+            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed', language: s.language || f.language || 'csharp' }});
           }}
         }});
       }});
@@ -5134,13 +5136,16 @@ function initSortableTable(table) {{
       var ts = sf.triageStatus || 'unreviewed';
       var tc = triageStatusColors[ts] || '#53565A';
       var tl = triageStatusLabels[ts] || ts;
+      var langLabel = (sf.language || 'csharp').toUpperCase();
+      var langColor = sf.language === 'java' ? '#007396' : '#68217A';
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
       tr.setAttribute('data-severity', (sf.severity || '').toLowerCase());
       tr.setAttribute('data-triage-status', ts);
+      tr.setAttribute('data-language', sf.language || 'csharp');
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
-        '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;">' + fActions + '<span style="display:inline-block;margin-left:0.4rem;padding:0.1rem 0.3rem;border-radius:3px;font-size:0.65rem;font-weight:600;background:' + langColor + ';color:#fff;">' + langLabel + '</span></td>' +
         '<td style="padding:0.4rem 0.5rem;text-align:center;">' + sf.line + '</td>' +
         '<td style="padding:0.4rem 0.5rem;">' + escHtml(sf.type) + '</td>' +
         '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sf.severity) + '</span></td>' +
@@ -5169,6 +5174,9 @@ function initSortableTable(table) {{
     // Security triage filter handler
     var secTriageSelect = document.getElementById('secTriageFilter');
     if (secTriageSelect) secTriageSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
+    // Security language filter handler
+    var secLangSelect = document.getElementById('secLangFilter');
+    if (secLangSelect) secLangSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
   }})();
 
   // ── External Tools IIFE ──
@@ -5424,11 +5432,13 @@ function initSortableTable(table) {{
     var activeSevBadge = document.querySelector('.sec-sev-badge.sec-sev-badge-active');
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var triageFilter = (document.getElementById('secTriageFilter') || {{}}).value || '';
+    var langFilter = (document.getElementById('secLangFilter') || {{}}).value || '';
     document.querySelectorAll('#securityBody tr').forEach(function(row) {{
       var show = true;
       if (repo && row.getAttribute('data-repo') !== repo) show = false;
       if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
       if (triageFilter && row.getAttribute('data-triage-status') !== triageFilter) show = false;
+      if (langFilter && row.getAttribute('data-language') !== langFilter) show = false;
       if (show && searchQuery) {{
         var text = row.getAttribute('data-search') || '';
         if (text && text.indexOf(searchQuery) === -1) show = false;
