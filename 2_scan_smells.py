@@ -25,6 +25,7 @@ import sys
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
+import yaml
 
 # Import detector registry
 from detectors import get_detectors, SEVERITY_ORDER, SEVERITY_WEIGHTS
@@ -310,188 +311,43 @@ def detect_long_methods(content: str) -> list[dict]:
 # the specific finding, not review the whole file for unrelated issues.
 # Placeholders: {file}, {line}, {context}, {project}
 
-SMELL_PROMPTS = {
-    "hardcoded_secret": (
-        "SECURITY FINDING: Hardcoded secret detected.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this hardcoded secret. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether the value is a real secret (password, API key, connection string) or a false positive.\n"
-        "   Common false positives: key-name constants used for parsing (e.g. const string PASSWORD = \"password\"),\n"
-        "   connection string builders/parsers, secret removal/masking/redaction methods, logging placeholders.\n"
-        "2. If it is a real secret, propose a fix: move to environment variable, Azure Key Vault, user-secrets, or IConfiguration injection.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "sql_injection": (
-        "SECURITY FINDING: Potential SQL injection via string concatenation/interpolation.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this SQL injection risk. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether user-controlled input reaches this SQL string.\n"
-        "2. If vulnerable, rewrite using parameterized queries (@param, SqlParameter, or EF Core interpolated SQL).\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "insecure_deserialization": (
-        "SECURITY FINDING: Insecure deserialization detected.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this deserialization issue. Do NOT review the rest of the file for other issues.\n"
-        "1. Identify the dangerous type (BinaryFormatter, SoapFormatter, TypeNameHandling.All, etc.).\n"
-        "2. Propose a safe replacement: System.Text.Json, JsonSerializer with safe settings, or a custom binder.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "command_injection": (
-        "SECURITY FINDING: Potential command injection via Process.Start with string concatenation.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this command injection risk. Do NOT review the rest of the file for other issues.\n"
-        "1. Check whether user-controlled input flows into the process arguments.\n"
-        "2. If vulnerable, propose using an argument array (no shell), input validation, or allowlisting.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "weak_crypto": (
-        "SECURITY FINDING: Weak cryptographic algorithm in use.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this weak crypto usage. Do NOT review the rest of the file for other issues.\n"
-        "1. Identify the algorithm (MD5, SHA1, DES, TripleDES, RC2).\n"
-        "2. Determine whether it is used for security (signatures, passwords, tokens, certificates)\n"
-        "   or non-security purposes (checksums, cache keys, ETags, content fingerprints, deduplication).\n"
-        "   MD5/SHA1 for non-security hashing is generally acceptable and not a vulnerability.\n"
-        "3. If security-relevant, replace with SHA-256/SHA-512 (hashing), AES-256 (encryption), or PBKDF2/Argon2 (passwords).\n"
-        "4. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "open_redirect": (
-        "SECURITY FINDING: Potential open redirect.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this redirect. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether user input (returnUrl, redirectUrl, Request params) reaches the Redirect() call.\n"
-        "2. If vulnerable, replace with LocalRedirect(), add Url.IsLocalUrl() validation, or use an allowlist.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "xss": (
-        "SECURITY FINDING: Potential cross-site scripting (XSS).\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this XSS risk. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine the vector: Html.Raw with user input, Response.Write, or missing [ValidateAntiForgeryToken].\n"
-        "2. For Html.Raw: encode via HtmlEncoder or use Razor's default encoding.\n"
-        "3. For missing anti-forgery: add [ValidateAntiForgeryToken] to the POST action.\n"
-        "4. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "insecure_random": (
-        "SECURITY FINDING: System.Random used in a security-sensitive context.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this random number usage. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether the value is used for tokens, passwords, nonces, or other security purposes.\n"
-        "2. If so, replace System.Random with RandomNumberGenerator (System.Security.Cryptography).\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "exception_swallowing": (
-        "BUG: Empty catch block swallows exception silently.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this empty catch block. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine what the catch block should do: log, rethrow, wrap, or handle the exception.\n"
-        "2. Based on the surrounding context, propose the appropriate handler (ILogger, rethrow with throw;, etc.).\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "sync_over_async": (
-        "BUG: Sync-over-async anti-pattern detected.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this sync-over-async call. Do NOT review the rest of the file for other issues.\n"
-        "1. Identify the pattern: .Result, .Wait(), or .GetAwaiter().GetResult().\n"
-        "2. Determine if the calling method can be made async (add async/await up the call chain).\n"
-        "3. If it cannot be async (e.g., constructor, event handler), explain the threading risk and propose a safe alternative.\n"
-        "4. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "god_method": (
-        "CODE QUALITY: Method exceeds 100 lines.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this oversized method. Do NOT review the rest of the file for other issues.\n"
-        "1. Identify logical blocks within the method that can be extracted into smaller methods.\n"
-        "2. Propose an extract-method refactoring that preserves behavior.\n"
-        "3. Show the method decomposition plan -- do not refactor other methods in the file."
-    ),
-    "deep_nesting": (
-        "CODE QUALITY: Excessive nesting depth (>4 levels).\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this deeply nested code. Do NOT review the rest of the file for other issues.\n"
-        "1. Identify guard clauses, early returns, or method extraction to reduce nesting.\n"
-        "2. Propose a restructured version using inversion of control flow.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "long_parameter_list": (
-        "CODE QUALITY: Method has more than 5 parameters.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this parameter list. Do NOT review the rest of the file for other issues.\n"
-        "1. Group related parameters into a parameter object, record, or Options class.\n"
-        "2. Consider whether Builder pattern or method overloads would be more appropriate.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "precision_unsafe_math": (
-        "CODE QUALITY: float/double used where decimal precision may be required.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this precision issue. Do NOT review the rest of the file for other issues.\n"
-        "1. Confirm whether this variable participates in financial calculations (price, amount, rate, margin).\n"
-        "2. If so, change the type from float/double to decimal.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "deep_inheritance": (
-        "CODE QUALITY: Class implements many interfaces or has complex inheritance.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this inheritance hierarchy. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine if the interfaces indicate too many responsibilities (violating Interface Segregation).\n"
-        "2. Consider composition over inheritance or splitting the class.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "python_call": (
-        "CROSS-TECHNOLOGY: C# code invokes Python.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this Python interop call. Do NOT review the rest of the file for other issues.\n"
-        "1. Document the purpose of the Python call (calculation engine, data processing, ML model, etc.).\n"
-        "2. Assess error handling: what happens if the Python process fails, times out, or returns unexpected output?\n"
-        "3. Check for input sanitization if C# data is passed to the Python script.\n"
-        "4. Evaluate whether this is the right integration approach or if a gRPC/REST/message-queue boundary would be safer.\n"
-        "5. Show any minimal improvements needed -- do not refactor surrounding code."
-    ),
-    "magic_number": (
-        "STYLE: Hardcoded numeric literal in logic.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this magic number. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine the meaning of the number from context.\n"
-        "2. Extract it to a named constant with a descriptive name.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "missing_null_check": (
-        "STYLE: Public method parameter lacks null check.\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this null-check gap. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine if the parameter is nullable and needs validation.\n"
-        "2. Add ArgumentNullException.ThrowIfNull() or a null-check guard clause.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-    "mutable_shared_state": (
-        "STYLE: Static mutable field (potential thread-safety issue).\n"
-        "File: {file} (line {line})\n"
-        "Context: {context}\n\n"
-        "TASK: Evaluate ONLY this static mutable field. Do NOT review the rest of the file for other issues.\n"
-        "1. Determine if the field is accessed from multiple threads.\n"
-        "2. If so, make it readonly, use ConcurrentDictionary, Lazy<T>, or add synchronization.\n"
-        "3. Show the minimal code change needed -- do not refactor surrounding code."
-    ),
-}
+def load_prompts() -> dict:
+    """Load prompts from YAML with custom overrides."""
+    default_path = Path(__file__).parent / "prompts" / "default_prompts.yaml"
+    custom_path = Path(__file__).parent / "prompts" / "custom_prompts.yaml"
+
+    if not default_path.exists():
+        print(f"ERROR: {default_path} not found. Run migrate_prompts.py first.")
+        return {}
+
+    # Load defaults
+    with open(default_path) as f:
+        data = yaml.safe_load(f)
+
+    prompts = data.get("prompts", {})
+
+    # Apply customizations
+    if custom_path.exists():
+        with open(custom_path) as f:
+            custom = yaml.safe_load(f)
+            custom_prompts = custom.get("prompts", {})
+            # Deep merge (custom overrides default)
+            for detector, langs in custom_prompts.items():
+                prompts.setdefault(detector, {}).update(langs)
+
+    # Flatten to lookup format: {detector:lang: text} and {detector: text}
+    flat = {}
+    for detector, langs in prompts.items():
+        for lang, text in langs.items():
+            if lang == "base":
+                flat[detector] = text  # Fallback: bare detector name
+            else:
+                flat[f"{detector}:{lang}"] = text  # Language-specific: detector:lang
+
+    return flat
+
+SMELL_PROMPTS = load_prompts()
+
 
 
 # ─── Triage Persistence ───────────────────────────────────────────────
