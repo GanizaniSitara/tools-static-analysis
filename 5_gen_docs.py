@@ -5627,29 +5627,33 @@ function initSortableTable(table) {{
   syncStatCards('sec', '.sec-sev-badge', 'sec-sev-badge-active');
   syncStatCards('ux', '.ux-badge[data-severity]', 'ux-badge-active');
 
-  // ── Toggle diagram tabs based on folder selection ──
+  // ── Toggle diagram tabs based on multi-folder mode ──
   function toggleDiagramTabs() {{
-    var selectedFolder = getActiveRepo();
     var diagramTabs = ['dataflow', 'businesslayers', 'e2eflowsdiagram', 'fieldtracediagram',
                        'cat_library', 'cat_test', 'cat_application', 'cat_webapp', 'cat_tool',
                        'cat_connector', 'cat_service', 'cat_desktopapp'];
 
+    // Check if we're in multi-folder mode (more than 1 folder available)
+    var folderCount = (window._repos || []).length;
+    var isMultiFolder = folderCount > 1;
+
     diagramTabs.forEach(function(tabId) {{
       var tabBtn = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
       if (tabBtn) {{
-        if (selectedFolder === '') {{
-          // "All Folders" selected - hide diagram tabs as they show aggregated data
+        if (isMultiFolder) {{
+          // Multi-folder mode: Hide diagram tabs since diagrams show aggregated data across all folders
+          // This prevents confusion - diagrams are not filtered per folder
           tabBtn.style.display = 'none';
         }} else {{
-          // Specific folder selected - show diagram tabs
+          // Single-folder mode: Show diagram tabs since they represent the one folder being scanned
           tabBtn.style.display = '';
         }}
       }}
     }});
 
-    // If current active tab is a diagram tab and "All Folders" is selected, switch to Code Quality tab
+    // If current active tab is a diagram tab in multi-folder mode, switch to Code Quality tab
     var activeTab = document.querySelector('.tab-btn.active');
-    if (activeTab && selectedFolder === '' && diagramTabs.includes(activeTab.getAttribute('data-tab'))) {{
+    if (activeTab && isMultiFolder && diagramTabs.includes(activeTab.getAttribute('data-tab'))) {{
       var cqTab = document.querySelector('.tab-btn[data-tab="codequality"]');
       if (cqTab) cqTab.click();
     }}
