@@ -2813,6 +2813,40 @@ def generate_viewer_html() -> str:
   </div>
 </div>
 
+<div id="adminModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;" onclick="if(event.target===this)closeAdminModal()">
+  <div style="background:#FFFFFF;border-radius:12px;max-width:1000px;width:90%;max-height:85vh;display:flex;flex-direction:column;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+    <div style="padding:1.5rem 2rem;border-bottom:1px solid #E1E1E1;">
+      <h2 style="color:#022D5E;margin:0;">Prompt Configuration</h2>
+      <button onclick="closeAdminModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.2rem 0.6rem;font-size:1.2rem;">&#10005;</button>
+    </div>
+
+    <div style="flex:1;display:flex;overflow:hidden;">
+      <div id="detectorNav" style="width:200px;overflow-y:auto;border-right:1px solid #E1E1E1;padding:1rem;"></div>
+
+      <div style="flex:1;display:flex;flex-direction:column;padding:1.5rem;">
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+          <button class="lang-tab active" data-lang="base" onclick="selectLanguage('base')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#005587;color:#fff;border-radius:6px;cursor:pointer;font-size:0.85rem;">Base</button>
+          <button class="lang-tab" data-lang="csharp" onclick="selectLanguage('csharp')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#F5F5F5;color:#333;border-radius:6px;cursor:pointer;font-size:0.85rem;">C#</button>
+          <button class="lang-tab" data-lang="java" onclick="selectLanguage('java')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#F5F5F5;color:#333;border-radius:6px;cursor:pointer;font-size:0.85rem;">Java</button>
+        </div>
+
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <textarea id="promptEditor" style="flex:1;font-family:Consolas,'Courier New',monospace;font-size:13px;padding:0.5rem;border:1px solid #E1E1E1;border-radius:4px;resize:none;"></textarea>
+          <div style="margin-top:0.5rem;font-size:12px;color:#666;">
+            Available placeholders: <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{file}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{line}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{context}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{project}}</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:1rem 2rem;border-top:1px solid #E1E1E1;display:flex;gap:1rem;justify-content:flex-end;">
+      <button onclick="savePrompts()" style="padding:0.5rem 1.5rem;background:#005587;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Save Changes</button>
+      <button onclick="resetPrompts()" style="padding:0.5rem 1.5rem;background:#d9534f;color:#fff;border:none;border-radius:6px;cursor:pointer;">Reset to Defaults</button>
+      <button onclick="closeAdminModal()" style="padding:0.5rem 1.5rem;background:#6c757d;color:#fff;border:none;border-radius:6px;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -2833,7 +2867,8 @@ def generate_viewer_html() -> str:
     <a href="docs/ai-context/index.html" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
       <span class="stat-value">AI</span> Context
     </a>
-    <a href="help.html" id="helpLink" target="_blank" rel="noopener noreferrer" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" title="Open the standalone help page with tab descriptions and usage notes">? Help</a>
+    <a href="#" id="adminLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;margin-right:0.5rem;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();openAdminModal();">Settings</a>
+    <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';">? Help</a>
   </div>
 </header>
 
@@ -6291,6 +6326,173 @@ function initSortableTable(table) {{
 
     return lines.join('\\n');
   }}
+
+// ─── Admin Modal for Prompt Configuration ─────────────────────────────
+
+var currentDetector = "hardcoded_secret";
+var currentLang = "base";
+var promptData = {{}};
+var isDirty = false;
+
+var detectorNames = [
+  "hardcoded_secret", "sql_injection", "insecure_deserialization", "command_injection",
+  "weak_crypto", "open_redirect", "xss", "insecure_random",
+  "exception_swallowing", "sync_over_async",
+  "god_method", "deep_nesting", "long_parameter_list", "precision_unsafe_math", "deep_inheritance",
+  "python_call",
+  "magic_number", "missing_null_check", "mutable_shared_state"
+];
+
+var detectorLabels = {{
+  "hardcoded_secret": "Hardcoded Secret",
+  "sql_injection": "SQL Injection",
+  "insecure_deserialization": "Insecure Deserialization",
+  "command_injection": "Command Injection",
+  "weak_crypto": "Weak Crypto",
+  "open_redirect": "Open Redirect",
+  "xss": "XSS",
+  "insecure_random": "Insecure Random",
+  "exception_swallowing": "Exception Swallowing",
+  "sync_over_async": "Sync over Async",
+  "god_method": "God Method",
+  "deep_nesting": "Deep Nesting",
+  "long_parameter_list": "Long Parameter List",
+  "precision_unsafe_math": "Precision Unsafe Math",
+  "deep_inheritance": "Deep Inheritance",
+  "python_call": "Python Call",
+  "magic_number": "Magic Number",
+  "missing_null_check": "Missing Null Check",
+  "mutable_shared_state": "Mutable Shared State"
+}};
+
+function openAdminModal() {{
+  fetch("/_prompts/list")
+    .then(r => r.json())
+    .then(data => {{
+      promptData = data.prompts || {{}};
+      renderDetectorNav();
+      loadPromptEditor();
+      document.getElementById("adminModal").style.display = "flex";
+      selectDetector("hardcoded_secret");
+    }})
+    .catch(err => alert("Failed to load prompts: " + err));
+}}
+
+function closeAdminModal() {{
+  if (isDirty && !confirm("You have unsaved changes. Close anyway?")) {{
+    return;
+  }}
+  document.getElementById("adminModal").style.display = "none";
+  isDirty = false;
+}}
+
+function renderDetectorNav() {{
+  var nav = document.getElementById("detectorNav");
+  nav.innerHTML = detectorNames.map(name => {{
+    var label = detectorLabels[name] || name;
+    return '<button class="detector-btn" data-detector="' + name + '" onclick="selectDetector(\\'' + name + '\\')" style="display:block;width:100%;padding:0.5rem;margin-bottom:0.25rem;border:none;background:#F5F5F5;cursor:pointer;text-align:left;border-radius:4px;font-size:0.85rem;">' + label + '</button>';
+  }}).join('');
+}}
+
+function selectDetector(detector) {{
+  saveCurrentPrompt();
+  currentDetector = detector;
+  loadPromptEditor();
+
+  var buttons = document.querySelectorAll(".detector-btn");
+  buttons.forEach(btn => {{
+    if (btn.dataset.detector === detector) {{
+      btn.style.background = "#005587";
+      btn.style.color = "#fff";
+    }} else {{
+      btn.style.background = "#F5F5F5";
+      btn.style.color = "#333";
+    }}
+  }});
+}}
+
+function selectLanguage(lang) {{
+  saveCurrentPrompt();
+  currentLang = lang;
+  loadPromptEditor();
+
+  var tabs = document.querySelectorAll(".lang-tab");
+  tabs.forEach(tab => {{
+    if (tab.dataset.lang === lang) {{
+      tab.style.background = "#005587";
+      tab.style.color = "#fff";
+    }} else {{
+      tab.style.background = "#F5F5F5";
+      tab.style.color = "#333";
+    }}
+  }});
+}}
+
+function loadPromptEditor() {{
+  var prompt = (promptData[currentDetector] || {{}})[currentLang] || "";
+  document.getElementById("promptEditor").value = prompt;
+  isDirty = false;
+}}
+
+function saveCurrentPrompt() {{
+  if (!promptData[currentDetector]) {{
+    promptData[currentDetector] = {{}};
+  }}
+  promptData[currentDetector][currentLang] = document.getElementById("promptEditor").value;
+}}
+
+function savePrompts() {{
+  saveCurrentPrompt();
+
+  var required = ["{{file}}", "{{line}}", "{{context}}", "{{project}}"];
+  for (var detector in promptData) {{
+    for (var lang in promptData[detector]) {{
+      var text = promptData[detector][lang];
+      for (var i = 0; i < required.length; i++) {{
+        if (text.indexOf(required[i]) === -1) {{
+          alert("Missing placeholder " + required[i] + " in " + detector + ":" + lang);
+          return;
+        }}
+      }}
+    }}
+  }}
+
+  fetch("/_prompts/save", {{
+    method: "POST",
+    headers: {{"Content-Type": "application/json"}},
+    body: JSON.stringify({{version: 1, prompts: promptData}})
+  }})
+  .then(r => r.json())
+  .then(data => {{
+    alert(data.message || "Prompts saved successfully");
+    isDirty = false;
+  }})
+  .catch(err => alert("Save failed: " + err));
+}}
+
+function resetPrompts() {{
+  if (!confirm("Reset all prompts to factory defaults? Custom changes will be lost.")) {{
+    return;
+  }}
+
+  fetch("/_prompts/reset", {{method: "POST"}})
+    .then(r => r.json())
+    .then(data => {{
+      alert(data.message || "Prompts reset to defaults");
+      closeAdminModal();
+    }})
+    .catch(err => alert("Reset failed: " + err));
+}}
+
+document.addEventListener("DOMContentLoaded", function() {{
+  var editor = document.getElementById("promptEditor");
+  if (editor) {{
+    editor.addEventListener("input", function() {{
+      isDirty = true;
+    }});
+  }}
+}});
+
 }})();
 </script>
 </body>
