@@ -656,69 +656,92 @@ def generate_viewer_html() -> str:
 
     # ── Collect two-level diagram tabs: overview + per-category ──
     diagrams_dir = os.path.join(OUT_DIR, "diagrams")
-    diagram_tabs: list[dict] = []
 
-    # Overview tab (category-level diagram)
-    overview_path = os.path.join(diagrams_dir, "overview.mmd")
-    content = _read_text(overview_path)
-    if content:
-        diagram_tabs.append({
-            "id": "overview",
-            "label": "Overview",
-            "title": "Category Overview",
-            "mermaid": content,
-        })
+    def load_diagram_set(folder_suffix: str) -> list[dict]:
+        """Load diagram tabs for a specific folder (or aggregate if suffix is empty)."""
+        tabs = []
 
-    # Per-category tabs ordered by project count descending
-    skip_cats = {"Localization", "Sample"}
-    cat_counts = sorted(categories.items(), key=lambda x: -x[1])
-    for cat_name, count in cat_counts:
-        if cat_name in skip_cats:
-            continue
-        cat_key = cat_name.lower()
-        content = _read_text(os.path.join(diagrams_dir, f"category-{cat_key}.mmd"))
+        # Overview tab (category-level diagram)
+        overview_name = f"overview{folder_suffix}.mmd"
+        overview_path = os.path.join(diagrams_dir, overview_name)
+        content = _read_text(overview_path)
         if content:
-            # Check for edge filter metadata comment
-            edge_filter_warning = ""
-            for line in content.splitlines():
-                if line.startswith("%% EDGE_FILTER:"):
-                    parts = dict(kv.split("=") for kv in line[len("%% EDGE_FILTER:"):].strip().split())
-                    hidden = int(parts.get("hidden", 0))
-                    min_count = int(parts.get("min_count", 1))
-                    total = int(parts.get("total", 0))
-                    shown = int(parts.get("shown", 0))
-                    edge_filter_warning = (
-                        f"Showing {shown} of {total} edges (hiding {hidden} edges "
-                        f"with fewer than {min_count} references to stay within rendering limits)"
-                    )
-                    break
-            diagram_tabs.append({
-                "id": f"cat_{sanitize_id(cat_key)}",
-                "label": f"{cat_name} ({count})",
-                "title": f"{cat_name} Projects ({count})",
+            tabs.append({
+                "id": "overview",
+                "label": "Overview",
+                "title": "Category Overview",
                 "mermaid": content,
-                "warning": edge_filter_warning,
             })
 
-    # ── Named diagram tabs (Data Flow, Business Layers, E2E, Field Trace) ──
-    for mmd_name, tab_id, tab_label, tab_title in [
-        ("data-flow.mmd", "dataflow", "Data Flow",
-         "Data Flow — Projects Connected Through Data Infrastructure"),
-        ("business-layers.mmd", "businesslayers", "Business Layers",
-         "Business Layer Classification — Presentation / Engine / Service / DataAccess"),
-        ("e2e-flows.mmd", "e2eflowsdiagram", "E2E Flows Diagram",
-         "End-to-End Flow Paths — Screen to Pricer to Data"),
-        ("field-traceability.mmd", "fieldtracediagram", "Field Trace Diagram",
-         "Field Traceability — XAML Binding to Database Column"),
-    ]:
-        content = _read_text(os.path.join(diagrams_dir, mmd_name))
-        if content and "no_data" not in content:
-            diagram_tabs.append({
-                "id": tab_id,
-                "label": tab_label,
-                "title": tab_title,
-                "mermaid": content,
-            })
+        # Per-category tabs ordered by project count descending
+        skip_cats = {"Localization", "Sample"}
+        cat_counts = sorted(categories.items(), key=lambda x: -x[1])
+        for cat_name, count in cat_counts:
+            if cat_name in skip_cats:
+                continue
+            cat_key = cat_name.lower()
+            cat_filename = f"category-{cat_key}{folder_suffix}.mmd"
+            content = _read_text(os.path.join(diagrams_dir, cat_filename))
+            if content:
+                # Check for edge filter metadata comment
+                edge_filter_warning = ""
+                for line in content.splitlines():
+                    if line.startswith("%% EDGE_FILTER:"):
+                        parts = dict(kv.split("=") for kv in line[len("%% EDGE_FILTER:"):].strip().split())
+                        hidden = int(parts.get("hidden", 0))
+                        min_count = int(parts.get("min_count", 1))
+                        total = int(parts.get("total", 0))
+                        shown = int(parts.get("shown", 0))
+                        edge_filter_warning = (
+                            f"Showing {shown} of {total} edges (hiding {hidden} edges "
+                            f"with fewer than {min_count} references to stay within rendering limits)"
+                        )
+                        break
+                tabs.append({
+                    "id": f"cat_{sanitize_id(cat_key)}",
+                    "label": f"{cat_name} ({count})",
+                    "title": f"{cat_name} Projects ({count})",
+                    "mermaid": content,
+                    "warning": edge_filter_warning,
+                })
+
+        # Named diagram tabs (Data Flow, Business Layers, E2E, Field Trace)
+        for base_name, tab_id, tab_label, tab_title in [
+            ("landscape", "landscape", "Landscape", "Architecture Landscape"),
+            ("core-libraries", "corelibraries", "Core Libraries", "Core Library Dependencies"),
+            ("data-infrastructure", "datainfra", "Data Infra", "Data Infrastructure"),
+            ("data-flow", "dataflow", "Data Flow",
+             "Data Flow — Projects Connected Through Data Infrastructure"),
+            ("nuget-groups", "nugetgroups", "NuGet Groups", "NuGet Package Groups"),
+            ("business-layers", "businesslayers", "Business Layers",
+             "Business Layer Classification — Presentation / Engine / Service / DataAccess"),
+            ("e2e-flows", "e2eflowsdiagram", "E2E Flows Diagram",
+             "End-to-End Flow Paths — Screen to Pricer to Data"),
+            ("field-traceability", "fieldtracediagram", "Field Trace Diagram",
+             "Field Traceability — XAML Binding to Database Column"),
+        ]:
+            mmd_filename = f"{base_name}{folder_suffix}.mmd"
+            content = _read_text(os.path.join(diagrams_dir, mmd_filename))
+            if content and "no_data" not in content:
+                tabs.append({
+                    "id": tab_id,
+                    "label": tab_label,
+                    "title": tab_title,
+                    "mermaid": content,
+                })
+
+        return tabs
+
+    # Load aggregate diagrams (for "All Folders" view)
+    diagram_tabs = load_diagram_set("")
+
+    # Load per-folder diagrams
+    diagram_sets = {"": diagram_tabs}  # Empty string key = aggregate
+    if is_multi_repo:
+        for repo in repo_list:
+            folder_tabs = load_diagram_set(f"-{repo}")
+            if folder_tabs:
+                diagram_sets[repo] = folder_tabs
 
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
@@ -964,21 +987,31 @@ def generate_viewer_html() -> str:
           <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>pill</strong> &rarr; see the underlying project references</div>
           <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
         </div>"""
+    # Generate diagram panels for all diagram sets (aggregate + per-folder)
     diagram_panels = ""
-    for i, dt in enumerate(diagram_tabs):
-        active = " active" if i == 0 else ""
-        warning_html = ""
-        if dt.get("warning"):
-            warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
-        if dt["id"] == "overview":
-            side_legend = legend_html
-        elif dt["id"].startswith("cat_"):
-            side_legend = category_detail_legend_html
-        else:
-            side_legend = ""
-        diagram_body = f"""
+    for folder_key, folder_tabs in diagram_sets.items():
+        folder_display = "" if folder_key == "" else f" data-folder=\"{folder_key}\""
+        is_visible = ' style="display:block"' if folder_key == "" else ' style="display:none"'
+
+        for i, dt in enumerate(folder_tabs):
+            # Use folder-specific ID to avoid conflicts
+            panel_id = f"{dt['id']}-{folder_key}" if folder_key else dt['id']
+            active = " active" if (i == 0 and folder_key == "") else ""
+
+            warning_html = ""
+            if dt.get("warning"):
+                warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
+
+            if dt["id"] == "overview":
+                side_legend = legend_html
+            elif dt["id"].startswith("cat_"):
+                side_legend = category_detail_legend_html
+            else:
+                side_legend = ""
+
+            diagram_body = f"""
       <div class="diagram-with-legend">
-        <div class="mermaid-wrap" id="mermaid-{dt['id']}">
+        <div class="mermaid-wrap" id="mermaid-{panel_id}">
           <span class="loading">Loading diagram...</span>
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
@@ -987,27 +1020,30 @@ def generate_viewer_html() -> str:
         </div>
         <div class="diagram-sidebar">
           {side_legend}
-          <div class="edge-detail-panel" id="edgeDetail-{dt['id']}"></div>
+          <div class="edge-detail-panel" id="edgeDetail-{panel_id}"></div>
         </div>
       </div>"""
-        diagram_panels += f"""
-  <section class="tab-panel{active}" id="panel-{dt['id']}">
+            diagram_panels += f"""
+  <section class="tab-panel{active} diagram-panel" id="panel-{panel_id}"{folder_display}{is_visible}>
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}
         <span class="zoom-controls">
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', -0.2)" title="Zoom out">&#8722;</button>
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', 0.2)" title="Zoom in">&#43;</button>
         </span>
       </div>{warning_html}{diagram_body}
     </div>
   </section>
 """
 
-    # Mermaid container map for JS
-    mermaid_map_entries = ", ".join(
-        f"'{dt['id']}': 'mermaid-{dt['id']}'" for dt in diagram_tabs
-    )
+    # Mermaid container map for JS (includes all diagram sets)
+    mermaid_map_entries = []
+    for folder_key, folder_tabs in diagram_sets.items():
+        for dt in folder_tabs:
+            panel_id = f"{dt['id']}-{folder_key}" if folder_key else dt['id']
+            mermaid_map_entries.append(f"'{panel_id}': 'mermaid-{panel_id}'")
+    mermaid_map_entries = ", ".join(mermaid_map_entries)
 
     # Data sources panel
     datasources_panel = ""
@@ -4137,7 +4173,37 @@ function initSortableTable(table) {{
 
   function activateTab(tabId) {{
     tabButtons.forEach(function (b) {{ b.classList.toggle('active', b.dataset.tab === tabId); }});
-    tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
+
+    // Find the visible panel for this tab (matches base ID and is currently visible)
+    tabPanels.forEach(function (p) {{
+      // Extract base ID: "panel-overview" or "panel-overview-EventStore" -> "overview"
+      var panelId = p.id.replace(/^panel-/, ''); // Remove "panel-" prefix
+      var panelBaseId = panelId;
+
+      // Check if this is a per-folder panel (has a folder suffix)
+      var folderAttr = p.getAttribute('data-folder');
+      if (folderAttr && panelId.endsWith('-' + folderAttr)) {{
+        // Remove folder suffix: "overview-EventStore" -> "overview"
+        var suffixLength = folderAttr.length + 1; // +1 for the hyphen
+        panelBaseId = panelId.slice(0, -suffixLength);
+      }}
+
+      var isMatch = (tabId === panelBaseId);
+      var isFolderVisible = p.style.display !== 'none';
+
+      // Only show panel if it matches AND its folder is visible
+      if (isMatch && isFolderVisible) {{
+        p.classList.add('active');
+        p.style.display = 'block';
+      }} else {{
+        p.classList.remove('active');
+        // Clear inline style to let CSS handle visibility
+        if (isFolderVisible && !isMatch) {{
+          p.style.display = '';
+        }}
+      }}
+    }});
+
     lazyRenderMermaid(tabId);
   }}
   window.activateTab = activateTab;
@@ -4149,15 +4215,34 @@ function initSortableTable(table) {{
   var mermaidContainers = {{ {mermaid_map_entries} }};
 
   function lazyRenderMermaid(tabId) {{
-    var containerId = mermaidContainers[tabId];
-    if (!containerId || renderedTabs[tabId]) return;
+    // Find the visible panel for this tab ID
+    var activePanel = null;
+    tabPanels.forEach(function(p) {{
+      var panelBaseId = p.id.replace(/^panel-/, '').split('-')[0];
+      var isMatch = (tabId === panelBaseId || p.id === 'panel-' + tabId);
+      var isVisible = p.style.display !== 'none';
+      if (isMatch && isVisible && p.classList.contains('active')) {{
+        activePanel = p;
+      }}
+    }});
+
+    if (!activePanel) return;
+
+    var panelId = activePanel.id.replace(/^panel-/, '');
+    if (renderedTabs[panelId]) return;
+
+    var containerId = mermaidContainers[panelId];
+    if (!containerId) {{
+      // Fallback to direct panel ID lookup
+      containerId = 'mermaid-' + panelId;
+    }}
 
     function doRender() {{
       var container = document.getElementById(containerId);
       if (!container) return;
       var pre = container.querySelector('pre.mermaid');
       if (!pre) return;
-      renderedTabs[tabId] = true;
+      renderedTabs[panelId] = true;
       var loading = container.querySelector('.loading');
       pre.style.display = '';
       if (loading) loading.style.display = 'none';
@@ -5629,33 +5714,49 @@ function initSortableTable(table) {{
 
   // ── Toggle diagram tabs based on multi-folder mode ──
   function toggleDiagramTabs() {{
-    var diagramTabs = ['dataflow', 'businesslayers', 'e2eflowsdiagram', 'fieldtracediagram',
-                       'cat_library', 'cat_test', 'cat_application', 'cat_webapp', 'cat_tool',
-                       'cat_connector', 'cat_service', 'cat_desktopapp'];
+    // Get selected folder from dropdown
+    var repoSelect = document.getElementById('globalRepoFilter');
+    if (!repoSelect) return;
 
-    // Check if we're in multi-folder mode (more than 1 folder available)
-    var folderCount = (window._repos || []).length;
-    var isMultiFolder = folderCount > 1;
+    var selectedFolder = repoSelect.value; // Empty string = "All Folders"
 
-    diagramTabs.forEach(function(tabId) {{
-      var tabBtn = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
-      if (tabBtn) {{
-        if (isMultiFolder) {{
-          // Multi-folder mode: Hide diagram tabs since diagrams show aggregated data across all folders
-          // This prevents confusion - diagrams are not filtered per folder
-          tabBtn.style.display = 'none';
-        }} else {{
-          // Single-folder mode: Show diagram tabs since they represent the one folder being scanned
-          tabBtn.style.display = '';
-        }}
+    // Remember currently active tab
+    var activeTab = document.querySelector('.tab-btn.active');
+    var activeTabId = activeTab ? activeTab.getAttribute('data-tab') : null;
+
+    // Show/hide diagram panels based on selected folder
+    var allPanels = document.querySelectorAll('.diagram-panel');
+    allPanels.forEach(function(panel) {{
+      var panelFolder = panel.getAttribute('data-folder');
+      var shouldShow = false;
+
+      if (selectedFolder === '') {{
+        // "All Folders" selected - show aggregate diagrams (no data-folder attribute)
+        shouldShow = (panelFolder === null || panelFolder === '');
+      }} else {{
+        // Specific folder selected - show panels with matching data-folder
+        shouldShow = (panelFolder === selectedFolder);
       }}
+
+      panel.style.display = shouldShow ? 'block' : 'none';
     }});
 
-    // If current active tab is a diagram tab in multi-folder mode, switch to Code Quality tab
-    var activeTab = document.querySelector('.tab-btn.active');
-    if (activeTab && isMultiFolder && diagramTabs.includes(activeTab.getAttribute('data-tab'))) {{
-      var cqTab = document.querySelector('.tab-btn[data-tab="codequality"]');
-      if (cqTab) cqTab.click();
+    // Re-activate the current tab to show correct panel for new folder
+    // Use setTimeout to ensure display styles have been applied
+    if (activeTabId && window.activateTab) {{
+      setTimeout(function() {{{{
+        window.activateTab(activeTabId);
+      }}}}, 10);
+    }}
+
+    // Re-render visible mermaid diagrams
+    if (window.mermaid) {{
+      setTimeout(function() {{{{
+        var visibleDiagrams = document.querySelectorAll('.diagram-panel[style*="display: block"] .mermaid');
+        if (visibleDiagrams.length > 0) {{{{
+          window.mermaid.init(undefined, visibleDiagrams);
+        }}}}
+      }}}}, 150);
     }}
   }}
 
@@ -5667,6 +5768,10 @@ function initSortableTable(table) {{
       opt.value = r; opt.textContent = r;
       repoSelect.appendChild(opt);
     }});
+
+    // Initialize diagram visibility on page load
+    toggleDiagramTabs();
+
     repoSelect.addEventListener('change', function () {{
       toggleDiagramTabs();
       searchInput.dispatchEvent(new Event('input'));
