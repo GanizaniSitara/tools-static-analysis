@@ -993,12 +993,14 @@ def generate_viewer_html() -> str:
         trimmed_files = []
         for rf in sorted(raw_files, key=lambda f: -f.get("smell_count", 0))[:50]:
             smells = rf.get("smells", [])[:20]
+            file_language = rf.get("language", "csharp")
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
                                "context": (s.get("context") or "")[:100],
                                "severity": s.get("severity", ""),
                                "category": s.get("category", ""),
                                "findingId": s.get("findingId", ""),
-                               "triageStatus": s.get("triageStatus", "unreviewed")} for s in smells]
+                               "triageStatus": s.get("triageStatus", "unreviewed"),
+                               "language": file_language} for s in smells]
             if trimmed_smells:
                 trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
