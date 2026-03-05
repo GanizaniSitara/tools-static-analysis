@@ -651,7 +651,7 @@ def cancel_fix(fix_id: str) -> Dict[str, Any]:
 # =============================================================================
 
 @mcp.tool()
-def get_config() -> Dict[str, Any]:
+def get_server_config() -> Dict[str, Any]:
     """Get current configuration settings.
 
     Returns:
@@ -824,7 +824,8 @@ def initialize_server():
     """Initialize server on startup."""
     global config, scan_loader, fix_loader
 
-    config = get_config()
+    from .config import get_config as load_config
+    config = load_config()
     fix_loader = FixLoader(str(config.project_root))
 
     logger.info("Static Analysis MCP server initialized")
