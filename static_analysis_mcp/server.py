@@ -817,6 +817,527 @@ def update_triage_status(
 
 
 # =============================================================================
+# Intelligent Fix Recommendation Tools (7 tools)
+# =============================================================================
+
+@mcp.tool()
+def recommend_fixes_priority(
+    output_dir: str,
+    project: Optional[str] = None,
+    category: Optional[str] = None,
+    limit: int = 10
+) -> List[Dict[str, Any]]:
+    """Get prioritized list of fixes to work on first.
+
+    Returns findings ranked by:
+    - Severity (critical > high > medium > low)
+    - Security issues weighted higher
+    - Blast radius (dependencies affected)
+    - Effort estimate (low effort = higher priority)
+    - Triage status (in_progress on top, resolved filtered out)
+
+    Quick wins: high severity + low effort
+    Security first: security issues weighted 1.5x
+
+    Args:
+        output_dir: Scan output directory
+        project: Optional project filter
+        category: Optional category filter (security, bug, quality)
+        limit: Max results
+
+    Returns:
+        List of findings with priority scores and recommendations
+    """
+    try:
+        loader = ScanLoader(output_dir)
+        if not loader.exists():
+            return []
+
+        filters = {}
+        if project:
+            filters['project'] = project
+        if category:
+            filters['category'] = category
+
+        findings = loader.get_prioritized_findings(filters, limit)
+
+        # Enhance with batch fix opportunities
+        for f in findings:
+            # Count similar smells for batch fix opportunity
+            similar_results = loader.find_similar_smells(f['smell_type'], group_by="pattern", limit=100)
+            if isinstance(similar_results, list) and len(similar_results) > 0:
+                # If grouped by pattern, sum all instances
+                total_similar = sum(p.get('count', 0) for p in similar_results if isinstance(p, dict))
+            else:
+                total_similar = 0
+
+            f['similar_count'] = total_similar
+            f['batch_fix_opportunity'] = total_similar > 3
+
+            # Generate human-readable reason
+            reasons = []
+            if f.get('severity') == 'critical':
+                reasons.append("Critical severity")
+            if f.get('category') == 'security':
+                reasons.append("Security vulnerability")
+            if f.get('blast_radius') == 'high':
+                reasons.append(f"High blast radius")
+            if f.get('effort_estimate') in ['trivial', 'low']:
+                reasons.append("Quick fix")
+            if f.get('batch_fix_opportunity'):
+                reasons.append(f"{total_similar} similar instances")
+
+            f['reason'] = ', '.join(reasons) if reasons else "Standard priority"
+
+        return findings
+
+    except Exception as e:
+        logger.error(f"Failed to get fix recommendations: {e}")
+        return []
+
+
+@mcp.tool()
+def get_rich_fix_context(
+    output_dir: str,
+    project: str,
+    file_path: str,
+    line: int
+) -> Dict[str, Any]:
+    """Get comprehensive context for fixing a finding.
+
+    Provides everything an AI agent needs:
+    - Source code with context (±10 lines)
+    - Related issues in same file
+    - Similar patterns in codebase
+    - Dependency/blast radius analysis
+    - Complexity metrics
+    - Test coverage info
+    - Fix templates and guidance
+    - Triage status
+
+    This is the foundation for intelligent fix workflows.
+
+    Args:
+        output_dir: Scan output directory
+        project: Project name
+        file_path: File path
+        line: Line number
+
+    Returns:
+        Rich context dictionary with all fix information
+    """
+    try:
+        loader = ScanLoader(output_dir)
+        context = loader.get_rich_context(project, file_path, line)
+        return context
+
+    except Exception as e:
+        logger.error(f"Failed to get rich context: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to get context: {str(e)}"
+        }
+
+
+@mcp.tool()
+def find_similar_smells(
+    output_dir: str,
+    smell_type: str,
+    group_by: str = "pattern",
+    limit: int = 50
+) -> Dict[str, Any]:
+    """Find all instances of a smell type for batch fixing.
+
+    Identifies patterns across the codebase to enable:
+    - Batch fixing similar issues
+    - Consistent fix approaches
+    - Learning from repeated patterns
+
+    Args:
+        output_dir: Scan output directory
+        smell_type: Type of smell to find
+        group_by: Group by "pattern", "file", or "project"
+        limit: Max results per group
+
+    Returns:
+        Grouped instances with batch fix opportunities
+    """
+    try:
+        loader = ScanLoader(output_dir)
+        results = loader.find_similar_smells(smell_type, group_by, limit)
+
+        # Calculate totals
+        if isinstance(results, list) and len(results) > 0 and isinstance(results[0], dict):
+            if 'count' in results[0]:
+                # Grouped results
+                total_instances = sum(r.get('count', 0) for r in results)
+            else:
+                # Flat list
+                total_instances = len(results)
+        else:
+            total_instances = 0
+
+        return {
+            "smell_type": smell_type,
+            "total_instances": total_instances,
+            "grouped_by": group_by,
+            "groups": results
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to find similar smells: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to find patterns: {str(e)}"
+        }
+
+
+@mcp.tool()
+def estimate_fix_effort(
+    output_dir: str,
+    project: str,
+    file_path: str,
+    line: int
+) -> Dict[str, Any]:
+    """Estimate effort required to fix a finding.
+
+    Considers:
+    - Cyclomatic complexity
+    - Nesting depth
+    - Number of dependencies
+    - Test coverage
+    - Smell type characteristics
+
+    Returns estimates:
+    - trivial: <15 min (simple changes like renaming)
+    - low: 15-30 min (straightforward fixes)
+    - medium: 30-60 min (requires careful changes)
+    - high: 60+ min (major refactoring needed)
+
+    Args:
+        output_dir: Scan output directory
+        project: Project name
+        file_path: File path
+        line: Line number
+
+    Returns:
+        Effort estimate with factors and recommendation
+    """
+    try:
+        loader = ScanLoader(output_dir)
+        finding = loader.get_finding_at(project, file_path, line)
+
+        if not finding:
+            return {"isError": True, "message": "Finding not found"}
+
+        estimate = loader._estimate_effort(finding)
+
+        # Get contextual factors
+        context = loader.get_rich_context(project, file_path, line)
+
+        factors = {
+            "severity": finding.get('severity', 'low'),
+            "category": finding.get('category', 'quality'),
+            "smell_type": finding.get('smell_type', ''),
+            "has_tests": context.get('test_coverage', {}).get('project_has_tests', False),
+            "blast_radius": context.get('dependencies', {}).get('blast_radius', 'low'),
+            "related_smells": len(context.get('related_findings', []))
+        }
+
+        # Generate recommendation
+        recommendations = []
+        if not factors['has_tests']:
+            recommendations.append("Write tests first")
+        if factors['blast_radius'] == 'high':
+            recommendations.append("Review dependent modules")
+        if factors['related_smells'] > 2:
+            recommendations.append(f"Consider batch-fixing {factors['related_smells']} related issues")
+
+        recommendation = '; '.join(recommendations) if recommendations else f"{estimate.title()} effort"
+
+        return {
+            "file_path": file_path,
+            "line": line,
+            "effort_estimate": estimate,
+            "factors": factors,
+            "recommendation": recommendation,
+            "estimated_minutes": {
+                'trivial': '<15',
+                'low': '15-30',
+                'medium': '30-60',
+                'high': '60+'
+            }.get(estimate, '30-60')
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to estimate effort: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to estimate: {str(e)}"
+        }
+
+
+@mcp.tool()
+def get_fix_template(
+    smell_type: str,
+    language: str = "csharp"
+) -> Dict[str, Any]:
+    """Get pre-built fix pattern for a smell type.
+
+    Provides guidance from prompt templates.
+
+    Args:
+        smell_type: Type of smell
+        language: Programming language (csharp, java, python)
+
+    Returns:
+        Fix template with guidance and explanation
+    """
+    try:
+        prompts = list_prompts()
+
+        # Find matching prompt template
+        template = None
+        for p in prompts:
+            # Match smell_type to prompt name
+            if smell_type.lower() in p['name'].lower() or p['name'].lower() in smell_type.lower():
+                template = p
+                break
+
+        if not template:
+            return {
+                "isError": True,
+                "message": f"No template found for {smell_type}"
+            }
+
+        return {
+            "smell_type": smell_type,
+            "language": language,
+            "fix_template": {
+                "name": template.get('name', ''),
+                "explanation": template.get('description', ''),
+                "guidance": template.get('template', ''),
+                "variables": template.get('variables', []),
+                "language_specific": language in str(template.get('variables', []))
+            }
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to get fix template: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to get template: {str(e)}"
+        }
+
+
+@mcp.tool()
+def get_educational_resources(
+    smell_type: str,
+    language: str = "csharp"
+) -> Dict[str, Any]:
+    """Get educational videos and documentation for a smell type.
+
+    Provides YouTube explainers and official docs to help developers
+    understand the issue before fixing it. Curated resources include:
+    - Top YouTube tutorials (100K+ views)
+    - Official documentation (Microsoft, OWASP, etc.)
+    - Related topics and learning paths
+
+    Perfect for developers who:
+    - Are not 100% confident about the fix
+    - Want to learn the underlying concepts
+    - Need examples and best practices
+
+    Args:
+        smell_type: Type of code smell
+        language: Programming language for language-specific resources
+
+    Returns:
+        Educational resources with videos, docs, and related topics
+    """
+    try:
+        from .educational_resources import get_educational_resources as get_resources
+
+        resources = get_resources(smell_type)
+
+        return resources
+
+    except Exception as e:
+        logger.error(f"Failed to get educational resources: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to get resources: {str(e)}"
+        }
+
+
+@mcp.tool()
+def start_fix_with_context(
+    smell_type: str,
+    file_path: str,
+    line: int,
+    project: str,
+    output_dir: str,
+    editor: str = "claude",
+    include_similar: bool = True
+) -> Dict[str, Any]:
+    """Start fix workflow with rich context assembly.
+
+    Enhanced version of start_fix that:
+    1. Assembles rich context (dependencies, similar patterns, metrics)
+    2. Gets fix template and guidance
+    3. Gets educational resources for learning support
+    4. Builds comprehensive system prompt WITH CONFIDENCE CHECK
+    5. Updates triage to in_progress
+    6. Launches editor with full context
+
+    The confidence check prompts the AI agent to:
+    - Assess if they understand the smell type
+    - Review educational resources if not 100% confident
+    - Learn before proposing fixes
+    - Provide better, more informed solutions
+
+    This prevents AI agents from guessing and encourages learning.
+
+    Args:
+        smell_type: Type of code smell
+        file_path: Path to file
+        line: Line number
+        project: Project name
+        output_dir: Scan output directory
+        editor: Editor to use (claude|opencode|copilot)
+        include_similar: Include similar patterns in context
+
+    Returns:
+        Fix workflow state with context summary and educational resources
+    """
+    try:
+        # 1. Get rich context
+        context_result = get_rich_fix_context(output_dir, project, file_path, line)
+
+        if context_result.get('isError'):
+            return context_result
+
+        # 2. Get fix template
+        language = context_result.get('fix_guidance', {}).get('language', 'csharp')
+        template_result = get_fix_template(smell_type, language)
+
+        # 3. Get educational resources
+        edu_resources = get_educational_resources(smell_type, language)
+
+        # 4. Build enhanced prompt with confidence check
+        finding = context_result['finding']
+        source = context_result['source_code']
+
+        # Format educational videos section
+        videos_section = ""
+        if edu_resources.get('educational_videos'):
+            videos_section = "\n\nRecommended Videos:\n"
+            for i, video in enumerate(edu_resources['educational_videos'][:2], 1):
+                videos_section += f'{i}. "{video["title"]}" - {video["channel"]} ({video.get("duration", "N/A")})\n'
+                videos_section += f'   {video["url"]}\n'
+
+        # Format documentation section
+        docs_section = ""
+        if edu_resources.get('documentation_links'):
+            docs_section = "\n\nDocumentation:\n"
+            for doc in edu_resources['documentation_links'][:2]:
+                docs_section += f'- {doc}\n'
+
+        enhanced_description = f"""You are fixing a {finding['severity']} {finding['category']} issue: {smell_type}
+
+## Finding Details
+File: {file_path}:{line}
+Severity: {finding['severity']} | Category: {finding['category']}
+Context: {finding.get('context', 'N/A')}
+
+## Impact Analysis
+- Complexity: {context_result['complexity'].get('cyclomatic', 0)} cyclomatic complexity
+- Test Coverage: {"Yes" if context_result.get('test_coverage', {}).get('project_has_tests') else "No tests - write one first"}
+- Blast Radius: {context_result['dependencies'].get('blast_radius', 'low')}
+
+## Related Issues
+{len(context_result.get('related_findings', []))} other smells in this file
+
+## Fix Strategy
+{template_result.get('fix_template', {}).get('explanation', 'Review code carefully and apply best practices')}
+
+## Educational Resources (if you need them)
+If you're not 100% confident fixing this {smell_type} issue, these resources can help:
+{videos_section}
+{docs_section}
+
+## Source Code
+{source.get('full', '')}
+
+CONFIDENCE CHECK:
+Before proposing a fix, please assess:
+- Are you 100% confident in understanding this {smell_type} issue?
+- Do you know the correct fix pattern for {language}?
+
+If NOT 100% confident:
+1. Say "I recommend reviewing the educational resources first"
+2. Summarize what you learned from the videos/docs
+3. Then propose the fix with that context
+
+If 100% confident:
+1. Propose the fix directly
+2. Explain why this approach prevents {smell_type}
+
+Please respond with your confidence level + analysis + proposed fix."""
+
+        # 5. Update triage status
+        update_triage_status(
+            output_dir=output_dir,
+            project=project,
+            file_path=file_path,
+            line=line,
+            status="in_progress",
+            notes=f"Started fix workflow with {editor}"
+        )
+
+        # 6. Call companion agent
+        fix_result = start_fix(
+            smell_type=smell_type,
+            file_path=file_path,
+            line=line,
+            project=project,
+            smell_description=enhanced_description,
+            editor=editor
+        )
+
+        # 7. Enhance response with context summary
+        if not fix_result.get('isError'):
+            fix_result['context_provided'] = {
+                'source_lines': len(source.get('full', '').split('\n')),
+                'related_findings': len(context_result.get('related_findings', [])),
+                'similar_patterns': len(context_result.get('similar_patterns', [])),
+                'fix_template': not template_result.get('isError'),
+                'educational_resources': len(edu_resources.get('educational_videos', [])),
+                'triage_updated': True
+            }
+
+            fix_result['educational_resources'] = {
+                'videos': edu_resources.get('educational_videos', [])[:2],
+                'docs': edu_resources.get('documentation_links', [])[:2],
+                'has_resources': edu_resources.get('has_resources', False)
+            }
+
+            fix_result['confidence_prompt'] = "Agent will assess confidence before proposing fix"
+
+            if context_result.get('related_findings'):
+                fix_result['recommendation'] = f"Consider batch-fixing {len(context_result['related_findings'])} other issues in same file"
+
+        return fix_result
+
+    except Exception as e:
+        logger.error(f"Failed to start fix with context: {e}")
+        return {
+            "isError": True,
+            "message": f"Failed to start fix: {str(e)}"
+        }
+
+
+# =============================================================================
 # Server Initialization
 # =============================================================================
 

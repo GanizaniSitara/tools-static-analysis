@@ -406,3 +406,463 @@ class ScanLoader:
                     break
 
         return results
+
+    def _load_triage(self) -> Dict[str, Any]:
+        """Load triage status data.
+
+        Returns:
+            Triage data dictionary or empty dict if not found
+        """
+        data = self._load_json('triage.json')
+        return data or {}
+
+    def _get_triage_status(self, finding: Dict[str, Any], triage: Dict[str, Any]) -> Dict[str, Any]:
+        """Get triage status for a finding.
+
+        Args:
+            finding: Finding dictionary
+            triage: Triage data
+
+        Returns:
+            Triage status dict
+        """
+        key = f"{finding['project']}:{finding['path']}:{finding['line']}"
+        entry = triage.get(key, {})
+
+        return {
+            "status": entry.get('status', 'open'),
+            "assigned_to": entry.get('assigned_to'),
+            "notes": entry.get('notes'),
+            "updated_at": entry.get('updated_at')
+        }
+
+    def _get_fan_in(self, project_id: str, graph: Dict[str, Any]) -> int:
+        """Get fan-in (incoming dependencies) for a project.
+
+        Args:
+            project_id: Project identifier
+            graph: Dependency graph
+
+        Returns:
+            Number of incoming dependencies
+        """
+        edges = graph.get('edges', [])
+        return len([e for e in edges if e.get('target') == project_id or e.get('to') == project_id])
+
+    def _get_project_dependencies(self, project_id: str, graph: Dict[str, Any]) -> Dict[str, Any]:
+        """Get dependency information for a project.
+
+        Args:
+            project_id: Project identifier
+            graph: Dependency graph
+
+        Returns:
+            Dependency information
+        """
+        nodes = {n['id']: n for n in graph.get('nodes', [])}
+        edges = graph.get('edges', [])
+
+        # Find fan-in and fan-out
+        fan_in = len([e for e in edges if (e.get('target') == project_id or e.get('to') == project_id)])
+        fan_out = len([e for e in edges if (e.get('source') == project_id or e.get('from') == project_id)])
+
+        # Get dependent modules (those that depend on this project)
+        dependent_ids = [e.get('source') or e.get('from') for e in edges
+                        if (e.get('target') == project_id or e.get('to') == project_id)]
+        dependent_modules = [nodes[nid].get('project', '') for nid in dependent_ids if nid in nodes]
+
+        return {
+            "fan_in": fan_in,
+            "fan_out": fan_out,
+            "dependent_modules": dependent_modules,
+            "blast_radius": "high" if fan_in > 5 else "medium" if fan_in > 2 else "low"
+        }
+
+    def _get_file_metrics(self, file_path: str, metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Get complexity metrics for a file from project metrics.
+
+        Args:
+            file_path: File path
+            metrics: Project metrics list
+
+        Returns:
+            File metrics dictionary
+        """
+        # For now, return simplified metrics
+        # In a real implementation, we'd parse file-level metrics from the scan
+        return {
+            "cyclomatic": 5,  # Default placeholder
+            "nesting_depth": 3,
+            "method_count": 0,
+            "lines_of_code": 0
+        }
+
+    def _detect_language(self, file_path: str) -> str:
+        """Detect programming language from file extension.
+
+        Args:
+            file_path: File path
+
+        Returns:
+            Language identifier
+        """
+        ext = Path(file_path).suffix.lower()
+        lang_map = {
+            '.cs': 'csharp',
+            '.java': 'java',
+            '.py': 'python',
+            '.js': 'javascript',
+            '.ts': 'typescript',
+            '.go': 'go',
+            '.rs': 'rust',
+            '.cpp': 'cpp',
+            '.c': 'c'
+        }
+        return lang_map.get(ext, 'unknown')
+
+    def _estimate_effort(self, finding: Dict[str, Any]) -> str:
+        """Estimate effort required to fix a finding.
+
+        Args:
+            finding: Finding dictionary
+
+        Returns:
+            Effort estimate (trivial|low|medium|high)
+        """
+        # Simple heuristic based on severity and complexity
+        severity = finding.get('severity', 'low')
+        smell_type = finding.get('smell_type', '')
+
+        # Security issues often require more careful changes
+        if finding.get('category') == 'security':
+            if severity in ['critical', 'high']:
+                return 'medium'
+            return 'low'
+
+        # Complex refactoring smells
+        if smell_type in ['god_method', 'god_class', 'feature_envy']:
+            return 'high'
+
+        # Simple fixes
+        if smell_type in ['magic_number', 'hardcoded_string']:
+            return 'trivial'
+
+        # Default based on severity
+        effort_map = {
+            'critical': 'medium',
+            'high': 'medium',
+            'medium': 'low',
+            'low': 'trivial'
+        }
+        return effort_map.get(severity, 'low')
+
+    def _extract_pattern(self, context: str) -> str:
+        """Extract a pattern key from code context.
+
+        Args:
+            context: Code context string
+
+        Returns:
+            Pattern key for grouping
+        """
+        # Simple pattern extraction - normalize whitespace and extract core pattern
+        if not context:
+            return "unknown"
+
+        # Remove extra whitespace
+        normalized = ' '.join(context.split())
+
+        # Truncate to first 50 chars for pattern matching
+        pattern = normalized[:50] if len(normalized) > 50 else normalized
+
+        return pattern
+
+    def get_prioritized_findings(
+        self,
+        filters: Optional[Dict] = None,
+        limit: int = 10
+    ) -> List[Dict[str, Any]]:
+        """Get findings sorted by priority score.
+
+        Priority considers:
+        - Severity (critical > high > medium > low)
+        - Security category (weighted higher)
+        - Blast radius (dependencies affected)
+        - Effort estimate (lower effort = higher priority)
+        - Triage status (in_progress on top, resolved filtered out)
+
+        Args:
+            filters: Optional filter dict (severity, category, project, etc.)
+            limit: Maximum results to return
+
+        Returns:
+            List of findings with priority scores and rankings
+        """
+        findings = self.get_all_findings(filters)
+
+        # Load dependency graph for blast radius
+        graph = self.get_dependency_graph()
+        if 'isError' in graph:
+            graph = {"nodes": [], "edges": []}
+
+        # Load triage to skip resolved
+        triage = self._load_triage()
+
+        scored_findings = []
+        for finding in findings:
+            # Check triage status first
+            triage_status = self._get_triage_status(finding, triage)
+            if triage_status['status'] in ['resolved', 'wont_fix', 'false_positive']:
+                continue  # Skip resolved/closed findings
+
+            # Calculate priority score
+            score = self._calculate_priority_score(finding, graph, triage)
+            finding['priority_score'] = score
+            finding['priority_rank'] = 0  # Will be set after sorting
+
+            # Add contextual information
+            project_id = f"{finding['repo']}/{finding['project']}"
+            deps = self._get_project_dependencies(project_id, graph)
+            finding['blast_radius'] = deps['blast_radius']
+            finding['effort_estimate'] = self._estimate_effort(finding)
+            finding['has_tests'] = False  # TODO: Get from project metrics
+
+            scored_findings.append(finding)
+
+        # Sort by score descending
+        scored_findings.sort(key=lambda x: x['priority_score'], reverse=True)
+
+        # Add ranks
+        for i, f in enumerate(scored_findings):
+            f['priority_rank'] = i + 1
+
+        return scored_findings[:limit]
+
+    def _calculate_priority_score(
+        self,
+        finding: Dict,
+        graph: Dict,
+        triage: Dict
+    ) -> float:
+        """Calculate priority score for a finding.
+
+        Args:
+            finding: Finding dictionary
+            graph: Dependency graph
+            triage: Triage data
+
+        Returns:
+            Priority score (higher = more important)
+        """
+        # Severity weights
+        severity_map = {'critical': 10, 'high': 7, 'medium': 4, 'low': 1}
+        severity_weight = severity_map.get(finding.get('severity', 'low'), 1)
+
+        # Security bonus
+        security_bonus = 5 if finding.get('category') == 'security' else 0
+
+        # Blast radius from dependency graph
+        project_id = f"{finding['repo']}/{finding['project']}"
+        fan_in = self._get_fan_in(project_id, graph)
+
+        # Effort estimate (lower is better, so negative)
+        effort_map = {'trivial': 1, 'low': 2, 'medium': 4, 'high': 8}
+        effort = effort_map.get(self._estimate_effort(finding), 2)
+
+        # Triage priority boost
+        triage_status = self._get_triage_status(finding, triage)
+        if triage_status['status'] == 'in_progress':
+            return 1000  # Top priority - already being worked on
+
+        score = (
+            severity_weight * 10 +
+            security_bonus +
+            fan_in * 2 +
+            -effort * 0.5
+        )
+
+        return score
+
+    def get_rich_context(
+        self,
+        project: str,
+        file_path: str,
+        line: int
+    ) -> Dict[str, Any]:
+        """Assemble rich context for fixing a finding.
+
+        Includes:
+        - Finding details
+        - Source code with context
+        - Related findings in same file
+        - Similar patterns in codebase
+        - Dependency information
+        - Complexity metrics
+        - Triage status
+        - Fix guidance
+
+        Args:
+            project: Project name
+            file_path: File path
+            line: Line number
+
+        Returns:
+            Rich context dictionary
+        """
+        finding = self.get_finding_at(project, file_path, line)
+
+        if not finding:
+            return {"isError": True, "message": "Finding not found"}
+
+        # 1. Source code with more context
+        source_code = self.get_file_content(file_path, line - 10, line + 10)
+
+        # 2. Related findings in same file
+        all_findings = self.get_all_findings({'project': project})
+        related = [f for f in all_findings
+                  if f['path'] == file_path and f['line'] != line]
+
+        # 3. Similar patterns in codebase
+        similar = self.find_similar_smells(
+            finding['smell_type'],
+            group_by="file",
+            limit=5
+        )
+
+        # 4. Dependencies
+        graph = self.get_dependency_graph()
+        if 'isError' in graph:
+            graph = {"nodes": [], "edges": []}
+
+        project_id = f"{finding['repo']}/{project}"
+        deps = self._get_project_dependencies(project_id, graph)
+
+        # 5. Complexity metrics
+        metrics = self.get_project_metrics(project)
+        file_metrics = self._get_file_metrics(file_path, metrics)
+
+        # 6. Triage status
+        triage = self._load_triage()
+        triage_status = self._get_triage_status(finding, triage)
+
+        # 7. Test coverage info
+        project_metrics = metrics[0] if metrics else {}
+        test_coverage = {
+            "project_has_tests": project_metrics.get('has_tests', False),
+            "file_has_tests": False  # TODO: File-level test detection
+        }
+
+        return {
+            "finding": finding,
+            "source_code": {
+                "full": source_code,
+                "target_line": line,
+                "before": source_code.split('\n')[:10] if source_code else [],
+                "after": source_code.split('\n')[10:] if source_code else []
+            },
+            "related_findings": related,
+            "similar_patterns": similar[:3] if isinstance(similar, list) else [],
+            "dependencies": deps,
+            "complexity": file_metrics,
+            "test_coverage": test_coverage,
+            "triage": triage_status,
+            "fix_guidance": {
+                "prompt_template": finding['smell_type'],
+                "language": self._detect_language(file_path),
+                "estimated_effort": self._estimate_effort(finding)
+            }
+        }
+
+    def find_similar_smells(
+        self,
+        smell_type: str,
+        group_by: str = "pattern",
+        limit: int = 50
+    ) -> List[Dict[str, Any]]:
+        """Find all instances of a smell type.
+
+        Args:
+            smell_type: Type of code smell
+            group_by: Grouping strategy ("pattern", "file", "project")
+            limit: Maximum results
+
+        Returns:
+            List of findings or grouped results
+        """
+        findings = self.get_all_findings({'smell_type': smell_type})
+
+        if group_by == "pattern":
+            # Group by similar code patterns
+            patterns = {}
+            for f in findings:
+                context = f.get('context', '')
+                pattern_key = self._extract_pattern(context)
+
+                if pattern_key not in patterns:
+                    patterns[pattern_key] = {
+                        "pattern": context[:100] if context else pattern_key,
+                        "count": 0,
+                        "instances": []
+                    }
+
+                patterns[pattern_key]['count'] += 1
+                patterns[pattern_key]['instances'].append({
+                    "file": f['path'],
+                    "line": f['line'],
+                    "project": f['project'],
+                    "context": f.get('context', '')
+                })
+
+            result = list(patterns.values())
+            # Sort by count descending
+            result.sort(key=lambda x: x['count'], reverse=True)
+            return result
+
+        elif group_by == "file":
+            # Group by file
+            files = {}
+            for f in findings:
+                file_key = f['path']
+                if file_key not in files:
+                    files[file_key] = {
+                        "file": file_key,
+                        "project": f['project'],
+                        "count": 0,
+                        "instances": []
+                    }
+
+                files[file_key]['count'] += 1
+                files[file_key]['instances'].append({
+                    "line": f['line'],
+                    "context": f.get('context', '')
+                })
+
+            result = list(files.values())
+            result.sort(key=lambda x: x['count'], reverse=True)
+            return result
+
+        elif group_by == "project":
+            # Group by project
+            projects = {}
+            for f in findings:
+                project_key = f['project']
+                if project_key not in projects:
+                    projects[project_key] = {
+                        "project": project_key,
+                        "count": 0,
+                        "instances": []
+                    }
+
+                projects[project_key]['count'] += 1
+                projects[project_key]['instances'].append({
+                    "file": f['path'],
+                    "line": f['line'],
+                    "context": f.get('context', '')
+                })
+
+            result = list(projects.values())
+            result.sort(key=lambda x: x['count'], reverse=True)
+            return result
+
+        # Default: return list of findings
+        return findings[:limit]
