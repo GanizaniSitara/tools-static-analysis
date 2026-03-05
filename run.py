@@ -336,8 +336,8 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             self._json_error(400, "Missing path parameter")
             return
 
-        # Try to delegate to companion agent if it's running
-        # This allows a single long-running process to handle all IDE launches
+        # Delegate to companion agent - no local fallback
+        # This ensures consistent IDE integration behavior across all environments
         try:
             import urllib.request
             import urllib.parse
@@ -347,25 +347,22 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             })
             companion_url = f"http://127.0.0.1:19280/_open?{query}"
             req = urllib.request.Request(companion_url)
-            with urllib.request.urlopen(req, timeout=0.5) as response:
+            with urllib.request.urlopen(req, timeout=1.0) as response:
                 if response.status == 200:
                     data = json.loads(response.read().decode())
                     self._json_response(data)
                     return
-        except Exception:
-            # Companion not available, fall back to local handling
-            pass
+        except Exception as e:
+            # Companion not available - return error (no fallback)
+            self._json_response({
+                "error": "Companion agent not running. Start it with: node companion/server.js",
+                "companion_url": "http://127.0.0.1:19280",
+                "details": str(e)
+            }, 503)
+            return
 
-        if editor == "studio":
-            self._open_visual_studio(file_path, line)
-        elif editor == "code":
-            self._open_vscode(file_path, line)
-        elif editor == "claude":
-            self._open_claude(file_path, line, project_name, smell_description)
-        elif editor == "copilot":
-            self._open_github_copilot(file_path, line, project_name, smell_description)
-        else:
-            self._json_error(400, f"Unknown editor: {editor}")
+        # Should never reach here - companion handles all editors
+        self._json_error(500, "Companion delegation failed unexpectedly")
 
     def _open_visual_studio(self, file_path: str, line: int):
         """Open file in Visual Studio 2022 with the nearest solution."""
