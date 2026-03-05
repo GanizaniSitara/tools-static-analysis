@@ -4,7 +4,10 @@ Static analysis pipeline for .NET, Java, and Python codebases. Scan → visualiz
 
 ## Prerequisites
 
-Python 3.10+ with no additional packages required — the core pipeline uses only the standard library.
+- **Python 3.10+** — Core pipeline uses only the standard library
+- **Node.js** — Required for companion agent (IDE integration)
+
+The companion agent enables IDE integration buttons (Claude Code, VS Code, Visual Studio). Start it once and keep it running:
 
 ### Optional: external analysis tools
 
@@ -27,6 +30,16 @@ The pipeline supports multiple languages with automatic detection:
 Results are integrated into a unified viewer with language filters in Security, Code Quality, and Resilience tabs.
 
 ## Quick start
+
+### 1. Start the companion agent (required for IDE integration)
+
+```bash
+node companion/server.js
+```
+
+Keep this running in a separate terminal. It handles all IDE launches (Claude Code, VS Code, Visual Studio).
+
+### 2. Run the analysis pipeline
 
 The simplest way to run everything is via `run.py`:
 
@@ -202,12 +215,12 @@ The viewer includes action buttons that communicate with locally installed tools
 
 All integrations are optional — buttons only appear if tools are installed.
 
-### Companion Agent (Node.js)
+### Companion Agent (Required)
 
-For hosted/remote viewers, use the companion agent to enable local editor launches:
+The companion agent handles all IDE integration. Start it before running scans:
 
 ```bash
-# Start companion on default port 19280
+# Start companion on default port 19280 (keep running)
 node companion/server.js
 
 # Custom port
@@ -217,7 +230,13 @@ node companion/server.js --port 9090
 node companion/server.js --config /path/to/config.yaml
 ```
 
-The companion provides the same `/_open` and `/_ping` endpoints as `run.py` for IDE integration. No external dependencies — uses only Node.js built-ins.
+**Why required:**
+- Single process handles all IDE launches (VS Code, Claude Code, Visual Studio, Copilot)
+- Works with both local (`run.py`) and hosted viewers
+- Stays running across multiple scan runs
+- No external dependencies — uses only Node.js built-ins
+
+Both `run.py` and hosted viewers delegate all `/_open` requests to the companion. If it's not running, IDE integration buttons will show an error.
 
 ### Output Formats
 
