@@ -192,7 +192,8 @@ function openClaude(filePath, line, project, smell, config, callback) {
   if (isWin) {
     const escapedPrompt = fullPrompt.replace(/"/g, '\\"');
     const argStr =
-      "--add-dir " +
+      '"' + filePath + '"' +
+      " --add-dir " +
       '"' + workspace + '"' +
       ' --append-system-prompt "' +
       escapedPrompt +
@@ -207,8 +208,8 @@ function openClaude(filePath, line, project, smell, config, callback) {
     });
   }
 
-  // Linux/macOS native - use @file mention in prompt to trigger file read
-  const args = ["--add-dir", workspace, "--append-system-prompt", fullPrompt];
+  // Linux/macOS native - pass file first, then options
+  const args = [filePath, "--add-dir", workspace, "--append-system-prompt", fullPrompt];
   const terminals = [
     "x-terminal-emulator",
     "gnome-terminal",
