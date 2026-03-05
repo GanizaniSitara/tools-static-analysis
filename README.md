@@ -1,6 +1,6 @@
 # tools-static-analysis
 
-Static analysis pipeline for .NET codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
+Static analysis pipeline for .NET, Java, and Python codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
 
 ## Prerequisites
 
@@ -15,6 +15,16 @@ pip install semgrep bandit detect-secrets radon
 ```
 
 These are entirely optional. The pipeline works without them and skips any that aren't installed.
+
+## Multi-Language Support
+
+The pipeline supports multiple languages with automatic detection:
+
+- **C#/.NET** — Full analysis of .csproj, .sln, .cs files (dependencies, smells, security)
+- **Java** — Maven/Gradle projects with 18 Java-specific detectors (Spring Boot, Jakarta EE)
+- **Python** — pip/poetry projects with framework detection (Django, Flask, FastAPI)
+
+Results are integrated into a unified viewer with language filters in Security, Code Quality, and Resilience tabs.
 
 ## Quick start
 
@@ -35,6 +45,26 @@ python run.py --repos /path/to/repos --out output --tools semgrep,bandit
 ```
 
 This runs all steps in order and starts a web server on port 8020 (default) with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
+
+### Incremental Scanning
+
+Scan repos individually or in batches. Results are combined with folder/repo tagging:
+
+```bash
+# Scan multiple repos into one output
+python run.py --repos /path/to/repo1,/path/to/repo2,/path/to/repo3 --out output-combined
+
+# Or scan incrementally into the same output directory
+python 1_scan_projects.py /path/to/repo1 output-combined
+python 2_scan_smells.py /path/to/repo1 output-combined
+python 1_scan_projects.py /path/to/repo2 output-combined
+python 2_scan_smells.py /path/to/repo2 output-combined
+# ... then generate diagrams and viewer once:
+python 4_gen_diagrams.py output-combined
+python 5_gen_docs.py output-combined
+```
+
+The viewer defaults to showing the first repo and remembers your last selection in localStorage.
 
 ## Running individual steps
 
@@ -115,9 +145,24 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
 | `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
+| `resilience-findings.json` | 2_scan_smells | External API calls, retry patterns, Polly policies |
 | `external-tools.json` | 3_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
+| `java-projects.json` | 1_scan_projects | Java/Maven/Gradle project metadata (if Java repos found) |
+| `python-projects.json` | 1_scan_projects | Python project metadata (if Python repos found) |
 | `viewer.html` | 5_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
 | `docs/ai-context/` | 5_gen_docs | Per-project markdown for AI coding agents |
+
+### Viewer Features
+
+The interactive `viewer.html` includes:
+
+- **Folder/Repo Dropdown** — Filter view by individual repo or see aggregate "All Folders" view
+  - Defaults to first repo on load
+  - Remembers last selection in localStorage
+- **Language Filters** — Security, Code Quality, and Resilience tabs include C#/Java/Python filters
+- **Diagram Tabs** — Overview, Library, Landscape, Data Flow, Business Layers (per-folder versions)
+- **Analysis Tabs** — Security, Resilience, Code Quality with severity/triage/language filtering
+- **IDE Integration** — Click-to-open in Claude Code, VS Code, Visual Studio with context
 
 ## Tools & Libraries
 
@@ -156,6 +201,23 @@ The viewer includes action buttons that communicate with locally installed tools
 - **[GitHub Copilot](https://github.com/features/copilot)** — AI pair programmer (via `gh copilot` CLI)
 
 All integrations are optional — buttons only appear if tools are installed.
+
+### Companion Agent (Node.js)
+
+For hosted/remote viewers, use the companion agent to enable local editor launches:
+
+```bash
+# Start companion on default port 19280
+node companion/server.js
+
+# Custom port
+node companion/server.js --port 9090
+
+# Custom config
+node companion/server.js --config /path/to/config.yaml
+```
+
+The companion provides the same `/_open` and `/_ping` endpoints as `run.py` for IDE integration. No external dependencies — uses only Node.js built-ins.
 
 ### Output Formats
 
