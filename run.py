@@ -138,7 +138,119 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             print("\nServer stopped via /_stop endpoint.")
             threading.Thread(target=self._server_ref.shutdown, daemon=True).start()
             return
+        if parsed.path == "/_prompts/list":
+            self._handle_list_prompts()
+            return
         super().do_GET()
+
+    def do_POST(self):
+        """Handle POST requests for admin API."""
+        parsed = urlparse(self.path)
+
+        if parsed.path == "/_prompts/save":
+            self._handle_save_prompts()
+        elif parsed.path == "/_prompts/reset":
+            self._handle_reset_prompts()
+        else:
+            self._json_error(404, "Not Found")
+
+    # ── /_prompts/list: get current prompts ──
+
+    def _handle_list_prompts(self):
+        """Return merged prompts (defaults + customs)."""
+        try:
+            import yaml
+            from pathlib import Path
+
+            default_path = Path(__file__).parent / "prompts" / "default_prompts.yaml"
+            custom_path = Path(__file__).parent / "prompts" / "custom_prompts.yaml"
+
+            if not default_path.exists():
+                self._json_error(500, "default_prompts.yaml not found")
+                return
+
+            # Load defaults
+            with open(default_path) as f:
+                data = yaml.safe_load(f)
+
+            # Apply customizations
+            if custom_path.exists():
+                with open(custom_path) as f:
+                    custom = yaml.safe_load(f)
+                    custom_prompts = custom.get("prompts", {})
+                    for detector, langs in custom_prompts.items():
+                        data["prompts"].setdefault(detector, {}).update(langs)
+
+            self._json_response(data)
+
+        except Exception as e:
+            self._json_error(500, str(e))
+
+    # ── /_prompts/save: save custom prompts ──
+
+    def _handle_save_prompts(self):
+        """Save custom prompt configuration to prompts/custom_prompts.yaml."""
+        try:
+            import yaml
+            import re
+            from pathlib import Path
+
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length)
+            data = json.loads(body)
+
+            # Validate structure
+            if "prompts" not in data or not isinstance(data["prompts"], dict):
+                self._json_error(400, "Invalid format: missing 'prompts' object")
+                return
+
+            # Validate placeholders
+            required = {"{file}", "{line}", "{context}", "{project}"}
+            for detector, langs in data["prompts"].items():
+                if not isinstance(langs, dict):
+                    self._json_error(400, f"Invalid format: {detector} must be a dict")
+                    return
+
+                for lang, text in langs.items():
+                    if not isinstance(text, str):
+                        self._json_error(400, f"Invalid format: {detector}:{lang} must be a string")
+                        return
+
+                    placeholders = set(re.findall(r'\{(\w+)\}', text))
+                    missing = required - placeholders
+                    if missing:
+                        self._json_error(400,
+                            f"Missing placeholders in {detector}:{lang}: {', '.join(sorted(missing))}")
+                        return
+
+            # Write to custom_prompts.yaml
+            custom_path = Path(__file__).parent / "prompts" / "custom_prompts.yaml"
+            with open(custom_path, "w") as f:
+                yaml.safe_dump(data, f, default_flow_style=False, allow_unicode=True, width=120)
+
+            self._json_response({"status": "ok", "message": "Prompts saved successfully"})
+
+        except json.JSONDecodeError:
+            self._json_error(400, "Invalid JSON")
+        except Exception as e:
+            self._json_error(500, str(e))
+
+    # ── /_prompts/reset: reset to defaults ──
+
+    def _handle_reset_prompts(self):
+        """Reset to default prompts by deleting custom overrides."""
+        try:
+            from pathlib import Path
+
+            custom_path = Path(__file__).parent / "prompts" / "custom_prompts.yaml"
+            if custom_path.exists():
+                custom_path.unlink()
+                self._json_response({"status": "ok", "message": "Prompts reset to defaults"})
+            else:
+                self._json_response({"status": "ok", "message": "No custom prompts to reset"})
+
+        except Exception as e:
+            self._json_error(500, str(e))
 
     # ── /_view: render source file in browser ──
 
