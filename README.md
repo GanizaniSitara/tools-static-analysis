@@ -245,3 +245,87 @@ Both `run.py` and hosted viewers delegate all `/_open` requests to the companion
 - **CSV** — Import into Excel, database tools
 - **JSON** — Programmatic consumption, CI/CD pipelines
 - **Markdown** — Documentation, AI agents
+
+## MCP Server (Model Context Protocol)
+
+The `mcp/` directory contains an MCP server that exposes all static analysis functionality as tools for AI agents like Claude Code. This enables AI-powered code analysis and refactoring workflows directly from chat interfaces.
+
+### Installation
+
+```bash
+pip install fastmcp pydantic pyyaml requests python-dateutil
+```
+
+### Usage with Claude Desktop
+
+Add to `~/.config/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "static-analysis": {
+      "command": "python",
+      "args": ["/home/user/dependency-mapper-python/mcp/server.py"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop and the tools will appear in the tool palette.
+
+### Available Tools (21 total)
+
+**Scan Management** (5):
+- `trigger_scan` - Start new analysis
+- `get_scan_summary` - Get statistics
+- `list_recent_scans` - List outputs
+- `get_scan_status` - Check progress
+- `get_viewer_url` - Get web viewer URL
+
+**Query Tools** (7):
+- `query_findings` - Search code smells with filters (severity, category, language)
+- `get_finding_details` - Get full context with source code
+- `query_dependencies` - Get dependency graph
+- `find_circular_dependencies` - Detect cycles
+- `query_data_flows` - Track data patterns
+- `get_project_metrics` - Complexity metrics
+- `search_code` - Full-text search
+
+**Fix Workflow** (5):
+- `start_fix` - Begin fix workflow via companion agent
+- `get_fix_status` - Check progress
+- `list_active_fixes` - List in-progress
+- `submit_fix` - Create PR/patch
+- `cancel_fix` - Abandon workflow
+
+**Configuration** (4):
+- `get_config` - Get settings
+- `list_prompts` - List AI templates
+- `get_prompt_for_finding` - Get tailored prompt
+- `update_triage_status` - Mark findings
+
+### Example Workflow
+
+```python
+# Claude Code can now:
+summary = get_scan_summary("output-eshop-test")
+# -> "Found 22 smells across 6 files"
+
+findings = query_findings(
+    output_dir="output-eshop-test",
+    severity="critical",
+    category="security"
+)
+# -> Returns security findings with file paths and context
+
+fix = start_fix(
+    smell_type="sql_injection",
+    file_path="src/Api/Controllers/OrderController.cs",
+    line=42,
+    project="Api",
+    smell_description="SQL injection vulnerability"
+)
+# -> Starts fix workflow with companion agent
+```
+
+See `mcp/README.md` for full documentation.
