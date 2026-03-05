@@ -132,6 +132,10 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
             params = parse_qs(parsed.query)
             self._handle_open(params)
             return
+        if parsed.path == "/_ping":
+            # Health check endpoint for viewer companion detection
+            self._json_response({"status": "ok", "server": "run.py", "port": self._server_ref.server_port})
+            return
         if parsed.path == "/_stop":
             self.send_response(200)
             self.send_header("Content-Type", "text/plain")
@@ -331,6 +335,26 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
         if not file_path:
             self._json_error(400, "Missing path parameter")
             return
+
+        # Try to delegate to companion agent if it's running
+        # This allows a single long-running process to handle all IDE launches
+        try:
+            import urllib.request
+            import urllib.parse
+            query = urllib.parse.urlencode({
+                k: v[0] if isinstance(v, list) else v
+                for k, v in params.items() if v
+            })
+            companion_url = f"http://127.0.0.1:19280/_open?{query}"
+            req = urllib.request.Request(companion_url)
+            with urllib.request.urlopen(req, timeout=0.5) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode())
+                    self._json_response(data)
+                    return
+        except Exception:
+            # Companion not available, fall back to local handling
+            pass
 
         if editor == "studio":
             self._open_visual_studio(file_path, line)
