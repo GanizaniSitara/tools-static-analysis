@@ -5627,6 +5627,34 @@ function initSortableTable(table) {{
   syncStatCards('sec', '.sec-sev-badge', 'sec-sev-badge-active');
   syncStatCards('ux', '.ux-badge[data-severity]', 'ux-badge-active');
 
+  // ── Toggle diagram tabs based on folder selection ──
+  function toggleDiagramTabs() {{
+    var selectedFolder = getActiveRepo();
+    var diagramTabs = ['dataflow', 'businesslayers', 'e2eflowsdiagram', 'fieldtracediagram',
+                       'cat_library', 'cat_test', 'cat_application', 'cat_webapp', 'cat_tool',
+                       'cat_connector', 'cat_service', 'cat_desktopapp'];
+
+    diagramTabs.forEach(function(tabId) {{
+      var tabBtn = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
+      if (tabBtn) {{
+        if (selectedFolder === '') {{
+          // "All Folders" selected - hide diagram tabs as they show aggregated data
+          tabBtn.style.display = 'none';
+        }} else {{
+          // Specific folder selected - show diagram tabs
+          tabBtn.style.display = '';
+        }}
+      }}
+    }});
+
+    // If current active tab is a diagram tab and "All Folders" is selected, switch to Code Quality tab
+    var activeTab = document.querySelector('.tab-btn.active');
+    if (activeTab && selectedFolder === '' && diagramTabs.includes(activeTab.getAttribute('data-tab'))) {{
+      var cqTab = document.querySelector('.tab-btn[data-tab="codequality"]');
+      if (cqTab) cqTab.click();
+    }}
+  }}
+
   // ── Global repo filter dropdown ──
   var repoSelect = document.getElementById('globalRepoFilter');
   if (repoSelect) {{
@@ -5636,6 +5664,7 @@ function initSortableTable(table) {{
       repoSelect.appendChild(opt);
     }});
     repoSelect.addEventListener('change', function () {{
+      toggleDiagramTabs();
       searchInput.dispatchEvent(new Event('input'));
       applyHotspotFilters();
       applyCqFilters();
@@ -6105,6 +6134,11 @@ document.addEventListener("DOMContentLoaded", function() {{
     editor.addEventListener("input", function() {{
       isDirty = true;
     }});
+  }}
+
+  // Initialize diagram tab visibility based on folder selection
+  if (typeof toggleDiagramTabs === 'function') {{
+    toggleDiagramTabs();
   }}
 }});
 
