@@ -615,7 +615,7 @@ class ViewerHandler(http.server.SimpleHTTPRequestHandler):
 def main():
     import argparse as _ap
     parser = _ap.ArgumentParser(description="Pipeline: scans, diagrams, docs, web server.")
-    parser.add_argument("--repos", help="Directory containing repos to scan")
+    parser.add_argument("--repos", help="Directory containing repos to scan (comma-separated for multiple repos)")
     parser.add_argument("--out", default="output", help="Output directory name (default: output)")
     parser.add_argument("--port", type=int, default=8020, help="Web server port (default: 8020)")
     parser.add_argument("--level", choices=["critical", "high", "medium", "low"], default="high",
@@ -631,17 +631,26 @@ def main():
     if not args.serve_only and not args.repos:
         parser.error("--repos is required unless --serve-only is used")
 
-    repos = args.repos or ""
+    repos_input = args.repos or ""
     out = args.out
     port = args.port
     level = args.level
 
     os.makedirs(out, exist_ok=True)
 
+    # Split comma-separated repos
+    repo_paths = [r.strip() for r in repos_input.split(",") if r.strip()] if repos_input else []
+
     if args.serve_only:
         print(f"=== Serve-only: {out} on port {port} ===\n")
     else:
-        print(f"=== Pipeline: {repos} → {out} ===\n")
+        if len(repo_paths) == 1:
+            print(f"=== Pipeline: {repo_paths[0]} → {out} ===\n")
+        else:
+            print(f"=== Pipeline: {len(repo_paths)} repos → {out} ===")
+            for i, rp in enumerate(repo_paths, 1):
+                print(f"  {i}. {rp}")
+            print()
 
     if not args.serve_only:
         def run(script, *args):
@@ -651,22 +660,26 @@ def main():
                 print(f"ERROR: {script} failed (exit {result.returncode})")
                 sys.exit(1)
 
-        # Step 1: Scan projects (must complete first — produces project-meta.json, test-projects.json)
-        print("--- Step 1: Scanning projects ---")
-        run("1_scan_projects.py", repos, out)
+        # Scan each repo incrementally
+        for idx, repo in enumerate(repo_paths, 1):
+            repo_label = f"[{idx}/{len(repo_paths)}] {os.path.basename(repo)}" if len(repo_paths) > 1 else repo
 
-        # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
-        print("\n--- Step 2: Scanning smells ---")
-        run("2_scan_smells.py", repos, out, "--level", level)
+            # Step 1: Scan projects (must complete first — produces project-meta.json, test-projects.json)
+            print(f"--- Step 1: Scanning projects {repo_label} ---")
+            run("1_scan_projects.py", repo, out)
 
-        # Resilience analysis (needs data-sources.json, dependencies.csv from step 1)
-        print("\n--- Scanning resilience ---")
-        run("6_scan_resilience.py", repos, out)
+            # Step 2: Scan smells (needs project-meta.json and test-projects.json from step 1)
+            print(f"\n--- Step 2: Scanning smells {repo_label} ---")
+            run("2_scan_smells.py", repo, out, "--level", level)
 
-        # Step 5: External tools (optional, off by default)
-        if args.tools and args.tools.lower() != "none":
-            print("\n--- External tools ---")
-            run("3_external_tools.py", repos, out, "--tools", args.tools)
+            # Resilience analysis (needs data-sources.json, dependencies.csv from step 1)
+            print(f"\n--- Scanning resilience {repo_label} ---")
+            run("6_scan_resilience.py", repo, out)
+
+            # Step 5: External tools (optional, off by default)
+            if args.tools and args.tools.lower() != "none":
+                print(f"\n--- External tools {repo_label} ---")
+                run("3_external_tools.py", repo, out, "--tools", args.tools)
 
         # Step 6: Security integrations (optional, off by default)
         if args.integrations and args.integrations.lower() != "none":
@@ -685,33 +698,36 @@ def main():
             if scanners:
                 print(f"  Discovered {len(scanners)} scanner(s): {', '.join(s.display_name for s in scanners)}")
 
-                # Discover repo directories
-                repos_abs = os.path.abspath(repos)
+                # Build repo directories from all provided paths
                 repo_dirs: list[tuple[str, str]] = []  # (name, path)
 
-                # First, check if the root itself is a repo (has marker files)
-                # This handles single-repo directories like spring-petclinic
-                root_is_repo = False
-                root_markers = ['.git', 'pom.xml', 'build.gradle', 'package.json', '.csproj', '.sln']
-                for marker in root_markers:
-                    marker_path = os.path.join(repos_abs, marker)
-                    if os.path.exists(marker_path):
-                        root_is_repo = True
-                        break
+                for repo_path in repo_paths:
+                    repos_abs = os.path.abspath(repo_path)
 
-                if root_is_repo:
-                    # Treat root as a single repo
-                    repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
-                else:
-                    # Look for subdirectories that might be repos
-                    for entry in sorted(os.listdir(repos_abs)):
-                        sub = os.path.join(repos_abs, entry)
-                        if os.path.isdir(sub) and not entry.startswith("."):
-                            repo_dirs.append((entry, sub))
+                    # Check if this path itself is a repo (has marker files)
+                    root_is_repo = False
+                    root_markers = ['.git', 'pom.xml', 'build.gradle', 'package.json', '.csproj', '.sln']
+                    for marker in root_markers:
+                        marker_path = os.path.join(repos_abs, marker)
+                        if os.path.exists(marker_path):
+                            root_is_repo = True
+                            break
 
-                    # If no subdirectories, treat root as repo anyway
-                    if not repo_dirs:
-                        repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
+                    if root_is_repo:
+                        # Treat this path as a single repo
+                        repo_dirs.append((os.path.basename(repos_abs), repos_abs))
+                    else:
+                        # Look for subdirectories that might be repos
+                        found_subdirs = False
+                        for entry in sorted(os.listdir(repos_abs)):
+                            sub = os.path.join(repos_abs, entry)
+                            if os.path.isdir(sub) and not entry.startswith("."):
+                                repo_dirs.append((entry, sub))
+                                found_subdirs = True
+
+                        # If no subdirectories, treat root as repo anyway
+                        if not found_subdirs:
+                            repo_dirs.append((os.path.basename(repos_abs), repos_abs))
 
                 for scanner in scanners:
                     detected_repos = []
