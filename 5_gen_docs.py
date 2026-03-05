@@ -5794,10 +5794,30 @@ function initSortableTable(table) {{
       repoSelect.appendChild(opt);
     }});
 
+    // Restore last selected folder or default to first folder (not "All Folders")
+    var savedFolder = null;
+    try {{
+      savedFolder = localStorage.getItem('selectedFolder');
+    }} catch(e) {{}}
+
+    if (savedFolder && (window._repos || []).indexOf(savedFolder) !== -1) {{
+      // Restore saved selection if it still exists
+      repoSelect.value = savedFolder;
+    }} else if ((window._repos || []).length > 0) {{
+      // Default to first folder
+      repoSelect.value = (window._repos || [])[0];
+    }}
+    // else leave as "All Folders" if no folders exist
+
     // Initialize diagram visibility on page load
     toggleDiagramTabs();
 
     repoSelect.addEventListener('change', function () {{
+      // Save selection to localStorage
+      try {{
+        localStorage.setItem('selectedFolder', repoSelect.value);
+      }} catch(e) {{}}
+
       toggleDiagramTabs();
       searchInput.dispatchEvent(new Event('input'));
       applyHotspotFilters();
