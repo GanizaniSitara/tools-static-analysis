@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from .csharp_detectors import CSHARP_DETECTORS
+from .java_detectors import JAVA_DETECTORS
 
 # Language-specific detector registries
 # Each language has its own list of detector dictionaries
 DETECTOR_REGISTRY: dict[str, list[dict]] = {
     "csharp": CSHARP_DETECTORS,
-    # java will be added in next task
+    "java": JAVA_DETECTORS,
 }
 
 # Severity ordering for filtering
