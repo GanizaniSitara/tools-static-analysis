@@ -30,7 +30,7 @@ def _load_json(path: str, default=None):
         return default
 
 
-graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
+graph = _load_json(os.path.join(OUT_DIR, "graph.json"), default={"repos": [], "nodes": [], "edges": []})
 
 # ─── Heat-map: load refactoring scores ──────────────────────────────
 
