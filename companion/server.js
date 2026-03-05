@@ -184,10 +184,8 @@ function openClaude(filePath, line, project, smell, config, callback) {
   let fileMention = "@" + relFile;
   if (line) fileMention += ":" + line;
 
-  // Full file path for opening (absolute path)
-  const fileToOpen = filePath;
-
   // Add file mention to prompt so Claude knows which file to focus on
+  // The @file mention triggers Claude Code to read and display the file content
   const fullPrompt = prompt + "\n\nPlease focus on: " + fileMention;
 
   const isWin = os.platform() === "win32";
@@ -196,8 +194,6 @@ function openClaude(filePath, line, project, smell, config, callback) {
     const argStr =
       "--add-dir " +
       '"' + workspace + '"' +
-      " " +
-      '"' + fileToOpen + '"' +
       ' --append-system-prompt "' +
       escapedPrompt +
       '"';
@@ -211,8 +207,8 @@ function openClaude(filePath, line, project, smell, config, callback) {
     });
   }
 
-  // Linux/macOS native - pass absolute file path and add-dir for workspace
-  const args = ["--add-dir", workspace, fileToOpen, "--append-system-prompt", fullPrompt];
+  // Linux/macOS native - use @file mention in prompt to trigger file read
+  const args = ["--add-dir", workspace, "--append-system-prompt", fullPrompt];
   const terminals = [
     "x-terminal-emulator",
     "gnome-terminal",
