@@ -234,7 +234,10 @@ function openClaude(filePath, line, project, smell, config, callback) {
       stdio: "ignore",
     }).unref();
   } else if (terminal) {
-    spawn(terminal, ["-e", [claudeCmd, ...args].join(" ")], {
+    // Build properly quoted command for generic terminals
+    const quotedArgs = args.map(arg => shellQuote(arg));
+    const cmd = claudeCmd + " " + quotedArgs.join(" ");
+    spawn(terminal, ["-e", "bash", "-c", cmd], {
       cwd: workspace,
       detached: true,
       stdio: "ignore",
