@@ -2645,8 +2645,10 @@ def generate_viewer_html() -> str:
     <a href="docs/ai-context/index.html" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
       <span class="stat-value">AI</span> Context
     </a>
-    <a href="#" id="adminLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;margin-right:0.5rem;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();openAdminModal();">Settings</a>
-    <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';">? Help</a>
+    <div style="margin-left:auto;display:flex;gap:0.25rem;align-items:center;border-left:1px solid rgba(255,255,255,0.2);padding-left:1rem;">
+      <a href="#" id="adminLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();openAdminModal();" title="Configure LLM prompts">⚙️ Settings</a>
+      <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';" title="Help and keyboard shortcuts">? Help</a>
+    </div>
   </div>
 </header>
 
