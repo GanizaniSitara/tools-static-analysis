@@ -127,11 +127,11 @@ async function main() {
     console.log('Page error:', error.message);
   });
 
-  // Monitor network requests to companion
+  // Monitor network requests to companion and run.py
   let companionCalls = [];
   page.on('response', async (response) => {
     const url = response.url();
-    if (url.includes('localhost:19280/_open')) {
+    if (url.includes('/_open')) {
       const status = response.status();
       let body = null;
       try {
@@ -140,6 +140,7 @@ async function main() {
         body = await response.text();
       }
       companionCalls.push({ url, status, body });
+      console.log(`API call to: ${url} (status ${status})`);
     }
   });
 
@@ -179,40 +180,31 @@ async function main() {
   });
   console.log('Page info:', pageInfo);
 
-  // Find first Claude Code button - try multiple selectors
-  console.log('Looking for Claude Code button...');
-  let claudeButton = await page.$('.claude-btn');
-  if (!claudeButton) {
-    claudeButton = await page.$('button[onclick*="openClaude"]');
-  }
-  if (!claudeButton) {
-    claudeButton = await page.$('button[onclick*="_openClaude"]');
-  }
-  if (!claudeButton) {
-    // Try any button with "Claude" text
-    claudeButton = await page.$('button:has-text("Claude")');
+  // Find visible Claude Code button
+  console.log('Looking for visible Claude Code button...');
+  const claudeButtons = await page.$$('.file-claude');
+  console.log(`Found ${claudeButtons.length} total Claude buttons`);
+
+  let claudeButton = null;
+  for (const btn of claudeButtons) {
+    const isVisible = await btn.isVisible();
+    if (isVisible) {
+      claudeButton = btn;
+      break;
+    }
   }
 
   if (!claudeButton) {
-    console.error('❌ No Claude Code button found');
-    console.log('\nTrying to find any buttons...');
-    const buttons = await page.$$eval('button', btns =>
-      btns.slice(0, 5).map(b => ({
-        text: b.textContent.trim(),
-        onclick: b.getAttribute('onclick'),
-        classes: b.className
-      }))
-    );
-    console.log('First 5 buttons:', JSON.stringify(buttons, null, 2));
+    console.error('❌ No visible Claude Code button found');
     await browser.close();
     process.exit(1);
   }
 
-  console.log('✓ Found Claude Code button\n');
+  console.log('✓ Found visible Claude Code button\n');
 
   // Get button details
   const buttonData = await claudeButton.evaluate(btn => ({
-    file: btn.getAttribute('data-file'),
+    file: btn.getAttribute('data-path'),
     line: btn.getAttribute('data-line'),
     project: btn.getAttribute('data-project'),
     smell: btn.getAttribute('data-smell')
@@ -223,7 +215,7 @@ async function main() {
 
   // Click the button
   console.log('Clicking Claude Code button...');
-  await claudeButton.click();
+  await claudeButton.click({ force: true });
 
   // Wait for companion call
   await page.waitForTimeout(2000);
