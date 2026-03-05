@@ -1,10 +1,13 @@
 # tools-static-analysis
 
-Static analysis pipeline for .NET codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
+Static analysis pipeline for .NET, Java, and Python codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
 
 ## Prerequisites
 
-Python 3.10+ with no additional packages required — the core pipeline uses only the standard library.
+- **Python 3.10+** — Core pipeline uses only the standard library
+- **Node.js** — Required for companion agent (IDE integration)
+
+The companion agent enables IDE integration buttons (Claude Code, VS Code, Visual Studio). Start it once and keep it running:
 
 ### Optional: external analysis tools
 
@@ -16,43 +19,91 @@ pip install semgrep bandit detect-secrets radon
 
 These are entirely optional. The pipeline works without them and skips any that aren't installed.
 
+## Multi-Language Support
+
+The pipeline supports multiple languages with automatic detection:
+
+- **C#/.NET** — Full analysis of .csproj, .sln, .cs files (dependencies, smells, security)
+- **Java** — Maven/Gradle projects with 18 Java-specific detectors (Spring Boot, Jakarta EE)
+- **Python** — pip/poetry projects with framework detection (Django, Flask, FastAPI)
+
+Results are integrated into a unified viewer with language filters in Security, Code Quality, and Resilience tabs.
+
 ## Quick start
+
+### 1. Start the companion agent (required for IDE integration)
+
+```bash
+node companion/server.js
+```
+
+Keep this running in a separate terminal. It handles all IDE launches (Claude Code, VS Code, Visual Studio).
+
+### 2. Run the analysis pipeline
 
 The simplest way to run everything is via `run.py`:
 
 ```bash
-# Core pipeline only (no external tools)
-python3 run.py /path/to/repos output-myproject
+# Core pipeline (built-in scanners only)
+python run.py --repos /path/to/repos --out output
 
-# Core pipeline + all available external tools
-python3 run.py /path/to/repos output-myproject --tools all
+# Core pipeline + optional external tools (semgrep, bandit, etc.)
+python run.py --repos /path/to/repos --out output --tools all
 
-# Core pipeline + specific tools only
-python3 run.py /path/to/repos output-myproject --tools semgrep,bandit
+# Custom port
+python run.py --repos /path/to/repos --out output --port 8021
+
+# Specific external tools only
+python run.py --repos /path/to/repos --out output --tools semgrep,bandit
 ```
 
-This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
+This runs all steps in order and starts a web server on port 8020 (default) with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
+
+### Incremental Scanning
+
+Scan repos individually or in batches. Results are combined with folder/repo tagging:
+
+```bash
+# Scan multiple repos into one output
+python run.py --repos /path/to/repo1,/path/to/repo2,/path/to/repo3 --out output-combined
+
+# Or scan incrementally into the same output directory
+python 1_scan_projects.py /path/to/repo1 output-combined
+python 2_scan_smells.py /path/to/repo1 output-combined
+python 1_scan_projects.py /path/to/repo2 output-combined
+python 2_scan_smells.py /path/to/repo2 output-combined
+# ... then generate diagrams and viewer once:
+python 4_gen_diagrams.py output-combined
+python 5_gen_docs.py output-combined
+```
+
+The viewer defaults to showing the first repo and remembers your last selection in localStorage.
 
 ## Running individual steps
 
 ```bash
 # 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
-python3 1_scan_projects.py /path/to/repos output-myproject
+python 1_scan_projects.py /path/to/repos output
 
-# 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
-python3 2_scan_smells.py /path/to/repos output-myproject --level high
+# 2. Scan .cs source with built-in Python detectors — 18 code smell & security patterns
+python 2_scan_smells.py /path/to/repos output --level high
 
 # 3. (Optional) Run external tools — semgrep, bandit, detect-secrets, radon
-python3 5_external_tools.py /path/to/repos output-myproject --tools all
+python 3_external_tools.py /path/to/repos output --tools all
 
 # 4. Generate Mermaid/GraphViz diagrams from graph.json
-python3 3_gen_diagrams.py output-myproject
+python 4_gen_diagrams.py output
 
 # 5. Generate viewer.html, markdown docs, and AI context files
-python3 4_gen_docs.py output-myproject
+python 5_gen_docs.py output
 ```
 
-Steps 1-2 scan source and can run in parallel. Step 3 (external tools) can run any time after steps 1-2. Step 4 needs graph.json from step 1. Step 5 reads all outputs (including `external-tools.json` if present), so run it last.
+**Execution order:**
+- Steps 1-2 scan source and can run in parallel
+- Step 2 uses **built-in Python-based detectors** (no dependencies)
+- Step 3 uses **optional external tools** (requires installation)
+- Step 4 needs graph.json from step 1
+- Step 5 reads all outputs, so run it last
 
 ### Severity levels (`--level`)
 
@@ -68,7 +119,7 @@ The smell scanner supports log-level-style verbosity via `--level critical|high|
 The `run.py` pipeline also accepts `--level`:
 
 ```bash
-python3 run.py /path/to/repos output-myproject --level medium
+python run.py --repos /path/to/repos --out output --level medium
 ```
 
 ### Serve-only mode (`--serve-only`)
@@ -76,7 +127,7 @@ python3 run.py /path/to/repos output-myproject --level medium
 If you've already run the pipeline and just want the web server (with IDE integration endpoints for the Claude/VS Code/View buttons), use `--serve-only` to skip the scan steps:
 
 ```bash
-python3 run.py dummy output-myproject 8001 --serve-only
+python run.py --out output --port 8020 --serve-only
 ```
 
 This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
@@ -94,7 +145,7 @@ Off by default. Pass `--tools all` to run every installed tool, or a comma-separ
 
 Findings appear in an **External Tools** tab in the viewer, and security-category findings are also merged into the **Security** tab. Output is written to `external-tools.json`.
 
-## Outputs (in `output-myproject/`)
+## Outputs (in `output/`)
 
 | File | Producer | Description |
 |------|----------|-------------|
@@ -107,6 +158,90 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
 | `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
-| `external-tools.json` | 5_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
-| `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
-| `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |
+| `resilience-findings.json` | 2_scan_smells | External API calls, retry patterns, Polly policies |
+| `external-tools.json` | 3_external_tools | External tool findings (semgrep, bandit, detect-secrets, radon) |
+| `java-projects.json` | 1_scan_projects | Java/Maven/Gradle project metadata (if Java repos found) |
+| `python-projects.json` | 1_scan_projects | Python project metadata (if Python repos found) |
+| `viewer.html` | 5_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
+| `docs/ai-context/` | 5_gen_docs | Per-project markdown for AI coding agents |
+
+### Viewer Features
+
+The interactive `viewer.html` includes:
+
+- **Folder/Repo Dropdown** — Filter view by individual repo or see aggregate "All Folders" view
+  - Defaults to first repo on load
+  - Remembers last selection in localStorage
+- **Language Filters** — Security, Code Quality, and Resilience tabs include C#/Java/Python filters
+- **Diagram Tabs** — Overview, Library, Landscape, Data Flow, Business Layers (per-folder versions)
+- **Analysis Tabs** — Security, Resilience, Code Quality with severity/triage/language filtering
+- **IDE Integration** — Click-to-open in Claude Code, VS Code, Visual Studio with context
+
+## Tools & Libraries
+
+### Core Dependencies
+
+**Python Standard Library Only** — The core scanner runs without any external packages:
+- `xml.etree.ElementTree` — Parse .csproj and .xaml files
+- `re` — Pattern matching for code analysis
+- `json` — Data serialization
+- `csv` — Export tabular data
+- `http.server` — Serve viewer with IDE integration endpoints
+- `pathlib` / `os` — File system operations
+
+### Visualization Libraries (Embedded)
+
+The generated `viewer.html` embeds CDN-hosted FOSS libraries:
+- **[Mermaid.js](https://mermaid.js.org/)** (v11) — Diagram rendering (MIT License)
+  - Interactive dependency graphs, flow diagrams, layer diagrams
+- **[Prism.js](https://prismjs.com/)** — Syntax highlighting (MIT License)
+  - Code snippets in AI context files
+
+### Optional External Tools
+
+Install via pip for extended analysis (all optional):
+- **[Semgrep](https://semgrep.dev/)** — Pattern-based security/correctness rules (LGPL 2.1)
+- **[Bandit](https://github.com/PyCQA/bandit)** — Python security linter (Apache 2.0)
+- **[detect-secrets](https://github.com/Yelp/detect-secrets)** — Credential scanner (Apache 2.0)
+- **[Radon](https://github.com/rubik/radon)** — Complexity metrics (MIT License)
+
+### IDE Integration
+
+The viewer includes action buttons that communicate with locally installed tools:
+- **[Claude Code](https://claude.ai/download)** — AI coding agent (via `claude-code` CLI)
+- **[VS Code](https://code.visualstudio.com/)** — Code editor (via `code` CLI)
+- **[Visual Studio 2022](https://visualstudio.microsoft.com/)** — IDE (via `devenv.exe`)
+- **[GitHub Copilot](https://github.com/features/copilot)** — AI pair programmer (via `gh copilot` CLI)
+
+All integrations are optional — buttons only appear if tools are installed.
+
+### Companion Agent (Required)
+
+The companion agent handles all IDE integration. Start it before running scans:
+
+```bash
+# Start companion on default port 19280 (keep running)
+node companion/server.js
+
+# Custom port
+node companion/server.js --port 9090
+
+# Custom config
+node companion/server.js --config /path/to/config.yaml
+```
+
+**Why required:**
+- Single process handles all IDE launches (VS Code, Claude Code, Visual Studio, Copilot)
+- Works with both local (`run.py`) and hosted viewers
+- Stays running across multiple scan runs
+- No external dependencies — uses only Node.js built-ins
+
+Both `run.py` and hosted viewers delegate all `/_open` requests to the companion. If it's not running, IDE integration buttons will show an error.
+
+### Output Formats
+
+- **Mermaid (.mmd)** — Text-based diagrams (renders in GitHub, Notion, Confluence)
+- **GraphViz (.dot)** — Advanced graph layouts (requires `dot` for rendering)
+- **CSV** — Import into Excel, database tools
+- **JSON** — Programmatic consumption, CI/CD pipelines
+- **Markdown** — Documentation, AI agents

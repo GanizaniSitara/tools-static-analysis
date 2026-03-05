@@ -171,7 +171,7 @@ function openClaude(filePath, line, project, smell, config, callback) {
     if (smell) prompt += "\n\nArchitectural Smell:\n" + smell;
   }
 
-  // Make path relative to workspace
+  // Make path relative to workspace for mention in prompt
   let relFile;
   try {
     relFile = path.relative(workspace, filePath);
@@ -180,17 +180,21 @@ function openClaude(filePath, line, project, smell, config, callback) {
     relFile = filePath;
   }
 
-  let fileRef = "@" + relFile;
-  if (line) fileRef += ":" + line;
+  // File reference for mention in prompt (@file:line)
+  let fileMention = "@" + relFile;
+  if (line) fileMention += ":" + line;
+
+  // Add file mention to prompt so Claude knows which file to focus on
+  // The @file mention triggers Claude Code to read and display the file content
+  const fullPrompt = prompt + "\n\nPlease focus on: " + fileMention;
 
   const isWin = os.platform() === "win32";
   if (isWin) {
-    const escapedPrompt = prompt.replace(/"/g, '\\"');
+    const escapedPrompt = fullPrompt.replace(/"/g, '\\"');
     const argStr =
-      "--add-dir " +
+      '"' + filePath + '"' +
+      " --add-dir " +
       '"' + workspace + '"' +
-      " " +
-      fileRef +
       ' --append-system-prompt "' +
       escapedPrompt +
       '"';
@@ -204,8 +208,8 @@ function openClaude(filePath, line, project, smell, config, callback) {
     });
   }
 
-  // Linux/macOS native
-  const args = ["--add-dir", workspace, fileRef, "--append-system-prompt", prompt];
+  // Linux/macOS native - pass file first, then options
+  const args = [filePath, "--add-dir", workspace, "--append-system-prompt", fullPrompt];
   const terminals = [
     "x-terminal-emulator",
     "gnome-terminal",
@@ -227,7 +231,10 @@ function openClaude(filePath, line, project, smell, config, callback) {
       stdio: "ignore",
     }).unref();
   } else if (terminal) {
-    spawn(terminal, ["-e", [claudeCmd, ...args].join(" ")], {
+    // Build properly quoted command for generic terminals
+    const quotedArgs = args.map(arg => shellQuote(arg));
+    const cmd = claudeCmd + " " + quotedArgs.join(" ");
+    spawn(terminal, ["-e", "bash", "-c", cmd], {
       cwd: workspace,
       detached: true,
       stdio: "ignore",
