@@ -662,18 +662,33 @@ def main():
             if scanners:
                 print(f"  Discovered {len(scanners)} scanner(s): {', '.join(s.display_name for s in scanners)}")
 
-                # Discover repo directories (same logic as 1_scan_projects.py)
+                # Discover repo directories
                 repos_abs = os.path.abspath(repos)
                 repo_dirs: list[tuple[str, str]] = []  # (name, path)
-                # Check if root is a single repo
-                has_subdirs = False
-                for entry in sorted(os.listdir(repos_abs)):
-                    sub = os.path.join(repos_abs, entry)
-                    if os.path.isdir(sub) and not entry.startswith("."):
-                        has_subdirs = True
-                        repo_dirs.append((entry, sub))
-                if not repo_dirs:
+
+                # First, check if the root itself is a repo (has marker files)
+                # This handles single-repo directories like spring-petclinic
+                root_is_repo = False
+                root_markers = ['.git', 'pom.xml', 'build.gradle', 'package.json', '.csproj', '.sln']
+                for marker in root_markers:
+                    marker_path = os.path.join(repos_abs, marker)
+                    if os.path.exists(marker_path):
+                        root_is_repo = True
+                        break
+
+                if root_is_repo:
+                    # Treat root as a single repo
                     repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
+                else:
+                    # Look for subdirectories that might be repos
+                    for entry in sorted(os.listdir(repos_abs)):
+                        sub = os.path.join(repos_abs, entry)
+                        if os.path.isdir(sub) and not entry.startswith("."):
+                            repo_dirs.append((entry, sub))
+
+                    # If no subdirectories, treat root as repo anyway
+                    if not repo_dirs:
+                        repo_dirs = [(os.path.basename(repos_abs), repos_abs)]
 
                 for scanner in scanners:
                     detected_repos = []
