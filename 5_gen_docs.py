@@ -956,10 +956,7 @@ def generate_viewer_html() -> str:
     _has_ext_findings = any(t.get("findingCount", 0) > 0 for t in _ext_tools.values())
     if _has_ext_findings:
         all_tab_ids.append(("externaltools", "External Tools"))
-    # Dynamic language tabs
-    for _lang_key, _lang_d in sorted(language_data.items()):
-        _display = _lang_d.get("displayName", _lang_key.title())
-        all_tab_ids.append((_lang_key, _display))
+    # Remove separate language tabs - language results are now integrated into Security/Resilience/Code Quality
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
@@ -1572,6 +1569,8 @@ def generate_viewer_html() -> str:
         <span style="color:#E1E1E1;">|</span>
         {cq_badge_html}
         <span style="color:#E1E1E1;">|</span>
+        <select id="cqLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
+        <span style="color:#E1E1E1;">|</span>
         <select id="cqTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
         <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
@@ -1652,6 +1651,8 @@ def generate_viewer_html() -> str:
       </div>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_res_sev_badges_html}
+        <span style="color:#E1E1E1;">|</span>
+        <select id="resLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
       </div>
       <div class="table-wrap">
         <table id="resTable">
@@ -4784,15 +4785,18 @@ function initSortableTable(table) {{
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
       var hasFiles = p.files && p.files.length > 0;
-      // Collect severity and triage sets for this project
+      // Collect severity, triage, and language sets for this project
       var sevSet = {{}};
       var triageSet = {{}};
+      var langSet = {{}};
       (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{
         if (s.severity) sevSet[s.severity] = true;
         triageSet[s.triageStatus || 'unreviewed'] = true;
+        if (s.language) langSet[s.language] = true;
       }}); }});
       var sevList = Object.keys(sevSet).join(',');
       var triageList = Object.keys(triageSet).join(',');
+      var langList = Object.keys(langSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
@@ -4800,6 +4804,7 @@ function initSortableTable(table) {{
       tr.setAttribute('data-smells', smellList.toLowerCase());
       tr.setAttribute('data-severities', sevList.toLowerCase());
       tr.setAttribute('data-triage-statuses', triageList.toLowerCase());
+      tr.setAttribute('data-languages', langList.toLowerCase());
       if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -4887,6 +4892,8 @@ function initSortableTable(table) {{
     }});
 
     // Dropdown handlers
+    var cqLangSelect = document.getElementById('cqLangFilter');
+    if (cqLangSelect) cqLangSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     if (cqCatSelect) cqCatSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     var cqTestSelect = document.getElementById('cqTestsFilter');
     if (cqTestSelect) cqTestSelect.addEventListener('change', function () {{ applyCqFilters(); }});
@@ -4958,6 +4965,7 @@ function initSortableTable(table) {{
     var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
     var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
     var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
+    var langFilter = (document.getElementById('cqLangFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -4982,6 +4990,10 @@ function initSortableTable(table) {{
       if (triageFilter) {{
         var rowTriage = row.getAttribute('data-triage-statuses') || '';
         if (rowTriage.indexOf(triageFilter) === -1) show = false;
+      }}
+      if (langFilter) {{
+        var rowLangs = row.getAttribute('data-languages') || '';
+        if (rowLangs.indexOf(langFilter) === -1) show = false;
       }}
       if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
       if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
@@ -5080,11 +5092,16 @@ function initSortableTable(table) {{
       var policies = p.policySummary || {{}};
       var activePolicies = Object.keys(policies).filter(function(k) {{ return policies[k]; }}).join(', ') || 'None';
       var hasFindings = p.findingCount > 0;
-      // Collect severity set for filtering
+      // Collect severity and language sets for filtering
       var sevSet = {{}};
-      (p.findings || []).forEach(function(f) {{ if (f.severity) sevSet[f.severity] = true; }});
+      var langSet = {{}};
+      (p.findings || []).forEach(function(f) {{
+        if (f.severity) sevSet[f.severity] = true;
+        if (f.language) langSet[f.language] = true;
+      }});
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '')).toLowerCase());
       tr.setAttribute('data-severities', Object.keys(sevSet).join(',').toLowerCase());
+      tr.setAttribute('data-languages', Object.keys(langSet).join(',').toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       if (hasFindings) tr.style.cursor = 'pointer';
       tr.innerHTML =
@@ -5136,12 +5153,16 @@ function initSortableTable(table) {{
         applyResFilters();
       }});
     }});
+    // Language filter dropdown
+    var resLangSelect = document.getElementById('resLangFilter');
+    if (resLangSelect) resLangSelect.addEventListener('change', function () {{ applyResFilters(); }});
     initSortableTable(document.getElementById('resTable'));
   }})();
 
   function applyResFilters() {{
     var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var langFilter = (document.getElementById('resLangFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -5159,6 +5180,10 @@ function initSortableTable(table) {{
       if (sevFilter) {{
         var rowSevs = row.getAttribute('data-severities') || '';
         if (rowSevs.indexOf(sevFilter) === -1) show = false;
+      }}
+      if (langFilter) {{
+        var rowLangs = row.getAttribute('data-languages') || '';
+        if (rowLangs.indexOf(langFilter) === -1) show = false;
       }}
       if (searchQuery) {{
         var text = row.getAttribute('data-search') || '';
