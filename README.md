@@ -248,12 +248,12 @@ Both `run.py` and hosted viewers delegate all `/_open` requests to the companion
 
 ## MCP Server (Model Context Protocol)
 
-The `mcp/` directory contains an MCP server that exposes all static analysis functionality as tools for AI agents like Claude Code. This enables AI-powered code analysis and refactoring workflows directly from chat interfaces.
+The `static_analysis_mcp/` directory contains an MCP server that exposes all static analysis functionality as tools for AI agents like Claude Code. This enables AI-powered code analysis and refactoring workflows directly from chat interfaces.
 
 ### Installation
 
 ```bash
-pip install fastmcp pydantic pyyaml requests python-dateutil
+pip install fastmcp mcp pydantic pyyaml requests python-dateutil
 ```
 
 ### Usage with Claude Desktop
@@ -265,7 +265,7 @@ Add to `~/.config/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "static-analysis": {
       "command": "python",
-      "args": ["/home/user/dependency-mapper-python/mcp/server.py"]
+      "args": ["/home/user/dependency-mapper-python/static_analysis_mcp/server.py"]
     }
   }
 }
@@ -328,4 +328,4 @@ fix = start_fix(
 # -> Starts fix workflow with companion agent
 ```
 
-See `mcp/README.md` for full documentation.
+See `static_analysis_mcp/README.md` for full documentation.
