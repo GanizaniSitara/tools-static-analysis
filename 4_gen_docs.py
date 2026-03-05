@@ -25,14 +25,18 @@ def _load_config():
     config_path = Path(__file__).parent / "config.yaml"
     default = {
         "claudePrompt": "Please analyze this code and propose improvements.",
-        "enableWslTools": False,
-        "wslDistro": "Ubuntu",
-        "wslPathPrefix": "\\\\wsl$\\Ubuntu",
-        "claudeCodeUseWsl": False,
         "claudeCodePath": "claude",
-        "micromambaEnv": "",
-        "openCodePath": "/usr/local/bin/opencode",
-        "githubCopilotEnabled": False
+        "githubCopilotEnabled": True,
+        "copilotMode": "standalone",
+        "copilotCliPath": "copilot",
+        "vcsType": "svn",
+        "repoUrl": "",
+        "svnBranchBase": "",
+        "developerRoot": "",
+        "fixBranchPrefix": "fix/smell-",
+        "prTargetBranch": "main",
+        "testCommand": "",
+        "autoRunTests": True
     }
     if not config_path.exists():
         return default
@@ -81,6 +85,8 @@ ux_inconsistencies: dict = _load_json(os.path.join(OUT_DIR, "ux-inconsistencies.
 nuget_health: dict = _load_json(os.path.join(OUT_DIR, "nuget-health.json"), {})
 test_data: dict = _load_json(os.path.join(OUT_DIR, "test-projects.json"), {})
 external_tools_data: dict = _load_json(os.path.join(OUT_DIR, "external-tools.json"), {})
+resilience_data: dict = _load_json(os.path.join(OUT_DIR, "resilience-findings.json"), {})
+triage_data: dict = _load_json(os.path.join(OUT_DIR, "triage.json"), {})
 
 # Load all language scanner outputs (e.g. python-projects.json, java-projects.json)
 language_data: dict[str, dict] = {}
@@ -614,8 +620,8 @@ def _file_actions_html(path: str, line: int = 0, display: str = "", project: str
         f' <a href="#" class="file-action file-studio" data-path="{p}" data-line="{line}" title="Open in Visual Studio">Studio</a>'
         f' <a href="#" class="file-action file-code" data-path="{p}" data-line="{line}" title="Open in VS Code">Code</a>'
         f' <a href="#" class="file-action file-claude" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Explore with Claude Code">Claude</a>'
-        f' <a href="#" class="file-action file-opencode wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Open in OpenCode" style="display:none;">OpenCode</a>'
-        f' <a href="#" class="file-action file-copilot wsl-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
+        f' <a href="#" class="file-action file-copilot copilot-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Ask GitHub Copilot" style="display:none;">Copilot</a>'
+        f' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="{p}" data-line="{line}" data-project="{proj}" data-smell="{sm}" title="Fix: checkout, branch, fix, test, review" style="display:none;">Fix</a>'
         f' <a href="#" class="file-action file-view" data-path="{p}" data-line="{line}" title="View in browser">View</a>'
         f'</span>'
     )
@@ -774,7 +780,9 @@ def generate_viewer_html() -> str:
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
                                "context": (s.get("context") or "")[:100],
                                "severity": s.get("severity", ""),
-                               "category": s.get("category", "")} for s in smells]
+                               "category": s.get("category", ""),
+                               "findingId": s.get("findingId", ""),
+                               "triageStatus": s.get("triageStatus", "unreviewed")} for s in smells]
             if trimmed_smells:
                 trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
@@ -782,10 +790,14 @@ def generate_viewer_html() -> str:
         if trimmed_files:
             entry["files"] = trimmed_files
         cq_projects_trimmed.append(entry)
+    smell_prompts = refactoring_data.get("smellPrompts", {})
+    triage_dispositions = triage_data.get("dispositions", {})
     cq_embedded = _safe_json_for_script({
         "projects": cq_projects_trimmed,
         "summary": refactoring_summary,
         "claudeCodeTargets": claude_targets,
+        "smellPrompts": smell_prompts,
+        "triage": triage_dispositions,
     })
 
     # ── Repo root lookup for file:// links ──
@@ -795,8 +807,8 @@ def generate_viewer_html() -> str:
 
     # ── Config flags for AI tool integration ──
     config_json = _safe_json_for_script({
-        "enableWslTools": CONFIG.get("enableWslTools", False),
-        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False)
+        "githubCopilotEnabled": CONFIG.get("githubCopilotEnabled", False),
+        "fixWorkflowEnabled": bool(CONFIG.get("developerRoot", "")),
     })
     project_groups_map_json = _safe_json_for_script(project_to_group)
 
@@ -804,6 +816,23 @@ def generate_viewer_html() -> str:
     ux_issues = ux_inconsistencies.get("issues", [])
     ux_summary = ux_inconsistencies.get("summary", {})
     ux_embedded = _safe_json_for_script({"issues": ux_issues, "summary": ux_summary})
+
+    # ── Business layer classifications ──
+    business_layers_data = flow_paths_data.get("businessLayers", {})
+    business_layers_json = _safe_json_for_script(business_layers_data)
+
+    # Build business layer category map
+    layer_summary = flow_paths_data.get("layerSummary", {})
+    def _js_str_bl(s: str) -> str:
+        return s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r").replace("</", "<\\/")
+    bl_map_parts = []
+    for layer_name, info in layer_summary.items():
+        count = info['count']
+        escaped_name = _js_str_bl(layer_name)
+        escaped_lower = _js_str_bl(layer_name.lower())
+        entry = f"'{escaped_name} ({count})': {{key:'{escaped_lower}', name:'{escaped_name}', count:{count}, tabId:'layer_{layer_name.lower()}', isBusinessLayer:true}}"
+        bl_map_parts.append(entry)
+    business_layer_map_entries = ", ".join(bl_map_parts)
 
     # ── External tools data ──
     _ext_all_findings = []
@@ -814,6 +843,13 @@ def generate_viewer_html() -> str:
         "summary": external_tools_data.get("summary", {}),
         "toolsExecuted": external_tools_data.get("toolsExecuted", []),
         "toolsSkipped": external_tools_data.get("toolsSkipped", {}),
+    })
+
+    # ── Resilience data ──
+    resilience_embedded = _safe_json_for_script({
+        "projects": resilience_data.get("projects", []),
+        "summary": resilience_data.get("summary", {}),
+        "resiliencePrompts": resilience_data.get("resiliencePrompts", {}),
     })
 
     # ── Edge metadata (coupling count, NuGet version) for viewer tooltips ──
@@ -852,6 +888,9 @@ def generate_viewer_html() -> str:
         all_tab_ids.append(("fieldtrace", "Field Traceability"))
     if refactoring_projects:
         all_tab_ids.append(("codequality", "Code Quality"))
+    resilience_projects = resilience_data.get("projects", [])
+    if resilience_projects:
+        all_tab_ids.append(("resilience", "Resilience"))
     # Security tab: show if any security-category smells exist (built-in or external tools)
     _has_security_findings = any(
         s.get("category") == "security"
@@ -927,6 +966,7 @@ def generate_viewer_html() -> str:
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
           </pre>
+          <div class="diagram-legend">Tip: Hover edges to preview, click for detailed analysis</div>
         </div>
         <div class="diagram-sidebar">
           {side_legend}
@@ -1392,6 +1432,14 @@ def generate_viewer_html() -> str:
         cq_low_count = cq_sev_counts.get("low", 0)
         cq_scan_level = _esc_html(refactoring_summary.get("level", "high"))
 
+        # Triage counts for summary cards
+        cq_triage_counts = refactoring_summary.get("triageCounts", {})
+        cq_triaged = cq_total_smells - cq_triage_counts.get("unreviewed", cq_total_smells)
+        cq_false_pos = cq_triage_counts.get("false_positive", 0)
+        cq_confirmed = cq_triage_counts.get("confirmed", 0)
+        cq_accepted = cq_triage_counts.get("accepted_risk", 0)
+        cq_fixed = cq_triage_counts.get("fixed", 0)
+
         # Smell type badges
         cq_badge_html = ""
         for st in cq_top_smell_types:
@@ -1399,7 +1447,7 @@ def generate_viewer_html() -> str:
 
         # Severity filter badges
         cq_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
-        cq_sev_badges_html = ""
+        cq_sev_badges_html = '<button type="button" class="cq-sev-badge cq-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         for sev in ["critical", "high", "medium", "low"]:
             cnt = cq_sev_counts.get(sev, 0)
             if cnt:
@@ -1440,34 +1488,41 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-codequality">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Code Quality Analysis <span style="font-size:0.72rem;font-weight:400;color:#53565A;margin-left:0.5rem;">Level: {cq_scan_level}</span></div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Smells</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_total_smells}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:#D0002B;">
+          <div class="stat-label" style="color:#53565A;">Total Smells</div>
+          <div class="stat-value">{cq_total_smells}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{cq_critical_count}</div>
+        <div class="stat-card" data-sev-filter="critical" data-panel="cq" style="color:#D0002B;">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value">{cq_critical_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{cq_high_count}</div>
+        <div class="stat-card" data-sev-filter="high" data-panel="cq" style="color:#E87722;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{cq_high_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#9E8700;text-transform:uppercase;letter-spacing:0.04em;">Medium</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{cq_medium_count}</div>
+        <div class="stat-card" data-sev-filter="medium" data-panel="cq" style="color:#9E8700;">
+          <div class="stat-label">Medium</div>
+          <div class="stat-value">{cq_medium_count}</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Low</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{cq_low_count}</div>
+        <div class="stat-card" data-sev-filter="low" data-panel="cq" style="color:#53565A;">
+          <div class="stat-label">Low</div>
+          <div class="stat-value">{cq_low_count}</div>
+        </div>
+        <div class="stat-card" style="color:#005587;border-left:3px solid #005587;">
+          <div class="stat-label" style="color:#53565A;">Triaged</div>
+          <div class="stat-value">{cq_triaged}/{cq_total_smells}</div>
         </div>
       </div>
       <div id="cqFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {cq_sev_badges_html}
         <span style="color:#E1E1E1;">|</span>
         {cq_badge_html}
+        <span style="color:#E1E1E1;">|</span>
+        <select id="cqTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
         <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
+        <button type="button" id="cqExportTriage" style="margin-left:auto;padding:0.3rem 0.75rem;border:1px solid #005587;border-radius:4px;background:#fff;color:#005587;font-size:0.78rem;font-weight:600;cursor:pointer;" title="Export triage decisions as JSON">Export Triage</button>
       </div>
       <div class="table-wrap">
         <table id="cqTable">
@@ -1492,48 +1547,133 @@ def generate_viewer_html() -> str:
   </section>
 """
 
+    # ── Resilience panel ──
+    resilience_panel = ""
+    if resilience_projects:
+        _res_summary = resilience_data.get("summary", {})
+        _res_total = _res_summary.get("totalFindings", 0)
+        _res_sev = _res_summary.get("findingsBySeverity", {})
+        _res_high = _res_sev.get("high", 0)
+        _res_med = _res_sev.get("medium", 0)
+        _res_low = _res_sev.get("low", 0)
+        _res_avg = _res_summary.get("avgResilienceScore", 0)
+        _res_ext = _res_summary.get("projectsWithExternalCalls", 0)
+        _res_polly = _res_summary.get("projectsWithPolly", 0)
+        _res_sev_badge_colors = {"high": "#D0002B", "medium": "#E87722", "low": "#53565A"}
+        _res_sev_badges_html = '<button type="button" class="res-sev-badge res-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
+        for _rsev in ["high", "medium", "low"]:
+            _rcnt = _res_sev.get(_rsev, 0)
+            if _rcnt:
+                _rc = _res_sev_badge_colors[_rsev]
+                _res_sev_badges_html += f'<button type="button" class="res-sev-badge" data-severity="{_rsev}" style="background:rgba({_hex_to_rgb(_rc)},0.15);color:{_rc};">{_rsev.title()}: {_rcnt}</button>\n        '
+
+        resilience_panel = f"""
+  <section class="tab-panel" id="panel-resilience">
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9670;</span> Resilience Analysis</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:{'#D0002B' if _res_avg < 40 else '#9E8700' if _res_avg < 70 else '#2E7D32'};">
+          <div class="stat-label" style="color:#53565A;">Avg Score</div>
+          <div class="stat-value">{_res_avg}/100</div>
+        </div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Ext Call Projects</div>
+          <div class="stat-value">{_res_ext}</div>
+        </div>
+        <div class="stat-card" style="color:#2E7D32;">
+          <div class="stat-label" style="color:#53565A;">With Polly</div>
+          <div class="stat-value">{_res_polly}</div>
+        </div>
+        <div class="stat-card" data-sev-filter="high" data-panel="res" style="color:#D0002B;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{_res_high}</div>
+        </div>
+        <div class="stat-card" data-sev-filter="medium" data-panel="res" style="color:#E87722;">
+          <div class="stat-label">Medium</div>
+          <div class="stat-value">{_res_med}</div>
+        </div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Total Findings</div>
+          <div class="stat-value">{_res_total}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {_res_sev_badges_html}
+      </div>
+      <div class="table-wrap">
+        <table id="resTable">
+          <thead>
+            <tr>
+              <th data-sort-type="text">Project</th>
+              <th data-sort-type="text">Category</th>
+              <th data-sort-type="num">Score</th>
+              <th data-sort-type="num">Ext Calls</th>
+              <th data-sort-type="num">Findings</th>
+              <th data-sort-type="text">Polly</th>
+              <th data-sort-type="text">Policies</th>
+            </tr>
+          </thead>
+          <tbody id="resBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+"""
+
     # ── Security panel ──
     security_panel = ""
     if _has_security_findings:
         # Count security findings by severity (built-in + external tools)
-        _sec_critical = 0
-        _sec_high = 0
-        _sec_total = 0
+        _sec_sev_counts = {}
         for _rp in refactoring_projects:
             for _rf in _rp.get("files", []):
                 for _s in _rf.get("smells", []):
                     if _s.get("category") == "security":
-                        _sec_total += 1
-                        if _s.get("severity") == "critical":
-                            _sec_critical += 1
-                        elif _s.get("severity") == "high":
-                            _sec_high += 1
+                        sv = _s.get("severity", "medium")
+                        _sec_sev_counts[sv] = _sec_sev_counts.get(sv, 0) + 1
         for _et in external_tools_data.get("tools", {}).values():
             for _ef in _et.get("findings", []):
                 if _ef.get("category") == "security":
-                    _sec_total += 1
-                    if _ef.get("severity") == "critical":
-                        _sec_critical += 1
-                    elif _ef.get("severity") == "high":
-                        _sec_high += 1
+                    sv = _ef.get("severity", "medium")
+                    _sec_sev_counts[sv] = _sec_sev_counts.get(sv, 0) + 1
+        _sec_critical = _sec_sev_counts.get("critical", 0)
+        _sec_high = _sec_sev_counts.get("high", 0)
+        _sec_medium = _sec_sev_counts.get("medium", 0)
+        _sec_low = _sec_sev_counts.get("low", 0)
+        _sec_total = sum(_sec_sev_counts.values())
+
+        # Security severity filter badges
+        _sec_sev_badge_colors = {"critical": "#D0002B", "high": "#E87722", "medium": "#9E8700", "low": "#53565A"}
+        _sec_sev_badges_html = '<button type="button" class="sec-sev-badge sec-sev-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
+        for _ssev in ["critical", "high", "medium", "low"]:
+            _scnt = _sec_sev_counts.get(_ssev, 0)
+            if _scnt:
+                _sc = _sec_sev_badge_colors[_ssev]
+                _sec_sev_badges_html += f'<button type="button" class="sec-sev-badge" data-severity="{_ssev}" style="background:rgba({_hex_to_rgb(_sc)},0.15);color:{_sc};">{_ssev.title()}: {_scnt}</button>\n        '
 
         security_panel = f"""
   <section class="tab-panel" id="panel-security">
     <div class="card">
       <div class="card-title"><span class="icon" style="color:#D0002B;">&#9888;</span> Security Findings</div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#D0002B;text-transform:uppercase;letter-spacing:0.04em;">Critical</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{_sec_critical}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" data-sev-filter="critical" data-panel="sec" style="color:#D0002B;background:#FFF5F5;border-color:#FCA5A5;">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value">{_sec_critical}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#E87722;text-transform:uppercase;letter-spacing:0.04em;">High</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#E87722;margin-top:0.2rem;">{_sec_high}</div>
+        <div class="stat-card" data-sev-filter="high" data-panel="sec" style="color:#E87722;background:#FFF7ED;border-color:#FDBA74;">
+          <div class="stat-label">High</div>
+          <div class="stat-value">{_sec_high}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Security</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{_sec_total}</div>
+        <div class="stat-card" style="color:#53565A;">
+          <div class="stat-label">Total Security</div>
+          <div class="stat-value">{_sec_total}</div>
         </div>
+      </div>
+      <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+        {_sec_sev_badges_html}
+        <span style="color:#E1E1E1;">|</span>
+        <select id="secTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
       </div>
       <div class="table-wrap">
         <table id="securityTable">
@@ -1544,6 +1684,7 @@ def generate_viewer_html() -> str:
               <th data-sort-type="text">Detector</th>
               <th data-sort-type="text">Severity</th>
               <th data-sort-type="text">Context</th>
+              <th data-sort-type="text">Triage</th>
             </tr>
           </thead>
           <tbody id="securityBody">
@@ -1561,7 +1702,7 @@ def generate_viewer_html() -> str:
         ux_by_type = ux_summary.get("byType", {})
         ux_total = ux_summary.get("totalIssues", len(ux_issues))
 
-        ux_severity_badges = ""
+        ux_severity_badges = '<button type="button" class="ux-badge ux-badge-active" data-severity="" style="background:rgba(0,85,135,0.15);color:#005587;">All</button>\n        '
         sev_colors = {"error": "#D0002B", "warning": "#9E8700", "info": "#53565A"}
         for sev in ["error", "warning", "info"]:
             cnt = ux_by_severity.get(sev, 0)
@@ -1577,22 +1718,22 @@ def generate_viewer_html() -> str:
   <section class="tab-panel" id="panel-uxconsistency">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> UX Consistency Analysis</div>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Total Issues</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_total}</div>
+      <div class="stat-cards" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+        <div class="stat-card" style="color:#D0002B;">
+          <div class="stat-label" style="color:#53565A;">Total Issues</div>
+          <div class="stat-value">{ux_total}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Errors</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#D0002B;margin-top:0.2rem;">{ux_by_severity.get('error', 0)}</div>
+        <div class="stat-card" data-sev-filter="error" data-panel="ux" style="color:#D0002B;">
+          <div class="stat-label">Errors</div>
+          <div class="stat-value">{ux_by_severity.get('error', 0)}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Warnings</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#9E8700;margin-top:0.2rem;">{ux_by_severity.get('warning', 0)}</div>
+        <div class="stat-card" data-sev-filter="warning" data-panel="ux" style="color:#9E8700;">
+          <div class="stat-label">Warnings</div>
+          <div class="stat-value">{ux_by_severity.get('warning', 0)}</div>
         </div>
-        <div style="flex:1;min-width:180px;background:#F5F5F5;border:1px solid #E1E1E1;border-radius:8px;padding:0.75rem 1rem;">
-          <div style="font-size:0.72rem;color:#53565A;text-transform:uppercase;letter-spacing:0.04em;">Info</div>
-          <div style="font-size:1.1rem;font-weight:700;color:#53565A;margin-top:0.2rem;">{ux_by_severity.get('info', 0)}</div>
+        <div class="stat-card" data-sev-filter="info" data-panel="ux" style="color:#53565A;">
+          <div class="stat-label">Info</div>
+          <div class="stat-value">{ux_by_severity.get('info', 0)}</div>
         </div>
       </div>
       <div id="uxFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
@@ -2136,6 +2277,30 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-from {{ color: #005587; }}
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
+  .tour-spotlight {{
+    position: relative; z-index: 9999; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
+    border-radius: 8px; pointer-events: none;
+  }}
+  @keyframes pulse-edge {{
+    0%, 100% {{ stroke-width: 2px; opacity: 1; }}
+    50% {{ stroke-width: 4px; opacity: 0.6; }}
+  }}
+  .pulse-hint {{
+    animation: pulse-edge 1.5s ease-in-out 3;
+  }}
+  .edge-hint-label {{
+    position: absolute; background: #005587; color: white;
+    padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem;
+    pointer-events: none; animation: fadeOut 5s forwards; z-index: 1001;
+  }}
+  @keyframes fadeOut {{
+    0%, 80% {{ opacity: 1; }}
+    100% {{ opacity: 0; }}
+  }}
+  .diagram-legend {{
+    text-align: center; padding: 0.5rem; font-size: 0.78rem; color: #53565A;
+    background: #F5F5F5; border-top: 1px solid #E1E1E1; border-radius: 0 0 8px 8px;
+  }}
   .edge-detail-panel {{
     display: none; margin-top: 0.75rem;
     background: #FFFFFF; border: 1px solid #E1E1E1; border-radius: 10px;
@@ -2203,11 +2368,43 @@ def generate_viewer_html() -> str:
     border:none;
   }}
   .cq-sev-badge-active {{ outline:2px solid currentColor; }}
+  .res-sev-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    border:none;
+  }}
+  .res-sev-badge-active {{ outline:2px solid currentColor; }}
+  .sec-sev-badge {{
+    display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
+    font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
+    border:none;
+  }}
+  .sec-sev-badge-active {{ outline:2px solid currentColor; }}
   .ux-badge {{
     display:inline-block; padding:0.2rem 0.6rem; border-radius:12px;
     font-size:0.78rem; font-weight:600; cursor:pointer; transition: outline .15s;
   }}
   .ux-badge-active {{ outline:2px solid currentColor; }}
+  .stat-card {{
+    flex:1; min-width:100px; background:#F5F5F5; border:1px solid #E1E1E1;
+    border-radius:8px; padding:0.5rem 0.75rem; transition:border-color .15s, box-shadow .15s;
+  }}
+  .stat-card[data-sev-filter] {{
+    cursor:pointer;
+  }}
+  .stat-card[data-sev-filter]:hover {{
+    border-color:#005587; box-shadow:0 0 0 2px rgba(0,85,135,0.12);
+  }}
+  .stat-card-active {{
+    border-color:currentColor !important; box-shadow:0 0 0 2px rgba(0,85,135,0.18) !important;
+    outline:2px solid currentColor;
+  }}
+  .stat-card .stat-label {{
+    font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em; color:#53565A;
+  }}
+  .stat-card .stat-value {{
+    font-size:1rem; font-weight:700; margin-top:0.15rem; color:inherit;
+  }}
   .hs-dropdown {{
     padding:0.35rem 0.6rem; border-radius:6px; border:1px solid #E1E1E1;
     background:#FFFFFF; color:#333333; font-size:0.82rem; outline:none;
@@ -2254,12 +2451,41 @@ def generate_viewer_html() -> str:
   .file-code:hover {{ background:#005a9e; }}
   .file-claude {{ background:#da7756; color:#fff !important; }}
   .file-claude:hover {{ background:#b85e3f; }}
-  .file-opencode {{ background:#1a1a2e; color:#e0e0ff !important; }}
-  .file-opencode:hover {{ background:#0f0f1a; }}
-  .file-copilot {{ background:#1f883d; color:#fff !important; }}
-  .file-copilot:hover {{ background:#166d31; }}
+  .file-copilot {{ background:#8957e5; color:#fff !important; }}
+  .file-copilot:hover {{ background:#7042c4; }}
   .file-view {{ background:#e8e8e8; color:#333 !important; }}
   .file-view:hover {{ background:#d0d0d0; }}
+  .copilot-tool {{ display:none !important; }}
+  .fix-workflow-tool {{ display:none !important; }}
+  {'  .copilot-tool { display:inline-block !important; }' if CONFIG.get('githubCopilotEnabled') else ''}
+  {'  .fix-workflow-tool { display:inline-block !important; }' if CONFIG.get('developerRoot') else ''}
+  .file-fix {{ background:#c62828; color:#fff !important; }}
+  .file-fix:hover {{ background:#a01e1e; }}
+  .fix-modal-overlay {{ display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:20000; justify-content:center; align-items:center; }}
+  .fix-modal-overlay.active {{ display:flex; }}
+  .fix-modal {{ background:#fff; border-radius:8px; padding:1.5rem 2rem; max-width:540px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:system-ui,sans-serif; max-height:80vh; overflow-y:auto; }}
+  .fix-modal h3 {{ margin:0 0 1rem; font-size:1.1rem; color:#022D5E; }}
+  .fix-modal .fix-step {{ display:flex; align-items:center; gap:0.6rem; padding:0.5rem 0; font-size:0.85rem; color:#555; }}
+  .fix-modal .fix-step.active {{ color:#022D5E; font-weight:600; }}
+  .fix-modal .fix-step.done {{ color:#1a8a3f; }}
+  .fix-modal .fix-step.fail {{ color:#c62828; }}
+  .fix-modal .fix-step-icon {{ width:20px; text-align:center; font-weight:700; }}
+  .fix-modal .fix-actions {{ margin-top:1.2rem; display:flex; gap:0.6rem; }}
+  .fix-modal button {{ padding:0.45rem 1rem; border-radius:4px; border:none; cursor:pointer; font-size:0.85rem; font-weight:600; }}
+  .fix-modal .btn-primary {{ background:#022D5E; color:#fff; }}
+  .fix-modal .btn-primary:hover {{ background:#01234a; }}
+  .fix-modal .btn-secondary {{ background:#e8e8e8; color:#333; }}
+  .fix-modal .btn-secondary:hover {{ background:#d0d0d0; }}
+  .fix-modal .fix-result {{ margin-top:1rem; padding:0.8rem; border-radius:4px; font-size:0.8rem; font-family:'SF Mono','Consolas',monospace; white-space:pre-wrap; max-height:200px; overflow-y:auto; }}
+  .fix-modal .fix-result.success {{ background:#e8f5e9; color:#1b5e20; }}
+  .fix-modal .fix-result.failure {{ background:#fbe9e7; color:#bf360c; }}
+  .fix-modal .fix-commands {{ margin-top:1rem; padding:0.8rem; border-radius:4px; background:#f5f5f5; border:1px solid #ddd; font-size:0.8rem; display:none; }}
+  .fix-modal .fix-commands h4 {{ margin:0 0 0.6rem; font-size:0.85rem; color:#333; font-weight:600; }}
+  .fix-modal .fix-cmd {{ display:flex; align-items:flex-start; gap:0.4rem; margin-bottom:0.5rem; }}
+  .fix-modal .fix-cmd-text {{ flex:1; font-family:'SF Mono','Consolas',monospace; font-size:0.78rem; padding:0.3rem 0.5rem; background:#fff; border:1px solid #ccc; border-radius:3px; word-break:break-all; white-space:pre-wrap; }}
+  .fix-modal .fix-cmd-desc {{ font-size:0.72rem; color:#777; margin-bottom:0.3rem; }}
+  .fix-modal .fix-cmd-copy {{ flex-shrink:0; padding:0.2rem 0.5rem; font-size:0.72rem; background:#e8e8e8; border:1px solid #ccc; border-radius:3px; cursor:pointer; font-family:system-ui,sans-serif; }}
+  .fix-modal .fix-cmd-copy:hover {{ background:#d0d0d0; }}
   .footer {{
     text-align: center; padding: 1.5rem 2rem; color: #53565A;
     font-size: 0.78rem; font-style: italic; border-top: 1px solid #E1E1E1;
@@ -2335,6 +2561,19 @@ def generate_viewer_html() -> str:
   </div>
 </div>
 
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10002;background:transparent;pointer-events:none;">
+  <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);pointer-events:auto;">
+    <div id="tourStep"></div>
+    <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+      <button id="tourSkip" style="background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Skip Tour</button>
+      <div style="display:flex;gap:0.5rem;">
+        <button id="tourPrev" style="background:#F5F5F5;border:1px solid #E1E1E1;color:#53565A;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;display:none;">Previous</button>
+        <button id="tourNext" style="background:#005587;border:none;color:#FFFFFF;border-radius:6px;cursor:pointer;padding:0.4rem 1rem;font-size:0.85rem;">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -2369,6 +2608,7 @@ def generate_viewer_html() -> str:
 {e2eflows_panel}
 {fieldtrace_panel}
 {codequality_panel}
+{resilience_panel}
 {security_panel}
 {uxconsistency_panel}
 {hotspots_panel}
@@ -2504,6 +2744,30 @@ function attachCategoryNodeClicks(svg) {{
   }});
 }}
 
+function attachProjectNodeClicks(svg) {{
+  var meta = (window._projData || {{}}).meta || [];
+  svg.querySelectorAll('.node').forEach(function (node) {{
+    var textEl = node.querySelector('span, foreignObject div, text');
+    if (!textEl) return;
+    var label = textEl.textContent.trim();
+
+    // Skip category pills
+    if (parseCategoryLabel(label)) return;
+
+    // Check if this is a project node
+    var projectName = label;
+    var projectMeta = meta.find(function (m) {{ return m.project === projectName; }});
+    if (!projectMeta) return;
+
+    node.style.cursor = 'pointer';
+    node.setAttribute('title', 'Click to see ' + projectName + ' details');
+    node.addEventListener('click', function (e) {{
+      e.stopPropagation();
+      showProjectDetail(projectName, projectMeta);
+    }});
+  }});
+}}
+
 function showPillDetail(catInfo, svg) {{
   var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
@@ -2585,6 +2849,118 @@ function showPillDetail(catInfo, svg) {{
   }});
 }}
 
+function showProjectDetail(projectName, projectMeta) {{
+  var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
+  if (!panel) return;
+  var d = window._projData || {{}};
+  var refs = d.refs || [], deps = d.deps || [], meta = d.meta || [], dataSrc = d.dataSources || [];
+
+  var html = '<div class="detail-header">';
+  html += '<h3>' + escHtmlGlobal(projectName) + '</h3>';
+  html += '<button class="detail-close">&#10005;</button>';
+  html += '</div>';
+
+  // Project metadata
+  html += '<div class="detail-section">';
+  html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+  html += '<strong>Category:</strong> ' + escHtmlGlobal(projectMeta.category || 'Unknown');
+  html += '</div>';
+  if (projectMeta.framework) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Framework:</strong> ' + escHtmlGlobal(projectMeta.framework);
+    html += '</div>';
+  }}
+  if (projectMeta.repo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Repository:</strong> ' + escHtmlGlobal(projectMeta.repo);
+    html += '</div>';
+  }}
+  if (typeof projectMeta.fanIn === 'number' || typeof projectMeta.fanOut === 'number') {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Fan-in:</strong> ' + (projectMeta.fanIn || 0) + ' &bull; <strong>Fan-out:</strong> ' + (projectMeta.fanOut || 0);
+    html += '</div>';
+  }}
+
+  // Business layer classification
+  var layerInfo = (window._businessLayers || {{}})[projectName];
+  if (layerInfo) {{
+    html += '<div style="font-size:0.78rem;color:#53565A;margin:0.2rem 0;">';
+    html += '<strong>Business Layer:</strong> ' + escHtmlGlobal(layerInfo.layer);
+    if (layerInfo.confidence) {{
+      var conf = Math.round(layerInfo.confidence * 100);
+      html += ' <span style="color:#789D4A;">(' + conf + '% confidence)</span>';
+    }}
+    html += '</div>';
+    if (layerInfo.signals && layerInfo.signals.length > 0) {{
+      html += '<div style="font-size:0.7rem;color:#53565A;margin:0.3rem 0 0 1rem;">';
+      html += '<em>Evidence:</em> ' + escHtmlGlobal(layerInfo.signals.join(', '));
+      html += '</div>';
+    }}
+  }}
+  html += '</div>';
+
+  // Direct dependencies (outgoing)
+  var outgoing = refs.filter(function (r) {{ return r.project === projectName; }});
+  if (outgoing.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependencies (' + outgoing.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    outgoing.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.references) + cross + '</li>';
+    }});
+    if (outgoing.length > 15) html += '<li style="color:#53565A">... and ' + (outgoing.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Reverse dependencies (incoming)
+  var incoming = refs.filter(function (r) {{ return r.references === projectName; }});
+  if (incoming.length > 0) {{
+    html += '<div class="detail-section"><h4>Dependents (' + incoming.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    incoming.slice(0, 15).forEach(function (r) {{
+      var cross = r.crossRepo === 'True' ? ' <span style="color:#789D4A;">(cross-repo)</span>' : '';
+      html += '<li>' + escHtmlGlobal(r.project) + cross + '</li>';
+    }});
+    if (incoming.length > 15) html += '<li style="color:#53565A">... and ' + (incoming.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // NuGet packages
+  var nugetDeps = deps.filter(function (d) {{ return d.project === projectName; }});
+  if (nugetDeps.length > 0) {{
+    html += '<div class="detail-section"><h4>NuGet Packages (' + nugetDeps.length + ')</h4>';
+    html += '<ul class="detail-list">';
+    nugetDeps.slice(0, 15).forEach(function (d) {{
+      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+    }});
+    if (nugetDeps.length > 15) html += '<li style="color:#53565A">... and ' + (nugetDeps.length - 15) + ' more</li>';
+    html += '</ul></div>';
+  }}
+
+  // Data patterns
+  var projectPath = projectMeta.globalPath || projectMeta.path || '';
+  var projectDir = projectPath.substring(0, projectPath.lastIndexOf('/'));
+  var patterns = projectDir ? dataSrc.filter(function (ds) {{ return ds.file && ds.file.indexOf(projectDir + '/') === 0; }}) : [];
+  if (patterns.length > 0) {{
+    html += '<div class="detail-section"><h4>Data Patterns (' + patterns.length + ')</h4>';
+    var patternCounts = {{}};
+    patterns.forEach(function (p) {{ patternCounts[p.pattern] = (patternCounts[p.pattern] || 0) + 1; }});
+    html += '<ul class="detail-list">';
+    Object.keys(patternCounts).slice(0, 10).forEach(function (pn) {{
+      html += '<li>' + escHtmlGlobal(pn) + ' <span style="color:#53565A">(' + patternCounts[pn] + ')</span></li>';
+    }});
+    if (Object.keys(patternCounts).length > 10) {{
+      html += '<li style="color:#53565A">... and ' + (Object.keys(patternCounts).length - 10) + ' more patterns</li>';
+    }}
+    html += '</ul></div>';
+  }}
+
+  panel.innerHTML = html;
+  panel.style.display = 'block';
+  var closeBtn = panel.querySelector('.detail-close');
+  if (closeBtn) closeBtn.addEventListener('click', function () {{ panel.style.display = 'none'; }});
+}}
+
 function showEdgeDetail(fromName, toName) {{
   var panel = document.querySelector('.tab-panel.active .edge-detail-panel');
   if (!panel) return;
@@ -2648,10 +3024,20 @@ function showEdgeDetail(fromName, toName) {{
     if (toMeta) html += escHtmlGlobal(toMeta.category);
     html += '</div>';
   }}
-  // Coupling strength
+  // Coupling strength with file list
   if (typeof edgeMeta.count === 'number') {{
     html += '<div style="font-size:0.78rem;color:#005587;margin-top:0.3rem;">Coupling: '
-      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency</div>';
+      + '<strong>' + edgeMeta.count + '</strong> file' + (edgeMeta.count !== 1 ? 's' : '') + ' import this dependency';
+    if (edgeMeta.coupling_files && edgeMeta.coupling_files.length > 0) {{
+      var fileId = 'coupling-' + Math.random().toString(36).substr(2, 9);
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + fileId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show files &#9660;</button>';
+      html += '<ul id="' + fileId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      for (var i = 0; i < edgeMeta.coupling_files.length; i++) {{
+        html += '<li style="margin:0.15rem 0;">&#10004; ' + escHtmlGlobal(edgeMeta.coupling_files[i]) + '</li>';
+      }}
+      html += '</ul>';
+    }}
+    html += '</div>';
   }}
   // Fan-in / fan-out for both projects
   if (fromMeta && (typeof fromMeta.fanIn === 'number' || typeof fromMeta.fanOut === 'number')) {{
@@ -2680,12 +3066,31 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Shared NuGet packages
+  // Shared NuGet packages with version conflict detection
+  var conflicts = edgeMeta.version_conflicts || [];
+  var conflictMap = {{}};
+  conflicts.forEach(function (c) {{
+    conflictMap[c.package] = c;
+  }});
+
   html += '<div class="detail-section"><h4>Shared NuGet Packages (' + sharedPkgs.length + ')</h4>';
   if (sharedPkgs.length > 0) {{
     html += '<ul class="detail-list">';
     sharedPkgs.slice(0, 15).forEach(function (d) {{
-      html += '<li>' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      var conflict = conflictMap[d.package];
+      if (conflict) {{
+        // Version conflict - show warning
+        html += '<li style="background:#FFF3CD;padding:0.2rem 0.4rem;margin:0.2rem 0;border-radius:3px;">';
+        html += '<span style="color:#856404;">&#9888;</span> ' + escHtmlGlobal(d.package) + ' <strong style="color:#856404;">VERSION CONFLICT</strong>';
+        html += '<div style="font-size:0.7rem;margin-left:1.5rem;color:#53565A;margin-top:0.2rem;">';
+        html += '&bull; <span class="from" style="color:#005587">' + escHtmlGlobal(fromName) + '</span> uses: ' + escHtmlGlobal(conflict.from_version) + '<br>';
+        html += '&bull; <span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span> uses: ' + escHtmlGlobal(conflict.to_version);
+        html += '</div>';
+        html += '</li>';
+      }} else {{
+        // No conflict - normal display
+        html += '<li>&#10004; ' + escHtmlGlobal(d.package) + ' <span style="color:#53565A">' + escHtmlGlobal(d.version) + '</span></li>';
+      }}
     }});
     if (sharedPkgs.length > 15) html += '<li style="color:#53565A">... and ' + (sharedPkgs.length - 15) + ' more</li>';
     html += '</ul>';
@@ -2694,7 +3099,7 @@ function showEdgeDetail(fromName, toName) {{
   }}
   html += '</div>';
 
-  // Data patterns
+  // Data patterns with file-level details
   var totalFromPatterns = fromDataPatterns.length;
   var totalToPatterns = toDataPatterns.length;
   html += '<div class="detail-section"><h4>Data Patterns</h4>';
@@ -2703,9 +3108,43 @@ function showEdgeDetail(fromName, toName) {{
     + '<span class="to" style="color:#00897B">' + escHtmlGlobal(toName) + '</span>: ' + totalToPatterns + ' patterns</div>';
   var sharedKeys = Object.keys(sharedPatternNames);
   if (sharedKeys.length > 0) {{
-    html += '<ul class="detail-list">';
-    sharedKeys.forEach(function (p) {{
-      html += '<li>' + escHtmlGlobal(p) + ' <span style="color:#53565A">(' + sharedPatternNames[p] + ' matches in target)</span></li>';
+    html += '<ul class="detail-list" style="list-style:none;padding:0;">';
+    sharedKeys.forEach(function (patternName) {{
+      // Find all shared findings for this pattern type
+      var findings = sharedPatterns.filter(function (p) {{ return p.pattern === patternName; }});
+      var findingId = 'pattern-' + Math.random().toString(36).substr(2, 9);
+
+      // Pattern header with count
+      html += '<li style="margin:0.4rem 0;">';
+      html += '<strong>' + escHtmlGlobal(patternName) + '</strong> - ' + findings.length + ' finding' + (findings.length !== 1 ? 's' : '');
+      html += ' <button onclick="toggleCouplingFiles(\\'#' + findingId + '\\')" style="background:none;border:none;color:#005587;cursor:pointer;font-size:0.75rem;padding:0;margin-left:0.3rem;">Show details &#9660;</button>';
+
+      // Expandable finding details
+      html += '<ul id="' + findingId + '" style="display:none;margin:0.3rem 0 0 1.5rem;font-size:0.75rem;color:#53565A;list-style:none;padding:0;">';
+      findings.slice(0, 10).forEach(function (f) {{
+        var directionIcon = '';
+        if (f.direction === 'read') directionIcon = '&#128065;'; // eye
+        else if (f.direction === 'write') directionIcon = '&#9998;'; // pencil
+        else if (f.direction === 'expose') directionIcon = '&#128200;'; // chart
+        else if (f.direction === 'consume') directionIcon = '&#128226;'; // megaphone
+        else if (f.direction === 'both') directionIcon = '&#8644;'; // left-right arrow
+
+        var endpoint = f.endpoint ? ' <strong>' + escHtmlGlobal(f.endpoint) + '</strong>' : '';
+        var direction = f.direction ? ' (' + escHtmlGlobal(f.direction) + ')' : '';
+
+        html += '<li style="margin:0.15rem 0;">';
+        html += directionIcon + endpoint + direction + ' - ';
+        html += '<a href="#" onclick="event.preventDefault();_openViaServer(\\'code\\', \\'' + escHtmlGlobal(f.file) + '\\', ' + (f.line || 1) + ', \\'' + escHtmlGlobal(f.project || '') + '\\', null);return false;" ';
+        html += 'style="color:#005587;text-decoration:none;">';
+        html += escHtmlGlobal(f.file.split('/').pop()) + ':' + (f.line || 1);
+        html += '</a>';
+        html += '</li>';
+      }});
+      if (findings.length > 10) {{
+        html += '<li style="color:#53565A;font-style:italic;">... and ' + (findings.length - 10) + ' more</li>';
+      }}
+      html += '</ul>';
+      html += '</li>';
     }});
     html += '</ul>';
   }} else {{
@@ -2878,13 +3317,28 @@ function showCategoryEdgeDetail(fromLabel, toLabel, fromCat, toCat) {{
   var meta = d.meta || [];
   var refs = d.refs || [];
 
+  // Check if these are business layer categories
+  var isBusinessLayer = fromCat.isBusinessLayer || toCat.isBusinessLayer;
+  var bl = window._businessLayers || {{}};
+
   // Find projects in each category
   var fromProjects = {{}};
   var toProjects = {{}};
-  meta.forEach(function (m) {{
-    if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
-    if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
-  }});
+
+  if (isBusinessLayer) {{
+    // Use business layer classification
+    Object.keys(bl).forEach(function (projName) {{
+      var layerInfo = bl[projName];
+      if (layerInfo.layer.toLowerCase() === fromCat.key) fromProjects[projName] = true;
+      if (layerInfo.layer.toLowerCase() === toCat.key) toProjects[projName] = true;
+    }});
+  }} else {{
+    // Use technical category
+    meta.forEach(function (m) {{
+      if (m.category && m.category.toLowerCase() === fromCat.key) fromProjects[m.project] = true;
+      if (m.category && m.category.toLowerCase() === toCat.key) toProjects[m.project] = true;
+    }});
+  }}
 
   // Filter refs: from-category projects referencing to-category projects
   var crossRefs = refs.filter(function (r) {{
@@ -3021,6 +3475,9 @@ function escHtmlGlobal(s) {{
   d.textContent = s || '';
   return d.innerHTML;
 }}
+function escAttr(s) {{
+  return escHtmlGlobal(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}}
 
 // ── File path resolution ──
 function _resolveFilePath(repoRoot, relFile) {{
@@ -3050,17 +3507,17 @@ function _resolveFromRoots(filePath) {{
 function fileActionsHtml(filePath, line, style, project, smell) {{
   if (!filePath) return '';
   var display = escHtmlGlobal(filePath || '') + (line ? ':' + line : '');
-  var dp = escHtmlGlobal(filePath);
+  var dp = escAttr(filePath);
   var dl = line || 0;
-  var proj = escHtmlGlobal(project || '');
-  var sm = escHtmlGlobal(smell || '');
+  var proj = escAttr(project || '');
+  var sm = escAttr(smell || '');
   return '<span class="file-ref">' +
     '<span class="mono" style="' + (style || 'color:#53565A;') + '">' + display + '</span>' +
     ' <a href="#" class="file-action file-studio" data-path="' + dp + '" data-line="' + dl + '" title="Open in Visual Studio">Studio</a>' +
     ' <a href="#" class="file-action file-code" data-path="' + dp + '" data-line="' + dl + '" title="Open in VS Code">Code</a>' +
     ' <a href="#" class="file-action file-claude" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Explore with Claude Code">Claude</a>' +
-    ' <a href="#" class="file-action file-opencode wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Open in OpenCode" style="display:none;">OpenCode</a>' +
-    ' <a href="#" class="file-action file-copilot wsl-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot" style="display:none;">Copilot</a>' +
+    ' <a href="#" class="file-action file-copilot copilot-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Ask GitHub Copilot">Copilot</a>' +
+    ' <a href="#" class="file-action file-fix fix-workflow-tool" data-path="' + dp + '" data-line="' + dl + '" data-project="' + proj + '" data-smell="' + sm + '" title="Fix: checkout, branch, fix, test, review">Fix</a>' +
     ' <a href="#" class="file-action file-view" data-path="' + dp + '" data-line="' + dl + '" title="View in browser">View</a>' +
     '</span>';
 }}
@@ -3077,17 +3534,351 @@ function showToast(msg, isLong) {{
   clearTimeout(t._tid);
   t._tid = setTimeout(function() {{ t.style.opacity = '0'; }}, isLong ? 5000 : 2000);
 }}
+// -- Companion agent detection & IDE launch --
+var _companionBase = 'http://127.0.0.1:19280';
+var _companionOk = null; // null = unknown, true/false after probe
+var _companionProbed = false;
+
+function _probeCompanion(cb) {{
+  if (_companionProbed) {{ if (cb) cb(_companionOk); return; }}
+  _companionProbed = true;
+  fetch(_companionBase + '/_ping', {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      _companionOk = d && d.status === 'ok';
+      if (cb) cb(_companionOk);
+    }})
+    .catch(function() {{
+      _companionOk = false;
+      if (cb) cb(false);
+    }});
+}}
+// Probe on page load so we know before the first click
+_probeCompanion(function(ok) {{
+  if (!ok) return;
+  // After companion is detected, check tool availability
+  fetch(_companionBase + '/_check', {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (!d.tools) return;
+      window._companionTools = d.tools;
+      if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
+        showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
+      }}
+    }})
+    .catch(function() {{ /* ignore */ }});
+}});
+
+function _showCompanionBanner() {{
+  var id = 'companionBanner';
+  if (document.getElementById(id)) return;
+  var banner = document.createElement('div');
+  banner.id = id;
+  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.7rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;';
+  banner.innerHTML = '<div><strong>Companion agent not detected.</strong> To launch editors from this viewer, run: ' +
+    '<code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;margin:0 4px;">node companion/server.js</code> ' +
+    'in the tools-static-analysis directory on your machine.</div>' +
+    '<button onclick="this.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:2px 10px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;">Dismiss</button>';
+  document.body.appendChild(banner);
+}}
+
+function toggleCouplingFiles(selector) {{
+  var ul = document.querySelector(selector);
+  var btn = ul ? ul.previousElementSibling : null;
+  if (!ul || !btn) return;
+  if (ul.style.display === 'none') {{
+    ul.style.display = 'block';
+    btn.innerHTML = btn.innerHTML.replace('&#9660;', '&#9650;');
+  }} else {{
+    ul.style.display = 'none';
+    btn.innerHTML = btn.innerHTML.replace('&#9650;', '&#9660;');
+  }}
+}}
 function _openViaServer(editor, resolved, line, project, smell) {{
-  var url = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
-  if (project) url += '&project=' + encodeURIComponent(project);
-  if (smell) url += '&smell=' + encodeURIComponent(smell);
-  fetch(url).then(function(r) {{ return r.json(); }}).then(function(d) {{
+  var qs = '/_open?editor=' + editor + '&path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
+  if (project) qs += '&project=' + encodeURIComponent(project);
+  if (smell) qs += '&smell=' + encodeURIComponent(smell);
+
+  function tryFetch(baseUrl) {{
+    return fetch(baseUrl + qs, {{ mode: 'cors' }})
+      .then(function(r) {{ return r.json(); }});
+  }}
+
+  function onSuccess(d) {{
     if (d.error) showToast(d.error, true);
     else showToast('Opening ' + editor + '...', false);
+  }}
+
+  // If companion status already known, use that
+  if (_companionOk === true) {{
+    tryFetch(_companionBase).then(onSuccess).catch(function() {{
+      // Companion went away; re-probe and try run.py server
+      _companionOk = null; _companionProbed = false;
+      tryFetch('').then(onSuccess).catch(function() {{
+        _showCompanionBanner();
+        showToast('No server available. Start the companion agent.', true);
+      }});
+    }});
+    return;
+  }}
+
+  if (_companionOk === false) {{
+    // Try same-origin run.py first, then show banner
+    tryFetch('').then(onSuccess).catch(function() {{
+      _showCompanionBanner();
+      showToast('No server available. Start the companion agent.', true);
+    }});
+    return;
+  }}
+
+  // Unknown: try companion, fall back to run.py, then show banner
+  tryFetch(_companionBase).then(function(d) {{
+    _companionOk = true;
+    onSuccess(d);
   }}).catch(function() {{
-    showToast('Server not available — are you using run.py?', true);
+    _companionOk = false;
+    tryFetch('').then(onSuccess).catch(function() {{
+      _showCompanionBanner();
+      showToast('No server available. Start the companion agent.', true);
+    }});
   }});
 }}
+
+// ---------------------------------------------------------------------------
+// Fix Workflow UI
+// ---------------------------------------------------------------------------
+
+var _fixModal = null;
+var _fixPollTimer = null;
+var _activeFixId = null;
+
+function _getFixModal() {{
+  if (_fixModal) return _fixModal;
+  var overlay = document.createElement('div');
+  overlay.className = 'fix-modal-overlay';
+  overlay.innerHTML =
+    '<div class="fix-modal">' +
+    '<h3 id="fixModalTitle">Fix Workflow</h3>' +
+    '<div id="fixSteps"></div>' +
+    '<div id="fixResult" class="fix-result" style="display:none;"></div>' +
+    '<div id="fixCommands" class="fix-commands"></div>' +
+    '<div class="fix-actions">' +
+    '<button id="fixSubmitBtn" class="btn-primary" style="display:none;">Submit Fix</button>' +
+    '<button id="fixCloseBtn" class="btn-secondary">Close</button>' +
+    '</div>' +
+    '</div>';
+  overlay.addEventListener('click', function(e) {{
+    if (e.target === overlay) _closeFixModal();
+  }});
+  document.body.appendChild(overlay);
+  document.getElementById('fixCloseBtn').addEventListener('click', _closeFixModal);
+  document.getElementById('fixSubmitBtn').addEventListener('click', _submitFix);
+  _fixModal = overlay;
+  return overlay;
+}}
+
+var _fixStepLabels = [
+  {{ key: 'checkout', label: 'Checking out code' }},
+  {{ key: 'branching', label: 'Creating fix branch' }},
+  {{ key: 'fixing', label: 'AI tool fixing (review when ready)' }},
+  {{ key: 'review', label: 'Ready for review' }},
+  {{ key: 'building', label: 'Building project' }},
+  {{ key: 'testing', label: 'Running tests' }},
+  {{ key: 'done', label: 'Complete' }}
+];
+
+function _renderFixSteps(currentStatus) {{
+  var html = '';
+  var reached = false;
+  var failed = (currentStatus === 'failed' || currentStatus === 'build_failed' || currentStatus === 'test_failed');
+  for (var i = 0; i < _fixStepLabels.length; i++) {{
+    var step = _fixStepLabels[i];
+    var cls = 'fix-step';
+    var icon = '-';
+    if (step.key === currentStatus) {{
+      cls += ' active';
+      icon = '...';
+      reached = true;
+    }} else if (!reached) {{
+      cls += ' done';
+      icon = 'OK';
+    }}
+    if (failed && step.key === currentStatus) {{
+      cls = 'fix-step fail';
+      icon = 'X';
+    }}
+    html += '<div class="' + cls + '"><span class="fix-step-icon">' + icon + '</span> ' + step.label + '</div>';
+    if (reached && !failed) break;
+  }}
+  if (failed) {{
+    html += '<div class="fix-step fail"><span class="fix-step-icon">X</span> Failed</div>';
+  }}
+  document.getElementById('fixSteps').innerHTML = html;
+
+  // Show submit button when in review state
+  var submitBtn = document.getElementById('fixSubmitBtn');
+  submitBtn.style.display = (currentStatus === 'review' || currentStatus === 'fixing') ? 'inline-block' : 'none';
+}}
+
+function _startFixWorkflow(filePath, line, project, smell) {{
+  var modal = _getFixModal();
+  document.getElementById('fixModalTitle').textContent = 'Fix: ' + (smell || 'architectural smell');
+  document.getElementById('fixResult').style.display = 'none';
+  document.getElementById('fixCommands').style.display = 'none';
+  _renderFixSteps('checkout');
+  modal.classList.add('active');
+
+  var qs = '/_fix/start?path=' + encodeURIComponent(filePath) +
+    '&line=' + (line || 0) +
+    '&smell=' + encodeURIComponent(smell || '') +
+    '&project=' + encodeURIComponent(project || '') +
+    '&editor=claude';
+
+  var base = _companionOk ? _companionBase : '';
+  fetch(base + qs, {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (d.error) {{
+        _renderFixSteps('failed');
+        _showFixResult(d.error, false);
+        _showFixCommands(d.commands || null);
+        return;
+      }}
+      _activeFixId = d.id;
+      _renderFixSteps(d.state ? d.state.status : 'fixing');
+      _showFixCommands(null);
+      showToast('Fix started on branch: ' + (d.branchName || ''));
+      // Start polling for status
+      _startFixPoll();
+    }})
+    .catch(function(err) {{
+      _renderFixSteps('failed');
+      _showFixResult('Could not reach companion agent. Is it running?', false);
+    }});
+}}
+
+function _startFixPoll() {{
+  if (_fixPollTimer) clearInterval(_fixPollTimer);
+  _fixPollTimer = setInterval(function() {{
+    if (!_activeFixId) {{ clearInterval(_fixPollTimer); return; }}
+    var base = _companionOk ? _companionBase : '';
+    fetch(base + '/_fix/status?id=' + encodeURIComponent(_activeFixId), {{ mode: 'cors' }})
+      .then(function(r) {{ return r.json(); }})
+      .then(function(d) {{
+        if (!d.state) return;
+        _renderFixSteps(d.state.status);
+        if (d.state.status === 'done' || d.state.status === 'failed' || d.state.status === 'build_failed' || d.state.status === 'test_failed') {{
+          clearInterval(_fixPollTimer);
+          if (d.state.status === 'done') {{
+            var msg = 'Fix complete.';
+            if (d.state.prUrl) msg += ' PR: ' + d.state.prUrl;
+            if (d.state.patchFile) msg += ' Patch: ' + d.state.patchFile;
+            _showFixResult(msg, true);
+          }} else if (d.state.status === 'build_failed') {{
+            _showFixResult('Build failed:\\n' + (d.state.buildOutput || ''), false);
+          }} else if (d.state.status === 'test_failed') {{
+            _showFixResult('Tests failed:\\n' + (d.state.testOutput || ''), false);
+          }} else {{
+            _showFixResult('Error: ' + (d.state.error || 'Unknown'), false);
+          }}
+        }}
+      }})
+      .catch(function() {{ /* ignore poll errors */ }});
+  }}, 3000);
+}}
+
+function _submitFix() {{
+  if (!_activeFixId) return;
+  _renderFixSteps('building');
+  document.getElementById('fixSubmitBtn').style.display = 'none';
+  var base = _companionOk ? _companionBase : '';
+  fetch(base + '/_fix/submit?id=' + encodeURIComponent(_activeFixId), {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (d.error) {{
+        var failStatus = d.status === 'build_failed' ? 'build_failed'
+          : d.status === 'test_failed' ? 'test_failed' : 'failed';
+        _renderFixSteps(failStatus);
+        var detail = d.buildOutput || d.testOutput || '';
+        _showFixResult(d.error + (detail ? '\\n\\n' + detail : ''), false);
+        return;
+      }}
+      _renderFixSteps('done');
+      var msg = 'Fix submitted.';
+      if (d.prUrl) msg += '\\nPR: ' + d.prUrl;
+      if (d.patchFile) msg += '\\nPatch saved: ' + d.patchFile;
+      _showFixResult(msg, true);
+    }})
+    .catch(function(err) {{
+      _renderFixSteps('failed');
+      _showFixResult('Submit failed: ' + err.message, false);
+    }});
+}}
+
+function _showFixCommands(commands) {{
+  var el = document.getElementById('fixCommands');
+  if (!commands || !commands.length) {{
+    el.style.display = 'none';
+    return;
+  }}
+  var html = '<h4>Run these commands manually:</h4>';
+  for (var i = 0; i < commands.length; i++) {{
+    var c = commands[i];
+    var desc = c.description ? '<div class="fix-cmd-desc">' + _esc(c.description) +
+      (c.cwd ? ' (in ' + _esc(c.cwd) + ')' : '') + '</div>' : '';
+    html += desc +
+      '<div class="fix-cmd">' +
+      '<span class="fix-cmd-text">' + _esc(c.cmd) + '</span>' +
+      '<button class="fix-cmd-copy" onclick="_copyCmd(this)" title="Copy to clipboard">Copy</button>' +
+      '</div>';
+  }}
+  el.innerHTML = html;
+  el.style.display = 'block';
+}}
+
+function _esc(s) {{
+  var d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}}
+
+function _copyCmd(btn) {{
+  var text = btn.previousElementSibling.textContent;
+  if (navigator.clipboard) {{
+    navigator.clipboard.writeText(text).then(function() {{
+      btn.textContent = 'Copied';
+      setTimeout(function() {{ btn.textContent = 'Copy'; }}, 1500);
+    }});
+  }} else {{
+    // Fallback for older browsers / non-HTTPS
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied';
+    setTimeout(function() {{ btn.textContent = 'Copy'; }}, 1500);
+  }}
+}}
+
+function _showFixResult(text, isSuccess) {{
+  var el = document.getElementById('fixResult');
+  el.style.display = 'block';
+  el.className = 'fix-result ' + (isSuccess ? 'success' : 'failure');
+  el.textContent = text;
+}}
+
+function _closeFixModal() {{
+  if (_fixPollTimer) clearInterval(_fixPollTimer);
+  _activeFixId = null;
+  var modal = _getFixModal();
+  modal.classList.remove('active');
+  document.getElementById('fixCommands').style.display = 'none';
+}}
+
 // Delegated click handler for file action icons
 document.addEventListener('click', function(e) {{
   var action = e.target.closest('.file-action');
@@ -3102,16 +3893,14 @@ document.addEventListener('click', function(e) {{
   if (action.classList.contains('file-studio')) {{
     _openViaServer('studio', resolved, line, project, smell);
   }} else if (action.classList.contains('file-code')) {{
-    // VS Code: try client-side URI first, fall back to server
-    var vsUri = 'vscode://file/' + encodeURI(resolved.replace(/\\\\/g, '/'));
-    if (line) vsUri += ':' + line;
-    window.location.href = vsUri;
+    // VS Code: open via server to get workspace context
+    _openViaServer('code', resolved, line, project, smell);
   }} else if (action.classList.contains('file-claude')) {{
     _openViaServer('claude', resolved, line, project, smell);
-  }} else if (action.classList.contains('file-opencode')) {{
-    _openViaServer('opencode', resolved, line, project, smell);
   }} else if (action.classList.contains('file-copilot')) {{
     _openViaServer('copilot', resolved, line, project, smell);
+  }} else if (action.classList.contains('file-fix')) {{
+    _startFixWorkflow(resolved, line, project, smell);
   }} else if (action.classList.contains('file-view')) {{
     var viewUrl = '/_view?path=' + encodeURIComponent(resolved) + '&line=' + (line || 0);
     window.open(viewUrl, '_blank');
@@ -3120,14 +3909,30 @@ document.addEventListener('click', function(e) {{
 
 function parseCategoryLabel(label) {{
   var catMap = window._categoryMap || {{}};
+  var blMap = window._businessLayerMap || {{}};
+
+  // Check technical categories first
   if (catMap[label]) return catMap[label];
+
+  // Check business layers
+  if (blMap[label]) return blMap[label];
+
   var m = label.match(/^([\\w][\\w\\s]*?)\\s*\\((\\d+)\\)$/);
   if (!m) return null;
   var name = m[1];
+
+  // Try matching technical categories
   var keys = Object.keys(catMap);
   for (var i = 0; i < keys.length; i++) {{
     if (catMap[keys[i]].key === name.toLowerCase()) return catMap[keys[i]];
   }}
+
+  // Try matching business layers
+  var blKeys = Object.keys(blMap);
+  for (var j = 0; j < blKeys.length; j++) {{
+    if (blMap[blKeys[j]].key === name.toLowerCase()) return blMap[blKeys[j]];
+  }}
+
   return null;
 }}
 
@@ -3316,6 +4121,10 @@ function initSortableTable(table) {{
           }}
           attachEdgeTooltips(svg);
           attachCategoryNodeClicks(svg);
+          // Attach project clicks if metadata is already loaded
+          if (window._projData && window._projData.meta && window._projData.meta.length > 0) {{
+            attachProjectNodeClicks(svg);
+          }}
         }}
       }}).catch(function (err) {{
         console.error('Mermaid render error for ' + tabId + ':', err);
@@ -3335,6 +4144,155 @@ function initSortableTable(table) {{
   var firstTab = document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
+  // First-visit guided tour
+  function initTour() {{
+    if (localStorage.getItem('dependencyViewer_tourCompleted')) return;
+
+    var tourSteps = [
+      {{
+        title: 'Welcome to Dependency Analyzer',
+        content: 'This tool helps you understand dependencies, data flows, and code quality across your projects. Let me show you the key features.',
+        highlight: null
+      }},
+      {{
+        title: 'Navigate Diagrams',
+        content: 'Use tabs to explore different views. Zoom with + / - buttons or mouse wheel. Search to filter projects.',
+        highlight: '.tabs'
+      }},
+      {{
+        title: 'Click Edges for Details',
+        content: 'Click any arrow in the diagrams to see detailed analysis: coupling, shared packages, data patterns, and more.',
+        highlight: '.mermaid-wrap'
+      }},
+      {{
+        title: 'AI-Ready Context',
+        content: 'Click the AI Context link to access pre-formatted codebase summaries perfect for feeding to Claude or other AI assistants.',
+        highlight: '.stat-link'
+      }}
+    ];
+
+    var currentStep = 0;
+    var overlay = document.getElementById('tourOverlay');
+    var content = document.getElementById('tourContent');
+    var stepDiv = document.getElementById('tourStep');
+    var nextBtn = document.getElementById('tourNext');
+    var prevBtn = document.getElementById('tourPrev');
+    var skipBtn = document.getElementById('tourSkip');
+
+    function showStep(index) {{
+      if (index < 0 || index >= tourSteps.length) return;
+      currentStep = index;
+      var step = tourSteps[index];
+
+      // Remove previous spotlight
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+
+      // Update content
+      stepDiv.innerHTML = '<h3 style="color:#022D5E;margin:0 0 1rem;">' + step.title + '</h3>' +
+        '<p style="color:#53565A;font-size:0.9rem;line-height:1.6;margin:0;">' + step.content + '</p>' +
+        '<div style="margin-top:0.5rem;font-size:0.75rem;color:#999;">Step ' + (index + 1) + ' of ' + tourSteps.length + '</div>';
+
+      // Position and highlight
+      if (step.highlight) {{
+        var target = document.querySelector(step.highlight);
+        if (target) {{
+          target.classList.add('tour-spotlight');
+          overlay.style.background = 'transparent'; // Spotlight creates darkness
+          var rect = target.getBoundingClientRect();
+
+          // Clear any transform
+          content.style.transform = 'none';
+
+          // Position below target, centered horizontally on screen
+          var top = rect.bottom + 20;
+          var left = Math.max(50, Math.min(window.innerWidth - 550, (window.innerWidth - 500) / 2));
+
+          // Keep within viewport
+          if (top + 300 > window.innerHeight) {{
+            top = Math.max(100, rect.top - 320);
+          }}
+
+          content.style.top = top + 'px';
+          content.style.left = left + 'px';
+        }} else {{
+          overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+          content.style.transform = 'translate(-50%, -50%)';
+          content.style.top = '50%';
+          content.style.left = '50%';
+        }}
+      }} else {{
+        overlay.style.background = 'rgba(0,0,0,0.7)'; // No spotlight, overlay creates darkness
+        content.style.transform = 'translate(-50%, -50%)';
+        content.style.top = '50%';
+        content.style.left = '50%';
+      }}
+
+      // Update buttons
+      prevBtn.style.display = index > 0 ? 'block' : 'none';
+      nextBtn.textContent = index === tourSteps.length - 1 ? 'Get Started' : 'Next';
+    }}
+
+    function closeTour() {{
+      overlay.style.display = 'none';
+      document.querySelectorAll('.tour-spotlight').forEach(function(el) {{
+        el.classList.remove('tour-spotlight');
+      }});
+      localStorage.setItem('dependencyViewer_tourCompleted', 'true');
+    }}
+
+    nextBtn.onclick = function() {{
+      if (currentStep === tourSteps.length - 1) {{
+        closeTour();
+      }} else {{
+        showStep(currentStep + 1);
+      }}
+    }};
+
+    prevBtn.onclick = function() {{
+      showStep(currentStep - 1);
+    }};
+
+    skipBtn.onclick = closeTour;
+
+    // Show tour
+    overlay.style.display = 'block';
+    showStep(0);
+  }}
+
+  // Show first-edge hint
+  function showFirstEdgeHint() {{
+    if (localStorage.getItem('edgeHintShown')) return;
+
+    setTimeout(function() {{
+      var firstEdge = document.querySelector('.flowchart-link');
+      if (!firstEdge) return;
+
+      firstEdge.classList.add('pulse-hint');
+
+      var hint = document.createElement('div');
+      hint.className = 'edge-hint-label';
+      hint.textContent = 'Click edges to see details';
+      hint.style.top = '100px';
+      hint.style.left = '50%';
+      hint.style.transform = 'translateX(-50%)';
+      document.body.appendChild(hint);
+
+      setTimeout(function() {{
+        firstEdge.classList.remove('pulse-hint');
+        hint.remove();
+        localStorage.setItem('edgeHintShown', 'true');
+      }}, 5000);
+    }}, 1000);
+  }}
+
+  // Initialize tour after short delay to ensure DOM is ready
+  setTimeout(function() {{
+    initTour();
+    showFirstEdgeHint();
+  }}, 500);
+
   // Init sorting on static tables
   initSortableTable(document.getElementById('datasourcesTable'));
   initSortableTable(document.getElementById('connstringsTable'));
@@ -3346,12 +4304,15 @@ function initSortableTable(table) {{
   // Global project data for edge detail lookups
   window._projData = {{ meta: [], refs: [], deps: [], dataSources: [] }};
   window._dataFlow = {{ dataNodes: [], dataEdges: [], impliedDependencies: [], infrastructureGroups: [] }};
+  window._businessLayers = {business_layers_json};
   window._categoryMap = {{ {cat_map_entries} }};
+  window._businessLayerMap = {{ {business_layer_map_entries} }};
   window._hotspotData = {hotspot_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
   window._repoRoots = {repos_roots_json};
   window._externalToolsData = {ext_tools_embedded};
+  window._resilienceData = {resilience_embedded};
   window._isMultiRepo = {str(is_multi_repo).lower()};
   window._repos = {repos_json};
   window._projectGroupMap = {project_groups_map_json};
@@ -3359,20 +4320,18 @@ function initSortableTable(table) {{
   window._cycles = {cycles_json};
   window._config = {config_json};
 
-  // Show WSL tools (OpenCode, Copilot) if enabled in config
-  document.addEventListener('DOMContentLoaded', function() {{
-    if (window._config && window._config.enableWslTools) {{
-      var wslTools = document.querySelectorAll('.wsl-tool');
-      wslTools.forEach(function(tool) {{
-        tool.style.display = 'inline-block';
-      }});
-    }}
-  }});
+  // Tool button visibility (copilot-tool, fix-workflow-tool) is
+  // controlled by CSS rules generated from config.yaml at build time.
 
   // Load data-flow.json for edge detail panel
   fetch('data-flow.json').then(function (r) {{ return r.json(); }}).then(function (df) {{
     window._dataFlow = df;
   }}).catch(function () {{ /* data-flow.json may not exist on older runs */ }});
+
+  // Load flow-paths.json for business layer classification
+  fetch('flow-paths.json').then(function (r) {{ return r.json(); }}).then(function (fp) {{
+    window._businessLayers = fp.businessLayers || {{}};
+  }}).catch(function () {{ /* flow-paths.json may not exist on older runs */ }});
 
   // Load field-traceability.json
   window._fieldTrace = {{ fieldChains: [], summary: {{}} }};
@@ -3423,6 +4382,11 @@ function initSortableTable(table) {{
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('projectsTable'));
+
+    // Attach project node clicks now that metadata is loaded
+    document.querySelectorAll('.mermaid-wrap svg').forEach(function (svg) {{
+      attachProjectNodeClicks(svg);
+    }});
   }}).catch(function (err) {{
     console.error('Failed to load project data:', err);
     var tbody = document.getElementById('projectsBody');
@@ -3483,8 +4447,8 @@ function initSortableTable(table) {{
       var highestPri = 0;
       (m.smells || []).forEach(function (s) {{
         var c = smellColors[s.level] || '#53565A';
-        riskDots += '<span title="' + escHtml(s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
-        riskLabels += '<div style="font-size:0.7rem;color:' + c + ';line-height:1.3;" title="' + escHtml(s.explanation) + '">' + escHtml(s.label) + '</div>';
+        riskDots += '<span title="' + escAttr(s.explanation) + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + c + ';margin-right:3px;cursor:help;"></span>';
+        riskLabels += '<div style="font-size:0.7rem;color:' + c + ';line-height:1.3;" title="' + escAttr(s.explanation) + '">' + escHtml(s.label) + '</div>';
         var pri = riskPriority[s.level] || 0;
         if (pri > highestPri) {{ highestPri = pri; highestRisk = s.level; }}
       }});
@@ -3582,24 +4546,88 @@ function initSortableTable(table) {{
       return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sev || '') + '</span>';
     }}
 
+    var smellPrompts = cqData.smellPrompts || {{}};
+    // Triage data store — mutable copy of embedded dispositions
+    var triageStore = JSON.parse(JSON.stringify(cqData.triage || {{}}));
+    var triageStatusColors = {{
+      unreviewed: '#53565A',
+      confirmed: '#D0002B',
+      false_positive: '#009639',
+      accepted_risk: '#9E8700',
+      fixed: '#005587'
+    }};
+    var triageStatusLabels = {{
+      unreviewed: 'Unreviewed',
+      confirmed: 'Confirmed',
+      false_positive: 'False Positive',
+      accepted_risk: 'Accepted Risk',
+      fixed: 'Fixed'
+    }};
+    var triageDirty = false;
+
+    function triageBadge(status) {{
+      var c = triageStatusColors[status] || '#53565A';
+      var label = triageStatusLabels[status] || status || 'Unreviewed';
+      return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(label) + '</span>';
+    }}
+
+    function triageSelect(findingId, currentStatus) {{
+      var opts = ['unreviewed', 'confirmed', 'false_positive', 'accepted_risk', 'fixed'];
+      var h = '<select class="triage-select" data-finding-id="' + escHtml(findingId) + '" style="font-size:0.72rem;padding:0.15rem 0.3rem;border:1px solid #E1E1E1;border-radius:4px;cursor:pointer;">';
+      opts.forEach(function(o) {{
+        var sel = o === (currentStatus || 'unreviewed') ? ' selected' : '';
+        h += '<option value="' + o + '"' + sel + '>' + (triageStatusLabels[o] || o) + '</option>';
+      }});
+      h += '</select>';
+      h += '<input type="text" class="triage-reason" data-finding-id="' + escHtml(findingId) + '" placeholder="Reason..." style="font-size:0.72rem;padding:0.15rem 0.3rem;border:1px solid #E1E1E1;border-radius:4px;width:120px;margin-left:0.25rem;" value="' + escHtml((triageStore[findingId] || {{}}).reason || '') + '">';
+      return h;
+    }}
+
+    function updateTriageEntry(findingId, status, reason) {{
+      if (!triageStore[findingId]) {{
+        triageStore[findingId] = {{ status: 'unreviewed', reason: '', decidedBy: '', date: '', context: '' }};
+      }}
+      triageStore[findingId].status = status;
+      if (reason !== undefined) triageStore[findingId].reason = reason;
+      triageStore[findingId].date = new Date().toISOString().split('T')[0];
+      triageDirty = true;
+      // Update the export button appearance
+      var btn = document.getElementById('cqExportTriage');
+      if (btn) btn.style.background = '#E8F0FE';
+    }}
+
+    function buildSmellPrompt(smellType, file, line, context, project) {{
+      var tmpl = smellPrompts[smellType];
+      if (!tmpl) return smellType;
+      return tmpl
+        .replace(/\\{{file\\}}/g, file || '')
+        .replace(/\\{{line\\}}/g, String(line || 0))
+        .replace(/\\{{context\\}}/g, context || '')
+        .replace(/\\{{project\\}}/g, project || '');
+    }}
+
     function buildFileDetail(p) {{
       var files = p.files || [];
       if (files.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No file-level data available</div>';
       var root = repoRoots[p.repo || ''] || '';
       var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
-      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Smell</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Triage</th></tr></thead><tbody>';
       files.forEach(function(f) {{
         var fname = f.file ? f.file.split(/[\\/\\\\]/).pop() : '?';
         var fPath = f.file || '';
         (f.smells || []).forEach(function(s) {{
           var sc = sevColors[s.severity] || '#53565A';
-          var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;') : escHtml(fname);
-          h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+          var smellPrompt = buildSmellPrompt(s.type, fPath, s.line || 0, s.context || '', p.project || '');
+          var fActions = fPath ? fileActionsHtml(fPath, s.line || 0, 'font-size:0.75rem;color:#005587;', p.project || '', smellPrompt) : escHtml(fname);
+          var fid = s.findingId || '';
+          var tStatus = s.triageStatus || (triageStore[fid] || {{}}).status || 'unreviewed';
+          h += '<tr style="border-bottom:1px solid #F5F5F5;" data-triage-status="' + escHtml(tStatus) + '" data-finding-id="' + escHtml(fid) + '">';
           h += '<td style="padding:0.25rem 0.5rem;">' + fActions + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (s.line || '') + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;">' + sevBadge(s.severity) + '</td>';
           h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(s.type) + '</span></td>';
           h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(s.context || '') + '</td>';
+          h += '<td style="padding:0.25rem 0.5rem;white-space:nowrap;">' + triageSelect(fid, tStatus) + '</td>';
           h += '</tr>';
         }});
       }});
@@ -3615,16 +4643,22 @@ function initSortableTable(table) {{
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
       var hasFiles = p.files && p.files.length > 0;
-      // Collect severity set for this project
+      // Collect severity and triage sets for this project
       var sevSet = {{}};
-      (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{ if (s.severity) sevSet[s.severity] = true; }}); }});
+      var triageSet = {{}};
+      (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{
+        if (s.severity) sevSet[s.severity] = true;
+        triageSet[s.triageStatus || 'unreviewed'] = true;
+      }}); }});
       var sevList = Object.keys(sevSet).join(',');
+      var triageList = Object.keys(triageSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
       tr.setAttribute('data-has-tests', p.has_tests ? 'true' : 'false');
       tr.setAttribute('data-smells', smellList.toLowerCase());
       tr.setAttribute('data-severities', sevList.toLowerCase());
+      tr.setAttribute('data-triage-statuses', triageList.toLowerCase());
       if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -3658,6 +4692,8 @@ function initSortableTable(table) {{
           }});
           if (!showing) {{
             if (!detailTd.innerHTML) detailTd.innerHTML = buildFileDetail(p);
+            // Apply active severity/smell filters to newly loaded detail rows
+            filterCqDetailRows(detailTr);
             detailTr.style.display = '';
             var arrow = tr.querySelector('td:first-child span');
             if (arrow) arrow.textContent = '\u25BC';
@@ -3691,12 +4727,20 @@ function initSortableTable(table) {{
       }});
     }});
 
-    // Severity badge click handlers
+    // Severity badge click handlers (with All pill)
     document.querySelectorAll('.cq-sev-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('cq-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
         document.querySelectorAll('.cq-sev-badge').forEach(function (b) {{ b.classList.remove('cq-sev-badge-active'); }});
-        if (!isActive) badge.classList.add('cq-sev-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('cq-sev-badge-active');
+        }}
+        // If nothing active after toggle-off, re-activate All
+        if (!document.querySelector('.cq-sev-badge.cq-sev-badge-active')) {{
+          var allBtn = document.querySelector('.cq-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('cq-sev-badge-active');
+        }}
         applyCqFilters();
       }});
     }});
@@ -3705,6 +4749,64 @@ function initSortableTable(table) {{
     if (cqCatSelect) cqCatSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     var cqTestSelect = document.getElementById('cqTestsFilter');
     if (cqTestSelect) cqTestSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+    var cqTriageSelect = document.getElementById('cqTriageFilter');
+    if (cqTriageSelect) cqTriageSelect.addEventListener('change', function () {{ applyCqFilters(); }});
+
+    // Triage event delegation on tbody — handle select/input changes in detail rows
+    tbody.addEventListener('change', function (e) {{
+      var sel = e.target;
+      if (sel.classList && sel.classList.contains('triage-select')) {{
+        var fid = sel.getAttribute('data-finding-id');
+        var newStatus = sel.value;
+        if (fid) {{
+          updateTriageEntry(fid, newStatus);
+          // Update the data attribute on the parent row for filtering
+          var row = sel.closest('tr');
+          if (row) row.setAttribute('data-triage-status', newStatus);
+        }}
+        e.stopPropagation();
+      }}
+    }});
+    tbody.addEventListener('input', function (e) {{
+      var inp = e.target;
+      if (inp.classList && inp.classList.contains('triage-reason')) {{
+        var fid = inp.getAttribute('data-finding-id');
+        if (fid) {{
+          updateTriageEntry(fid, undefined, inp.value);
+        }}
+        e.stopPropagation();
+      }}
+    }});
+    // Prevent clicks on triage controls from toggling the detail row
+    tbody.addEventListener('click', function (e) {{
+      if (e.target.classList && (e.target.classList.contains('triage-select') || e.target.classList.contains('triage-reason'))) {{
+        e.stopPropagation();
+      }}
+    }});
+
+    // Export Triage button
+    var exportBtn = document.getElementById('cqExportTriage');
+    if (exportBtn) {{
+      exportBtn.addEventListener('click', function (e) {{
+        e.stopPropagation();
+        var data = {{
+          version: 1,
+          generated: new Date().toISOString().split('T')[0],
+          dispositions: triageStore
+        }};
+        var blob = new Blob([JSON.stringify(data, null, 2)], {{ type: 'application/json' }});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'triage.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        exportBtn.style.background = '#fff';
+        triageDirty = false;
+      }});
+    }}
   }})();
 
   function applyCqFilters() {{
@@ -3714,6 +4816,7 @@ function initSortableTable(table) {{
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
     var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
+    var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -3735,6 +4838,10 @@ function initSortableTable(table) {{
         var rowSevs = row.getAttribute('data-severities') || '';
         if (rowSevs.indexOf(sevFilter) === -1) show = false;
       }}
+      if (triageFilter) {{
+        var rowTriage = row.getAttribute('data-triage-statuses') || '';
+        if (rowTriage.indexOf(triageFilter) === -1) show = false;
+      }}
       if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
       if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
       if (searchQuery) {{
@@ -3742,6 +4849,201 @@ function initSortableTable(table) {{
         if (text.indexOf(searchQuery) === -1) show = false;
       }}
       row.style.display = show ? '' : 'none';
+    }});
+    // Filter individual smells inside expanded detail rows
+    document.querySelectorAll('.cq-detail-row').forEach(function(detailRow) {{
+      filterCqDetailRows(detailRow);
+    }});
+  }}
+
+  // Shared helper: filter inner smell rows in a CQ detail row
+  function filterCqDetailRows(detailRow) {{
+    var activeSevBadge = document.querySelector('.cq-sev-badge.cq-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var activeBadge = document.querySelector('.cq-badge.cq-badge-active');
+    var smellFilter = activeBadge ? activeBadge.getAttribute('data-smell').toLowerCase() : '';
+    var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
+    detailRow.querySelectorAll('table tbody tr').forEach(function(dr) {{
+      var cells = dr.querySelectorAll('td');
+      if (cells.length < 4) return;
+      var drShow = true;
+      if (sevFilter) {{
+        var cellSev = (cells[2].textContent || '').trim().toLowerCase();
+        if (cellSev !== sevFilter) drShow = false;
+      }}
+      if (smellFilter) {{
+        var cellSmell = (cells[3].textContent || '').trim().toLowerCase();
+        if (cellSmell !== smellFilter) drShow = false;
+      }}
+      if (triageFilter) {{
+        var rowTriage = dr.getAttribute('data-triage-status') || 'unreviewed';
+        if (rowTriage !== triageFilter) drShow = false;
+      }}
+      dr.style.display = drShow ? '' : 'none';
+    }});
+  }}
+
+  // ── Resilience IIFE ──
+  (function () {{
+    var rd = window._resilienceData || {{}};
+    var projects = rd.projects || [];
+    var grp = window._projectGroupMap || {{}};
+    var tbody = document.getElementById('resBody');
+    if (!tbody || projects.length === 0) return;
+    var sevColors = {{ high: '#D0002B', medium: '#E87722', low: '#53565A' }};
+    function scoreColor(s) {{ return s < 40 ? '#D0002B' : s < 70 ? '#9E8700' : '#2E7D32'; }}
+    function sevBadge(sev) {{
+      var c = sevColors[sev] || '#53565A';
+      return '<span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sev || '') + '</span>';
+    }}
+    var prompts = rd.resiliencePrompts || {{}};
+    function buildResPrompt(ftype, file, line, context, project) {{
+      var tmpl = prompts[ftype];
+      if (!tmpl) return ftype;
+      return tmpl.replace(/\\{{file\\}}/g, file || '').replace(/\\{{line\\}}/g, String(line || 0)).replace(/\\{{context\\}}/g, context || '').replace(/\\{{project\\}}/g, project || '');
+    }}
+    function buildResDetail(p) {{
+      var findings = p.findings || [];
+      if (findings.length === 0) return '<div style="padding:0.5rem;color:#53565A;font-style:italic;">No findings</div>';
+      var repoRoots = window._repoRoots || {{}};
+      var root = repoRoots[p.repo || ''] || '';
+      var h = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin:0.3rem 0;">';
+      h += '<thead><tr style="background:#F5F5F5;"><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">File</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Line</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Severity</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Type</th><th style="padding:0.3rem 0.5rem;text-align:left;color:#53565A;font-size:0.7rem;">Context</th></tr></thead><tbody>';
+      findings.forEach(function(f) {{
+        var fPath = f.file || '';
+        var sc = sevColors[f.severity] || '#53565A';
+        var prompt = buildResPrompt(f.type, fPath, f.line || 0, f.context || '', p.project || '');
+        var fActions = fPath ? fileActionsHtml(fPath, f.line || 0, 'font-size:0.75rem;color:#005587;', p.project || '', prompt) : '';
+        h += '<tr style="border-bottom:1px solid #F5F5F5;">';
+        h += '<td style="padding:0.25rem 0.5rem;">' + (fActions || escHtml(fPath || 'project-level')) + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;text-align:center;">' + (f.line || '') + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;">' + sevBadge(f.severity) + '</td>';
+        h += '<td style="padding:0.25rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(sc) + ',0.15);color:' + sc + ';">' + escHtml(f.type) + '</span></td>';
+        h += '<td style="padding:0.25rem 0.5rem;color:#53565A;font-size:0.78rem;">' + escHtml(f.context || '') + '</td>';
+        h += '</tr>';
+      }});
+      h += '</tbody></table>';
+      // Positive patterns
+      var rp = p.resiliencePatterns || {{}};
+      var posKeys = Object.keys(rp).filter(function(k) {{ return rp[k] > 0; }});
+      if (posKeys.length > 0) {{
+        h += '<div style="margin-top:0.5rem;"><strong style="font-size:0.75rem;color:#2E7D32;">Positive patterns:</strong> ';
+        posKeys.forEach(function(k) {{ h += '<span style="display:inline-block;padding:0.1rem 0.4rem;margin:0.1rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:#E8F5E9;color:#2E7D32;">' + escHtml(k) + ': ' + rp[k] + '</span>'; }});
+        h += '</div>';
+      }}
+      return h;
+    }}
+    projects.forEach(function(p) {{
+      var tr = document.createElement('tr');
+      var sc = p.resilienceScore || 0;
+      var policies = p.policySummary || {{}};
+      var activePolicies = Object.keys(policies).filter(function(k) {{ return policies[k]; }}).join(', ') || 'None';
+      var hasFindings = p.findingCount > 0;
+      // Collect severity set for filtering
+      var sevSet = {{}};
+      (p.findings || []).forEach(function(f) {{ if (f.severity) sevSet[f.severity] = true; }});
+      tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '')).toLowerCase());
+      tr.setAttribute('data-severities', Object.keys(sevSet).join(',').toLowerCase());
+      tr.setAttribute('data-repo', grp[p.project] || '');
+      if (hasFindings) tr.style.cursor = 'pointer';
+      tr.innerHTML =
+        '<td><strong>' + (hasFindings ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
+        '<td>' + escHtml(p.category || '') + '</td>' +
+        '<td style="text-align:center;font-weight:700;color:' + scoreColor(sc) + '">' + sc + '</td>' +
+        '<td style="text-align:center">' + (p.externalCallCount || 0) + '</td>' +
+        '<td style="text-align:center">' + (p.findingCount || 0) + '</td>' +
+        '<td>' + (p.pollyPackages && p.pollyPackages.length > 0 ? '<span style="color:#2E7D32;font-weight:600;">Yes</span>' : '<span style="color:#D0002B;">No</span>') + '</td>' +
+        '<td style="font-size:0.78rem;">' + escHtml(activePolicies) + '</td>';
+      tbody.appendChild(tr);
+      if (hasFindings) {{
+        var detailRow = document.createElement('tr');
+        detailRow.className = 'res-detail-row';
+        detailRow.style.display = 'none';
+        var detailTd = document.createElement('td');
+        detailTd.colSpan = 7;
+        detailTd.style.padding = '0.5rem 1rem';
+        detailTd.style.background = '#FAFAFA';
+        detailRow.appendChild(detailTd);
+        tbody.appendChild(detailRow);
+        tr.addEventListener('click', (function(dr, td, proj) {{
+          var loaded = false;
+          return function() {{
+            if (!loaded) {{ td.innerHTML = buildResDetail(proj); loaded = true; }}
+            dr.style.display = dr.style.display === 'none' ? '' : 'none';
+            var arrow = this.querySelector('span');
+            if (arrow) arrow.innerHTML = dr.style.display === 'none' ? '&#9654;' : '&#9660;';
+            // Apply active severity filter to detail rows
+            if (dr.style.display !== 'none') filterResDetailRows(dr);
+          }};
+        }})(detailRow, detailTd, p));
+      }}
+    }});
+
+    // Severity badge click handlers (with All pill)
+    document.querySelectorAll('.res-sev-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('res-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
+        document.querySelectorAll('.res-sev-badge').forEach(function (b) {{ b.classList.remove('res-sev-badge-active'); }});
+        if (isAll || !isActive) {{
+          badge.classList.add('res-sev-badge-active');
+        }}
+        if (!document.querySelector('.res-sev-badge.res-sev-badge-active')) {{
+          var allBtn = document.querySelector('.res-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('res-sev-badge-active');
+        }}
+        applyResFilters();
+      }});
+    }});
+    initSortableTable(document.getElementById('resTable'));
+  }})();
+
+  function applyResFilters() {{
+    var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
+    var repoFilter = getActiveRepo();
+
+    // Collapse all detail rows on filter change
+    document.querySelectorAll('.res-detail-row').forEach(function(dr) {{ dr.style.display = 'none'; }});
+    document.querySelectorAll('#resBody tr[data-search] span').forEach(function(s) {{
+      if (s.textContent === '\u25BC') s.textContent = '\u25B6';
+    }});
+
+    var rows = document.querySelectorAll('#resBody tr[data-search]');
+    rows.forEach(function (row) {{
+      var show = true;
+      if (repoFilter && row.getAttribute('data-repo') !== repoFilter) show = false;
+      if (sevFilter) {{
+        var rowSevs = row.getAttribute('data-severities') || '';
+        if (rowSevs.indexOf(sevFilter) === -1) show = false;
+      }}
+      if (searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
+    }});
+    // Filter individual findings inside expanded detail rows
+    document.querySelectorAll('.res-detail-row').forEach(function(detailRow) {{
+      filterResDetailRows(detailRow);
+    }});
+  }}
+
+  // Shared helper: filter inner finding rows in a Resilience detail row
+  function filterResDetailRows(detailRow) {{
+    var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    detailRow.querySelectorAll('table tbody tr').forEach(function(dr) {{
+      var cells = dr.querySelectorAll('td');
+      if (cells.length < 3) return;
+      if (sevFilter) {{
+        var cellSev = (cells[2].textContent || '').trim().toLowerCase();
+        dr.style.display = (cellSev === sevFilter) ? '' : 'none';
+      }} else {{
+        dr.style.display = '';
+      }}
     }});
   }}
 
@@ -3758,11 +5060,14 @@ function initSortableTable(table) {{
 
     var sevColors = {{ critical: '#D0002B', high: '#E87722', medium: '#9E8700', low: '#53565A' }};
     var secFindings = [];
+    var triageStore = (window._codeQualityData || {{}}).triage || {{}};
+    var triageStatusLabels = {{ unreviewed: 'Unreviewed', confirmed: 'Confirmed', false_positive: 'False Positive', accepted_risk: 'Accepted Risk', fixed: 'Fixed' }};
+    var triageStatusColors = {{ unreviewed: '#53565A', confirmed: '#D0002B', false_positive: '#009639', accepted_risk: '#9E8700', fixed: '#005587' }};
     projects.forEach(function (p) {{
       (p.files || []).forEach(function (f) {{
         (f.smells || []).forEach(function (s) {{
           if (s.category === 'security') {{
-            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '' }});
+            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed' }});
           }}
         }});
       }});
@@ -3770,28 +5075,65 @@ function initSortableTable(table) {{
     // Merge external tool security findings
     (extData.findings || []).forEach(function (ef) {{
       if (ef.category === 'security') {{
-        secFindings.push({{ project: '', repo: '', file: ef.file || '', line: ef.line || 0, type: '[' + (ef.tool || '') + '] ' + (ef.ruleId || ''), severity: ef.severity || '', context: ef.message || '' }});
+        secFindings.push({{ project: '', repo: '', file: ef.file || '', line: ef.line || 0, type: '[' + (ef.tool || '') + '] ' + (ef.ruleId || ''), severity: ef.severity || '', context: ef.message || '', findingId: '', triageStatus: 'unreviewed' }});
       }}
     }});
     // Sort: critical first, then high
     var sevOrder = {{ critical: 0, high: 1, medium: 2, low: 3 }};
     secFindings.sort(function (a, b) {{ return (sevOrder[a.severity] || 9) - (sevOrder[b.severity] || 9); }});
+    var smellPrompts = cqData.smellPrompts || {{}};
+    function buildSecPrompt(smellType, file, line, context, project) {{
+      var tmpl = smellPrompts[smellType];
+      if (!tmpl) return smellType;
+      return tmpl
+        .replace(/\\{{file\\}}/g, file || '')
+        .replace(/\\{{line\\}}/g, String(line || 0))
+        .replace(/\\{{context\\}}/g, context || '')
+        .replace(/\\{{project\\}}/g, project || '');
+    }}
     secFindings.forEach(function (sf) {{
       var tr = document.createElement('tr');
       var c = sevColors[sf.severity] || '#53565A';
-      var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;') : escHtml(sf.file);
+      var smellPrompt = buildSecPrompt(sf.type, sf.file, sf.line, sf.context, sf.project);
+      var fActions = sf.file ? fileActionsHtml(sf.file, sf.line, 'font-size:0.8rem;color:#005587;', sf.project, smellPrompt) : escHtml(sf.file);
+      var ts = sf.triageStatus || 'unreviewed';
+      var tc = triageStatusColors[ts] || '#53565A';
+      var tl = triageStatusLabels[ts] || ts;
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
+      tr.setAttribute('data-severity', (sf.severity || '').toLowerCase());
+      tr.setAttribute('data-triage-status', ts);
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
         '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
         '<td style="padding:0.4rem 0.5rem;text-align:center;">' + sf.line + '</td>' +
         '<td style="padding:0.4rem 0.5rem;">' + escHtml(sf.type) + '</td>' +
         '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sf.severity) + '</span></td>' +
-        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(sf.context) + '</td>';
+        '<td style="padding:0.4rem 0.5rem;color:#53565A;font-size:0.82rem;">' + escHtml(sf.context) + '</td>' +
+        '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;font-weight:600;background:rgba(' + hexToRgb(tc) + ',0.15);color:' + tc + ';">' + escHtml(tl) + '</span></td>';
       tbody.appendChild(tr);
     }});
     initSortableTable(document.getElementById('securityTable'));
+
+    // Security severity badge click handlers (with All pill)
+    document.querySelectorAll('.sec-sev-badge').forEach(function (badge) {{
+      badge.addEventListener('click', function () {{
+        var isActive = badge.classList.contains('sec-sev-badge-active');
+        var isAll = !badge.getAttribute('data-severity');
+        document.querySelectorAll('.sec-sev-badge').forEach(function (b) {{ b.classList.remove('sec-sev-badge-active'); }});
+        if (isAll || !isActive) {{
+          badge.classList.add('sec-sev-badge-active');
+        }}
+        if (!document.querySelector('.sec-sev-badge.sec-sev-badge-active')) {{
+          var allBtn = document.querySelector('.sec-sev-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('sec-sev-badge-active');
+        }}
+        applySecurityFilters();
+      }});
+    }});
+    // Security triage filter handler
+    var secTriageSelect = document.getElementById('secTriageFilter');
+    if (secTriageSelect) secTriageSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
   }})();
 
   // ── External Tools IIFE ──
@@ -3925,12 +5267,19 @@ function initSortableTable(table) {{
     }});
     initSortableTable(document.getElementById('uxTable'));
 
-    // Badge click handlers
+    // Badge click handlers (with All pill)
     document.querySelectorAll('.ux-badge').forEach(function (badge) {{
       badge.addEventListener('click', function () {{
         var isActive = badge.classList.contains('ux-badge-active');
+        var isAll = !badge.getAttribute('data-severity') && !badge.getAttribute('data-type');
         document.querySelectorAll('.ux-badge').forEach(function (b) {{ b.classList.remove('ux-badge-active'); }});
-        if (!isActive) badge.classList.add('ux-badge-active');
+        if (isAll || !isActive) {{
+          badge.classList.add('ux-badge-active');
+        }}
+        if (!document.querySelector('.ux-badge.ux-badge-active')) {{
+          var allBtn = document.querySelector('.ux-badge[data-severity=""]');
+          if (allBtn) allBtn.classList.add('ux-badge-active');
+        }}
         applyUxFilters();
       }});
     }});
@@ -4023,6 +5372,13 @@ function initSortableTable(table) {{
     applyHotspotFilters();
     applyCqFilters();
     applyUxFilters();
+    applyResFilters();
+    applySecurityFilters();
+    applyExtToolsFilters();
+    applyTestsFilter();
+    applyNugetFilter();
+    applyE2eFlowsFilter();
+    applyDataSourcesFilter();
   }});
 
   // ── Tab-specific filter functions for tabs without existing filters ──
@@ -4030,9 +5386,14 @@ function initSortableTable(table) {{
     var repo = getActiveRepo();
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
+    var activeSevBadge = document.querySelector('.sec-sev-badge.sec-sev-badge-active');
+    var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
+    var triageFilter = (document.getElementById('secTriageFilter') || {{}}).value || '';
     document.querySelectorAll('#securityBody tr').forEach(function(row) {{
       var show = true;
       if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
+      if (triageFilter && row.getAttribute('data-triage-status') !== triageFilter) show = false;
       if (show && searchQuery) {{
         var text = row.getAttribute('data-search') || '';
         if (text && text.indexOf(searchQuery) === -1) show = false;
@@ -4072,33 +5433,135 @@ function initSortableTable(table) {{
 
   function applyTestsFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#testsTable tbody tr').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyNugetFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#nhLegacyTable tbody tr').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyE2eFlowsFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#flowPathsBody .flow-row').forEach(function(row) {{
-      row.style.display = (!repo || row.getAttribute('data-repo') === repo) ? '' : 'none';
+      var show = true;
+      if (repo && row.getAttribute('data-repo') !== repo) show = false;
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
 
   function applyDataSourcesFilter() {{
     var repo = getActiveRepo();
+    var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
+    searchQuery = searchQuery.trim().toLowerCase();
     document.querySelectorAll('#datasourcesTable tbody tr').forEach(function(row) {{
-      if (!repo) {{ row.style.display = ''; return; }}
-      var rowRepos = row.getAttribute('data-repo') || '';
-      row.style.display = (rowRepos.indexOf(repo) !== -1) ? '' : 'none';
+      var show = true;
+      if (repo) {{
+        var rowRepos = row.getAttribute('data-repo') || '';
+        if (rowRepos.indexOf(repo) === -1) show = false;
+      }}
+      if (show && searchQuery) {{
+        var text = row.getAttribute('data-search') || '';
+        if (text && text.indexOf(searchQuery) === -1) show = false;
+      }}
+      row.style.display = show ? '' : 'none';
     }});
   }}
+
+  // ── Stat card click handlers ──
+  // Clicking a severity stat card activates the corresponding filter badge
+  document.querySelectorAll('.stat-card[data-sev-filter]').forEach(function(card) {{
+    card.addEventListener('click', function() {{
+      var sev = card.getAttribute('data-sev-filter');
+      var panel = card.getAttribute('data-panel');
+      var badgeClass, activeClass, filterFn;
+      if (panel === 'cq') {{
+        badgeClass = '.cq-sev-badge'; activeClass = 'cq-sev-badge-active'; filterFn = applyCqFilters;
+      }} else if (panel === 'res') {{
+        badgeClass = '.res-sev-badge'; activeClass = 'res-sev-badge-active'; filterFn = applyResFilters;
+      }} else if (panel === 'sec') {{
+        badgeClass = '.sec-sev-badge'; activeClass = 'sec-sev-badge-active'; filterFn = applySecurityFilters;
+      }} else if (panel === 'ux') {{
+        badgeClass = '.ux-badge[data-severity]'; activeClass = 'ux-badge-active'; filterFn = applyUxFilters;
+      }} else {{
+        return;
+      }}
+      // Find matching badge for this severity
+      var targetBadge = null;
+      document.querySelectorAll(badgeClass).forEach(function(b) {{
+        if (b.getAttribute('data-severity') === sev) targetBadge = b;
+      }});
+      // Check if this card is already active (toggle off)
+      var wasActive = card.classList.contains('stat-card-active');
+      // Clear all stat cards in this panel
+      document.querySelectorAll('.stat-card[data-panel="' + panel + '"]').forEach(function(c) {{
+        c.classList.remove('stat-card-active');
+      }});
+      // Clear all badges in this panel
+      document.querySelectorAll(badgeClass).forEach(function(b) {{
+        b.classList.remove(activeClass);
+      }});
+      if (!wasActive) {{
+        card.classList.add('stat-card-active');
+        if (targetBadge) targetBadge.classList.add(activeClass);
+      }} else {{
+        // Re-activate the All pill when deselecting
+        var allBtn = document.querySelector(badgeClass + '[data-severity=""]');
+        if (allBtn) allBtn.classList.add(activeClass);
+      }}
+      filterFn();
+    }});
+  }});
+
+  // Keep stat cards in sync when badge buttons are clicked directly
+  function syncStatCards(panel, badgeClass, activeClass) {{
+    document.querySelectorAll(badgeClass).forEach(function(badge) {{
+      badge.addEventListener('click', function() {{
+        // After the badge's own handler runs, sync stat cards
+        setTimeout(function() {{
+          var activeBadge = document.querySelector(badgeClass + '.' + activeClass);
+          var activeSev = activeBadge ? activeBadge.getAttribute('data-severity') : '';
+          document.querySelectorAll('.stat-card[data-panel="' + panel + '"]').forEach(function(c) {{
+            if (activeSev && c.getAttribute('data-sev-filter') === activeSev) {{
+              c.classList.add('stat-card-active');
+            }} else {{
+              c.classList.remove('stat-card-active');
+            }}
+          }});
+        }}, 0);
+      }});
+    }});
+  }}
+  syncStatCards('cq', '.cq-sev-badge', 'cq-sev-badge-active');
+  syncStatCards('res', '.res-sev-badge', 'res-sev-badge-active');
+  syncStatCards('sec', '.sec-sev-badge', 'sec-sev-badge-active');
+  syncStatCards('ux', '.ux-badge[data-severity]', 'ux-badge-active');
 
   // ── Global repo filter dropdown ──
   var repoSelect = document.getElementById('globalRepoFilter');
@@ -4113,6 +5576,7 @@ function initSortableTable(table) {{
       applyHotspotFilters();
       applyCqFilters();
       applyUxFilters();
+      applyResFilters();
       applySecurityFilters();
       applyExtToolsFilters();
       applyTestsFilter();

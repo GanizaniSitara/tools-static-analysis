@@ -20,89 +20,161 @@ claudePrompt: |
   - Follows SOLID principles and .NET best practices
   - Considers the broader architectural context
 
-# WSL Tools Configuration
-# ============================================================================
-# Master toggle for OpenCode and GitHub Copilot
-# Does NOT affect Claude Code (see claudeCodeUseWsl below)
-enableWslTools: false
-
-# WSL distribution name (check with: wsl -l -v)
-wslDistro: Ubuntu-24.04
-
-# WSL path prefix (usually \\wsl.localhost\<distro> or \\wsl$\<distro>)
-wslPathPrefix: \\wsl.localhost\\Ubuntu-24.04
-
 # Claude Code Configuration
 # ============================================================================
-# Separate toggle for Claude Code execution mode
-# true  = Run Claude Code via WSL (with optional micromamba)
-# false = Run Claude Code on Windows native (default)
-#
-# This is independent of enableWslTools, allowing you to:
-#   - Use Windows Claude Code + WSL OpenCode/Copilot
-#   - Use WSL Claude Code + Windows-only setup
-claudeCodeUseWsl: false
-
 # Path to Claude Code executable
-# - If claudeCodeUseWsl=false: Windows PATH (e.g., "claude" finds claude.exe)
-# - If claudeCodeUseWsl=true: WSL path (e.g., "/home/user/.local/bin/claude")
-# Examples:
-#   - "claude"                              (from PATH - Windows or WSL)
-#   - "/home/username/.local/bin/claude"    (WSL absolute path)
-#   - "~/.local/bin/claude"                 (WSL home-relative)
 claudeCodePath: claude
 
-# Micromamba/Conda environment to activate before running Claude Code
-# Only applies when claudeCodeUseWsl=true
-# Leave empty ("") to run in base environment
-# Examples:
-#   - ""            (no environment activation)
-#   - "ai-tools"    (activate ai-tools environment)
-#   - "python311"   (activate python311 environment)
-micromambaEnv: ""
-
-# OpenCode Configuration
-# ============================================================================
-# Path to OpenCode executable in WSL
-# Examples:
-#   - "/usr/local/bin/opencode"
-#   - "~/.local/bin/opencode"
-#   - "opencode"  (if in PATH)
-openCodePath: /usr/local/bin/opencode
-
-# GitHub Copilot Configuration
+# GitHub Copilot CLI Configuration
 # ============================================================================
 # Enable GitHub Copilot CLI integration
-# Requires: gh copilot extension installed in WSL
-# Install: gh extension install github/gh-copilot
+# Requires an active GitHub Copilot subscription (Pro, Pro+, Business, Enterprise)
 githubCopilotEnabled: true
+
+# Security Platform Integrations
+# ============================================================================
+# Configure connections to ArmorCode and SonarQube.
+# When credentials are not set, integrations run in demo mode with mock data.
+#
+# Usage via pipeline:
+#   python3 run.py <repos> <out> --integrations all
+#   python3 run.py <repos> <out> --integrations armorcode,sonarqube
+#
+# Usage standalone:
+#   python3 6_security_integrations.py <out> --platforms all
+integrations:
+  armorcode:
+    # ArmorCode ASPM API (https://github.com/armor-code/acsdk)
+    # api_url defaults to https://app.armorcode.com/api — override only for on-prem
+    # api_token: generate in ArmorCode Platform > Settings > API Keys
+    # product: scope findings to a specific ArmorCode product (optional)
+    # api_url: https://app.armorcode.com/api
+    # api_token: your-armorcode-api-token
+    # product: your-product-name
+    api_url: ""
+    api_token: ""
+    product: ""
+  sonarqube:
+    # SonarQube server URL and user token
+    # Community Edition: docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+    # api_url: http://localhost:9000
+    # api_token: squ_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    #
+    # project_key: optional — if omitted, auto-discovers ALL projects on the server.
+    # Set to restrict to a single project (e.g. "my-project").
+    api_url: ""
+    api_token: ""
+    # project_key: ""
+
+# Copilot CLI mode:
+#   "standalone"    = New standalone CLI (npm i -g @github/copilot) - recommended
+#   "gh-extension"  = Legacy gh copilot extension (deprecated Oct 2025)
+copilotMode: standalone
+
+# Path to the standalone Copilot CLI executable
+# Only used when copilotMode: standalone
+# Install: npm install -g @github/copilot
+copilotCliPath: copilot
+
+# AI model for Copilot CLI to use (requires Copilot Pro/Pro+ for premium models)
+# Examples: "claude-opus-4.6", "claude-sonnet-4-6", "gpt-5"
+# Run `copilot help config` for a list of available model names
+copilotModel: claude-opus-4.6
+
+# Fix Workflow Configuration
+# ============================================================================
+# The fix workflow enables a full lifecycle: click Fix in the viewer ->
+# checkout code -> create branch -> AI fixes -> developer reviews ->
+# run tests -> submit for review (SVN patch or Git PR).
+
+# Version control system: "svn" or "git"
+vcsType: svn
+
+# Repository URL (SVN trunk URL or Git clone URL)
+# Examples:
+#   - "https://svn.example.com/repos/project/trunk"   (SVN)
+#   - "git@github.com:org/repo.git"                    (Git)
+repoUrl: ""
+
+# SVN branch base URL (only used when vcsType: svn)
+# Fix branches are created under this path.
+# Example: "https://svn.example.com/repos/project/branches"
+svnBranchBase: ""
+
+# Local root folder on the developer's machine where repos are checked out.
+# The companion will checkout/clone into developerRoot/<repo-name>/
+# Leave empty ("") to disable the fix workflow.
+# Examples:
+#   - "C:\\repos"              (Windows)
+#   - "/home/user/repos"       (Linux)
+developerRoot: ""
+
+# Branch name prefix for fix branches
+# A deterministic ID is appended based on the smell + file + line
+fixBranchPrefix: "fix/smell-"
+
+# Target branch for Git PRs (only used when vcsType: git)
+prTargetBranch: main
+
+# Command to build the project before running tests
+# Leave empty ("") to skip the build step
+# Runs before testCommand so you get a clear build-vs-test failure signal
+# Examples:
+#   - "dotnet build"
+#   - "dotnet build --no-restore"
+buildCommand: ""
+
+# Command to run tests after a fix is applied
+# Leave empty ("") to skip test execution
+# Examples:
+#   - "dotnet test"
+#   - "dotnet test --no-build"
+#   - "npm test"
+testCommand: ""
+
+# Build/test execution timeout in seconds (default: 300 = 5 minutes)
+# Increase for large solutions with many test projects
+testTimeoutSec: 300
+
+# Automatically run tests when a fix is submitted
+autoRunTests: true
 
 # ============================================================================
 # Configuration Examples
 # ============================================================================
 #
-# Example 1: Windows-only setup (no WSL)
+# Example 1: Minimal setup (defaults)
 # ----------------------------------------
-# enableWslTools: false
-# claudeCodePath: claude  # Uses Windows claude.exe from PATH
-#
-# Example 2: WSL with default environment
-# ----------------------------------------
-# enableWslTools: true
-# wslDistro: Ubuntu-24.04
 # claudeCodePath: claude
-# micromambaEnv: ""  # No conda environment
+# githubCopilotEnabled: true
+# copilotMode: standalone
 #
-# Example 3: WSL with micromamba environment
-# -------------------------------------------
-# enableWslTools: true
-# wslDistro: Ubuntu
-# claudeCodePath: /home/user/.local/bin/claude
-# micromambaEnv: ai-tools  # Activates 'ai-tools' conda env
+# Example 2: With legacy gh copilot extension
+# ---------------------------------------------
+# githubCopilotEnabled: true
+# copilotMode: gh-extension
 #
-# Example 4: Mixed setup (Claude on Windows, OpenCode in WSL)
-# ------------------------------------------------------------
-# enableWslTools: false  # Claude runs on Windows
-# # To use OpenCode, temporarily enable WSL tools when needed
+# Example 3: Full fix workflow with SVN
+# ----------------------------------------
+# vcsType: svn
+# repoUrl: "https://svn.example.com/repos/eShop/trunk"
+# svnBranchBase: "https://svn.example.com/repos/eShop/branches"
+# developerRoot: "C:\\repos"
+# fixBranchPrefix: "fix/smell-"
+# buildCommand: "dotnet build"
+# testCommand: "dotnet test --no-build"
+# testTimeoutSec: 600
+# autoRunTests: true
+#
+# Example 4: Full fix workflow with Git/GitHub
+# -----------------------------------------------
+# vcsType: git
+# repoUrl: "git@github.com:org/eShop.git"
+# developerRoot: "/home/user/repos"
+# prTargetBranch: main
+# buildCommand: "dotnet build"
+# testCommand: "dotnet test --no-build"
+# testTimeoutSec: 600
+# autoRunTests: true
 #
 # ============================================================================
