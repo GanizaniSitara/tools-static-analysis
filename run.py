@@ -77,9 +77,11 @@ def _find_solution(file_path: str, repo_roots: dict, solutions_map: dict) -> str
         try:
             for entry in os.listdir(dir_path):
                 if entry.endswith(".sln"):
-                    return os.path.join(dir_path, entry)
+                    full_path = os.path.join(dir_path, entry)
+                    if os.path.isfile(full_path):
+                        return full_path
         except OSError:
-            break
+            pass
         dir_path = os.path.dirname(dir_path)
     return ""
 
