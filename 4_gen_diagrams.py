@@ -1077,11 +1077,89 @@ def generate_landscape_dot() -> str:
     return "\n".join(lines)
 
 
+# ─── Per-folder diagram generation ─────────────────────────────────
+
+def filter_graph_by_folder(folder_name: str) -> dict:
+    """Return a filtered graph dict containing only nodes/edges from the specified folder."""
+    filtered_nodes = [n for n in graph["nodes"] if n.get("repo") == folder_name]
+    filtered_node_ids = {n["id"] for n in filtered_nodes}
+
+    filtered_edges = [
+        e for e in graph["edges"]
+        if e["from"] in filtered_node_ids and e["to"] in filtered_node_ids
+    ]
+
+    return {
+        "repos": [folder_name],
+        "nodes": filtered_nodes,
+        "edges": filtered_edges,
+        "summary": graph.get("summary", {}),
+    }
+
+
+def set_global_graph_context(folder_graph: dict):
+    """Temporarily set global variables for a specific folder's graph data."""
+    global project_nodes, deduped_refs, repos, is_multi_repo
+
+    project_nodes = [n for n in folder_graph["nodes"] if n.get("type") in ALL_TYPES]
+
+    unique_project_refs = {}
+    for e in folder_graph["edges"]:
+        if e["type"] in ("project-reference", "cross-repo-reference"):
+            key = f"{e['from']}->{e['to']}"
+            unique_project_refs[key] = e
+    deduped_refs = list(unique_project_refs.values())
+
+    repos = [folder_graph["repos"][0]] if folder_graph["repos"] else []
+    is_multi_repo = False
+
+
+def restore_global_context():
+    """Restore global variables to full aggregated graph data."""
+    global project_nodes, deduped_refs, repos, is_multi_repo
+
+    project_nodes = [n for n in graph["nodes"] if n.get("type") in ALL_TYPES]
+
+    unique_project_refs = {}
+    for e in graph["edges"]:
+        if e["type"] in ("project-reference", "cross-repo-reference"):
+            key = f"{e['from']}->{e['to']}"
+            unique_project_refs[key] = e
+    deduped_refs = list(unique_project_refs.values())
+
+    repos = sorted({n.get("repo", "") for n in project_nodes if n.get("repo")})
+    is_multi_repo = len(repos) > 1
+
+
+def generate_diagrams_for_folder(folder_name: str) -> dict:
+    """Generate all diagram types for a specific folder. Returns dict of filename -> content."""
+    folder_graph = filter_graph_by_folder(folder_name)
+    set_global_graph_context(folder_graph)
+
+    diagrams = {
+        f"landscape-{folder_name}.mmd": generate_landscape_mermaid(),
+        f"core-libraries-{folder_name}.mmd": generate_core_library_mermaid(),
+        f"data-infrastructure-{folder_name}.mmd": generate_data_infra_mermaid(),
+        f"data-flow-{folder_name}.mmd": generate_data_flow_mermaid(),
+        f"nuget-groups-{folder_name}.mmd": generate_nuget_mermaid(),
+        f"business-layers-{folder_name}.mmd": generate_business_layer_mermaid(),
+        f"e2e-flows-{folder_name}.mmd": generate_e2e_flows_mermaid(),
+        f"field-traceability-{folder_name}.mmd": generate_field_traceability_mermaid(),
+    }
+
+    return diagrams
+
+
 # ─── Write all outputs ──────────────────────────────────────────────
 
 def main():
     print("=== Generating Visualizations (Python) ===\n")
 
+    # Save original repos list before any per-folder operations
+    original_repos = repos[:]
+    is_multi_folder = len(original_repos) > 1
+
+    # Generate aggregated diagrams (for "All Folders" view)
     mermaid_files = {
         "landscape.mmd": generate_landscape_mermaid(),
         "core-libraries.mmd": generate_core_library_mermaid(),
@@ -1097,7 +1175,16 @@ def main():
         Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(content, encoding="utf-8")
         print(f"  Wrote {filename}")
 
-    # Category overview + per-category detail diagrams
+    # Generate per-folder diagrams
+    if is_multi_folder:
+        print("\n  Generating per-folder diagrams...")
+        for folder in original_repos:
+            folder_diagrams = generate_diagrams_for_folder(folder)
+            for filename, content in folder_diagrams.items():
+                Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(content, encoding="utf-8")
+            print(f"  Wrote {len(folder_diagrams)} diagrams for {folder}")
+
+    # Category overview + per-category detail diagrams (aggregated)
     overview = generate_category_overview_mermaid()
     Path(os.path.join(DIAGRAMS_DIR, "overview.mmd")).write_text(overview, encoding="utf-8")
     print("  Wrote overview.mmd")
@@ -1110,7 +1197,7 @@ def main():
         Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(detail, encoding="utf-8")
         print(f"  Wrote {filename}")
 
-    # Individual flow path diagrams (top 10)
+    # Individual flow path diagrams (top 10, aggregated)
     flow_paths_path = os.path.join(OUT_DIR, "flow-paths.json")
     if os.path.isfile(flow_paths_path):
         flow_data = _load_json(flow_paths_path, {})
@@ -1121,6 +1208,28 @@ def main():
             Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(content, encoding="utf-8")
         if flow_paths:
             print(f"  Wrote {min(10, len(flow_paths))} flow-path-*.mmd files")
+
+    # Generate per-folder overview and category diagrams
+    if is_multi_folder:
+        for folder in original_repos:
+            folder_graph = filter_graph_by_folder(folder)
+            set_global_graph_context(folder_graph)
+
+            # Overview for this folder
+            overview = generate_category_overview_mermaid()
+            Path(os.path.join(DIAGRAMS_DIR, f"overview-{folder}.mmd")).write_text(overview, encoding="utf-8")
+
+            # Category detail diagrams for this folder
+            category_types = sorted({n["type"] for n in project_nodes if n["type"] not in skip_types})
+            for cat in category_types:
+                detail = generate_category_detail_mermaid(cat)
+                filename = f"category-{cat}-{folder}.mmd"
+                Path(os.path.join(DIAGRAMS_DIR, filename)).write_text(detail, encoding="utf-8")
+
+            print(f"  Wrote overview and {len(category_types)} category diagrams for {folder}")
+
+        # Restore global context to full aggregated data
+        restore_global_context()
 
     dot_files = {
         "landscape.dot": generate_landscape_dot(),
