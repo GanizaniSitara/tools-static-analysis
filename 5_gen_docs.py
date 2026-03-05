@@ -3687,11 +3687,11 @@ function _showCompanionBanner() {{
   banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.9rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;box-shadow:0 -2px 10px rgba(0,0,0,0.3);';
 
   var cmd = 'node companion/server.js';
-  var copyBtn = '<button onclick="navigator.clipboard.writeText(\'' + cmd + '\').then(function(){{showToast(\'Command copied!\',false);}});" ' +
+  var copyBtn = '<button onclick="navigator.clipboard.writeText(\\'' + cmd + '\\').then(function(){{showToast(\\'Command copied!\\',false);}});" ' +
     'style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 8px;border-radius:4px;cursor:pointer;font-size:0.8rem;margin-left:6px;" ' +
     'title="Copy command">Copy</button>';
 
-  var retryBtn = '<button onclick="_companionOk=null;_companionProbed=false;document.getElementById(\'companionBanner\').remove();_probeCompanion(function(ok){{if(ok)showToast(\'Companion detected!\',false);else _showCompanionBanner();}});" ' +
+  var retryBtn = '<button onclick="_companionOk=null;_companionProbed=false;document.getElementById(\\'companionBanner\\').remove();_probeCompanion(function(ok){{if(ok)showToast(\\'Companion detected!\\',false);else _showCompanionBanner();}});" ' +
     'style="background:#2E7D32;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;" ' +
     'title="Recheck if companion is running">Recheck</button>';
 
