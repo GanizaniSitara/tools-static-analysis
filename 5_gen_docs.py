@@ -3648,18 +3648,35 @@ function _probeCompanion(cb) {{
 }}
 // Probe on page load so we know before the first click
 _probeCompanion(function(ok) {{
-  if (!ok) return;
-  // After companion is detected, check tool availability
-  fetch(_companionBase + '/_check', {{ mode: 'cors' }})
-    .then(function(r) {{ return r.json(); }})
-    .then(function(d) {{
-      if (!d.tools) return;
-      window._companionTools = d.tools;
-      if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
-        showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
-      }}
-    }})
-    .catch(function() {{ /* ignore */ }});
+  if (ok) {{
+    // After companion is detected, check tool availability
+    fetch(_companionBase + '/_check', {{ mode: 'cors' }})
+      .then(function(r) {{ return r.json(); }})
+      .then(function(d) {{
+        if (!d.tools) return;
+        window._companionTools = d.tools;
+        if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
+          showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
+        }}
+      }})
+      .catch(function() {{ /* ignore */ }});
+  }} else {{
+    // Companion not running - check if run.py server is available
+    fetch('/_ping', {{ mode: 'same-origin' }})
+      .then(function(r) {{ return r.json(); }})
+      .then(function(d) {{
+        if (d && d.status === 'ok') {{
+          // run.py server is running, no need for companion
+          return;
+        }}
+        // Not on run.py server, show banner to prompt user
+        _showCompanionBanner();
+      }})
+      .catch(function() {{
+        // Can't reach run.py server either - likely hosted viewer
+        _showCompanionBanner();
+      }});
+  }}
 }});
 
 function _showCompanionBanner() {{
@@ -3667,11 +3684,22 @@ function _showCompanionBanner() {{
   if (document.getElementById(id)) return;
   var banner = document.createElement('div');
   banner.id = id;
-  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.7rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;';
-  banner.innerHTML = '<div><strong>Companion agent not detected.</strong> To launch editors from this viewer, run: ' +
-    '<code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;margin:0 4px;">node companion/server.js</code> ' +
-    'in the tools-static-analysis directory on your machine.</div>' +
-    '<button onclick="this.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:2px 10px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;">Dismiss</button>';
+  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.9rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;box-shadow:0 -2px 10px rgba(0,0,0,0.3);';
+
+  var cmd = 'node companion/server.js';
+  var copyBtn = '<button onclick="navigator.clipboard.writeText(\'' + cmd + '\').then(function(){{showToast(\'Command copied!\',false);}});" ' +
+    'style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 8px;border-radius:4px;cursor:pointer;font-size:0.8rem;margin-left:6px;" ' +
+    'title="Copy command">Copy</button>';
+
+  var retryBtn = '<button onclick="_companionOk=null;_companionProbed=false;document.getElementById(\'companionBanner\').remove();_probeCompanion(function(ok){{if(ok)showToast(\'Companion detected!\',false);else _showCompanionBanner();}});" ' +
+    'style="background:#2E7D32;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;" ' +
+    'title="Recheck if companion is running">Recheck</button>';
+
+  banner.innerHTML = '<div><strong>🔌 Companion agent not running.</strong> To enable IDE integration buttons (Claude Code, VS Code, Visual Studio), ' +
+    'open a terminal in your <code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;">tools-static-analysis</code> directory and run: ' +
+    '<div style="margin-top:0.5rem;"><code style="background:rgba(255,255,255,0.2);padding:4px 8px;border-radius:3px;font-size:0.9rem;">' + cmd + '</code>' + copyBtn + '</div></div>' +
+    '<div style="display:flex;gap:0.5rem;">' + retryBtn +
+    '<button onclick="this.parentElement.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap;">Dismiss</button></div>';
   document.body.appendChild(banner);
 }}
 
