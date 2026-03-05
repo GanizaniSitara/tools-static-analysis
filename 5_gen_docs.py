@@ -69,11 +69,26 @@ def _read_text(path: str) -> str | None:
         return None
 
 
-# Load analysis data
-graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
-project_meta = _load_json(os.path.join(OUT_DIR, "project-meta.json"))
-data_findings = _load_json(os.path.join(OUT_DIR, "data-sources.json"))
-configs = _load_json(os.path.join(OUT_DIR, "configs.json"))
+# Load analysis data (make optional for non-.NET repos)
+graph = _load_json(os.path.join(OUT_DIR, "graph.json"), {
+    "repos": [],
+    "nodes": [],
+    "edges": [],
+    "summary": {
+        "categories": {},
+        "layers": {},
+        "totalProjects": 0,
+        "totalRepos": 0,
+        "totalNuGetPackages": 0,
+        "totalProjectRefs": 0,
+        "totalCrossRepoRefs": 0,
+        "totalDataFindings": 0,
+        "totalConfigFiles": 0,
+    }
+})
+project_meta = _load_json(os.path.join(OUT_DIR, "project-meta.json"), {})
+data_findings = _load_json(os.path.join(OUT_DIR, "data-sources.json"), {})
+configs = _load_json(os.path.join(OUT_DIR, "configs.json"), {})
 
 # Load optional data (may not exist on older runs)
 data_flow: dict = _load_json(os.path.join(OUT_DIR, "data-flow.json"), {})
