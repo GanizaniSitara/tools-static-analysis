@@ -518,7 +518,22 @@ def start_fix(
         logger.error(f"Failed to start fix: {e}")
         return {
             "isError": True,
-            "message": f"Failed to connect to companion agent on port {config.companion_port}. Is it running?"
+            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
+
+The companion server is required for fix workflows but is not running.
+
+To start it:
+  cd {config.project_root}
+  ./companion-cli.sh start
+
+Or for detailed setup:
+  cat COMPANION_SETUP.md
+
+Quick check:
+  ./companion-cli.sh status
+
+For help:
+  ./companion-cli.sh help"""
         }
 
 
@@ -609,7 +624,13 @@ def submit_fix(fix_id: str, message: Optional[str] = None) -> Dict[str, Any]:
         logger.error(f"Failed to submit fix: {e}")
         return {
             "isError": True,
-            "message": f"Failed to connect to companion agent: {str(e)}"
+            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
+
+Start the companion server:
+  ./companion-cli.sh start
+
+Check status:
+  ./companion-cli.sh status"""
         }
 
 
@@ -642,7 +663,10 @@ def cancel_fix(fix_id: str) -> Dict[str, Any]:
         logger.error(f"Failed to cancel fix: {e}")
         return {
             "isError": True,
-            "message": f"Failed to connect to companion agent: {str(e)}"
+            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
+
+Start the companion server:
+  ./companion-cli.sh start"""
         }
 
 

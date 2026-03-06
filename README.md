@@ -33,11 +33,21 @@ Results are integrated into a unified viewer with language filters in Security, 
 
 ### 1. Start the companion agent (required for IDE integration)
 
+**Easy way (recommended):**
+```bash
+./companion-cli.sh install    # Check dependencies
+./companion-cli.sh start       # Start on port 3000
+./companion-cli.sh status      # Verify it's running
+```
+
+**Manual way:**
 ```bash
 node companion/server.js
 ```
 
 Keep this running in a separate terminal. It handles all IDE launches (Claude Code, VS Code, Visual Studio).
+
+**Need help?** See [COMPANION_SETUP.md](COMPANION_SETUP.md) for full setup guide.
 
 ### 2. Run the analysis pipeline
 
