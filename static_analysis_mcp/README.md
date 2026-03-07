@@ -38,7 +38,7 @@ python -m mcp.server --http 8080
 npx @modelcontextprotocol/inspector http://localhost:8080/sse
 ```
 
-## Available Tools (28 total)
+## Available Tools (30 total)
 
 ### Scan Management (5 tools)
 
@@ -73,7 +73,20 @@ npx @modelcontextprotocol/inspector http://localhost:8080/sse
 - `get_prompt_for_finding` - Get tailored prompt
 - `update_triage_status` - Update finding status
 
-### Intelligent Fix Recommendations (7 NEW tools)
+### Health Check & Setup (2 NEW tools)
+
+**Proactive companion server management:**
+- `check_companion_health` - Check if companion is running, get setup instructions if not
+- `get_companion_setup_info` - Get comprehensive setup information with commands and links
+
+**Returns structured responses with:**
+- Step-by-step setup instructions
+- Clickable links to quickstart HTML
+- Copy-paste commands
+- Troubleshooting tips
+- Call-to-action buttons
+
+### Intelligent Fix Recommendations (7 tools)
 
 **Answer "What should I fix first?":**
 - `recommend_fixes_priority` - Get prioritized list of fixes ranked by impact, effort, and blast radius

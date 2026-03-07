@@ -38,6 +38,79 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def get_companion_not_running_error() -> Dict[str, Any]:
+    """Generate structured error response when companion is not running.
+
+    Returns a rich error object with setup instructions, commands, and links.
+    """
+    quickstart_path = config.project_root / "COMPANION_QUICKSTART.html"
+    quickstart_url = f"file://{quickstart_path}" if quickstart_path.exists() else None
+
+    return {
+        "isError": True,
+        "error_type": "companion_not_running",
+        "title": "Companion Server Not Running",
+        "message": "The companion server is required for fix workflows but is not responding.",
+        "port": config.companion_port,
+        "setup_required": True,
+        "quick_fix": {
+            "title": "Quick Start (3 steps)",
+            "steps": [
+                {
+                    "number": 1,
+                    "title": "Navigate to project",
+                    "command": f"cd {config.project_root}"
+                },
+                {
+                    "number": 2,
+                    "title": "Check installation",
+                    "command": "./companion-cli.sh install"
+                },
+                {
+                    "number": 3,
+                    "title": "Start companion",
+                    "command": "./companion-cli.sh start"
+                }
+            ],
+            "verify": {
+                "title": "Verify it's running",
+                "command": "./companion-cli.sh test"
+            }
+        },
+        "resources": {
+            "quickstart_html": quickstart_url,
+            "setup_guide": str(config.project_root / "COMPANION_SETUP.md"),
+            "cli_help": "./companion-cli.sh help"
+        },
+        "troubleshooting": [
+            {
+                "issue": "Port already in use",
+                "solution": "./companion-cli.sh start 19280"
+            },
+            {
+                "issue": "Check if running",
+                "solution": "./companion-cli.sh status"
+            },
+            {
+                "issue": "View logs",
+                "solution": "./companion-cli.sh logs"
+            }
+        ],
+        "call_to_action": {
+            "primary": {
+                "text": "Open Quick Start Guide",
+                "action": "open_url",
+                "url": quickstart_url
+            },
+            "secondary": {
+                "text": "Run Setup Command",
+                "action": "execute_command",
+                "command": "./companion-cli.sh install"
+            }
+        }
+    }
+
+
 # =============================================================================
 # Scan Management Tools (5 tools)
 # =============================================================================
@@ -516,25 +589,7 @@ def start_fix(
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to start fix: {e}")
-        return {
-            "isError": True,
-            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
-
-The companion server is required for fix workflows but is not running.
-
-To start it:
-  cd {config.project_root}
-  ./companion-cli.sh start
-
-Or for detailed setup:
-  cat COMPANION_SETUP.md
-
-Quick check:
-  ./companion-cli.sh status
-
-For help:
-  ./companion-cli.sh help"""
-        }
+        return get_companion_not_running_error()
 
 
 @mcp.tool()
@@ -622,16 +677,7 @@ def submit_fix(fix_id: str, message: Optional[str] = None) -> Dict[str, Any]:
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to submit fix: {e}")
-        return {
-            "isError": True,
-            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
-
-Start the companion server:
-  ./companion-cli.sh start
-
-Check status:
-  ./companion-cli.sh status"""
-        }
+        return get_companion_not_running_error()
 
 
 @mcp.tool()
@@ -661,13 +707,7 @@ def cancel_fix(fix_id: str) -> Dict[str, Any]:
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to cancel fix: {e}")
-        return {
-            "isError": True,
-            "message": f"""Failed to connect to companion agent on port {config.companion_port}.
-
-Start the companion server:
-  ./companion-cli.sh start"""
-        }
+        return get_companion_not_running_error()
 
 
 # =============================================================================
@@ -1359,6 +1399,180 @@ Please respond with your confidence level + analysis + proposed fix."""
             "isError": True,
             "message": f"Failed to start fix: {str(e)}"
         }
+
+
+# =============================================================================
+# Health Check & Setup Tools (2 tools)
+# =============================================================================
+
+@mcp.tool()
+def check_companion_health(port: Optional[int] = None) -> Dict[str, Any]:
+    """Check if companion server is running and healthy.
+
+    Proactive health check to verify companion server is accessible.
+    Returns setup instructions if not running.
+
+    Args:
+        port: Optional port to check (defaults to configured port)
+
+    Returns:
+        Health status with setup instructions if needed
+    """
+    check_port = port or config.companion_port
+
+    try:
+        response = requests.get(
+            f'http://localhost:{check_port}/_ping',
+            timeout=2
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                "healthy": True,
+                "status": "running",
+                "port": check_port,
+                "response": data,
+                "message": f"Companion server is healthy on port {check_port}"
+            }
+        else:
+            return {
+                "healthy": False,
+                "status": "error",
+                "port": check_port,
+                "http_status": response.status_code,
+                "message": f"Companion responded with status {response.status_code}"
+            }
+
+    except requests.exceptions.RequestException:
+        # Companion not running - return setup instructions
+        error_response = get_companion_not_running_error()
+        error_response["healthy"] = False
+        error_response["status"] = "not_running"
+        return error_response
+
+
+@mcp.tool()
+def get_companion_setup_info() -> Dict[str, Any]:
+    """Get companion server setup information.
+
+    Returns comprehensive setup instructions, links, and commands
+    for installing and starting the companion server.
+
+    Use this to show setup instructions to users.
+
+    Returns:
+        Setup information with commands and links
+    """
+    quickstart_path = config.project_root / "COMPANION_QUICKSTART.html"
+    setup_guide_path = config.project_root / "COMPANION_SETUP.md"
+
+    return {
+        "companion": {
+            "name": "Static Analysis Companion Server",
+            "version": "1.0.0",
+            "default_port": 3000,
+            "current_port": config.companion_port
+        },
+        "prerequisites": {
+            "required": [
+                {
+                    "name": "Node.js",
+                    "version": "16+",
+                    "check_command": "node --version",
+                    "install_instructions": {
+                        "ubuntu": "sudo apt install nodejs npm",
+                        "macos": "brew install node",
+                        "windows": "Download from https://nodejs.org"
+                    }
+                }
+            ]
+        },
+        "quick_start": {
+            "steps": [
+                {
+                    "number": 1,
+                    "title": "Check Node.js",
+                    "command": "node --version",
+                    "expected": "v16.x.x or higher"
+                },
+                {
+                    "number": 2,
+                    "title": "Install companion",
+                    "command": f"cd {config.project_root} && ./companion-cli.sh install",
+                    "expected": "✓ Installation check complete!"
+                },
+                {
+                    "number": 3,
+                    "title": "Start companion",
+                    "command": "./companion-cli.sh start",
+                    "expected": "✓ Companion started"
+                },
+                {
+                    "number": 4,
+                    "title": "Verify running",
+                    "command": "./companion-cli.sh test",
+                    "expected": "✓ Health check passed"
+                }
+            ]
+        },
+        "cli_commands": {
+            "install": "./companion-cli.sh install",
+            "start": "./companion-cli.sh start",
+            "stop": "./companion-cli.sh stop",
+            "restart": "./companion-cli.sh restart",
+            "status": "./companion-cli.sh status",
+            "test": "./companion-cli.sh test",
+            "logs": "./companion-cli.sh logs",
+            "help": "./companion-cli.sh help"
+        },
+        "resources": {
+            "quickstart_html": {
+                "path": str(quickstart_path),
+                "url": f"file://{quickstart_path}" if quickstart_path.exists() else None,
+                "description": "Interactive quick start guide (open in browser)",
+                "exists": quickstart_path.exists()
+            },
+            "setup_guide": {
+                "path": str(setup_guide_path),
+                "description": "Comprehensive setup guide (350+ lines)",
+                "exists": setup_guide_path.exists()
+            },
+            "cli_script": {
+                "path": str(config.project_root / "companion-cli.sh"),
+                "description": "Management CLI for companion server",
+                "exists": (config.project_root / "companion-cli.sh").exists()
+            }
+        },
+        "troubleshooting": {
+            "port_in_use": {
+                "issue": "Port 3000 already in use",
+                "solution": "./companion-cli.sh start 19280",
+                "description": "Start on alternate port"
+            },
+            "check_status": {
+                "issue": "Not sure if running",
+                "solution": "./companion-cli.sh status",
+                "description": "Check current status"
+            },
+            "view_logs": {
+                "issue": "Companion not working",
+                "solution": "./companion-cli.sh logs",
+                "description": "View recent logs for errors"
+            },
+            "restart": {
+                "issue": "Companion not responding",
+                "solution": "./companion-cli.sh restart",
+                "description": "Restart the companion server"
+            }
+        },
+        "next_steps": [
+            "Open quick start guide in browser",
+            "Run install check command",
+            "Start companion server",
+            "Verify with health check"
+        ]
+    }
 
 
 # =============================================================================
