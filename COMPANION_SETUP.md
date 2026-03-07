@@ -4,12 +4,67 @@
 
 The **companion server** is a lightweight Node.js service that enables the MCP server and viewer to launch local editors (Claude Code, VS Code, GitHub Copilot) from the browser.
 
-It runs on `localhost:3000` (default) and handles:
+It runs on `localhost:19280` (default) and handles:
 - Editor launches (Claude Code, OpenCode, VS Code)
 - Fix workflow orchestration (branch → fix → test → submit)
 - Version control integration (Git, SVN)
 
-## Quick Start
+## Windows Installation
+
+### Quick Download (Windows 10/11)
+
+1. **Download the companion server:**
+   - Open: http://localhost:8080/companion/download
+   - Saves as: `companion-server.zip`
+
+2. **Extract the ZIP file:**
+   - Right-click `companion-server.zip`
+   - Select "Extract All..."
+   - Choose destination (e.g., `C:\companion`)
+
+3. **Start the server:**
+   ```cmd
+   cd C:\companion\companion
+   node server.js
+   ```
+
+   Or:
+   ```cmd
+   cd C:\companion\companion
+   npm start
+   ```
+
+4. **Verify it's running:**
+   ```cmd
+   curl http://localhost:19280/_ping
+   ```
+
+   Expected response: `{"status":"ok"}`
+
+### Requirements (Windows)
+
+- Node.js v16+ (Download from: https://nodejs.org)
+- Windows 10 or later
+- No additional tools needed (ZIP extraction is built-in)
+
+### Default Settings
+
+- **Port:** 19280 (configurable with `--port` flag)
+- **Config:** Optional `config.yaml` in project root
+- **Auto-start:** No - manual start required
+
+### Troubleshooting (Windows)
+
+**Port 19280 already in use:**
+```cmd
+node server.js --port 19281
+```
+
+**Can't find node command:**
+- Install Node.js from https://nodejs.org
+- Restart your terminal after installation
+
+## Quick Start (Unix/Linux/Mac)
 
 ### 1. Install Node.js (if needed)
 
@@ -32,7 +87,7 @@ brew install node
 
 ### 2. Start the Companion Server
 
-**Option A: Default settings (port 3000)**
+**Option A: Default settings (port 19280)**
 ```bash
 cd dependency-mapper-python
 node companion/server.js
@@ -40,7 +95,7 @@ node companion/server.js
 
 **Option B: Custom port**
 ```bash
-node companion/server.js --port 19280
+node companion/server.js --port 19281
 ```
 
 **Option C: With config file**
@@ -52,13 +107,13 @@ node companion/server.js --config /path/to/config.yaml
 
 **In another terminal:**
 ```bash
-curl http://localhost:3000/_ping
+curl http://localhost:19280/_ping
 # Should return: {"status":"ok","version":"1.0.0"}
 ```
 
 **Or open in browser:**
 ```
-http://localhost:3000/_ping
+http://localhost:19280/_ping
 ```
 
 ---
@@ -126,12 +181,12 @@ node companion/server.js
 
 **Expected output:**
 ```
-Companion agent started on port 3000
+Companion agent started on port 19280
    Endpoints:
-     GET http://localhost:3000/_ping
-     GET http://localhost:3000/_open?editor=claude&path=...
-     GET http://localhost:3000/_fix/start?smell_type=...
-     GET http://localhost:3000/_fix/status?fix_id=...
+     GET http://localhost:19280/_ping
+     GET http://localhost:19280/_open?editor=claude&path=...
+     GET http://localhost:19280/_fix/start?smell_type=...
+     GET http://localhost:19280/_fix/status?fix_id=...
 
    Ready to launch editors
 ```
@@ -190,7 +245,7 @@ echo $! > companion.pid
 
 **Check status:**
 ```bash
-curl http://localhost:3000/_ping
+curl http://localhost:19280/_ping
 ```
 
 **Stop:**
@@ -255,7 +310,7 @@ pm2 save
 
 ### Issue 1: "Port 3000 already in use"
 
-**Cause:** Another service is using port 3000.
+**Cause:** Another service is using port 19280.
 
 **Solution A:** Use a different port
 ```bash
@@ -283,7 +338,7 @@ cd /home/user/dependency-mapper-python
 node companion/server.js
 ```
 
-### Issue 3: "Failed to connect to companion agent on port 3000"
+### Issue 3: "Failed to connect to companion agent on port 19280"
 
 **Cause:** Companion server not running when MCP server tries to connect.
 
@@ -300,9 +355,9 @@ python -m static_analysis_mcp.server
 
 **Cause:** Port below 1024 requires root (or port already in use).
 
-**Solution:** Use port 3000+ or run with sudo (not recommended)
+**Solution:** Use port 19280+ or run with sudo (not recommended)
 ```bash
-node companion/server.js --port 3000
+node companion/server.js --port 19280
 ```
 
 ### Issue 5: "claude: command not found"
@@ -346,7 +401,7 @@ Launch an editor.
 
 **Example:**
 ```bash
-curl "http://localhost:3000/_open?editor=claude&path=/home/user/test.cs&line=45"
+curl "http://localhost:19280/_open?editor=claude&path=/home/user/test.cs&line=45"
 ```
 
 ### `GET /_fix/start`
@@ -410,7 +465,7 @@ MCP Server (port 8080 or stdio)
     ↓
     HTTP GET to companion
     ↓
-Companion Server (port 3000)
+Companion Server (port 19280)
     ↓
     Launches editor (Claude Code, etc.)
     ↓
@@ -480,7 +535,7 @@ node companion/server.js
 **Verification:**
 ```bash
 # In another terminal
-curl http://localhost:3000/_ping
+curl http://localhost:19280/_ping
 # Should return: {"status":"ok"}
 ```
 
@@ -502,7 +557,7 @@ python -m static_analysis_mcp.server
 ├─────────────────────────────────────────────────────────────┤
 │ Start:    node companion/server.js                          │
 │ Port:     3000 (default)                                     │
-│ Check:    curl http://localhost:3000/_ping                  │
+│ Check:    curl http://localhost:19280/_ping                  │
 │ Logs:     stdout (or redirect to file)                      │
 │ Stop:     Ctrl+C (or kill process)                          │
 │                                                              │

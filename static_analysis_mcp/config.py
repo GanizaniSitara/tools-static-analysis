@@ -67,7 +67,7 @@ class Config:
     def companion_port(self) -> int:
         """Get companion agent port."""
         return int(os.environ.get('COMPANION_PORT',
-                                  self._config_data.get('companionPort', 3000)))
+                                  self._config_data.get('companionPort', 19280)))
 
     @property
     def server_port(self) -> int:

@@ -48,7 +48,6 @@ def get_companion_not_running_error() -> Dict[str, Any]:
 
     # MCP server download URLs (assumes HTTP mode on port 8080)
     mcp_download_url = "http://localhost:8080/companion/download"
-    installer_url = "http://localhost:8080/companion/install.sh"
 
     return {
         "isError": True,
@@ -58,51 +57,54 @@ def get_companion_not_running_error() -> Dict[str, Any]:
         "port": config.companion_port,
         "setup_required": True,
         "download": {
-            "installer_url": installer_url,
             "package_url": mcp_download_url,
-            "install_command": f"curl -fsSL {installer_url} | bash"
+            "format": "zip"
         },
         "quick_fix": {
             "title": "Quick Start (3 steps)",
             "steps": [
                 {
                     "number": 1,
-                    "title": "Navigate to project",
-                    "command": f"cd {config.project_root}"
+                    "title": "Download companion server",
+                    "command": mcp_download_url,
+                    "note": "Save companion-server.zip to your Downloads folder"
                 },
                 {
                     "number": 2,
-                    "title": "Check installation",
-                    "command": "./companion-cli.sh install"
+                    "title": "Extract ZIP file",
+                    "command": "Right-click companion-server.zip → Extract All → Choose location (e.g., C:\\companion)",
+                    "note": "Windows natively extracts .zip files, no tools needed"
                 },
                 {
                     "number": 3,
-                    "title": "Start companion",
-                    "command": "./companion-cli.sh start"
+                    "title": "Start companion server",
+                    "command": "cd C:\\companion\\companion && node server.js",
+                    "note": "Or use: npm start (from companion directory)"
                 }
             ],
             "verify": {
                 "title": "Verify it's running",
-                "command": "./companion-cli.sh test"
+                "command": "curl http://localhost:19280/_ping",
+                "expected": '{"status":"ok"}'
             }
         },
         "resources": {
             "quickstart_html": quickstart_url,
             "setup_guide": str(config.project_root / "COMPANION_SETUP.md"),
-            "cli_help": "./companion-cli.sh help"
+            "download_url": mcp_download_url
         },
         "troubleshooting": [
             {
                 "issue": "Port already in use",
-                "solution": "./companion-cli.sh start 19280"
+                "solution": "node server.js --port 19281"
+            },
+            {
+                "issue": "Can't find node command",
+                "solution": "Install Node.js from https://nodejs.org"
             },
             {
                 "issue": "Check if running",
-                "solution": "./companion-cli.sh status"
-            },
-            {
-                "issue": "View logs",
-                "solution": "./companion-cli.sh logs"
+                "solution": "curl http://localhost:19280/_ping"
             }
         ],
         "call_to_action": {
@@ -112,9 +114,9 @@ def get_companion_not_running_error() -> Dict[str, Any]:
                 "url": quickstart_url
             },
             "secondary": {
-                "text": "Run Setup Command",
-                "action": "execute_command",
-                "command": "./companion-cli.sh install"
+                "text": "Download Companion Server",
+                "action": "open_url",
+                "url": mcp_download_url
             }
         }
     }
@@ -1616,30 +1618,33 @@ def main():
         # Add custom route for companion download
         from fastapi import Response
         from fastapi.responses import FileResponse
-        import tarfile
+        import zipfile
         import io
+        import os
 
         @mcp.app.get("/companion/download")
         async def download_companion():
-            """Serve companion server tarball for download."""
+            """Serve companion server ZIP file for download."""
             try:
-                # Create tarball in memory
-                tar_buffer = io.BytesIO()
-                with tarfile.open(fileobj=tar_buffer, mode='w:gz') as tar:
+                # Create ZIP in memory
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
                     companion_dir = config.project_root / "companion"
-                    cli_script = config.project_root / "companion-cli.sh"
 
                     if companion_dir.exists():
-                        tar.add(str(companion_dir), arcname="companion")
-                    if cli_script.exists():
-                        tar.add(str(cli_script), arcname="companion-cli.sh")
+                        # Add all files in companion/ directory
+                        for root, dirs, files in os.walk(str(companion_dir)):
+                            for file in files:
+                                file_path = os.path.join(root, file)
+                                arcname = os.path.relpath(file_path, str(config.project_root))
+                                zf.write(file_path, arcname)
 
-                tar_buffer.seek(0)
+                zip_buffer.seek(0)
                 return Response(
-                    content=tar_buffer.getvalue(),
-                    media_type="application/gzip",
+                    content=zip_buffer.getvalue(),
+                    media_type="application/zip",
                     headers={
-                        "Content-Disposition": "attachment; filename=companion-server.tar.gz"
+                        "Content-Disposition": "attachment; filename=companion-server.zip"
                     }
                 )
             except Exception as e:

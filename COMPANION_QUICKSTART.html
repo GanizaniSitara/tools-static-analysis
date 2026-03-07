@@ -275,13 +275,43 @@
 
         <!-- Download Section (for remote users) -->
         <div class="section" style="background: #E3F2FD; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #005587;">
-            <div class="section-title" style="border: none; margin-bottom: 10px;">Don't Have the Repository?</div>
-            <p style="margin-bottom: 12px; color: #333333;">If you're using the MCP server remotely (like through Claude Desktop), download the companion server first:</p>
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this, 'curl -fsSL http://localhost:8080/companion/install.sh | bash')">Copy</button>
-                <code>curl -fsSL http://localhost:8080/companion/install.sh | bash</code>
+            <div class="section-title" style="border: none; margin-bottom: 10px;">Windows Installation</div>
+
+            <p style="margin-bottom: 12px; color: #333333;">
+                If you're using the MCP server remotely (like through Claude Desktop on Windows), download the companion server:
+            </p>
+
+            <ol style="margin-left: 20px; color: #333333;">
+                <li style="margin-bottom: 10px;">
+                    <strong>Download:</strong>
+                    <a href="http://localhost:8080/companion/download" style="color: #005587;">
+                        http://localhost:8080/companion/download
+                    </a>
+                    (saves as companion-server.zip)
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <strong>Extract:</strong> Right-click the ZIP file → Extract All → Choose destination (e.g., C:\companion)
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <strong>Start:</strong>
+                    <div class="code-block" style="margin-top: 8px;">
+                        <button class="copy-btn" onclick="copyCode(this, 'cd C:\\companion\\companion\nnode server.js')">Copy</button>
+                        <code>cd C:\companion\companion
+node server.js</code>
+                    </div>
+                    <p style="margin-top: 8px; font-size: 0.9em; color: #53565A;">
+                        Or use: <code>npm start</code> from the companion directory
+                    </p>
+                </li>
+            </ol>
+
+            <div class="success" style="margin-top: 15px;">
+                <strong>Expected output:</strong>
+                <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">Tools Viewer Companion Agent
+============================
+  Port:       19280
+  Listening on http://127.0.0.1:19280</pre>
             </div>
-            <p style="margin-top: 10px; font-size: 0.9em; color: #53565A;">This downloads and installs the companion server to <code>~/.companion</code></p>
         </div>
 
         <!-- Step 1 -->
@@ -315,11 +345,20 @@
                 <span>Verify Setup</span>
             </div>
             <div class="step-content">
-                <p>The companion server is already in your repository at <code>companion/server.js</code>. Just verify everything is ready:</p>
+                <p>If you have the repository, the companion server is already at <code>companion/server.js</code>. For Windows users without the repository, download from the link above.</p>
+
+                <p style="margin-top: 10px;"><strong>Unix/Linux/Mac users with repository:</strong></p>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copyCode(this, 'cd dependency-mapper-python\n./companion-cli.sh install')">Copy</button>
                     <code>cd dependency-mapper-python
 ./companion-cli.sh install</code>
+                </div>
+
+                <p style="margin-top: 15px;"><strong>Windows users with repository:</strong></p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this, 'cd dependency-mapper-python\nnode companion\\server.js --help')">Copy</button>
+                    <code>cd dependency-mapper-python
+node companion\server.js --help</code>
                 </div>
 
                 <div class="success">
@@ -338,23 +377,27 @@
                 <span>Start the Companion</span>
             </div>
             <div class="step-content">
-                <p>Start the companion server (runs in background):</p>
+                <p><strong>Unix/Linux/Mac users:</strong></p>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh start')">Copy</button>
                     <code>./companion-cli.sh start</code>
                 </div>
 
-                <p style="margin-top: 15px;">Verify it's running:</p>
+                <p style="margin-top: 15px;"><strong>Windows users:</strong></p>
                 <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh test')">Copy</button>
-                    <code>./companion-cli.sh test</code>
+                    <button class="copy-btn" onclick="copyCode(this, 'node companion\\server.js')">Copy</button>
+                    <code>node companion\server.js</code>
+                </div>
+
+                <p style="margin-top: 15px;"><strong>Verify it's running:</strong></p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this, 'curl http://localhost:19280/_ping')">Copy</button>
+                    <code>curl http://localhost:19280/_ping</code>
                 </div>
 
                 <div class="success">
                     <strong>Expected output:</strong>
-                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">Companion is running
-Health check passed
-Response: {"status":"ok"}</pre>
+                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">{"status":"ok"}</pre>
                 </div>
             </div>
         </div>
@@ -373,29 +416,32 @@ Response: {"status":"ok"}</pre>
         <div class="section">
             <div class="section-title">Troubleshooting</div>
 
-            <p style="margin-bottom: 10px; color: #333333;"><strong>Port 3000 already in use?</strong></p>
-            <div class="code-block" style="margin-bottom: 20px;">
-                <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh start 19280')">Copy</button>
-                <code>./companion-cli.sh start 19280</code>
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Port 19280 already in use?</strong></p>
+            <div class="code-block" style="margin-bottom: 5px;">
+                <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh start 19281')">Copy</button>
+                <code>./companion-cli.sh start 19281</code>
             </div>
+            <p style="margin-bottom: 20px; font-size: 0.9em; color: #53565A;">Windows: <code>node companion\server.js --port 19281</code></p>
 
             <p style="margin-bottom: 10px; color: #333333;"><strong>Check if running:</strong></p>
-            <div class="code-block" style="margin-bottom: 20px;">
+            <div class="code-block" style="margin-bottom: 5px;">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh status')">Copy</button>
                 <code>./companion-cli.sh status</code>
             </div>
+            <p style="margin-bottom: 20px; font-size: 0.9em; color: #53565A;">Windows: <code>curl http://localhost:19280/_ping</code></p>
 
-            <p style="margin-bottom: 10px; color: #333333;"><strong>View logs:</strong></p>
-            <div class="code-block" style="margin-bottom: 20px;">
-                <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh logs')">Copy</button>
-                <code>./companion-cli.sh logs</code>
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Can't find node command?</strong></p>
+            <div class="info" style="margin-bottom: 20px;">
+                Install Node.js from <a href="https://nodejs.org" target="_blank" style="color: #005587;">nodejs.org</a>
+                <br>After installation, restart your terminal
             </div>
 
-            <p style="margin-bottom: 10px; color: #333333;"><strong>Restart:</strong></p>
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Restart (Unix/Mac):</strong></p>
             <div class="code-block">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh restart')">Copy</button>
                 <code>./companion-cli.sh restart</code>
             </div>
+            <p style="margin-top: 5px; font-size: 0.9em; color: #53565A;">Windows: Stop the process (Ctrl+C) and run <code>node companion\server.js</code> again</p>
         </div>
 
         <!-- What You Get -->
@@ -413,7 +459,7 @@ Response: {"status":"ok"}</pre>
 
         <div class="footer">
             <p>Need more help? See <a href="COMPANION_SETUP.md" style="color: #005587;">COMPANION_SETUP.md</a> for the complete guide.</p>
-            <p style="margin-top: 10px;">Companion Server v1.0.0 | Port 3000 (default)</p>
+            <p style="margin-top: 10px;">Companion Server v1.0.0 | Port 19280 (default)</p>
         </div>
     </div>
 
