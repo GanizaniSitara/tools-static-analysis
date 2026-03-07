@@ -31,6 +31,36 @@ Results are integrated into a unified viewer with language filters in Security, 
 
 ## Quick start
 
+### 0. Download demo datasets (optional)
+
+If you don't have a codebase to analyze, download sample projects:
+
+```bash
+# List available datasets (C# and Java projects)
+python bootstrap-demo-datasets.py --list
+
+# Download all demo datasets (~300MB total)
+python bootstrap-demo-datasets.py --all
+
+# Download only C# datasets (eShop, OrchardCore)
+python bootstrap-demo-datasets.py --csharp
+
+# Download only Java datasets (Spring PetClinic, Ta4j, Cassandre)
+python bootstrap-demo-datasets.py --java
+
+# Download specific datasets
+python bootstrap-demo-datasets.py --csharp eshop --java spring-petclinic
+```
+
+Datasets are cloned to your home directory by default. Use `--output` to specify a different location.
+
+**Available datasets:**
+- **eShop** - Microsoft's reference .NET eCommerce application (~50MB)
+- **OrchardCore** - Modular ASP.NET Core CMS framework (~100MB)
+- **Spring PetClinic** - Classic Spring Boot sample application (~5MB)
+- **Ta4j** - Java technical analysis library for trading (~10MB)
+- **Cassandre** - Spring Boot trading bot framework (~30MB)
+
 ### 1. Start the companion agent (required for IDE integration)
 
 **Easy way (recommended):**
