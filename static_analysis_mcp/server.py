@@ -46,6 +46,10 @@ def get_companion_not_running_error() -> Dict[str, Any]:
     quickstart_path = config.project_root / "COMPANION_QUICKSTART.html"
     quickstart_url = f"file://{quickstart_path}" if quickstart_path.exists() else None
 
+    # MCP server download URLs (assumes HTTP mode on port 8080)
+    mcp_download_url = "http://localhost:8080/companion/download"
+    installer_url = "http://localhost:8080/companion/install.sh"
+
     return {
         "isError": True,
         "error_type": "companion_not_running",
@@ -53,6 +57,11 @@ def get_companion_not_running_error() -> Dict[str, Any]:
         "message": "The companion server is required for fix workflows but is not responding.",
         "port": config.companion_port,
         "setup_required": True,
+        "download": {
+            "installer_url": installer_url,
+            "package_url": mcp_download_url,
+            "install_command": f"curl -fsSL {installer_url} | bash"
+        },
         "quick_fix": {
             "title": "Quick Start (3 steps)",
             "steps": [
@@ -1602,6 +1611,53 @@ def main():
         port_idx = sys.argv.index("--http") + 1
         port = int(sys.argv[port_idx]) if port_idx < len(sys.argv) else 8080
         logger.info(f"Starting HTTP transport on port {port}")
+        logger.info(f"Companion download available at: http://localhost:{port}/companion/download")
+
+        # Add custom route for companion download
+        from fastapi import Response
+        from fastapi.responses import FileResponse
+        import tarfile
+        import io
+
+        @mcp.app.get("/companion/download")
+        async def download_companion():
+            """Serve companion server tarball for download."""
+            try:
+                # Create tarball in memory
+                tar_buffer = io.BytesIO()
+                with tarfile.open(fileobj=tar_buffer, mode='w:gz') as tar:
+                    companion_dir = config.project_root / "companion"
+                    cli_script = config.project_root / "companion-cli.sh"
+
+                    if companion_dir.exists():
+                        tar.add(str(companion_dir), arcname="companion")
+                    if cli_script.exists():
+                        tar.add(str(cli_script), arcname="companion-cli.sh")
+
+                tar_buffer.seek(0)
+                return Response(
+                    content=tar_buffer.getvalue(),
+                    media_type="application/gzip",
+                    headers={
+                        "Content-Disposition": "attachment; filename=companion-server.tar.gz"
+                    }
+                )
+            except Exception as e:
+                logger.error(f"Failed to create companion download: {e}")
+                return {"error": str(e)}
+
+        @mcp.app.get("/companion/install.sh")
+        async def download_installer():
+            """Serve installer script."""
+            installer_path = config.project_root / "install-companion.sh"
+            if installer_path.exists():
+                return FileResponse(
+                    path=str(installer_path),
+                    media_type="application/x-sh",
+                    filename="install-companion.sh"
+                )
+            return {"error": "Installer not found"}
+
         mcp.run(transport="sse", host="0.0.0.0", port=port)
     else:
         logger.info("Starting stdio transport (Claude Desktop)")

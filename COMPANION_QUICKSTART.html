@@ -265,11 +265,23 @@
         </div>
 
         <div class="alert">
-            <div class="alert-title">Companion Server Required</div>
+            <div class="alert-title">Companion Server Not Running</div>
             <div class="alert-text">
                 The companion server enables IDE integration (Claude Code, VS Code) and fix workflows.
-                It runs locally on your machine and handles editor launches.
+                <strong>If you have the repository:</strong> It's already included - just start it.
+                <strong>If you're remote:</strong> Download it from the MCP server first.
             </div>
+        </div>
+
+        <!-- Download Section (for remote users) -->
+        <div class="section" style="background: #E3F2FD; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #005587;">
+            <div class="section-title" style="border: none; margin-bottom: 10px;">Don't Have the Repository?</div>
+            <p style="margin-bottom: 12px; color: #333333;">If you're using the MCP server remotely (like through Claude Desktop), download the companion server first:</p>
+            <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this, 'curl -fsSL http://localhost:8080/companion/install.sh | bash')">Copy</button>
+                <code>curl -fsSL http://localhost:8080/companion/install.sh | bash</code>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #53565A;">This downloads and installs the companion server to <code>~/.companion</code></p>
         </div>
 
         <!-- Step 1 -->
@@ -300,10 +312,10 @@
         <div class="step">
             <div class="step-title">
                 <span class="step-number">2</span>
-                <span>Install Companion CLI</span>
+                <span>Verify Setup</span>
             </div>
             <div class="step-content">
-                <p>Navigate to your project directory and run the install check:</p>
+                <p>The companion server is already in your repository at <code>companion/server.js</code>. Just verify everything is ready:</p>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copyCode(this, 'cd dependency-mapper-python\n./companion-cli.sh install')">Copy</button>
                     <code>cd dependency-mapper-python
@@ -312,9 +324,9 @@
 
                 <div class="success">
                     <strong>Expected output:</strong>
-                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">Node.js v20.x.x installed
-Companion files found
-Installation check complete</pre>
+                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">[OK] Node.js v20.x.x installed
+[OK] Companion files found at companion/server.js
+[OK] Installation check complete</pre>
                 </div>
             </div>
         </div>
