@@ -3,11 +3,11 @@
 ## Problem Statement
 
 **Before:** When users tried to use fix workflows without the companion server running:
-- ❌ Got generic "connection failed" error
-- ❌ No clear instructions on what to do
-- ❌ Had to search for setup documentation
-- ❌ No easy way to download/install
-- ❌ Not a slick user experience
+- Got generic "connection failed" error
+- No clear instructions on what to do
+- Had to search for setup documentation
+- No easy way to download/install
+- Not a slick user experience
 
 ## Solution: Rich Error Responses + Interactive Quickstart
 
@@ -16,13 +16,13 @@
 #### 1. Interactive Quickstart Page (`COMPANION_QUICKSTART.html`)
 
 **Features:**
-- ✅ Beautiful, responsive design
-- ✅ 3-step setup process
-- ✅ Copy-to-clipboard buttons for all commands
-- ✅ Prerequisites check (Node.js)
-- ✅ Troubleshooting section
-- ✅ Direct links to documentation
-- ✅ Works offline (no external dependencies)
+- Beautiful, responsive design
+- 3-step setup process
+- Copy-to-clipboard buttons for all commands
+- Prerequisites check (Node.js)
+- Troubleshooting section
+- Direct links to documentation
+- Works offline (no external dependencies)
 
 **User Flow:**
 1. User clicks "Open Quick Start Guide" link
@@ -71,10 +71,10 @@
 ```
 
 **Benefits:**
-- ✅ UI can render clickable buttons
-- ✅ Commands ready to copy/execute
-- ✅ Links open in browser automatically
-- ✅ Structured data for rich UIs
+- UI can render clickable buttons
+- Commands ready to copy/execute
+- Links open in browser automatically
+- Structured data for rich UIs
 
 #### 3. New MCP Tools
 
@@ -148,7 +148,7 @@ Failed to connect to companion agent on port 3000. Is it running?
 **UI Renders:**
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ ⚠️  Companion Server Not Running                        │
+│ [WARN] Companion Server Not Running                     │
 ├─────────────────────────────────────────────────────────┤
 │ The companion server is required for fix workflows     │
 │ but is not responding.                                  │
@@ -300,52 +300,52 @@ function renderCompanionError(error) {
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  🚀 Companion Server Quick Setup                         │
+│  Companion Server Quick Setup                            │
 │  Get up and running in 3 simple steps                   │
 ├──────────────────────────────────────────────────────────┤
 │                                                           │
-│  ⚠️ Companion Server Required                            │
+│  [WARN] Companion Server Required                        │
 │  The companion server enables IDE integration and fix    │
 │  workflows. It runs locally and handles editor launches. │
 │                                                           │
 │  ┌────────────────────────────────────────────────────┐  │
-│  │ 1️⃣ Check Prerequisites                             │  │
+│  │ [1] Check Prerequisites                            │  │
 │  │                                                     │  │
 │  │ You need Node.js v16+. Check if you have it:      │  │
 │  │ ┌─────────────────────────────────────────┐       │  │
-│  │ │ node --version               [Copy ✓]   │       │  │
+│  │ │ node --version               [Copy]     │       │  │
 │  │ └─────────────────────────────────────────┘       │  │
 │  └────────────────────────────────────────────────────┘  │
 │                                                           │
 │  ┌────────────────────────────────────────────────────┐  │
-│  │ 2️⃣ Install Companion CLI                           │  │
+│  │ [2] Install Companion CLI                          │  │
 │  │                                                     │  │
 │  │ ┌─────────────────────────────────────────┐       │  │
-│  │ │ ./companion-cli.sh install   [Copy ✓]   │       │  │
+│  │ │ ./companion-cli.sh install   [Copy]     │       │  │
 │  │ └─────────────────────────────────────────┘       │  │
 │  │                                                     │  │
-│  │ ✓ Expected output:                                │  │
-│  │   ✓ Node.js v20.x.x installed                     │  │
-│  │   ✓ Companion files found                          │  │
+│  │ Expected output:                                  │  │
+│  │   Node.js v20.x.x installed                       │  │
+│  │   Companion files found                            │  │
 │  └────────────────────────────────────────────────────┘  │
 │                                                           │
 │  ┌────────────────────────────────────────────────────┐  │
-│  │ 3️⃣ Start the Companion                             │  │
+│  │ [3] Start the Companion                            │  │
 │  │                                                     │  │
 │  │ ┌─────────────────────────────────────────┐       │  │
-│  │ │ ./companion-cli.sh start     [Copy ✓]   │       │  │
+│  │ │ ./companion-cli.sh start     [Copy]     │       │  │
 │  │ └─────────────────────────────────────────┘       │  │
 │  │                                                     │  │
 │  │ Verify it's running:                              │  │
 │  │ ┌─────────────────────────────────────────┐       │  │
-│  │ │ ./companion-cli.sh test      [Copy ✓]   │       │  │
+│  │ │ ./companion-cli.sh test      [Copy]     │       │  │
 │  │ └─────────────────────────────────────────┘       │  │
 │  └────────────────────────────────────────────────────┘  │
 │                                                           │
-│  📚 Additional Resources                                  │
+│  Additional Resources                                     │
 │  [Full Setup Guide]  [Features]  [CLI Help]             │
 │                                                           │
-│  🔧 Troubleshooting                                       │
+│  Troubleshooting                                          │
 │  • Port in use? ./companion-cli.sh start 19280          │
 │  • Check status: ./companion-cli.sh status              │
 │  • View logs: ./companion-cli.sh logs                   │
@@ -357,22 +357,22 @@ function renderCompanionError(error) {
 ## Benefits
 
 ### For Users
-- ✅ **Instant clarity** - Know exactly what's wrong
-- ✅ **One-click setup** - Open guide and follow steps
-- ✅ **Copy-paste commands** - No typing errors
-- ✅ **Visual guidance** - Beautiful, clear UI
-- ✅ **Fast resolution** - 2 minutes from error to running
+- **Instant clarity** - Know exactly what's wrong
+- **One-click setup** - Open guide and follow steps
+- **Copy-paste commands** - No typing errors
+- **Visual guidance** - Beautiful, clear UI
+- **Fast resolution** - 2 minutes from error to running
 
 ### For Developers
-- ✅ **Structured data** - Easy to render in any UI
-- ✅ **Actionable links** - Open URLs, execute commands
-- ✅ **Rich context** - All info needed in one response
-- ✅ **Flexible rendering** - Works in terminal, GUI, web
+- **Structured data** - Easy to render in any UI
+- **Actionable links** - Open URLs, execute commands
+- **Rich context** - All info needed in one response
+- **Flexible rendering** - Works in terminal, GUI, web
 
 ### For Support
-- ✅ **Fewer support tickets** - Self-service setup
-- ✅ **Clear error types** - Easy to diagnose
-- ✅ **Standard responses** - Consistent experience
+- **Fewer support tickets** - Self-service setup
+- **Clear error types** - Easy to diagnose
+- **Standard responses** - Consistent experience
 
 ---
 
@@ -416,4 +416,4 @@ Users can now go from error to working companion server in under 2 minutes with 
 - Modified: static_analysis_mcp/server.py (structured errors)
 - Modified: static_analysis_mcp/README.md (updated docs)
 
-**Ready to use!** 🚀
+**Ready to use!**

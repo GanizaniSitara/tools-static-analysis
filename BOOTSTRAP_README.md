@@ -238,7 +238,7 @@ chmod +x bootstrap-demo-datasets.py
 ### "Repository already exists"
 The script will ask if you want to update the existing repository.
 ```
-⚠ eShop already exists at /home/user/eshop
+[WARN] eShop already exists at /home/user/eshop
   Update existing repository? (y/n): y
 ```
 
@@ -371,4 +371,4 @@ All projects are open-source, actively maintained, and represent real-world comp
 
 ---
 
-**Ready to analyze real code!** 🚀
+**Ready to analyze real code!**

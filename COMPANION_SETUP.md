@@ -5,9 +5,9 @@
 The **companion server** is a lightweight Node.js service that enables the MCP server and viewer to launch local editors (Claude Code, VS Code, GitHub Copilot) from the browser.
 
 It runs on `localhost:3000` (default) and handles:
-- ✓ Editor launches (Claude Code, OpenCode, VS Code)
-- ✓ Fix workflow orchestration (branch → fix → test → submit)
-- ✓ Version control integration (Git, SVN)
+- Editor launches (Claude Code, OpenCode, VS Code)
+- Fix workflow orchestration (branch → fix → test → submit)
+- Version control integration (Git, SVN)
 
 ## Quick Start
 
@@ -76,9 +76,9 @@ cd /home/user/dependency-mapper-python
 The companion server uses **only Node.js built-ins** (no `npm install` needed!).
 
 Required:
-- ✓ Node.js v16+ (v18+ recommended)
-- ✓ `companion/server.js` (already in repo)
-- ✓ `companion/fix-workflow.js` (already in repo)
+- Node.js v16+ (v18+ recommended)
+- `companion/server.js` (already in repo)
+- `companion/fix-workflow.js` (already in repo)
 
 ### Step 3: Create/Configure config.yaml (Optional)
 
@@ -126,14 +126,14 @@ node companion/server.js
 
 **Expected output:**
 ```
-🚀 Companion agent started on port 3000
+Companion agent started on port 3000
    Endpoints:
      GET http://localhost:3000/_ping
      GET http://localhost:3000/_open?editor=claude&path=...
      GET http://localhost:3000/_fix/start?smell_type=...
      GET http://localhost:3000/_fix/status?fix_id=...
 
-   Ready to launch editors! 🎯
+   Ready to launch editors
 ```
 
 **Terminal 2 (Your work):**

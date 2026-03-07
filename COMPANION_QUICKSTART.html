@@ -12,39 +12,47 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #F5F5F5;
+            color: #000000;
+            line-height: 1.6;
             padding: 20px;
         }
 
         .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 800px;
+            background: #FFFFFF;
+            border: 1px solid #E1E1E1;
+            border-radius: 10px;
+            max-width: 900px;
             width: 100%;
+            margin: 0 auto;
             padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #022D5E 0%, #005587 100%);
+            color: #FFFFFF;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+            margin: -40px -40px 30px -40px;
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1em;
-            margin-bottom: 30px;
+            font-size: 1em;
+            opacity: 0.9;
         }
 
         .alert {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
+            background: #FFF8E1;
+            border-left: 4px solid #FFD100;
             padding: 15px 20px;
             margin-bottom: 30px;
             border-radius: 4px;
@@ -52,39 +60,40 @@
 
         .alert-title {
             font-weight: 600;
-            color: #856404;
+            color: #9E8700;
             margin-bottom: 5px;
         }
 
         .alert-text {
             color: #856404;
+            font-size: 0.95em;
         }
 
         .step {
-            background: #f8f9fa;
+            background: #F8F9FA;
             border-radius: 8px;
-            padding: 20px;
+            padding: 24px;
             margin-bottom: 20px;
-            border: 2px solid #e9ecef;
+            border: 1px solid #E1E1E1;
         }
 
         .step-number {
             display: inline-block;
-            background: #667eea;
-            color: white;
+            background: #005587;
+            color: #FFFFFF;
             width: 32px;
             height: 32px;
             border-radius: 50%;
             text-align: center;
             line-height: 32px;
-            font-weight: bold;
+            font-weight: 700;
             margin-right: 12px;
         }
 
         .step-title {
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-weight: 600;
-            color: #2c3e50;
+            color: #022D5E;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -94,12 +103,17 @@
             margin-left: 44px;
         }
 
+        .step-content p {
+            margin-bottom: 12px;
+            color: #53565A;
+        }
+
         .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
+            background: #2C3E50;
+            color: #ECF0F1;
             padding: 15px;
             border-radius: 6px;
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             font-size: 0.9em;
             overflow-x: auto;
             margin: 10px 0;
@@ -115,8 +129,8 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #667eea;
-            color: white;
+            background: #005587;
+            color: #FFFFFF;
             border: none;
             padding: 6px 12px;
             border-radius: 4px;
@@ -126,54 +140,51 @@
         }
 
         .copy-btn:hover {
-            background: #5568d3;
-        }
-
-        .copy-btn:active {
-            background: #4558c2;
+            background: #022D5E;
         }
 
         .success {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
+            background: #E8F5E9;
+            border-left: 4px solid #4CAF50;
             padding: 12px 16px;
             border-radius: 4px;
             margin: 10px 0;
-            color: #155724;
+            color: #2E7D32;
         }
 
         .info {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
+            background: #E3F2FD;
+            border-left: 4px solid #005587;
             padding: 12px 16px;
             border-radius: 4px;
             margin: 10px 0;
-            color: #0c5460;
+            color: #01579B;
         }
 
         .btn {
             display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
+            background: #005587;
+            color: #FFFFFF;
+            padding: 10px 20px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
             transition: background 0.2s;
             margin-right: 10px;
             margin-top: 10px;
+            font-size: 0.9em;
         }
 
         .btn:hover {
-            background: #5568d3;
+            background: #022D5E;
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: #53565A;
         }
 
         .btn-secondary:hover {
-            background: #5a6268;
+            background: #333333;
         }
 
         .checklist {
@@ -183,25 +194,40 @@
 
         .checklist li {
             padding: 8px 0;
-            padding-left: 30px;
+            padding-left: 24px;
             position: relative;
+            color: #333333;
         }
 
         .checklist li:before {
-            content: "✓";
+            content: "•";
             position: absolute;
-            left: 0;
-            color: #28a745;
+            left: 8px;
+            color: #005587;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.4em;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #022D5E;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E1E1E1;
         }
 
         .footer {
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 2px solid #e9ecef;
+            border-top: 2px solid #E1E1E1;
             text-align: center;
-            color: #7f8c8d;
+            color: #53565A;
+            font-size: 0.9em;
         }
 
         .quick-links {
@@ -216,8 +242,13 @@
                 padding: 20px;
             }
 
+            .header {
+                margin: -20px -20px 20px -20px;
+                padding: 1rem 1.5rem;
+            }
+
             h1 {
-                font-size: 1.5em;
+                font-size: 1.4em;
             }
 
             .step-content {
@@ -228,11 +259,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Companion Server Quick Setup</h1>
-        <p class="subtitle">Get up and running in 3 simple steps</p>
+        <div class="header">
+            <h1>Companion Server Quick Setup</h1>
+            <p class="subtitle">Get up and running in 3 simple steps</p>
+        </div>
 
         <div class="alert">
-            <div class="alert-title">⚠️ Companion Server Required</div>
+            <div class="alert-title">Companion Server Required</div>
             <div class="alert-text">
                 The companion server enables IDE integration (Claude Code, VS Code) and fix workflows.
                 It runs locally on your machine and handles editor launches.
@@ -255,9 +288,9 @@
                 <div class="info">
                     <strong>Don't have Node.js?</strong> Install it:
                     <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li><strong>Ubuntu/Debian:</strong> <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">sudo apt install nodejs npm</code></li>
-                        <li><strong>macOS:</strong> <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">brew install node</code></li>
-                        <li><strong>Windows:</strong> Download from <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
+                        <li><strong>Ubuntu/Debian:</strong> <code style="background: #E1E1E1; padding: 2px 6px; border-radius: 3px;">sudo apt install nodejs npm</code></li>
+                        <li><strong>macOS:</strong> <code style="background: #E1E1E1; padding: 2px 6px; border-radius: 3px;">brew install node</code></li>
+                        <li><strong>Windows:</strong> Download from <a href="https://nodejs.org" target="_blank" style="color: #005587;">nodejs.org</a></li>
                     </ul>
                 </div>
             </div>
@@ -279,9 +312,9 @@
 
                 <div class="success">
                     <strong>Expected output:</strong>
-                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">✓ Node.js v20.x.x installed
-✓ Companion files found
-✓ Installation check complete!</pre>
+                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">Node.js v20.x.x installed
+Companion files found
+Installation check complete</pre>
                 </div>
             </div>
         </div>
@@ -307,46 +340,46 @@
 
                 <div class="success">
                     <strong>Expected output:</strong>
-                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">✓ Companion is running
-✓ Health check passed
+                    <pre style="margin-top: 10px; font-family: monospace; font-size: 0.9em;">Companion is running
+Health check passed
 Response: {"status":"ok"}</pre>
                 </div>
             </div>
         </div>
 
         <!-- Quick Links -->
-        <div style="margin-top: 40px;">
-            <h3 style="color: #2c3e50; margin-bottom: 15px;">📚 Additional Resources</h3>
+        <div class="section">
+            <div class="section-title">Additional Resources</div>
             <div class="quick-links">
                 <a href="COMPANION_SETUP.md" class="btn">Full Setup Guide</a>
-                <a href="COMPANION_IMPROVEMENTS.md" class="btn btn-secondary">Features & Capabilities</a>
-                <a href="#" class="btn btn-secondary" onclick="alert('Run: ./companion-cli.sh help')">CLI Help</a>
+                <a href="COMPANION_UX_IMPROVEMENTS.md" class="btn btn-secondary">Features & Capabilities</a>
+                <a href="#" class="btn btn-secondary" onclick="alert('Run: ./companion-cli.sh help'); return false;">CLI Help</a>
             </div>
         </div>
 
         <!-- Troubleshooting -->
-        <div style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
-            <h3 style="color: #2c3e50; margin-bottom: 15px;">🔧 Troubleshooting</h3>
+        <div class="section">
+            <div class="section-title">Troubleshooting</div>
 
-            <p style="margin-bottom: 10px;"><strong>Port 3000 already in use?</strong></p>
-            <div class="code-block" style="margin-bottom: 15px;">
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Port 3000 already in use?</strong></p>
+            <div class="code-block" style="margin-bottom: 20px;">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh start 19280')">Copy</button>
                 <code>./companion-cli.sh start 19280</code>
             </div>
 
-            <p style="margin-bottom: 10px;"><strong>Check if running:</strong></p>
-            <div class="code-block" style="margin-bottom: 15px;">
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Check if running:</strong></p>
+            <div class="code-block" style="margin-bottom: 20px;">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh status')">Copy</button>
                 <code>./companion-cli.sh status</code>
             </div>
 
-            <p style="margin-bottom: 10px;"><strong>View logs:</strong></p>
-            <div class="code-block" style="margin-bottom: 15px;">
+            <p style="margin-bottom: 10px; color: #333333;"><strong>View logs:</strong></p>
+            <div class="code-block" style="margin-bottom: 20px;">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh logs')">Copy</button>
                 <code>./companion-cli.sh logs</code>
             </div>
 
-            <p style="margin-bottom: 10px;"><strong>Restart:</strong></p>
+            <p style="margin-bottom: 10px; color: #333333;"><strong>Restart:</strong></p>
             <div class="code-block">
                 <button class="copy-btn" onclick="copyCode(this, './companion-cli.sh restart')">Copy</button>
                 <code>./companion-cli.sh restart</code>
@@ -354,8 +387,8 @@ Response: {"status":"ok"}</pre>
         </div>
 
         <!-- What You Get -->
-        <div style="margin-top: 30px;">
-            <h3 style="color: #2c3e50; margin-bottom: 15px;">✨ What You Get</h3>
+        <div class="section">
+            <div class="section-title">What You Get</div>
             <ul class="checklist">
                 <li>One-click editor launches (Claude Code, VS Code)</li>
                 <li>Intelligent fix workflows with AI assistance</li>
@@ -367,8 +400,8 @@ Response: {"status":"ok"}</pre>
         </div>
 
         <div class="footer">
-            <p>Need more help? See <a href="COMPANION_SETUP.md" style="color: #667eea;">COMPANION_SETUP.md</a> for the complete guide.</p>
-            <p style="margin-top: 10px; font-size: 0.9em;">Companion Server v1.0.0 | Port 3000 (default)</p>
+            <p>Need more help? See <a href="COMPANION_SETUP.md" style="color: #005587;">COMPANION_SETUP.md</a> for the complete guide.</p>
+            <p style="margin-top: 10px;">Companion Server v1.0.0 | Port 3000 (default)</p>
         </div>
     </div>
 
@@ -377,11 +410,11 @@ Response: {"status":"ok"}</pre>
             navigator.clipboard.writeText(text).then(() => {
                 const originalText = button.textContent;
                 button.textContent = 'Copied!';
-                button.style.background = '#28a745';
+                button.style.background = '#4CAF50';
 
                 setTimeout(() => {
                     button.textContent = originalText;
-                    button.style.background = '#667eea';
+                    button.style.background = '#005587';
                 }, 2000);
             }).catch(err => {
                 alert('Failed to copy: ' + err);

@@ -24,19 +24,19 @@ BOLD = '\033[1m'
 
 
 def print_success(msg: str):
-    print(f"{GREEN}✓{RESET} {msg}")
+    print(f"{GREEN}[OK]{RESET} {msg}")
 
 
 def print_info(msg: str):
-    print(f"{BLUE}ℹ{RESET} {msg}")
+    print(f"{BLUE}[INFO]{RESET} {msg}")
 
 
 def print_warning(msg: str):
-    print(f"{YELLOW}⚠{RESET} {msg}")
+    print(f"{YELLOW}[WARN]{RESET} {msg}")
 
 
 def print_error(msg: str):
-    print(f"{RED}✗{RESET} {msg}")
+    print(f"{RED}[ERROR]{RESET} {msg}")
 
 
 def print_header(msg: str):
