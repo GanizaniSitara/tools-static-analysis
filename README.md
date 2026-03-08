@@ -49,6 +49,41 @@ python3 run.py /path/to/repos output-myproject --tools semgrep,bandit
 
 This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
 
+### 2. Validate the viewer as a user
+
+For a realistic manual test on Windows:
+
+```powershell
+python bootstrap-demo-datasets.py --all --output C:/demo-projects
+python run.py C:/demo-projects output-demo-all 8021
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8021/viewer.html
+```
+
+Recommended manual checks:
+
+- multi-repo runs should start on the `Repos` tab
+- the header selector should read `Folder`, not appear as an unlabeled pill control
+- the folder dropdown should show `Choose folder...`, explicit repo names, and `All Folders`
+- choosing a repo from the dropdown should always return to `Overview`, even after prior repo switches
+- changing repo should clear tab-local search, severity, triage, and detail-panel state before applying the new repo context
+- `Focus` buttons in the `Repos` tab should behave the same way as the dropdown
+- editor launch actions use the local `run.py` server by default; if you want the standalone companion, start `node companion/server.js`
+
+Windows note:
+
+```powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+python run.py C:/demo-projects output-demo-all 8021
+```
+
+Use the UTF-8 environment variables above if redirected output fails with a `UnicodeEncodeError`.
+
 ## Running individual steps
 
 ```bash
@@ -96,6 +131,8 @@ python3 run.py dummy output-myproject 8001 --serve-only
 ```
 
 This starts the custom HTTP server immediately on existing output â€” no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
+
+In multi-repo runs, the initial landing tab is `Repos`. Use the folder dropdown or the `Focus` buttons there to move into `Overview`.
 
 ### External tools (`--tools`)
 

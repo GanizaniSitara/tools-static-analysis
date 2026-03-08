@@ -12,6 +12,7 @@
 - **Always test on all three repos before raising a PR:** eShop, StockSharp, OrchardCore
 - Run the full pipeline: `1_scan_projects.py` → `2_scan_smells.py` → `3_gen_diagrams.py` → `4_gen_docs.py`
 - Verify: no errors, sensible output counts, viewer.html JS syntax check passes
+- In multi-repo viewer validation, confirm the `Folder` selector and `Focus` buttons both reset to `Overview` and clear stale tab-local filter/detail state on every repo switch
 - JS syntax check: extract `<script>` blocks and run `node --check`
 
 ## Code Style
