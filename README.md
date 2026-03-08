@@ -1,10 +1,10 @@
-﻿# tools-static-analysis
+# tools-static-analysis
 
-Static analysis pipeline for .NET codebases. Scan â†’ visualize â†’ review in browser â†’ point Claude Code at specific repos.
+Static analysis pipeline for .NET codebases. Scan → visualize → review in browser → point Claude Code at specific repos.
 
 ## Prerequisites
 
-Python 3.10+ with no additional packages required â€” the core pipeline uses only the standard library.
+Python 3.10+ with no additional packages required — the core pipeline uses only the standard library.
 
 ### Optional: external analysis tools
 
@@ -17,22 +17,6 @@ pip install semgrep bandit detect-secrets radon
 These are entirely optional. The pipeline works without them and skips any that aren't installed.
 
 ## Quick start
-
-### 0. Download demo datasets (optional)
-
-If you want sample repositories for demos or validation runs, use the bootstrap helper:
-
-```text
-python bootstrap-demo-datasets.py --list
-python bootstrap-demo-datasets.py --all
-python bootstrap-demo-datasets.py --csharp
-python bootstrap-demo-datasets.py --java
-python bootstrap-demo-datasets.py --csharp eshop --java spring-petclinic
-```
-
-See [BOOTSTRAP_README.md](BOOTSTRAP_README.md) for the full dataset guide.
-
-### 1. Run the analysis pipeline
 
 The simplest way to run everything is via `run.py`:
 
@@ -49,51 +33,16 @@ python3 run.py /path/to/repos output-myproject --tools semgrep,bandit
 
 This runs all steps in order and starts a web server on port 8000 with IDE integration (Claude Code, VS Code, Visual Studio, view source buttons).
 
-### 2. Validate the viewer as a user
-
-For a realistic manual test on Windows:
-
-```powershell
-python bootstrap-demo-datasets.py --all --output C:/demo-projects
-python run.py C:/demo-projects output-demo-all 8021
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8021/viewer.html
-```
-
-Recommended manual checks:
-
-- multi-repo runs should start on the `Repos` tab
-- the header selector should read `Folder`, not appear as an unlabeled pill control
-- the folder dropdown should show `Choose folder...`, explicit repo names, and `All Folders`
-- choosing a repo from the dropdown should always return to `Overview`, even after prior repo switches
-- changing repo should clear tab-local search, severity, triage, and detail-panel state before applying the new repo context
-- `Focus` buttons in the `Repos` tab should behave the same way as the dropdown
-- editor launch actions use the local `run.py` server by default; if you want the standalone companion, start `node companion/server.js`
-
-Windows note:
-
-```powershell
-$env:PYTHONUTF8='1'
-$env:PYTHONIOENCODING='utf-8'
-python run.py C:/demo-projects output-demo-all 8021
-```
-
-Use the UTF-8 environment variables above if redirected output fails with a `UnicodeEncodeError`.
-
 ## Running individual steps
 
 ```bash
-# 1. Scan .csproj/.xaml/.config â€” dependencies, refs, data patterns, traceability, UX, NuGet health
+# 1. Scan .csproj/.xaml/.config — dependencies, refs, data patterns, traceability, UX, NuGet health
 python3 1_scan_projects.py /path/to/repos output-myproject
 
-# 2. Scan .cs source â€” code smells, security detectors, complexity, refactoring targets
+# 2. Scan .cs source — code smells, security detectors, complexity, refactoring targets
 python3 2_scan_smells.py /path/to/repos output-myproject --level high
 
-# 3. (Optional) Run external tools â€” semgrep, bandit, detect-secrets, radon
+# 3. (Optional) Run external tools — semgrep, bandit, detect-secrets, radon
 python3 5_external_tools.py /path/to/repos output-myproject --tools all
 
 # 4. Generate Mermaid/GraphViz diagrams from graph.json
@@ -112,7 +61,7 @@ The smell scanner supports log-level-style verbosity via `--level critical|high|
 | Level | What runs | Typical use |
 |-------|-----------|-------------|
 | `critical` | Security only (hardcoded secrets, SQL injection, insecure deserialization, command injection) | CI gate for must-fix vulnerabilities |
-| `high` | Critical + high-severity security (weak crypto, open redirect, XSS, insecure random) + bugs (exception swallowing, sync-over-async) | **Default** â€” actionable findings without noise |
+| `high` | Critical + high-severity security (weak crypto, open redirect, XSS, insecure random) + bugs (exception swallowing, sync-over-async) | **Default** — actionable findings without noise |
 | `medium` | High + code quality (god methods, deep nesting, long parameter lists) | Sprint planning |
 | `low` | All detectors including style (magic numbers, missing null checks, mutable shared state) | Full audit |
 
@@ -130,9 +79,7 @@ If you've already run the pipeline and just want the web server (with IDE integr
 python3 run.py dummy output-myproject 8001 --serve-only
 ```
 
-This starts the custom HTTP server immediately on existing output â€” no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
-
-In multi-repo runs, the initial landing tab is `Repos`. Use the folder dropdown or the `Focus` buttons there to move into `Overview`.
+This starts the custom HTTP server immediately on existing output — no re-scanning. A plain `python -m http.server` serves the viewer but the file action buttons (open in Claude Code, VS Code, Visual Studio, view source) require `run.py`'s server.
 
 ### External tools (`--tools`)
 
@@ -155,8 +102,8 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `project-meta.json` | 1_scan_projects | Per-project metadata (category, targetFramework, nugetFormat) |
 | `data-sources.json` | 1_scan_projects | Data access patterns (SQL, HTTP, messaging) |
 | `data-flow.json` | 1_scan_projects | Data flow graph with implied dependencies |
-| `flow-paths.json` | 1_scan_projects | End-to-end flow paths (Presentation â†’ Data) |
-| `field-traceability.json` | 1_scan_projects | XAML â†’ ViewModel â†’ Entity â†’ DB column chains |
+| `flow-paths.json` | 1_scan_projects | End-to-end flow paths (Presentation → Data) |
+| `field-traceability.json` | 1_scan_projects | XAML → ViewModel → Entity → DB column chains |
 | `ux-inconsistencies.json` | 1_scan_projects | MVVM binding issues (broken bindings, orphan VMs) |
 | `nuget-health.json` | 1_scan_projects | Version conflicts, legacy formats, framework analysis |
 | `refactoring-targets.json` | 2_scan_smells | Code smells, security findings, complexity, Claude Code prompts |
@@ -164,7 +111,48 @@ Findings appear in an **External Tools** tab in the viewer, and security-categor
 | `viewer.html` | 4_gen_docs | Interactive browser viewer with all tabs (incl. Security tab) |
 | `docs/ai-context/` | 4_gen_docs | Per-project markdown for AI coding agents |
 
+## Tools & Libraries
 
+### Core Dependencies
 
+**Python Standard Library Only** — The core scanner runs without any external packages:
+- `xml.etree.ElementTree` — Parse .csproj and .xaml files
+- `re` — Pattern matching for code analysis
+- `json` — Data serialization
+- `csv` — Export tabular data
+- `http.server` — Serve viewer with IDE integration endpoints
+- `pathlib` / `os` — File system operations
 
+### Visualization Libraries (Embedded)
 
+The generated `viewer.html` embeds CDN-hosted FOSS libraries:
+- **[Mermaid.js](https://mermaid.js.org/)** (v11) — Diagram rendering (MIT License)
+  - Interactive dependency graphs, flow diagrams, layer diagrams
+- **[Prism.js](https://prismjs.com/)** — Syntax highlighting (MIT License)
+  - Code snippets in AI context files
+
+### Optional External Tools
+
+Install via pip for extended analysis (all optional):
+- **[Semgrep](https://semgrep.dev/)** — Pattern-based security/correctness rules (LGPL 2.1)
+- **[Bandit](https://github.com/PyCQA/bandit)** — Python security linter (Apache 2.0)
+- **[detect-secrets](https://github.com/Yelp/detect-secrets)** — Credential scanner (Apache 2.0)
+- **[Radon](https://github.com/rubik/radon)** — Complexity metrics (MIT License)
+
+### IDE Integration
+
+The viewer includes action buttons that communicate with locally installed tools:
+- **[Claude Code](https://claude.ai/download)** — AI coding agent (via `claude-code` CLI)
+- **[VS Code](https://code.visualstudio.com/)** — Code editor (via `code` CLI)
+- **[Visual Studio 2022](https://visualstudio.microsoft.com/)** — IDE (via `devenv.exe`)
+- **[GitHub Copilot](https://github.com/features/copilot)** — AI pair programmer (via `gh copilot` CLI)
+
+All integrations are optional — buttons only appear if tools are installed.
+
+### Output Formats
+
+- **Mermaid (.mmd)** — Text-based diagrams (renders in GitHub, Notion, Confluence)
+- **GraphViz (.dot)** — Advanced graph layouts (requires `dot` for rendering)
+- **CSV** — Import into Excel, database tools
+- **JSON** — Programmatic consumption, CI/CD pipelines
+- **Markdown** — Documentation, AI agents
