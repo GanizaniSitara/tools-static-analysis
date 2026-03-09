@@ -69,26 +69,11 @@ def _read_text(path: str) -> str | None:
         return None
 
 
-# Load analysis data (make optional for non-.NET repos)
-graph = _load_json(os.path.join(OUT_DIR, "graph.json"), {
-    "repos": [],
-    "nodes": [],
-    "edges": [],
-    "summary": {
-        "categories": {},
-        "layers": {},
-        "totalProjects": 0,
-        "totalRepos": 0,
-        "totalNuGetPackages": 0,
-        "totalProjectRefs": 0,
-        "totalCrossRepoRefs": 0,
-        "totalDataFindings": 0,
-        "totalConfigFiles": 0,
-    }
-})
-project_meta = _load_json(os.path.join(OUT_DIR, "project-meta.json"), {})
-data_findings = _load_json(os.path.join(OUT_DIR, "data-sources.json"), {})
-configs = _load_json(os.path.join(OUT_DIR, "configs.json"), {})
+# Load analysis data
+graph = _load_json(os.path.join(OUT_DIR, "graph.json"))
+project_meta = _load_json(os.path.join(OUT_DIR, "project-meta.json"))
+data_findings = _load_json(os.path.join(OUT_DIR, "data-sources.json"))
+configs = _load_json(os.path.join(OUT_DIR, "configs.json"))
 
 # Load optional data (may not exist on older runs)
 data_flow: dict = _load_json(os.path.join(OUT_DIR, "data-flow.json"), {})
@@ -593,6 +578,143 @@ def _safe_json_for_script(data, **kwargs) -> str:
     return json.dumps(data, **kwargs).replace("</", "<\\/")
 
 
+def _tab_tooltip(tab_id: str, label: str) -> str:
+    """Return descriptive tooltip text for a viewer tab."""
+    tooltip_map = {
+        "overview": "Category-level dependency graph. Click boxes to jump to a category detail tab and arrows to inspect cross-category references.",
+        "dataflow": "Projects connected through shared data infrastructure such as database tables, HTTP APIs, or messaging patterns.",
+        "businesslayers": "Business layer classification showing how projects are grouped across presentation, engine, service, and data-access roles.",
+        "e2eflowsdiagram": "Diagram view of end-to-end paths from screens or entry points through business logic into downstream data access.",
+        "fieldtracediagram": "Diagram view of XAML binding paths traced through view models, entities, and database columns.",
+        "datasources": "Discovered data access patterns across the scanned codebase, including SQL, EF, HTTP, and messaging usage.",
+        "implieddeps": "Projects that appear coupled through shared data infrastructure even when no explicit project reference exists.",
+        "connstrings": "Connection strings found in configuration files across the scanned repos.",
+        "e2eflows": "Table view of end-to-end flows from UI entry points through business layers to data access.",
+        "fieldtrace": "Table view of field traceability from XAML bindings through view models and entities to database columns.",
+        "codequality": "Refactoring triage driven by code smells, complexity, security detectors, and test coverage signals.",
+        "resilience": "Resilience findings focused on external calls, retry policies, timeouts, and defensive integration patterns.",
+        "security": "Dedicated view of security findings with detector, file, line, severity, and context.",
+        "uxconsistency": "XAML and UX consistency checks such as broken bindings, missing DataContext wiring, and naming mismatches.",
+        "hotspots": "Projects ranked by coupling and structural risk to show where focused engineering effort will likely pay off first.",
+        "nugethealth": "NuGet package version conflicts, legacy package formats, target-framework spread, and CPM status.",
+        "tests": "Detected test projects, frameworks, method counts, and basic coverage relationships.",
+        "externaltools": "Findings imported from external tools such as Semgrep, Bandit, Detect Secrets, or Radon.",
+        "repos": "Repository-level summary with project counts, category mix, and quick focus actions.",
+        "allprojects": "Searchable and sortable list of every scanned project with category, repo, dependencies, and coupling metadata.",
+    }
+    if tab_id in tooltip_map:
+        return tooltip_map[tab_id]
+    if tab_id.startswith("cat_"):
+        category = re.sub(r"\s*\(\d+\)$", "", label)
+        return (
+            f"Projects classified into the {category} category based on the scanner's project-type heuristics "
+            f"(project SDK, output type, naming, references, and detected usage patterns). "
+            f"This view shows explicit project references within that category plus cross-category links touching those projects."
+        )
+    return f"{label} view for the current scan."
+
+
+def _help_body_html() -> str:
+    """Shared help content used by the standalone help page."""
+    return """
+    <h2 style="color:#022D5E;margin-bottom:1rem;">Dependency Map Help</h2>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Diagram Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Overview</strong> — category-level dependency graph. Click boxes to jump to category detail; click arrows to see project-level references.<br>
+      <strong>Category tabs</strong> (Library, Service, etc.) — project-level dependency diagrams within each category.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Data Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Data Sources</strong> — discovered data access patterns (SQL, EF, HTTP, messaging).<br>
+      <strong>Implied Dependencies</strong> — projects connected through shared data infrastructure (same DB table, queue, etc.).<br>
+      <strong>Connection Strings</strong> — configuration file connection strings found across repos.<br>
+      <strong>E2E Flows</strong> — end-to-end paths from UI screens through business layers to data access.<br>
+      <strong>Field Traceability</strong> — traces XAML bindings through ViewModels and Entities to database columns.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Analysis Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Code Quality</strong> — refactoring triage based on code smell and security detection. Scores use severity-weighted smells (critical=15, high=8, medium=3, low=1).<br>
+      <em>Severity tiers:</em> Critical (hardcoded secrets, SQL injection, insecure deserialization, command injection), High (weak crypto, open redirect, XSS, insecure random, exception swallowing, sync-over-async), Medium (god methods, deep nesting, long parameter lists), Low (magic numbers, missing null checks, mutable shared state).<br>
+      <em>Refactoring Value Score</em> = Complexity×2 + WeightedSmells + (Fan-In×Fan-Out)×0.5 + TestGap×5 − CategoryDiscount.<br>
+      <strong>Security</strong> — dedicated view of security-category findings (critical + high severity). Shows file, line, detector, severity, and context with direct file navigation.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>UX Consistency</strong> — detects XAML/WPF binding issues including broken bindings, missing DataContext, and inconsistent naming.<br>
+      <em>Severity levels:</em> Error (broken bindings that will fail at runtime), Warning (likely issues), Info (style suggestions).
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Hotspots</strong> — projects ranked by coupling complexity where AI-assisted refactoring has the most impact.<br>
+      <em>Hotspot Score</em> = Fan-Out×3 + Fan-In×2 + NuGet + DataPatterns + CrossRepo×4.<br>
+      <em>Risk Score</em> adjusts for expected patterns (Library fan-in) and factors in code smell flags.
+    </p>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>NuGet Health</strong> — version conflicts (same package, different versions), legacy format projects (packages.config), target framework distribution, and Central Package Management status.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Other Tabs</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      <strong>Tests</strong> — test project detection with method counts, framework identification, and coverage mapping.<br>
+      <strong>Language tabs</strong> (Python, etc.) — auto-detected non-.NET projects with framework detection, dependency parsing, and line counts.<br>
+      <strong>Repos</strong> — repository summary with project counts and categories.<br>
+      <strong>All Projects</strong> — searchable and sortable table of every project found in the scan.
+    </p>
+
+    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Tips</h3>
+    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
+      Hover tabs to see a longer description before opening them. Use the search box to filter active tabs. Click stat cards in the header to jump to related analysis views. Click the AI Context link to browse per-project context files for AI assistants.
+    </p>"""
+
+
+def generate_help_html(title: str) -> str:
+    """Generate a standalone help page for the viewer."""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{_esc_html(title)} — Help</title>
+  <style>
+    body {{
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #F5F7FA;
+      color: #1F2933;
+    }}
+    .page {{
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }}
+    .card {{
+      background: #FFFFFF;
+      border: 1px solid #E1E1E1;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(2,45,94,0.08);
+      padding: 2rem;
+    }}
+    a {{
+      color: #005587;
+      text-decoration: none;
+    }}
+    a:hover {{
+      text-decoration: underline;
+    }}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <p style="margin:0 0 1rem;"><a href="viewer.html">← Back to viewer</a></p>
+    <div class="card">
+{_help_body_html()}
+    </div>
+  </div>
+</body>
+</html>"""
+
+
 def _hex_to_rgb(hex_color: str) -> str:
     """Convert #RRGGBB to 'R,G,B' for use in rgba()."""
     h = hex_color.lstrip("#")
@@ -642,6 +764,68 @@ def _file_actions_html(path: str, line: int = 0, display: str = "", project: str
     )
 
 
+def _build_repo_overview_variants(graph: dict) -> dict[str, str]:
+    nodes = graph.get("nodes", []) or []
+    edges = graph.get("edges", []) or []
+    node_by_id = {n.get("id", ""): n for n in nodes if n.get("id")}
+    repos = sorted({n.get("repo", "") for n in nodes if n.get("repo")})
+    if not repos:
+        return {}
+
+    color_by_category = {
+        "webapp": "#D0002B",
+        "tool": "#D0002B",
+        "application": "#E87722",
+        "service": "#D0002B",
+        "library": "#D0002B",
+        "test": "#D0002B",
+        "connector": "#D0002B",
+        "desktopapp": "#D0002B",
+        "localization": "#53565A",
+        "sample": "#53565A",
+    }
+
+    variants: dict[str, str] = {}
+    for repo_name in repos:
+        repo_nodes = [n for n in nodes if n.get("repo") == repo_name]
+        if not repo_nodes:
+            continue
+
+        category_counts: dict[str, int] = {}
+        for node in repo_nodes:
+            category = (node.get("type") or "").lower()
+            if not category:
+                continue
+            category_counts[category] = category_counts.get(category, 0) + 1
+
+        category_edges: dict[tuple[str, str], int] = {}
+        for edge in edges:
+            from_node = node_by_id.get(edge.get("from", ""))
+            to_node = node_by_id.get(edge.get("to", ""))
+            if not from_node or not to_node:
+                continue
+            if from_node.get("repo") != repo_name or to_node.get("repo") != repo_name:
+                continue
+            from_category = (from_node.get("type") or "").lower()
+            to_category = (to_node.get("type") or "").lower()
+            if not from_category or not to_category or from_category == to_category:
+                continue
+            key = (from_category, to_category)
+            category_edges[key] = category_edges.get(key, 0) + 1
+
+        lines = ["graph LR"]
+        ordered_categories = sorted(category_counts.items(), key=lambda kv: (-kv[1], kv[0]))
+        for category, count in ordered_categories:
+            lines.append(f'    {sanitize_id(category)}["{category.title()} ({count})"]')
+        for (from_category, to_category), count in sorted(category_edges.items(), key=lambda kv: (-kv[1], kv[0][0], kv[0][1])):
+            lines.append(f"    {sanitize_id(from_category)} -->|{count}| {sanitize_id(to_category)}")
+        for category, _count in ordered_categories:
+            color = color_by_category.get(category, "#53565A")
+            lines.append(f"  style {sanitize_id(category)} fill:{color},color:#fff")
+        variants[repo_name] = "\n".join(lines)
+    return variants
+
+
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
@@ -656,92 +840,70 @@ def generate_viewer_html() -> str:
 
     # ── Collect two-level diagram tabs: overview + per-category ──
     diagrams_dir = os.path.join(OUT_DIR, "diagrams")
+    diagram_tabs: list[dict] = []
 
-    def load_diagram_set(folder_suffix: str) -> list[dict]:
-        """Load diagram tabs for a specific folder (or aggregate if suffix is empty)."""
-        tabs = []
+    # Overview tab (category-level diagram)
+    overview_path = os.path.join(diagrams_dir, "overview.mmd")
+    content = _read_text(overview_path)
+    repo_overview_variants = _build_repo_overview_variants(graph)
+    if content:
+        diagram_tabs.append({
+            "id": "overview",
+            "label": "Overview",
+            "title": "Category Overview",
+            "mermaid": content,
+        })
 
-        # Overview tab (category-level diagram)
-        overview_name = f"overview{folder_suffix}.mmd"
-        overview_path = os.path.join(diagrams_dir, overview_name)
-        content = _read_text(overview_path)
+    # Per-category tabs ordered by project count descending
+    skip_cats = {"Localization", "Sample"}
+    cat_counts = sorted(categories.items(), key=lambda x: -x[1])
+    for cat_name, count in cat_counts:
+        if cat_name in skip_cats:
+            continue
+        cat_key = cat_name.lower()
+        content = _read_text(os.path.join(diagrams_dir, f"category-{cat_key}.mmd"))
         if content:
-            tabs.append({
-                "id": "overview",
-                "label": "Overview",
-                "title": "Category Overview",
+            # Check for edge filter metadata comment
+            edge_filter_warning = ""
+            for line in content.splitlines():
+                if line.startswith("%% EDGE_FILTER:"):
+                    parts = dict(kv.split("=") for kv in line[len("%% EDGE_FILTER:"):].strip().split())
+                    hidden = int(parts.get("hidden", 0))
+                    min_count = int(parts.get("min_count", 1))
+                    total = int(parts.get("total", 0))
+                    shown = int(parts.get("shown", 0))
+                    edge_filter_warning = (
+                        f"Showing {shown} of {total} edges (hiding {hidden} edges "
+                        f"with fewer than {min_count} references to stay within rendering limits)"
+                    )
+                    break
+            diagram_tabs.append({
+                "id": f"cat_{sanitize_id(cat_key)}",
+                "label": f"{cat_name} ({count})",
+                "title": f"{cat_name} Projects ({count})",
                 "mermaid": content,
+                "warning": edge_filter_warning,
             })
 
-        # Per-category tabs ordered by project count descending
-        skip_cats = {"Localization", "Sample"}
-        cat_counts = sorted(categories.items(), key=lambda x: -x[1])
-        for cat_name, count in cat_counts:
-            if cat_name in skip_cats:
-                continue
-            cat_key = cat_name.lower()
-            cat_filename = f"category-{cat_key}{folder_suffix}.mmd"
-            content = _read_text(os.path.join(diagrams_dir, cat_filename))
-            if content:
-                # Check for edge filter metadata comment
-                edge_filter_warning = ""
-                for line in content.splitlines():
-                    if line.startswith("%% EDGE_FILTER:"):
-                        parts = dict(kv.split("=") for kv in line[len("%% EDGE_FILTER:"):].strip().split())
-                        hidden = int(parts.get("hidden", 0))
-                        min_count = int(parts.get("min_count", 1))
-                        total = int(parts.get("total", 0))
-                        shown = int(parts.get("shown", 0))
-                        edge_filter_warning = (
-                            f"Showing {shown} of {total} edges (hiding {hidden} edges "
-                            f"with fewer than {min_count} references to stay within rendering limits)"
-                        )
-                        break
-                tabs.append({
-                    "id": f"cat_{sanitize_id(cat_key)}",
-                    "label": f"{cat_name} ({count})",
-                    "title": f"{cat_name} Projects ({count})",
-                    "mermaid": content,
-                    "warning": edge_filter_warning,
-                })
-
-        # Named diagram tabs (Data Flow, Business Layers, E2E, Field Trace)
-        for base_name, tab_id, tab_label, tab_title in [
-            ("landscape", "landscape", "Landscape", "Architecture Landscape"),
-            ("core-libraries", "corelibraries", "Core Libraries", "Core Library Dependencies"),
-            ("data-infrastructure", "datainfra", "Data Infra", "Data Infrastructure"),
-            ("data-flow", "dataflow", "Data Flow",
-             "Data Flow — Projects Connected Through Data Infrastructure"),
-            ("nuget-groups", "nugetgroups", "NuGet Groups", "NuGet Package Groups"),
-            ("business-layers", "businesslayers", "Business Layers",
-             "Business Layer Classification — Presentation / Engine / Service / DataAccess"),
-            ("e2e-flows", "e2eflowsdiagram", "E2E Flows Diagram",
-             "End-to-End Flow Paths — Screen to Pricer to Data"),
-            ("field-traceability", "fieldtracediagram", "Field Trace Diagram",
-             "Field Traceability — XAML Binding to Database Column"),
-        ]:
-            mmd_filename = f"{base_name}{folder_suffix}.mmd"
-            content = _read_text(os.path.join(diagrams_dir, mmd_filename))
-            if content and "no_data" not in content:
-                tabs.append({
-                    "id": tab_id,
-                    "label": tab_label,
-                    "title": tab_title,
-                    "mermaid": content,
-                })
-
-        return tabs
-
-    # Load aggregate diagrams (for "All Folders" view)
-    diagram_tabs = load_diagram_set("")
-
-    # Load per-folder diagrams
-    diagram_sets = {"": diagram_tabs}  # Empty string key = aggregate
-    if is_multi_repo:
-        for repo in repo_list:
-            folder_tabs = load_diagram_set(f"-{repo}")
-            if folder_tabs:
-                diagram_sets[repo] = folder_tabs
+    # ── Named diagram tabs (Data Flow, Business Layers, E2E, Field Trace) ──
+    for mmd_name, tab_id, tab_label, tab_title in [
+        ("data-flow.mmd", "dataflow", "Data Flow",
+         "Data Flow — Projects Connected Through Data Infrastructure"),
+        ("business-layers.mmd", "businesslayers", "Business Layers",
+         "Business Layer Classification — Presentation / Engine / Service / DataAccess"),
+        ("e2e-flows.mmd", "e2eflowsdiagram", "E2E Flows Diagram",
+         "End-to-End Flow Paths — Screen to Pricer to Data"),
+        ("field-traceability.mmd", "fieldtracediagram", "Field Trace Diagram",
+         "Field Traceability — XAML Binding to Database Column"),
+    ]:
+        content = _read_text(os.path.join(diagrams_dir, mmd_name))
+        if content and "no_data" not in content:
+            diagram_tabs.append({
+                "id": tab_id,
+                "label": tab_label,
+                "title": tab_title,
+                "mermaid": content,
+            })
 
     # ── Aggregate data sources by pattern ──
     pattern_summary: dict[str, dict] = {}
@@ -792,6 +954,7 @@ def generate_viewer_html() -> str:
     # ── Hotspot metrics ──
     hotspot_metrics = compute_hotspot_metrics()
     hotspot_json = _safe_json_for_script(hotspot_metrics)
+    overview_variants_json = _safe_json_for_script({"__all__": content, **repo_overview_variants} if content else {})
     # Summary card data
     top_hotspot = hotspot_metrics[0] if hotspot_metrics else None
     most_referenced = max(hotspot_metrics, key=lambda m: m["fan_in"]) if hotspot_metrics else None
@@ -815,14 +978,12 @@ def generate_viewer_html() -> str:
         trimmed_files = []
         for rf in sorted(raw_files, key=lambda f: -f.get("smell_count", 0))[:50]:
             smells = rf.get("smells", [])[:20]
-            file_language = rf.get("language", "csharp")
             trimmed_smells = [{"type": s.get("type", ""), "line": s.get("line", 0),
                                "context": (s.get("context") or "")[:100],
                                "severity": s.get("severity", ""),
                                "category": s.get("category", ""),
                                "findingId": s.get("findingId", ""),
-                               "triageStatus": s.get("triageStatus", "unreviewed"),
-                               "language": file_language} for s in smells]
+                               "triageStatus": s.get("triageStatus", "unreviewed")} for s in smells]
             if trimmed_smells:
                 trimmed_files.append({"file": rf.get("path", rf.get("file", "")),
                                       "smellCount": rf.get("smell_count", len(trimmed_smells)),
@@ -956,14 +1117,19 @@ def generate_viewer_html() -> str:
     _has_ext_findings = any(t.get("findingCount", 0) > 0 for t in _ext_tools.values())
     if _has_ext_findings:
         all_tab_ids.append(("externaltools", "External Tools"))
-    # Remove separate language tabs - language results are now integrated into Security/Resilience/Code Quality
+    # Dynamic language tabs
+    for _lang_key, _lang_d in sorted(language_data.items()):
+        _display = _lang_d.get("displayName", _lang_key.title())
+        all_tab_ids.append((_lang_key, _display))
     if repo_count > 1:
         all_tab_ids.append(("repos", "Repos"))
     all_tab_ids.append(("allprojects", "All Projects"))
+    initial_tab_id = "repos" if repo_count > 1 else (all_tab_ids[0][0] if all_tab_ids else "overview")
 
     tab_buttons = "\n".join(
-        f'  <button class="tab-btn{" active" if i == 0 else ""}" data-tab="{tid}">{label}</button>'
-        for i, (tid, label) in enumerate(all_tab_ids)
+        f'  <button class="tab-btn{" active" if tid == initial_tab_id else ""}" '
+        f'data-tab="{tid}" data-tooltip="{_esc_html(_tab_tooltip(tid, label))}">{label}</button>'
+        for tid, label in all_tab_ids
     )
 
     # Diagram panels
@@ -984,31 +1150,21 @@ def generate_viewer_html() -> str:
           <div class="legend-item" style="margin-top:0.4rem;"><span class="legend-icon">&#9755;</span> Click <strong>pill</strong> &rarr; see the underlying project references</div>
           <div class="legend-item"><span class="legend-icon">&#9755;</span> Click <strong>arrow</strong> &rarr; see the actual references</div>
         </div>"""
-    # Generate diagram panels for all diagram sets (aggregate + per-folder)
     diagram_panels = ""
-    for folder_key, folder_tabs in diagram_sets.items():
-        folder_display = "" if folder_key == "" else f" data-folder=\"{folder_key}\""
-        is_visible = ' style="display:block"' if folder_key == "" else ' style="display:none"'
-
-        for i, dt in enumerate(folder_tabs):
-            # Use folder-specific ID to avoid conflicts
-            panel_id = f"{dt['id']}-{folder_key}" if folder_key else dt['id']
-            active = " active" if (i == 0 and folder_key == "") else ""
-
-            warning_html = ""
-            if dt.get("warning"):
-                warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
-
-            if dt["id"] == "overview":
-                side_legend = legend_html
-            elif dt["id"].startswith("cat_"):
-                side_legend = category_detail_legend_html
-            else:
-                side_legend = ""
-
-            diagram_body = f"""
+    for i, dt in enumerate(diagram_tabs):
+        active = " active" if dt["id"] == initial_tab_id else ""
+        warning_html = ""
+        if dt.get("warning"):
+            warning_html = f'\n      <div class="edge-filter-warning">{_esc_html(dt["warning"])}</div>'
+        if dt["id"] == "overview":
+            side_legend = legend_html
+        elif dt["id"].startswith("cat_"):
+            side_legend = category_detail_legend_html
+        else:
+            side_legend = ""
+        diagram_body = f"""
       <div class="diagram-with-legend">
-        <div class="mermaid-wrap" id="mermaid-{panel_id}">
+        <div class="mermaid-wrap" id="mermaid-{dt['id']}">
           <span class="loading">Loading diagram...</span>
           <pre class="mermaid" style="display:none">
 {_esc_html(dt['mermaid'])}
@@ -1017,30 +1173,27 @@ def generate_viewer_html() -> str:
         </div>
         <div class="diagram-sidebar">
           {side_legend}
-          <div class="edge-detail-panel" id="edgeDetail-{panel_id}"></div>
+          <div class="edge-detail-panel" id="edgeDetail-{dt['id']}"></div>
         </div>
       </div>"""
-            diagram_panels += f"""
-  <section class="tab-panel{active} diagram-panel" id="panel-{panel_id}"{folder_display}{is_visible}>
+        diagram_panels += f"""
+  <section class="tab-panel{active}" id="panel-{dt['id']}">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> {dt['title']}
         <span class="zoom-controls">
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', -0.2)" title="Zoom out">&#8722;</button>
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', 0)" title="Reset zoom">Reset</button>
-          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{panel_id}', 0.2)" title="Zoom in">&#43;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', -0.2)" title="Zoom out">&#8722;</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0)" title="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomDiagram('mermaid-{dt['id']}', 0.2)" title="Zoom in">&#43;</button>
         </span>
       </div>{warning_html}{diagram_body}
     </div>
   </section>
 """
 
-    # Mermaid container map for JS (includes all diagram sets)
-    mermaid_map_entries = []
-    for folder_key, folder_tabs in diagram_sets.items():
-        for dt in folder_tabs:
-            panel_id = f"{dt['id']}-{folder_key}" if folder_key else dt['id']
-            mermaid_map_entries.append(f"'{panel_id}': 'mermaid-{panel_id}'")
-    mermaid_map_entries = ", ".join(mermaid_map_entries)
+    # Mermaid container map for JS
+    mermaid_map_entries = ", ".join(
+        f"'{dt['id']}': 'mermaid-{dt['id']}'" for dt in diagram_tabs
+    )
 
     # Data sources panel
     datasources_panel = ""
@@ -1380,18 +1533,31 @@ def generate_viewer_html() -> str:
             root_path_raw = rd.get("root", "")
             root_path = _esc_html(root_path_raw)
             root_path_link = _file_actions_html(root_path_raw) if root_path_raw else root_path
+            focus_button = (
+                f'<button type="button" class="repo-focus-btn" '
+                f'onclick="setGlobalRepoFilter(\'{_js_str(repo_name)}\', \'overview\')">Focus</button>'
+            )
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
               <td>{proj_count}</td>
               <td>{sol_count}</td>
               <td>{_esc_html(cats)}</td>
               <td>{root_path_link}</td>
+              <td>{focus_button}</td>
             </tr>
 """
+        repos_active = " active" if initial_tab_id == "repos" else ""
         repos_panel = f"""
-  <section class="tab-panel" id="panel-repos">
+  <section class="tab-panel{repos_active}" id="panel-repos">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> Repositories ({repo_count})</div>
+      <p class="repos-intro">
+        Start here when multiple folders were scanned. Choose a folder to focus the project tables and findings,
+        or use <strong>All Folders</strong> for the aggregated cross-repo view.
+      </p>
+      <div class="repo-action-bar">
+        <button type="button" class="repo-focus-btn repo-focus-btn-primary" onclick="setGlobalRepoFilter('__all__', 'overview')">Show All Folders</button>
+      </div>
       <div class="table-wrap">
         <table id="reposTable">
           <thead>
@@ -1401,6 +1567,7 @@ def generate_viewer_html() -> str:
               <th data-sort-type="num" title="Number of .sln solution files found">Solutions</th>
               <th data-sort-type="text" title="Functional categories of projects in this repo">Categories</th>
               <th data-sort-type="text" title="Root filesystem path of this repository">Root Path</th>
+              <th data-sort-type="text" title="Focus the viewer on this repository">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -1434,8 +1601,9 @@ def generate_viewer_html() -> str:
       </div>"""
 
     # All projects panel
+    all_projects_active = " active" if initial_tab_id == "allprojects" else ""
     all_projects_panel = f"""
-  <section class="tab-panel" id="panel-allprojects">
+  <section class="tab-panel{all_projects_active}" id="panel-allprojects">
     <div class="card">
       <div class="card-title"><span class="icon">&#9670;</span> All Projects</div>{_cycles_warning_html}
       <div class="table-wrap">
@@ -1569,8 +1737,6 @@ def generate_viewer_html() -> str:
         <span style="color:#E1E1E1;">|</span>
         {cq_badge_html}
         <span style="color:#E1E1E1;">|</span>
-        <select id="cqLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
-        <span style="color:#E1E1E1;">|</span>
         <select id="cqTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
         <select id="cqCategoryFilter" class="hs-dropdown"><option value="">All Categories</option></select>
         <select id="cqTestsFilter" class="hs-dropdown"><option value="">All</option><option value="true">Has Tests</option><option value="false">No Tests</option></select>
@@ -1651,8 +1817,6 @@ def generate_viewer_html() -> str:
       </div>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_res_sev_badges_html}
-        <span style="color:#E1E1E1;">|</span>
-        <select id="resLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
       </div>
       <div class="table-wrap">
         <table id="resTable">
@@ -1726,8 +1890,6 @@ def generate_viewer_html() -> str:
       </div>
       <div id="secFilterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
         {_sec_sev_badges_html}
-        <span style="color:#E1E1E1;">|</span>
-        <select id="secLangFilter" class="hs-dropdown"><option value="">All Languages</option><option value="csharp">C#</option><option value="java">Java</option><option value="python">Python</option></select>
         <span style="color:#E1E1E1;">|</span>
         <select id="secTriageFilter" class="hs-dropdown"><option value="">All Triage</option><option value="unreviewed">Unreviewed</option><option value="confirmed">Confirmed</option><option value="false_positive">False Positive</option><option value="accepted_risk">Accepted Risk</option><option value="fixed">Fixed</option></select>
       </div>
@@ -2295,6 +2457,38 @@ def generate_viewer_html() -> str:
   }}
   .card-title .icon {{ color: #005587; }}
   .card-title {{ justify-content: flex-start; }}
+  .repos-intro {{
+    margin: 0 0 0.85rem;
+    color: #53565A;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }}
+  .repo-action-bar {{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }}
+  .repo-focus-btn {{
+    background: #FFFFFF;
+    border: 1px solid #005587;
+    border-radius: 6px;
+    color: #005587;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.32rem 0.75rem;
+    white-space: nowrap;
+  }}
+  .repo-focus-btn:hover {{
+    background: rgba(0,85,135,0.08);
+  }}
+  .repo-focus-btn-primary {{
+    background: #005587;
+    color: #FFFFFF;
+  }}
+  .repo-focus-btn-primary:hover {{
+    background: #022D5E;
+  }}
   .zoom-controls {{ margin-left: auto; display: flex; gap: 0.25rem; }}
   .zoom-btn {{
     background: #FFFFFF; border: 1px solid #E1E1E1; color: #53565A; border-radius: 4px;
@@ -2333,6 +2527,49 @@ def generate_viewer_html() -> str:
   .edge-tooltip .edge-from {{ color: #005587; }}
   .edge-tooltip .edge-to {{ color: #00897B; }}
   .edge-tooltip .edge-arrow {{ color: #53565A; margin: 0 0.3rem; }}
+  .tab-tooltip {{
+    position: fixed;
+    z-index: 1200;
+    max-width: 26rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 8px;
+    background: #FFF8E1;
+    color: #1F2933;
+    border: 1px solid rgba(158, 135, 0, 0.28);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.16);
+    pointer-events: none;
+    white-space: normal;
+    display: none;
+  }}
+  .repo-filter-box {{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    margin-left:0.5rem;
+  }}
+  .repo-filter-label {{
+    font-size:0.8rem;
+    font-weight:600;
+    letter-spacing:0;
+    text-transform:none;
+    color:rgba(255,255,255,0.78);
+  }}
+  .repo-filter-select {{
+    padding:0.35rem 1.9rem 0.35rem 0.65rem;
+    border:1px solid rgba(255,255,255,0.24);
+    border-radius:8px;
+    background:rgba(255,255,255,0.12);
+    color:#FFFFFF;
+    font-size:0.85rem;
+    cursor:pointer;
+    outline:none;
+  }}
+  #globalRepoFilter option {{
+    background: #FFFFFF;
+    color: #022D5E;
+  }}
   .tour-spotlight {{
     position: relative; z-index: 9999; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7);
     border-radius: 8px; pointer-events: none;
@@ -2561,61 +2798,7 @@ def generate_viewer_html() -> str:
 </head>
 <body>
 <div class="edge-tooltip" id="edgeTooltip"></div>
-
-<div id="helpModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
-  <div style="background:#FFFFFF;border-radius:12px;max-width:720px;width:90%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
-    <button onclick="document.getElementById('helpModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.2rem 0.6rem;font-size:0.85rem;">&#10005;</button>
-    <h2 style="color:#022D5E;margin-bottom:1rem;">Dependency Map — Help</h2>
-
-    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Diagram Tabs</h3>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Overview</strong> — category-level dependency graph. Click boxes to jump to category detail; click arrows to see project-level references.<br>
-      <strong>Category tabs</strong> (Library, Service, etc.) — project-level dependency diagrams within each category.
-    </p>
-
-    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Data Tabs</h3>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Data Sources</strong> — discovered data access patterns (SQL, EF, HTTP, messaging).<br>
-      <strong>Implied Dependencies</strong> — projects connected through shared data infrastructure (same DB table, queue, etc.).<br>
-      <strong>Connection Strings</strong> — configuration file connection strings found across repos.<br>
-      <strong>E2E Flows</strong> — end-to-end paths from UI screens through business layers to data access.<br>
-      <strong>Field Traceability</strong> — traces XAML bindings through ViewModels and Entities to database columns.
-    </p>
-
-    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Analysis Tabs</h3>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Code Quality</strong> — refactoring triage based on code smell and security detection. Scores use severity-weighted smells (critical=15, high=8, medium=3, low=1).<br>
-      <em>Severity tiers:</em> Critical (hardcoded secrets, SQL injection, insecure deserialization, command injection), High (weak crypto, open redirect, XSS, insecure random, exception swallowing, sync-over-async), Medium (god methods, deep nesting, long parameter lists), Low (magic numbers, missing null checks, mutable shared state).<br>
-      <em>Refactoring Value Score</em> = Complexity&times;2 + WeightedSmells + (Fan-In&times;Fan-Out)&times;0.5 + TestGap&times;5 &minus; CategoryDiscount.<br>
-      <strong>Security</strong> — dedicated view of security-category findings (critical + high severity). Shows file, line, detector, severity, and context with direct file navigation.
-    </p>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>UX Consistency</strong> — detects XAML/WPF binding issues including broken bindings, missing DataContext, and inconsistent naming.<br>
-      <em>Severity levels:</em> Error (broken bindings that will fail at runtime), Warning (likely issues), Info (style suggestions).
-    </p>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Hotspots</strong> — projects ranked by coupling complexity where AI-assisted refactoring has the most impact.<br>
-      <em>Hotspot Score</em> = Fan-Out&times;3 + Fan-In&times;2 + NuGet + DataPatterns + CrossRepo&times;4.<br>
-      <em>Risk Score</em> adjusts for expected patterns (Library fan-in) and factors in code smell flags.
-    </p>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>NuGet Health</strong> — version conflicts (same package, different versions), legacy format projects (packages.config), target framework distribution, and Central Package Management status.
-    </p>
-
-    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Other Tabs</h3>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      <strong>Tests</strong> — test project detection with method counts, framework identification, and coverage mapping.<br>
-      <strong>Language tabs</strong> (Python, etc.) — auto-detected non-.NET projects with framework detection, dependency parsing, and line counts.<br>
-      <strong>Repos</strong> — repository summary with project counts and categories.<br>
-      <strong>All Projects</strong> — searchable/sortable table of every .csproj project found.
-    </p>
-
-    <h3 style="color:#005587;margin:1rem 0 0.5rem;">Tips</h3>
-    <p style="font-size:0.88rem;color:#333;line-height:1.6;">
-      Use the search box to filter any active tab. Click stat cards in the header to jump to the relevant tab. Click the AI Context link to browse per-project context files for feeding to AI assistants.
-    </p>
-  </div>
-</div>
+<div class="tab-tooltip" id="tabTooltip"></div>
 
 <div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:10002;background:transparent;pointer-events:none;">
   <div id="tourContent" style="position:absolute;background:#FFFFFF;border-radius:12px;max-width:500px;padding:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.3);pointer-events:auto;">
@@ -2630,40 +2813,6 @@ def generate_viewer_html() -> str:
   </div>
 </div>
 
-<div id="adminModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;" onclick="if(event.target===this)closeAdminModal()">
-  <div style="background:#FFFFFF;border-radius:12px;max-width:1000px;width:90%;max-height:85vh;display:flex;flex-direction:column;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
-    <div style="padding:1.5rem 2rem;border-bottom:1px solid #E1E1E1;">
-      <h2 style="color:#022D5E;margin:0;">Prompt Configuration</h2>
-      <button onclick="closeAdminModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid #E1E1E1;color:#53565A;border-radius:4px;cursor:pointer;padding:0.2rem 0.6rem;font-size:1.2rem;">&#10005;</button>
-    </div>
-
-    <div style="flex:1;display:flex;overflow:hidden;">
-      <div id="detectorNav" style="width:200px;overflow-y:auto;border-right:1px solid #E1E1E1;padding:1rem;"></div>
-
-      <div style="flex:1;display:flex;flex-direction:column;padding:1.5rem;">
-        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
-          <button class="lang-tab active" data-lang="base" onclick="selectLanguage('base')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#005587;color:#fff;border-radius:6px;cursor:pointer;font-size:0.85rem;">Base</button>
-          <button class="lang-tab" data-lang="csharp" onclick="selectLanguage('csharp')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#F5F5F5;color:#333;border-radius:6px;cursor:pointer;font-size:0.85rem;">C#</button>
-          <button class="lang-tab" data-lang="java" onclick="selectLanguage('java')" style="padding:0.4rem 1rem;border:1px solid #E1E1E1;background:#F5F5F5;color:#333;border-radius:6px;cursor:pointer;font-size:0.85rem;">Java</button>
-        </div>
-
-        <div style="flex:1;display:flex;flex-direction:column;">
-          <textarea id="promptEditor" style="flex:1;font-family:Consolas,'Courier New',monospace;font-size:13px;padding:0.5rem;border:1px solid #E1E1E1;border-radius:4px;resize:none;"></textarea>
-          <div style="margin-top:0.5rem;font-size:12px;color:#666;">
-            Available placeholders: <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{file}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{line}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{context}}</code>, <code style="background:#F5F5F5;padding:0.1rem 0.3rem;border-radius:3px;">{{project}}</code>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="padding:1rem 2rem;border-top:1px solid #E1E1E1;display:flex;gap:1rem;justify-content:flex-end;">
-      <button onclick="savePrompts()" style="padding:0.5rem 1.5rem;background:#005587;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Save Changes</button>
-      <button onclick="resetPrompts()" style="padding:0.5rem 1.5rem;background:#d9534f;color:#fff;border:none;border-radius:6px;cursor:pointer;">Reset to Defaults</button>
-      <button onclick="closeAdminModal()" style="padding:0.5rem 1.5rem;background:#6c757d;color:#fff;border:none;border-radius:6px;cursor:pointer;">Cancel</button>
-    </div>
-  </div>
-</div>
-
 <header class="header">
   <div class="header-top">
     <h1><span>{_esc_html(title)}</span> Dependency Map</h1>
@@ -2671,9 +2820,11 @@ def generate_viewer_html() -> str:
       <span class="search-icon">&#128269;</span>
       <input type="text" id="searchInput" placeholder="Search projects..." autocomplete="off">
     </div>
-{"" if not has_filter_groups else '''    <div class="search-box" style="margin-left:0.5rem;">
-      <select id="globalRepoFilter" style="padding:0.35rem 0.6rem;border-radius:6px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);color:#fff;font-size:0.85rem;cursor:pointer;outline:none;">
-        <option value="">All Folders</option>
+{"" if not has_filter_groups else '''    <div class="repo-filter-box">
+      <label class="repo-filter-label" for="globalRepoFilter">Folder</label>
+      <select id="globalRepoFilter" class="repo-filter-select">
+        <option value="">Choose folder...</option>
+        <option value="__all__">All Folders</option>
       </select>
     </div>'''}
   </div>
@@ -2682,10 +2833,7 @@ def generate_viewer_html() -> str:
     <a href="docs/ai-context/index.html" target="_blank" class="stat stat-link" style="text-decoration:none;" title="Open AI-ready codebase overview and per-project context files">
       <span class="stat-value">AI</span> Context
     </a>
-    <div style="margin-left:auto;display:flex;gap:0.25rem;align-items:center;border-left:1px solid rgba(255,255,255,0.2);padding-left:1rem;">
-      <a href="#" id="adminLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();openAdminModal();" title="Configure LLM prompts">⚙️ Settings</a>
-      <a href="#" id="helpLink" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" onclick="event.preventDefault();document.getElementById('helpModal').style.display='flex';" title="Help and keyboard shortcuts">? Help</a>
-    </div>
+    <a href="help.html" id="helpLink" target="_blank" rel="noopener noreferrer" style="color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:6px;transition:background .15s;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='none'" title="Open the standalone help page with tab descriptions and usage notes">? Help</a>
   </div>
 </header>
 
@@ -3648,35 +3796,18 @@ function _probeCompanion(cb) {{
 }}
 // Probe on page load so we know before the first click
 _probeCompanion(function(ok) {{
-  if (ok) {{
-    // After companion is detected, check tool availability
-    fetch(_companionBase + '/_check', {{ mode: 'cors' }})
-      .then(function(r) {{ return r.json(); }})
-      .then(function(d) {{
-        if (!d.tools) return;
-        window._companionTools = d.tools;
-        if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
-          showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
-        }}
-      }})
-      .catch(function() {{ /* ignore */ }});
-  }} else {{
-    // Companion not running - check if run.py server is available
-    fetch('/_ping', {{ mode: 'same-origin' }})
-      .then(function(r) {{ return r.json(); }})
-      .then(function(d) {{
-        if (d && d.status === 'ok') {{
-          // run.py server is running, no need for companion
-          return;
-        }}
-        // Not on run.py server, show banner to prompt user
-        _showCompanionBanner();
-      }})
-      .catch(function() {{
-        // Can't reach run.py server either - likely hosted viewer
-        _showCompanionBanner();
-      }});
-  }}
+  if (!ok) return;
+  // After companion is detected, check tool availability
+  fetch(_companionBase + '/_check', {{ mode: 'cors' }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      if (!d.tools) return;
+      window._companionTools = d.tools;
+      if (d.config && d.config.githubCopilotEnabled && d.tools.copilot === false) {{
+        showToast('Copilot CLI not found. Install: npm i -g @github/copilot', true);
+      }}
+    }})
+    .catch(function() {{ /* ignore */ }});
 }});
 
 function _showCompanionBanner() {{
@@ -3684,22 +3815,11 @@ function _showCompanionBanner() {{
   if (document.getElementById(id)) return;
   var banner = document.createElement('div');
   banner.id = id;
-  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.9rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;box-shadow:0 -2px 10px rgba(0,0,0,0.3);';
-
-  var cmd = 'node companion/server.js';
-  var copyBtn = '<button onclick="navigator.clipboard.writeText(\'' + cmd + '\').then(function(){{showToast(\'Command copied!\',false);}});" ' +
-    'style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:3px 8px;border-radius:4px;cursor:pointer;font-size:0.8rem;margin-left:6px;" ' +
-    'title="Copy command">Copy</button>';
-
-  var retryBtn = '<button onclick="_companionOk=null;_companionProbed=false;document.getElementById(\'companionBanner\').remove();_probeCompanion(function(ok){{if(ok)showToast(\'Companion detected!\',false);else _showCompanionBanner();}});" ' +
-    'style="background:#2E7D32;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;" ' +
-    'title="Recheck if companion is running">Recheck</button>';
-
-  banner.innerHTML = '<div><strong>🔌 Companion agent not running.</strong> To enable IDE integration buttons (Claude Code, VS Code, Visual Studio), ' +
-    'open a terminal in your <code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;">tools-static-analysis</code> directory and run: ' +
-    '<div style="margin-top:0.5rem;"><code style="background:rgba(255,255,255,0.2);padding:4px 8px;border-radius:3px;font-size:0.9rem;">' + cmd + '</code>' + copyBtn + '</div></div>' +
-    '<div style="display:flex;gap:0.5rem;">' + retryBtn +
-    '<button onclick="this.parentElement.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap;">Dismiss</button></div>';
+  banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#022D5E;color:#fff;padding:0.7rem 1.2rem;font-size:0.85rem;z-index:10001;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;';
+  banner.innerHTML = '<div><strong>Companion agent not detected.</strong> To launch editors from this viewer, run: ' +
+    '<code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:3px;margin:0 4px;">node companion/server.js</code> ' +
+    'in the tools-static-analysis directory on your machine.</div>' +
+    '<button onclick="this.parentElement.remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:2px 10px;border-radius:4px;cursor:pointer;margin-left:1rem;white-space:nowrap;">Dismiss</button>';
   document.body.appendChild(banner);
 }}
 
@@ -4199,79 +4319,106 @@ function initSortableTable(table) {{
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels  = document.querySelectorAll('.tab-panel');
   var renderedTabs = {{}};
+  var tabTooltip = document.getElementById('tabTooltip');
+
+  function positionTabTooltip(x, y) {{
+    if (!tabTooltip || tabTooltip.style.display !== 'block') return;
+    var pad = 14;
+    var maxLeft = Math.max(pad, window.innerWidth - tabTooltip.offsetWidth - pad);
+    var maxTop = Math.max(pad, window.innerHeight - tabTooltip.offsetHeight - pad);
+    var left = Math.min(x + 14, maxLeft);
+    var top = y - tabTooltip.offsetHeight - 14;
+    if (top < pad) top = Math.min(y + 18, maxTop);
+    tabTooltip.style.left = left + 'px';
+    tabTooltip.style.top = top + 'px';
+  }}
+
+  function showTabTooltip(target, x, y) {{
+    if (!tabTooltip || !target) return;
+    var text = target.getAttribute('data-tooltip') || '';
+    if (!text) return;
+    tabTooltip.textContent = text;
+    tabTooltip.style.display = 'block';
+    positionTabTooltip(x, y);
+  }}
+
+  function hideTabTooltip() {{
+    if (!tabTooltip) return;
+    tabTooltip.style.display = 'none';
+  }}
+
+  function resetTabView(tabId) {{
+    var containerId = mermaidContainers[tabId];
+    if (containerId) {{
+      zoomDiagram(containerId, 0);
+    }}
+    var panel = document.getElementById('panel-' + tabId);
+    if (!panel) return;
+    panel.querySelectorAll('.edge-detail-panel').forEach(function (detail) {{
+      detail.style.display = 'none';
+      detail.innerHTML = '';
+    }});
+    var detailMermaid = panel.querySelector('#flowDetailMermaid, #ftDetailMermaid');
+    if (detailMermaid) detailMermaid.innerHTML = '';
+    if (panel.scrollTop) panel.scrollTop = 0;
+    var content = document.querySelector('main.content');
+    if (content) content.scrollTop = 0;
+    window.scrollTo({{ top: 0, behavior: 'auto' }});
+  }}
+
+  function updateOverviewDiagram() {{
+    var variants = window._overviewVariants || {{}};
+    var repo = getActiveRepo();
+    var key = repo || '__all__';
+    var mermaidSrc = variants[key] || variants['__all__'];
+    var container = document.getElementById('mermaid-overview');
+    if (!container || !mermaidSrc) return;
+    container.innerHTML =
+      '<span class="loading">Loading diagram...</span>' +
+      '<pre class="mermaid" style="display:none">' + escHtml(mermaidSrc) + '</pre>' +
+      '<div class="diagram-legend">Tip: Hover edges to preview, click for detailed analysis</div>';
+    renderedTabs['overview'] = false;
+  }}
 
   function activateTab(tabId) {{
+    var repoSelect = document.getElementById('globalRepoFilter');
+    if (window._isMultiRepo && repoSelect && !repoSelect.value && tabId !== 'repos') {{
+      showToast('Choose a folder or use All Folders to open analysis tabs.', true);
+      tabId = 'repos';
+    }}
+    if (tabId === 'overview') {{
+      updateOverviewDiagram();
+    }}
     tabButtons.forEach(function (b) {{ b.classList.toggle('active', b.dataset.tab === tabId); }});
-
-    // Find the visible panel for this tab (matches base ID and is currently visible)
-    tabPanels.forEach(function (p) {{
-      // Extract base ID: "panel-overview" or "panel-overview-EventStore" -> "overview"
-      var panelId = p.id.replace(/^panel-/, ''); // Remove "panel-" prefix
-      var panelBaseId = panelId;
-
-      // Check if this is a per-folder panel (has a folder suffix)
-      var folderAttr = p.getAttribute('data-folder');
-      if (folderAttr && panelId.endsWith('-' + folderAttr)) {{
-        // Remove folder suffix: "overview-EventStore" -> "overview"
-        var suffixLength = folderAttr.length + 1; // +1 for the hyphen
-        panelBaseId = panelId.slice(0, -suffixLength);
-      }}
-
-      var isMatch = (tabId === panelBaseId);
-      var isFolderVisible = p.style.display !== 'none';
-
-      // Only show panel if it matches AND its folder is visible
-      if (isMatch && isFolderVisible) {{
-        p.classList.add('active');
-        p.style.display = 'block';
-      }} else {{
-        p.classList.remove('active');
-        // Clear inline style to let CSS handle visibility
-        if (isFolderVisible && !isMatch) {{
-          p.style.display = '';
-        }}
-      }}
-    }});
-
+    tabPanels.forEach(function (p)  {{ p.classList.toggle('active', p.id === 'panel-' + tabId); }});
     lazyRenderMermaid(tabId);
   }}
   window.activateTab = activateTab;
 
   tabButtons.forEach(function (btn) {{
     btn.addEventListener('click', function () {{ activateTab(btn.dataset.tab); }});
+    btn.addEventListener('mouseenter', function (e) {{ showTabTooltip(btn, e.clientX, e.clientY); }});
+    btn.addEventListener('mousemove', function (e) {{ positionTabTooltip(e.clientX, e.clientY); }});
+    btn.addEventListener('mouseleave', hideTabTooltip);
+    btn.addEventListener('focus', function () {{
+      var rect = btn.getBoundingClientRect();
+      showTabTooltip(btn, rect.left + rect.width / 2, rect.top);
+    }});
+    btn.addEventListener('blur', hideTabTooltip);
   }});
 
   var mermaidContainers = {{ {mermaid_map_entries} }};
 
   function lazyRenderMermaid(tabId) {{
-    // Find the visible panel for this tab ID
-    var activePanel = null;
-    tabPanels.forEach(function(p) {{
-      var panelBaseId = p.id.replace(/^panel-/, '').split('-')[0];
-      var isMatch = (tabId === panelBaseId || p.id === 'panel-' + tabId);
-      var isVisible = p.style.display !== 'none';
-      if (isMatch && isVisible && p.classList.contains('active')) {{
-        activePanel = p;
-      }}
-    }});
-
-    if (!activePanel) return;
-
-    var panelId = activePanel.id.replace(/^panel-/, '');
-    if (renderedTabs[panelId]) return;
-
-    var containerId = mermaidContainers[panelId];
-    if (!containerId) {{
-      // Fallback to direct panel ID lookup
-      containerId = 'mermaid-' + panelId;
-    }}
+    var containerId = mermaidContainers[tabId];
+    if (!containerId || renderedTabs[tabId]) return;
 
     function doRender() {{
       var container = document.getElementById(containerId);
       if (!container) return;
       var pre = container.querySelector('pre.mermaid');
       if (!pre) return;
-      renderedTabs[panelId] = true;
+      renderedTabs[tabId] = true;
       var loading = container.querySelector('.loading');
       pre.style.display = '';
       if (loading) loading.style.display = 'none';
@@ -4311,7 +4458,7 @@ function initSortableTable(table) {{
   }}
 
   // Render first tab on load
-  var firstTab = document.querySelector('.tab-btn');
+  var firstTab = document.querySelector('.tab-btn.active') || document.querySelector('.tab-btn');
   if (firstTab) lazyRenderMermaid(firstTab.dataset.tab);
 
   // First-visit guided tour
@@ -4478,6 +4625,7 @@ function initSortableTable(table) {{
   window._categoryMap = {{ {cat_map_entries} }};
   window._businessLayerMap = {{ {business_layer_map_entries} }};
   window._hotspotData = {hotspot_json};
+  window._overviewVariants = {overview_variants_json};
   window._codeQualityData = {cq_embedded};
   window._uxData = {ux_embedded};
   window._repoRoots = {repos_roots_json};
@@ -4813,18 +4961,15 @@ function initSortableTable(table) {{
       var topSmell = (p.top_smells && p.top_smells.length > 0) ? p.top_smells[0] : '';
       var smellList = (p.top_smells || []).join(',');
       var hasFiles = p.files && p.files.length > 0;
-      // Collect severity, triage, and language sets for this project
+      // Collect severity and triage sets for this project
       var sevSet = {{}};
       var triageSet = {{}};
-      var langSet = {{}};
       (p.files || []).forEach(function(f) {{ (f.smells || []).forEach(function(s) {{
         if (s.severity) sevSet[s.severity] = true;
         triageSet[s.triageStatus || 'unreviewed'] = true;
-        if (s.language) langSet[s.language] = true;
       }}); }});
       var sevList = Object.keys(sevSet).join(',');
       var triageList = Object.keys(triageSet).join(',');
-      var langList = Object.keys(langSet).join(',');
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '') + ' ' + smellList).toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       tr.setAttribute('data-category', (p.category || '').toLowerCase());
@@ -4832,7 +4977,6 @@ function initSortableTable(table) {{
       tr.setAttribute('data-smells', smellList.toLowerCase());
       tr.setAttribute('data-severities', sevList.toLowerCase());
       tr.setAttribute('data-triage-statuses', triageList.toLowerCase());
-      tr.setAttribute('data-languages', langList.toLowerCase());
       if (hasFiles) tr.style.cursor = 'pointer';
       tr.innerHTML =
         '<td><strong>' + (hasFiles ? '<span style="color:#005587;margin-right:0.3rem;">&#9654;</span>' : '') + escHtml(p.project || '') + '</strong></td>' +
@@ -4920,8 +5064,6 @@ function initSortableTable(table) {{
     }});
 
     // Dropdown handlers
-    var cqLangSelect = document.getElementById('cqLangFilter');
-    if (cqLangSelect) cqLangSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     if (cqCatSelect) cqCatSelect.addEventListener('change', function () {{ applyCqFilters(); }});
     var cqTestSelect = document.getElementById('cqTestsFilter');
     if (cqTestSelect) cqTestSelect.addEventListener('change', function () {{ applyCqFilters(); }});
@@ -4993,7 +5135,6 @@ function initSortableTable(table) {{
     var catFilter = (document.getElementById('cqCategoryFilter') || {{}}).value || '';
     var testFilter = (document.getElementById('cqTestsFilter') || {{}}).value || '';
     var triageFilter = (document.getElementById('cqTriageFilter') || {{}}).value || '';
-    var langFilter = (document.getElementById('cqLangFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -5018,10 +5159,6 @@ function initSortableTable(table) {{
       if (triageFilter) {{
         var rowTriage = row.getAttribute('data-triage-statuses') || '';
         if (rowTriage.indexOf(triageFilter) === -1) show = false;
-      }}
-      if (langFilter) {{
-        var rowLangs = row.getAttribute('data-languages') || '';
-        if (rowLangs.indexOf(langFilter) === -1) show = false;
       }}
       if (catFilter && row.getAttribute('data-category') !== catFilter) show = false;
       if (testFilter && row.getAttribute('data-has-tests') !== testFilter) show = false;
@@ -5120,16 +5257,11 @@ function initSortableTable(table) {{
       var policies = p.policySummary || {{}};
       var activePolicies = Object.keys(policies).filter(function(k) {{ return policies[k]; }}).join(', ') || 'None';
       var hasFindings = p.findingCount > 0;
-      // Collect severity and language sets for filtering
+      // Collect severity set for filtering
       var sevSet = {{}};
-      var langSet = {{}};
-      (p.findings || []).forEach(function(f) {{
-        if (f.severity) sevSet[f.severity] = true;
-        if (f.language) langSet[f.language] = true;
-      }});
+      (p.findings || []).forEach(function(f) {{ if (f.severity) sevSet[f.severity] = true; }});
       tr.setAttribute('data-search', (p.project + ' ' + (p.category || '') + ' ' + (p.repo || '')).toLowerCase());
       tr.setAttribute('data-severities', Object.keys(sevSet).join(',').toLowerCase());
-      tr.setAttribute('data-languages', Object.keys(langSet).join(',').toLowerCase());
       tr.setAttribute('data-repo', grp[p.project] || '');
       if (hasFindings) tr.style.cursor = 'pointer';
       tr.innerHTML =
@@ -5181,16 +5313,12 @@ function initSortableTable(table) {{
         applyResFilters();
       }});
     }});
-    // Language filter dropdown
-    var resLangSelect = document.getElementById('resLangFilter');
-    if (resLangSelect) resLangSelect.addEventListener('change', function () {{ applyResFilters(); }});
     initSortableTable(document.getElementById('resTable'));
   }})();
 
   function applyResFilters() {{
     var activeSevBadge = document.querySelector('.res-sev-badge.res-sev-badge-active');
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
-    var langFilter = (document.getElementById('resLangFilter') || {{}}).value || '';
     var searchQuery = (document.getElementById('searchInput') || {{}}).value || '';
     searchQuery = searchQuery.trim().toLowerCase();
     var repoFilter = getActiveRepo();
@@ -5208,10 +5336,6 @@ function initSortableTable(table) {{
       if (sevFilter) {{
         var rowSevs = row.getAttribute('data-severities') || '';
         if (rowSevs.indexOf(sevFilter) === -1) show = false;
-      }}
-      if (langFilter) {{
-        var rowLangs = row.getAttribute('data-languages') || '';
-        if (rowLangs.indexOf(langFilter) === -1) show = false;
       }}
       if (searchQuery) {{
         var text = row.getAttribute('data-search') || '';
@@ -5261,7 +5385,7 @@ function initSortableTable(table) {{
       (p.files || []).forEach(function (f) {{
         (f.smells || []).forEach(function (s) {{
           if (s.category === 'security') {{
-            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed', language: s.language || f.language || 'csharp' }});
+            secFindings.push({{ project: p.project, repo: p.repo || '', file: f.file || '', line: s.line || 0, type: s.type || '', severity: s.severity || '', context: s.context || '', findingId: s.findingId || '', triageStatus: s.triageStatus || 'unreviewed' }});
           }}
         }});
       }});
@@ -5293,16 +5417,13 @@ function initSortableTable(table) {{
       var ts = sf.triageStatus || 'unreviewed';
       var tc = triageStatusColors[ts] || '#53565A';
       var tl = triageStatusLabels[ts] || ts;
-      var langLabel = (sf.language || 'csharp').toUpperCase();
-      var langColor = sf.language === 'java' ? '#007396' : '#68217A';
       tr.setAttribute('data-search', (sf.project + ' ' + sf.file + ' ' + sf.type + ' ' + sf.context).toLowerCase());
       tr.setAttribute('data-repo', sf.project ? (grp[sf.project] || '') : firstPathSegment(sf.file));
       tr.setAttribute('data-severity', (sf.severity || '').toLowerCase());
       tr.setAttribute('data-triage-status', ts);
-      tr.setAttribute('data-language', sf.language || 'csharp');
       tr.style.borderLeft = '3px solid ' + c;
       tr.innerHTML =
-        '<td style="padding:0.4rem 0.5rem;">' + fActions + '<span style="display:inline-block;margin-left:0.4rem;padding:0.1rem 0.3rem;border-radius:3px;font-size:0.65rem;font-weight:600;background:' + langColor + ';color:#fff;">' + langLabel + '</span></td>' +
+        '<td style="padding:0.4rem 0.5rem;">' + fActions + '</td>' +
         '<td style="padding:0.4rem 0.5rem;text-align:center;">' + sf.line + '</td>' +
         '<td style="padding:0.4rem 0.5rem;">' + escHtml(sf.type) + '</td>' +
         '<td style="padding:0.4rem 0.5rem;"><span style="display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600;background:rgba(' + hexToRgb(c) + ',0.15);color:' + c + ';">' + escHtml(sf.severity) + '</span></td>' +
@@ -5331,9 +5452,6 @@ function initSortableTable(table) {{
     // Security triage filter handler
     var secTriageSelect = document.getElementById('secTriageFilter');
     if (secTriageSelect) secTriageSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
-    // Security language filter handler
-    var secLangSelect = document.getElementById('secLangFilter');
-    if (secLangSelect) secLangSelect.addEventListener('change', function () {{ applySecurityFilters(); }});
   }})();
 
   // ── External Tools IIFE ──
@@ -5526,8 +5644,110 @@ function initSortableTable(table) {{
   // Global repo filter helper
   function getActiveRepo() {{
     var sel = document.getElementById('globalRepoFilter');
-    return sel ? sel.value : '';
+    if (!sel) return '';
+    return sel.value === '__all__' ? '' : (sel.value || '');
   }}
+
+  function syncRepoPlaceholderState() {{
+    var sel = document.getElementById('globalRepoFilter');
+    if (!sel || !sel.options.length) return;
+    var placeholder = sel.options[0];
+    if (!placeholder || placeholder.value !== '') return;
+    var hasChosenValue = !!sel.value;
+    placeholder.disabled = hasChosenValue;
+    placeholder.hidden = hasChosenValue;
+    if (!hasChosenValue) placeholder.hidden = false;
+  }}
+
+  function clearInputValue(id) {{
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  }}
+
+  function clearSelectValue(id) {{
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  }}
+
+  function resetBadgeGroup(selector, activeClass) {{
+    var badges = document.querySelectorAll(selector);
+    if (!badges.length) return;
+    badges.forEach(function (badge) {{ badge.classList.remove(activeClass); }});
+    var allBadge = Array.prototype.find.call(badges, function (badge) {{
+      return !badge.getAttribute('data-severity') && !badge.getAttribute('data-filter');
+    }});
+    if (allBadge) allBadge.classList.add(activeClass);
+  }}
+
+  function resetRepoScopedUiState() {{
+    clearInputValue('searchInput');
+    clearInputValue('flowSearchInput');
+    clearInputValue('ftSearchInput');
+    clearSelectValue('hsCategoryFilter');
+    clearSelectValue('hsLayerFilter');
+    clearSelectValue('cqCategoryFilter');
+    clearSelectValue('cqTestsFilter');
+    clearSelectValue('cqTriageFilter');
+    clearSelectValue('secTriageFilter');
+
+    resetBadgeGroup('.hs-badge', 'hs-badge-active');
+    resetBadgeGroup('.cq-sev-badge', 'cq-sev-badge-active');
+    resetBadgeGroup('.res-sev-badge', 'res-sev-badge-active');
+    resetBadgeGroup('.sec-sev-badge', 'sec-sev-badge-active');
+    resetBadgeGroup('.ux-badge[data-severity]', 'ux-badge-active');
+
+    document.querySelectorAll('.edge-detail-panel').forEach(function (detail) {{
+      detail.style.display = 'none';
+      detail.innerHTML = '';
+    }});
+    ['flowDetailContainer', 'ftDetailContainer'].forEach(function (id) {{
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }});
+    ['flowDetailMermaid', 'ftDetailMermaid'].forEach(function (id) {{
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = '';
+    }});
+    document.querySelectorAll('.res-detail-row').forEach(function (row) {{ row.style.display = 'none'; }});
+    document.querySelectorAll('#resBody tr[data-search] span').forEach(function (s) {{
+      if (s.textContent === '▼') s.textContent = '▶';
+    }});
+  }}
+
+  function applyRepoSelection(targetTab) {{
+    var sel = document.getElementById('globalRepoFilter');
+    resetRepoScopedUiState();
+    if (searchInput) searchInput.dispatchEvent(new Event('input'));
+    applyHotspotFilters();
+    applyCqFilters();
+    applyUxFilters();
+    applyResFilters();
+    applySecurityFilters();
+    applyExtToolsFilters();
+    applyTestsFilter();
+    applyNugetFilter();
+    applyE2eFlowsFilter();
+    applyDataSourcesFilter();
+
+    if (window._isMultiRepo && sel && !sel.value) {{
+      activateTab('repos');
+      resetTabView('repos');
+      return;
+    }}
+
+    var nextTab = targetTab && targetTab !== 'repos' ? targetTab : 'overview';
+    activateTab(nextTab);
+    resetTabView(nextTab);
+  }}
+
+  function setGlobalRepoFilter(value, tabId) {{
+    var sel = document.getElementById('globalRepoFilter');
+    if (!sel) return;
+    sel.value = value;
+    syncRepoPlaceholderState();
+    applyRepoSelection(tabId || 'overview');
+  }}
+  window.setGlobalRepoFilter = setGlobalRepoFilter;
 
   // Shared hotspot filter function
   function applyHotspotFilters() {{
@@ -5556,30 +5776,32 @@ function initSortableTable(table) {{
 
   // Search
   var searchInput = document.getElementById('searchInput');
-  searchInput.addEventListener('input', function () {{
-    var query = searchInput.value.trim().toLowerCase();
-    var repoFilter = getActiveRepo();
-    var rows = document.querySelectorAll('#projectsBody tr[data-search]');
-    rows.forEach(function (row) {{
-      var show = true;
-      if (repoFilter && row.getAttribute('data-repo') !== repoFilter) show = false;
-      if (show && query) {{
-        var text = row.getAttribute('data-search') || '';
-        if (text.indexOf(query) === -1) show = false;
-      }}
-      row.style.display = show ? '' : 'none';
+  if (searchInput) {{
+    searchInput.addEventListener('input', function () {{
+      var query = searchInput.value.trim().toLowerCase();
+      var repoFilter = getActiveRepo();
+      var rows = document.querySelectorAll('#projectsBody tr[data-search]');
+      rows.forEach(function (row) {{
+        var show = true;
+        if (repoFilter && row.getAttribute('data-repo') !== repoFilter) show = false;
+        if (show && query) {{
+          var text = row.getAttribute('data-search') || '';
+          if (text.indexOf(query) === -1) show = false;
+        }}
+        row.style.display = show ? '' : 'none';
+      }});
+      applyHotspotFilters();
+      applyCqFilters();
+      applyUxFilters();
+      applyResFilters();
+      applySecurityFilters();
+      applyExtToolsFilters();
+      applyTestsFilter();
+      applyNugetFilter();
+      applyE2eFlowsFilter();
+      applyDataSourcesFilter();
     }});
-    applyHotspotFilters();
-    applyCqFilters();
-    applyUxFilters();
-    applyResFilters();
-    applySecurityFilters();
-    applyExtToolsFilters();
-    applyTestsFilter();
-    applyNugetFilter();
-    applyE2eFlowsFilter();
-    applyDataSourcesFilter();
-  }});
+  }}
 
   // ── Tab-specific filter functions for tabs without existing filters ──
   function applySecurityFilters() {{
@@ -5589,13 +5811,11 @@ function initSortableTable(table) {{
     var activeSevBadge = document.querySelector('.sec-sev-badge.sec-sev-badge-active');
     var sevFilter = activeSevBadge ? activeSevBadge.getAttribute('data-severity').toLowerCase() : '';
     var triageFilter = (document.getElementById('secTriageFilter') || {{}}).value || '';
-    var langFilter = (document.getElementById('secLangFilter') || {{}}).value || '';
     document.querySelectorAll('#securityBody tr').forEach(function(row) {{
       var show = true;
       if (repo && row.getAttribute('data-repo') !== repo) show = false;
       if (sevFilter && row.getAttribute('data-severity') !== sevFilter) show = false;
       if (triageFilter && row.getAttribute('data-triage-status') !== triageFilter) show = false;
-      if (langFilter && row.getAttribute('data-language') !== langFilter) show = false;
       if (show && searchQuery) {{
         var text = row.getAttribute('data-search') || '';
         if (text && text.indexOf(searchQuery) === -1) show = false;
@@ -5765,54 +5985,6 @@ function initSortableTable(table) {{
   syncStatCards('sec', '.sec-sev-badge', 'sec-sev-badge-active');
   syncStatCards('ux', '.ux-badge[data-severity]', 'ux-badge-active');
 
-  // ── Toggle diagram tabs based on multi-folder mode ──
-  function toggleDiagramTabs() {{
-    // Get selected folder from dropdown
-    var repoSelect = document.getElementById('globalRepoFilter');
-    if (!repoSelect) return;
-
-    var selectedFolder = repoSelect.value; // Empty string = "All Folders"
-
-    // Remember currently active tab
-    var activeTab = document.querySelector('.tab-btn.active');
-    var activeTabId = activeTab ? activeTab.getAttribute('data-tab') : null;
-
-    // Show/hide diagram panels based on selected folder
-    var allPanels = document.querySelectorAll('.diagram-panel');
-    allPanels.forEach(function(panel) {{
-      var panelFolder = panel.getAttribute('data-folder');
-      var shouldShow = false;
-
-      if (selectedFolder === '') {{
-        // "All Folders" selected - show aggregate diagrams (no data-folder attribute)
-        shouldShow = (panelFolder === null || panelFolder === '');
-      }} else {{
-        // Specific folder selected - show panels with matching data-folder
-        shouldShow = (panelFolder === selectedFolder);
-      }}
-
-      panel.style.display = shouldShow ? 'block' : 'none';
-    }});
-
-    // Re-activate the current tab to show correct panel for new folder
-    // Use setTimeout to ensure display styles have been applied
-    if (activeTabId && window.activateTab) {{
-      setTimeout(function() {{{{
-        window.activateTab(activeTabId);
-      }}}}, 10);
-    }}
-
-    // Re-render visible mermaid diagrams
-    if (window.mermaid) {{
-      setTimeout(function() {{{{
-        var visibleDiagrams = document.querySelectorAll('.diagram-panel[style*="display: block"] .mermaid');
-        if (visibleDiagrams.length > 0) {{{{
-          window.mermaid.init(undefined, visibleDiagrams);
-        }}}}
-      }}}}, 150);
-    }}
-  }}
-
   // ── Global repo filter dropdown ──
   var repoSelect = document.getElementById('globalRepoFilter');
   if (repoSelect) {{
@@ -5821,43 +5993,10 @@ function initSortableTable(table) {{
       opt.value = r; opt.textContent = r;
       repoSelect.appendChild(opt);
     }});
-
-    // Restore last selected folder or default to first folder (not "All Folders")
-    var savedFolder = null;
-    try {{
-      savedFolder = localStorage.getItem('selectedFolder');
-    }} catch(e) {{}}
-
-    if (savedFolder && (window._repos || []).indexOf(savedFolder) !== -1) {{
-      // Restore saved selection if it still exists
-      repoSelect.value = savedFolder;
-    }} else if ((window._repos || []).length > 0) {{
-      // Default to first folder
-      repoSelect.value = (window._repos || [])[0];
-    }}
-    // else leave as "All Folders" if no folders exist
-
-    // Initialize diagram visibility on page load
-    toggleDiagramTabs();
-
+    syncRepoPlaceholderState();
     repoSelect.addEventListener('change', function () {{
-      // Save selection to localStorage
-      try {{
-        localStorage.setItem('selectedFolder', repoSelect.value);
-      }} catch(e) {{}}
-
-      toggleDiagramTabs();
-      searchInput.dispatchEvent(new Event('input'));
-      applyHotspotFilters();
-      applyCqFilters();
-      applyUxFilters();
-      applyResFilters();
-      applySecurityFilters();
-      applyExtToolsFilters();
-      applyTestsFilter();
-      applyNugetFilter();
-      applyE2eFlowsFilter();
-      applyDataSourcesFilter();
+      syncRepoPlaceholderState();
+      applyRepoSelection('overview');
     }});
   }}
 
@@ -6152,178 +6291,6 @@ function initSortableTable(table) {{
 
     return lines.join('\\n');
   }}
-
-// ─── Admin Modal for Prompt Configuration ─────────────────────────────
-
-var currentDetector = "hardcoded_secret";
-var currentLang = "base";
-var promptData = {{}};
-var isDirty = false;
-
-var detectorNames = [
-  "hardcoded_secret", "sql_injection", "insecure_deserialization", "command_injection",
-  "weak_crypto", "open_redirect", "xss", "insecure_random",
-  "exception_swallowing", "sync_over_async",
-  "god_method", "deep_nesting", "long_parameter_list", "precision_unsafe_math", "deep_inheritance",
-  "python_call",
-  "magic_number", "missing_null_check", "mutable_shared_state"
-];
-
-var detectorLabels = {{
-  "hardcoded_secret": "Hardcoded Secret",
-  "sql_injection": "SQL Injection",
-  "insecure_deserialization": "Insecure Deserialization",
-  "command_injection": "Command Injection",
-  "weak_crypto": "Weak Crypto",
-  "open_redirect": "Open Redirect",
-  "xss": "XSS",
-  "insecure_random": "Insecure Random",
-  "exception_swallowing": "Exception Swallowing",
-  "sync_over_async": "Sync over Async",
-  "god_method": "God Method",
-  "deep_nesting": "Deep Nesting",
-  "long_parameter_list": "Long Parameter List",
-  "precision_unsafe_math": "Precision Unsafe Math",
-  "deep_inheritance": "Deep Inheritance",
-  "python_call": "Python Call",
-  "magic_number": "Magic Number",
-  "missing_null_check": "Missing Null Check",
-  "mutable_shared_state": "Mutable Shared State"
-}};
-
-function openAdminModal() {{
-  fetch("/_prompts/list")
-    .then(r => r.json())
-    .then(data => {{
-      promptData = data.prompts || {{}};
-      renderDetectorNav();
-      loadPromptEditor();
-      document.getElementById("adminModal").style.display = "flex";
-      selectDetector("hardcoded_secret");
-    }})
-    .catch(err => alert("Failed to load prompts: " + err));
-}}
-
-function closeAdminModal() {{
-  if (isDirty && !confirm("You have unsaved changes. Close anyway?")) {{
-    return;
-  }}
-  document.getElementById("adminModal").style.display = "none";
-  isDirty = false;
-}}
-
-function renderDetectorNav() {{
-  var nav = document.getElementById("detectorNav");
-  nav.innerHTML = detectorNames.map(name => {{
-    var label = detectorLabels[name] || name;
-    return '<button class="detector-btn" data-detector="' + name + '" onclick="selectDetector(\\'' + name + '\\')" style="display:block;width:100%;padding:0.5rem;margin-bottom:0.25rem;border:none;background:#F5F5F5;cursor:pointer;text-align:left;border-radius:4px;font-size:0.85rem;">' + label + '</button>';
-  }}).join('');
-}}
-
-function selectDetector(detector) {{
-  saveCurrentPrompt();
-  currentDetector = detector;
-  loadPromptEditor();
-
-  var buttons = document.querySelectorAll(".detector-btn");
-  buttons.forEach(btn => {{
-    if (btn.dataset.detector === detector) {{
-      btn.style.background = "#005587";
-      btn.style.color = "#fff";
-    }} else {{
-      btn.style.background = "#F5F5F5";
-      btn.style.color = "#333";
-    }}
-  }});
-}}
-
-function selectLanguage(lang) {{
-  saveCurrentPrompt();
-  currentLang = lang;
-  loadPromptEditor();
-
-  var tabs = document.querySelectorAll(".lang-tab");
-  tabs.forEach(tab => {{
-    if (tab.dataset.lang === lang) {{
-      tab.style.background = "#005587";
-      tab.style.color = "#fff";
-    }} else {{
-      tab.style.background = "#F5F5F5";
-      tab.style.color = "#333";
-    }}
-  }});
-}}
-
-function loadPromptEditor() {{
-  var prompt = (promptData[currentDetector] || {{}})[currentLang] || "";
-  document.getElementById("promptEditor").value = prompt;
-  isDirty = false;
-}}
-
-function saveCurrentPrompt() {{
-  if (!promptData[currentDetector]) {{
-    promptData[currentDetector] = {{}};
-  }}
-  promptData[currentDetector][currentLang] = document.getElementById("promptEditor").value;
-}}
-
-function savePrompts() {{
-  saveCurrentPrompt();
-
-  var required = ["{{file}}", "{{line}}", "{{context}}", "{{project}}"];
-  for (var detector in promptData) {{
-    for (var lang in promptData[detector]) {{
-      var text = promptData[detector][lang];
-      for (var i = 0; i < required.length; i++) {{
-        if (text.indexOf(required[i]) === -1) {{
-          alert("Missing placeholder " + required[i] + " in " + detector + ":" + lang);
-          return;
-        }}
-      }}
-    }}
-  }}
-
-  fetch("/_prompts/save", {{
-    method: "POST",
-    headers: {{"Content-Type": "application/json"}},
-    body: JSON.stringify({{version: 1, prompts: promptData}})
-  }})
-  .then(r => r.json())
-  .then(data => {{
-    alert(data.message || "Prompts saved successfully");
-    isDirty = false;
-  }})
-  .catch(err => alert("Save failed: " + err));
-}}
-
-function resetPrompts() {{
-  if (!confirm("Reset all prompts to factory defaults? Custom changes will be lost.")) {{
-    return;
-  }}
-
-  fetch("/_prompts/reset", {{method: "POST"}})
-    .then(r => r.json())
-    .then(data => {{
-      alert(data.message || "Prompts reset to defaults");
-      closeAdminModal();
-    }})
-    .catch(err => alert("Reset failed: " + err));
-}}
-
-document.addEventListener("DOMContentLoaded", function() {{
-  var editor = document.getElementById("promptEditor");
-  if (editor) {{
-    editor.addEventListener("input", function() {{
-      isDirty = true;
-    }});
-  }}
-
-  // Initialize diagram tab visibility based on folder selection
-  if (typeof toggleDiagramTabs === 'function') {{
-    toggleDiagramTabs();
-  }}
-}});
-
 }})();
 </script>
 </body>
@@ -6904,6 +6871,17 @@ def main():
     # Viewer HTML
     Path(os.path.join(OUT_DIR, "viewer.html")).write_text(generate_viewer_html(), encoding="utf-8")
     print("  Wrote viewer.html")
+
+    # Standalone help page
+    help_repos = sorted({p["repo"] for p in project_meta if p.get("repo")})
+    if len(help_repos) > 1:
+        help_title = f"{len(help_repos)} Repositories"
+    elif help_repos:
+        help_title = help_repos[0]
+    else:
+        help_title = "Project"
+    Path(os.path.join(OUT_DIR, "help.html")).write_text(generate_help_html(help_title), encoding="utf-8")
+    print("  Wrote help.html")
 
     # AI context export
     ai_count = generate_ai_context()
