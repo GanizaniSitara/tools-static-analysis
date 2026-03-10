@@ -4,12 +4,17 @@ from __future__ import annotations
 
 from .csharp_detectors import CSHARP_DETECTORS
 from .java_detectors import JAVA_DETECTORS
+from .python_detectors import PYTHON_DETECTORS
+from .javascript_detectors import JAVASCRIPT_DETECTORS
 
 # Language-specific detector registries
 # Each language has its own list of detector dictionaries
 DETECTOR_REGISTRY: dict[str, list[dict]] = {
     "csharp": CSHARP_DETECTORS,
     "java": JAVA_DETECTORS,
+    "python": PYTHON_DETECTORS,
+    "javascript": JAVASCRIPT_DETECTORS,
+    "typescript": JAVASCRIPT_DETECTORS,  # same detectors for TS
 }
 
 # Severity ordering for filtering

@@ -191,8 +191,8 @@ def discover_repos(scan_root: str) -> list[dict]:
     csproj_files = find_files(scan_root, re.compile(r"\.csproj$"))
 
     if not csproj_files:
-        print("  No .csproj files found. Nothing to analyze.")
-        sys.exit(0)
+        print("  No .csproj files found — skipping .NET analysis (language scanners may still run).")
+        return []
 
     # Check if the root itself has .sln files directly
     root_slns = [f for f in os.listdir(scan_root) if f.endswith(".sln")]
@@ -2829,6 +2829,34 @@ def main():
     # Step 0: Discover repos
     print("Step 0: Discovering repositories...")
     repos = discover_repos(SCAN_ROOT)
+
+    if not repos:
+        print("  No .NET repos found — skipping .NET analysis.")
+        # Ensure baseline output files exist (don't overwrite existing data from prior repos)
+        for fname, default in [
+            ("repos.json", []), ("project-meta.json", []),
+            ("graph.json", {"nodes": [], "edges": [], "summary": {"totalProjects": 0, "totalRepos": 0, "totalNuGetPackages": 0, "totalProjectRefs": 0, "totalDataFindings": 0, "totalConfigFiles": 0, "categories": {}, "repos": {}, "totalCrossRepoRefs": 0}}),
+            ("data-sources.json", []), ("configs.json", []),
+            ("data-flow.json", {"dataNodes": [], "dataEdges": [], "impliedDependencies": [], "infrastructureGroups": {}}),
+            ("flow-paths.json", {"businessLayers": {}, "flowPaths": [], "layerSummary": {}}),
+            ("field-traceability.json", {"fieldChains": [], "summary": {}}),
+            ("ux-inconsistencies.json", {"issues": [], "summary": {}}),
+            ("test-projects.json", {"projects": [], "summary": {"totalTestProjects": 0, "totalTestMethods": 0, "totalTestClasses": 0, "coverageRatio": "0/0"}}),
+            ("nuget-health.json", {}),
+        ]:
+            fpath = os.path.join(OUT_DIR, fname)
+            if not os.path.isfile(fpath):
+                Path(fpath).write_text(json.dumps(default, indent=2), encoding="utf-8")
+        # Ensure baseline CSV files exist
+        for csv_name, headers in [
+            ("dependencies.csv", "repo,project,package,version"),
+            ("project-refs.csv", "repo,project,references,referencePath,crossRepo"),
+        ]:
+            csv_path = os.path.join(OUT_DIR, csv_name)
+            if not os.path.isfile(csv_path):
+                Path(csv_path).write_text(headers + "\n", encoding="utf-8")
+        return
+
     print(f"  Found {len(repos)} repo(s):")
     for r in repos:
         sln_info = f" ({len(r['solutions'])} .sln)" if r["solutions"] else ""
