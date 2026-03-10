@@ -154,6 +154,17 @@ def _first_path_segment(path: str) -> str:
     return parts[0] if len(parts) > 1 else ""
 
 project_to_group = {p["project"]: _first_path_segment(p.get("globalPath") or p.get("path", "")) for p in project_meta}
+# Also extract folder groups from refactoring-targets.json (covers Python/JS repos
+# that don't appear in project-meta.json since they have no .csproj)
+for rt_proj in refactoring_data.get("projects", []):
+    pname = rt_proj.get("project", "")
+    if pname and pname not in project_to_group:
+        # Derive group from the first path segment of any file in the project
+        for f in rt_proj.get("files", []):
+            seg = _first_path_segment(f.get("path", ""))
+            if seg:
+                project_to_group[pname] = seg
+                break
 project_groups = sorted({g for g in project_to_group.values() if g})
 has_filter_groups = len(project_groups) > 1
 
