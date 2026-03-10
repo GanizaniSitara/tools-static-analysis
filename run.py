@@ -706,9 +706,7 @@ def main():
 
                     # Check if this path itself is a repo (has marker files)
                     root_is_repo = False
-                    root_markers = ['.git', 'pom.xml', 'build.gradle', 'build.gradle.kts',
-                                    'package.json', '.csproj', '.sln',
-                                    'pyproject.toml', 'setup.py', 'requirements.txt', 'Pipfile']
+                    root_markers = ['.git', 'pom.xml', 'build.gradle', 'package.json', '.csproj', '.sln']
                     for marker in root_markers:
                         marker_path = os.path.join(repos_abs, marker)
                         if os.path.exists(marker_path):

@@ -155,7 +155,7 @@ def find_source_files(
     results: list | None = None,
     _depth: int = 0,
 ) -> list[str]:
-    """Recursively find all .cs, .java, .py, .js, .ts, .tsx, .jsx files, respecting exclusion patterns."""
+    """Recursively find all .cs and .java files, respecting exclusion patterns."""
     if results is None:
         results = []
     if _depth > _MAX_SCAN_DEPTH:
@@ -182,7 +182,7 @@ def find_source_files(
             if entry.name in SKIP_DIRS:
                 continue
             find_source_files(full, results, _depth + 1)
-        elif entry.name.endswith((".cs", ".java", ".py", ".js", ".ts", ".tsx", ".jsx")):
+        elif entry.name.endswith((".cs", ".java")):
             # Check exclusion patterns
             if not any(re.search(pattern, full) for pattern in EXCLUDE_PATTERNS):
                 results.append(full)
@@ -493,8 +493,7 @@ def analyze_file(filepath: str, scan_root: str, level: str = "high") -> dict | N
     """Analyze a single file for complexity and smells (supports C# and Java)."""
     # Detect language from file extension
     ext = os.path.splitext(filepath)[1].lower()
-    language_map = {".cs": "csharp", ".java": "java", ".py": "python",
-                    ".js": "javascript", ".jsx": "javascript", ".ts": "typescript", ".tsx": "typescript"}
+    language_map = {".cs": "csharp", ".java": "java"}
     language = language_map.get(ext, "unknown")
 
     if language == "unknown":

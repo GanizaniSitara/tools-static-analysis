@@ -144,33 +144,16 @@ def read_csv(filepath: str) -> list[dict]:
 package_deps = read_csv(os.path.join(OUT_DIR, "dependencies.csv"))
 project_refs_csv = read_csv(os.path.join(OUT_DIR, "project-refs.csv"))
 
-# Determine repos (merge .NET repos with language scanner repos)
-_repo_set = {p["repo"] for p in project_meta if p.get("repo")}
-for _lang_key, _lang_d in language_data.items():
-    for _lp in _lang_d.get("projects", []):
-        _lr = _lp.get("repo", "")
-        if _lr:
-            _repo_set.add(_lr)
-repos = sorted(_repo_set)
+# Determine repos
+repos = sorted({p["repo"] for p in project_meta if p.get("repo")})
 is_multi_repo = len(repos) > 1
 project_to_repo = {p["project"]: p.get("repo", "") for p in project_meta}
-for _lang_key, _lang_d in language_data.items():
-    for _lp in _lang_d.get("projects", []):
-        _pname = _lp.get("name", "")
-        if _pname and _pname not in project_to_repo:
-            project_to_repo[_pname] = _lp.get("repo", "")
 
 def _first_path_segment(path: str) -> str:
     parts = path.replace("\\", "/").split("/")
     return parts[0] if len(parts) > 1 else ""
 
 project_to_group = {p["project"]: _first_path_segment(p.get("globalPath") or p.get("path", "")) for p in project_meta}
-# Merge language scanner projects into group map (use repo name as group)
-for _lang_key, _lang_d in language_data.items():
-    for _lp in _lang_d.get("projects", []):
-        _pname = _lp.get("name", "")
-        if _pname and _pname not in project_to_group:
-            project_to_group[_pname] = _lp.get("repo", "")
 project_groups = sorted({g for g in project_to_group.values() if g})
 has_filter_groups = len(project_groups) > 1
 
@@ -378,16 +361,16 @@ def generate_index() -> str:
 | Metric | Count |
 |--------|-------|
 | Repositories | {graph['summary'].get('totalRepos', 1)} |
-| Total Projects | {graph['summary'].get('totalProjects', 0)} |
-| NuGet Packages | {graph['summary'].get('totalNuGetPackages', 0)} |
-| Project References | {graph['summary'].get('totalProjectRefs', 0)} |
+| Total Projects | {graph['summary']['totalProjects']} |
+| NuGet Packages | {graph['summary']['totalNuGetPackages']} |
+| Project References | {graph['summary']['totalProjectRefs']} |
 """
 
     if graph["summary"].get("totalCrossRepoRefs", 0) > 0:
         md += f"| Cross-Repo References | {graph['summary']['totalCrossRepoRefs']} |\n"
 
-    md += f"""| Data Access Findings | {graph['summary'].get('totalDataFindings', 0)} |
-| Config Files | {graph['summary'].get('totalConfigFiles', 0)} |
+    md += f"""| Data Access Findings | {graph['summary']['totalDataFindings']} |
+| Config Files | {graph['summary']['totalConfigFiles']} |
 
 """
 
@@ -846,8 +829,8 @@ def _build_repo_overview_variants(graph: dict) -> dict[str, str]:
 def generate_viewer_html() -> str:
     summary = graph["summary"]
     categories = summary["categories"]
-    repo_count = max(summary.get("totalRepos", 1), len(repos))
-    repo_list = repos  # already merged with language scanner repos at module level
+    repo_count = summary.get("totalRepos", 1)
+    repo_list = sorted({p["repo"] for p in project_meta if p.get("repo")})
     if len(repo_list) > 1:
         title = f"{len(repo_list)} Repositories"
     elif repo_list:
@@ -948,20 +931,14 @@ def generate_viewer_html() -> str:
                 })
 
     # ── Build HTML ──
-    # Stats bar — include language scanner project counts
-    _lang_project_total = sum(len(_ld.get("projects", [])) for _ld in language_data.values())
-    _total_projects = summary.get("totalProjects", 0) + _lang_project_total
+    # Stats bar
     stats_items = [
-        (_total_projects, "Projects", "allprojects"),
+        (summary["totalProjects"], "Projects", "allprojects"),
+        (summary["totalNuGetPackages"], "NuGet Packages", "allprojects"),
+        (summary["totalProjectRefs"], "Project References", "allprojects"),
+        (summary["totalDataFindings"], "Data Patterns", "datasources"),
+        (summary["totalConfigFiles"], "Config Files", "connstrings"),
     ]
-    if summary.get("totalNuGetPackages", 0):
-        stats_items.append((summary["totalNuGetPackages"], "NuGet Packages", "allprojects"))
-    if summary.get("totalProjectRefs", 0):
-        stats_items.append((summary["totalProjectRefs"], "Project References", "allprojects"))
-    if summary.get("totalDataFindings", 0):
-        stats_items.append((summary["totalDataFindings"], "Data Patterns", "datasources"))
-    if summary.get("totalConfigFiles", 0):
-        stats_items.append((summary["totalConfigFiles"], "Config Files", "connstrings"))
     if repo_count > 1:
         stats_items.append((repo_count, "Repos", "repos"))
 
@@ -1545,31 +1522,14 @@ def generate_viewer_html() -> str:
     if repo_count > 1:
         summary_repos = summary.get("repos", {})
         repos_lookup = {r["name"]: r for r in repos_data} if repos_data else {}
-        # Merge language scanner repos into the repos panel
-        _lang_repo_info: dict[str, dict] = {}
-        for _lk, _ld in language_data.items():
-            _ldisp = _ld.get("displayName", _lk.title())
-            for _lp in _ld.get("projects", []):
-                _lr = _lp.get("repo", "")
-                if _lr:
-                    if _lr not in _lang_repo_info:
-                        _lang_repo_info[_lr] = {"projects": 0, "languages": set()}
-                    _lang_repo_info[_lr]["projects"] += 1
-                    _lang_repo_info[_lr]["languages"].add(_ldisp)
-        all_repo_names = sorted(set(list(summary_repos.keys()) + list(_lang_repo_info.keys())))
         repos_rows = ""
-        for repo_name in all_repo_names:
-            info = summary_repos.get(repo_name, {})
+        for repo_name in sorted(summary_repos.keys()):
+            info = summary_repos[repo_name]
             rd = repos_lookup.get(repo_name, {})
             proj_count = info.get("projects", 0)
-            lang_info = _lang_repo_info.get(repo_name, {})
-            lang_proj_count = lang_info.get("projects", 0)
-            total_proj_count = proj_count + lang_proj_count
             solutions = rd.get("solutions", [])
             sol_count = len(solutions)
-            cats_set = set(info.get("categories", {}).keys())
-            cats_set.update(lang_info.get("languages", set()))
-            cats = ", ".join(sorted(cats_set))
+            cats = ", ".join(sorted(info.get("categories", {}).keys()))
             root_path_raw = rd.get("root", "")
             root_path = _esc_html(root_path_raw)
             root_path_link = _file_actions_html(root_path_raw) if root_path_raw else root_path
@@ -1579,7 +1539,7 @@ def generate_viewer_html() -> str:
             )
             repos_rows += f"""            <tr>
               <td><strong>{_esc_html(repo_name)}</strong></td>
-              <td>{total_proj_count}</td>
+              <td>{proj_count}</td>
               <td>{sol_count}</td>
               <td>{_esc_html(cats)}</td>
               <td>{root_path_link}</td>
@@ -2293,7 +2253,7 @@ def generate_viewer_html() -> str:
                 _dep_list += f" +{len(_lp['dependencies']) - 8} more"
             _cat_lower = (_lp.get("category") or "").lower()
             _tag_class = f"tag-{_cat_lower}" if _cat_lower else "tag-unclassified"
-            _lang_rows += f"""            <tr data-repo="{_esc_html(_lp.get('repo', ''))}">
+            _lang_rows += f"""            <tr>
               <td><strong>{_esc_html(_lp.get('name', ''))}</strong></td>
               <td>{_esc_html(_lp.get('repo', ''))}</td>
               <td><span class="tag {_tag_class}">{_esc_html(_lp.get('category', ''))}</span></td>
@@ -5766,7 +5726,6 @@ function initSortableTable(table) {{
     applyExtToolsFilters();
     applyTestsFilter();
     applyNugetFilter();
-    applyLangFilters();
     applyE2eFlowsFilter();
     applyDataSourcesFilter();
 
@@ -5839,7 +5798,6 @@ function initSortableTable(table) {{
       applyExtToolsFilters();
       applyTestsFilter();
       applyNugetFilter();
-      applyLangFilters();
       applyE2eFlowsFilter();
       applyDataSourcesFilter();
     }});
@@ -5922,20 +5880,6 @@ function initSortableTable(table) {{
         if (text && text.indexOf(searchQuery) === -1) show = false;
       }}
       row.style.display = show ? '' : 'none';
-    }});
-  }}
-
-  function applyLangFilters() {{
-    var repo = getActiveRepo();
-    var langTableIds = [{', '.join(f"'{lk}Table'" for lk in sorted(language_data.keys()))}];
-    langTableIds.forEach(function(tableId) {{
-      var tbl = document.getElementById(tableId);
-      if (!tbl) return;
-      tbl.querySelectorAll('tbody tr').forEach(function(row) {{
-        var show = true;
-        if (repo && row.getAttribute('data-repo') !== repo) show = false;
-        row.style.display = show ? '' : 'none';
-      }});
     }});
   }}
 
@@ -6371,12 +6315,12 @@ def _write_codebase_overview(ai_dir: str, metrics: list[dict]) -> None:
 | Metric | Value |
 |--------|-------|
 | Repositories | {summary.get('totalRepos', 1)} |
-| Projects | {summary.get('totalProjects', 0)} |
-| NuGet Packages | {summary.get('totalNuGetPackages', 0)} |
-| Project References | {summary.get('totalProjectRefs', 0)} |
+| Projects | {summary['totalProjects']} |
+| NuGet Packages | {summary['totalNuGetPackages']} |
+| Project References | {summary['totalProjectRefs']} |
 | Cross-Repo References | {summary.get('totalCrossRepoRefs', 0)} |
-| Data Access Findings | {summary.get('totalDataFindings', 0)} |
-| Config Files | {summary.get('totalConfigFiles', 0)} |
+| Data Access Findings | {summary['totalDataFindings']} |
+| Config Files | {summary['totalConfigFiles']} |
 
 ## Categories
 
