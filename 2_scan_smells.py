@@ -147,7 +147,8 @@ def safe_read_text(filepath: str, max_size: int = _MAX_FILE_SIZE) -> str | None:
 # ─── Find all source files recursively ──────────────────────────────
 
 SKIP_DIRS = {".git", "node_modules", "bin", "obj", ".vs", ".idea", "packages",
-              "TestResults", "artifacts", "__pycache__", ".nuget", "target", "build", ".gradle"}
+              "TestResults", "artifacts", "__pycache__", ".nuget", "target", "build", ".gradle",
+              "venv", ".venv", "env", ".env", "site-packages", "dist", ".tox"}
 
 
 def find_source_files(
@@ -182,7 +183,7 @@ def find_source_files(
             if entry.name in SKIP_DIRS:
                 continue
             find_source_files(full, results, _depth + 1)
-        elif entry.name.endswith((".cs", ".java")):
+        elif entry.name.endswith((".cs", ".java", ".py", ".js", ".ts", ".tsx", ".jsx")):
             # Check exclusion patterns
             if not any(re.search(pattern, full) for pattern in EXCLUDE_PATTERNS):
                 results.append(full)
@@ -490,10 +491,11 @@ def apply_triage(projects: list, dispositions: dict) -> dict:
 
 
 def analyze_file(filepath: str, scan_root: str, level: str = "high") -> dict | None:
-    """Analyze a single file for complexity and smells (supports C# and Java)."""
+    """Analyze a single file for complexity and smells."""
     # Detect language from file extension
     ext = os.path.splitext(filepath)[1].lower()
-    language_map = {".cs": "csharp", ".java": "java"}
+    language_map = {".cs": "csharp", ".java": "java", ".py": "python",
+                    ".js": "javascript", ".ts": "javascript", ".tsx": "javascript", ".jsx": "javascript"}
     language = language_map.get(ext, "unknown")
 
     if language == "unknown":
