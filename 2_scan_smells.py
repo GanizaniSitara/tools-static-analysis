@@ -1136,16 +1136,43 @@ def main():
         print(f"ERROR: Cannot create output directory '{OUT_DIR}': {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Analyze all files
+    # Analyze all files in the current scan root
     result = analyze_all_files(SCAN_ROOT, level=SCAN_LEVEL)
-    projects = result["projects"]
+    new_projects = result["projects"]
+
+    # Merge with existing refactoring-targets.json (multi-repo accumulation)
+    existing_rt_path = os.path.join(OUT_DIR, "refactoring-targets.json")
+    prior_projects = []
+    prior_files_scanned = 0
+    try:
+        existing_rt = json.loads(Path(existing_rt_path).read_text(encoding="utf-8"))
+        prior_projects = existing_rt.get("projects", [])
+        prior_files_scanned = existing_rt.get("summary", {}).get("totalFilesScanned", 0)
+    except (OSError, json.JSONDecodeError):
+        pass
+
+    new_project_names = {p["project"] for p in new_projects}
+    # Keep prior projects not in this scan (from other repos); replace stale ones
+    merged_projects = [p for p in prior_projects if p["project"] not in new_project_names]
+    merged_projects.extend(new_projects)
+    # Re-sort by refactoring value score
+    merged_projects.sort(key=lambda x: -x.get("refactoring_value_score", 0))
+
+    if prior_projects:
+        prior_kept = len(merged_projects) - len(new_projects)
+        print(f"\nMerged {len(new_projects)} new + {prior_kept} prior projects "
+              f"= {len(merged_projects)} total")
+
+    projects = merged_projects
+    total_files_scanned = prior_files_scanned + result["total_files_scanned"] \
+        if prior_projects else result["total_files_scanned"]
 
     # Load and apply triage dispositions
     print("\nApplying triage dispositions...")
     existing_triage = load_triage(OUT_DIR)
     updated_triage = apply_triage(projects, existing_triage)
 
-    # Compute summary statistics
+    # Compute summary statistics from merged project set
     total_files_with_smells = sum(1 for p in projects for f in p["files"] if f["smell_count"] > 0)
     total_smells = sum(p["smell_count"] for p in projects)
 
@@ -1170,7 +1197,7 @@ def main():
     top_projects = [p["project"] for p in projects[:10]]
 
     summary = {
-        "totalFilesScanned": result["total_files_scanned"],
+        "totalFilesScanned": total_files_scanned,
         "totalFilesWithSmells": total_files_with_smells,
         "totalSmells": total_smells,
         "topSmellTypes": top_smell_types,
